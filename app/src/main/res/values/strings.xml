@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">GsmBox</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+
+    <string name="title_favorites">Favorites</string>
+    <string name="title_templates">Templates</string>
+    <string name="title_devices">Devices</string>
+    <string name="title_settings">Settings</string>
 </resources>
