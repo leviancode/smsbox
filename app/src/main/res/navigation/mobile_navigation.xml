@@ -6,16 +6,16 @@
     app:startDestination="@+id/navigation_templates">
 
     <fragment
+        android:id="@+id/navigation_templates"
+        android:name="com.leviancode.android.gsmbox.ui.templates.TemplateListFragment"
+        android:label="@string/title_templates"
+        tools:layout="@layout/fragment_list_template" />
+
+    <fragment
         android:id="@+id/navigation_favorites"
         android:name="com.leviancode.android.gsmbox.ui.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" />
-
-    <fragment
-        android:id="@+id/navigation_templates"
-        android:name="com.leviancode.android.gsmbox.ui.templates.TemplatesFragment"
-        android:label="@string/title_templates"
-        tools:layout="@layout/fragment_templates" />
 
     <fragment
         android:id="@+id/navigation_devices"
@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.leviancode.android.gsmbox.ui.devices.DevicesFragment"
+        android:name="com.leviancode.android.gsmbox.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>
