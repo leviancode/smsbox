@@ -10,4 +10,5 @@
     <string name="bottom_sheet_option_template">Template</string>
     <string name="bottom_sheet_option_device">Device contact</string>
     <string name="bottom_sheet_option_placeholder">Placeholder</string>
+    <string name="close_create_dialog">Close create dialog</string>
 </resources>

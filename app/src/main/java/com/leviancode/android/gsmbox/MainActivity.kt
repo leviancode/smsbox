@@ -1,5 +1,6 @@
 package com.leviancode.android.gsmbox
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity(), NewItemDialogFragment.ItemClickListene
     }
 
     fun onAddTemplate(view: View) {
-       NewItemDialogFragment().show(supportFragmentManager, NewItemDialogFragment.TAG)
+        NewItemDialogFragment().show(supportFragmentManager, NewItemDialogFragment.TAG)
     }
 
     override fun onItemClick(itemTag: String) {

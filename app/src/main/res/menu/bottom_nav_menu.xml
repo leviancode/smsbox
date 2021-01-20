@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/navigation_templates"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_baseline_table_rows_24"
         android:title="@string/title_templates" />
 
     <item
@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/navigation_devices"
-        android:icon="@drawable/ic_baseline_device_hub_24"
+        android:icon="@drawable/ic_baseline_settings_input_component_24"
         android:title="@string/title_devices" />
 
     <item

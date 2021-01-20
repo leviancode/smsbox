@@ -1,11 +1,19 @@
 package com.leviancode.android.gsmbox.ui.dialogs
 
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
@@ -28,11 +36,14 @@ class NewItemDialogFragment : BottomSheetDialogFragment(), View.OnClickListener 
         )
         binding.tvBtnAddDevice.setOnClickListener(this)
         binding.tvBtnAddTemplate.setOnClickListener(this)
+        binding.ibCloseDialog.setOnClickListener(this)
         return binding.root
     }
+
     override fun onClick(v: View) {
-        val tvSelected = v as TextView
-        mListener?.onItemClick(tvSelected.tag.toString())
+        if (v is TextView){
+            mListener?.onItemClick(v.tag.toString())
+        }
         dismiss()
     }
 

@@ -9,48 +9,76 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:paddingBottom="8dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_bottom_sheet_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:layout_marginEnd="16dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
-            android:gravity="center"
-            android:text="@string/bottom_sheet_option_heading"
-            android:textColor="@color/md_bottom_sheet_title_color"
-            android:textSize="16sp" />
+            android:layout_marginEnd="16dp">
 
-        <TextView
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_bottom_sheet_heading"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:text="@string/bottom_sheet_option_heading"
+                android:textColor="@color/md_bottom_sheet_title_color"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ib_close_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:padding="4dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/close_create_dialog"
+                android:focusable="true"
+                android:src="@drawable/ic_baseline_close_24" />
+
+        </LinearLayout>
+
+
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_btn_add_template"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:backgroundTint="@android:color/white"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
             android:drawablePadding="32dp"
             android:gravity="start|center_vertical"
-            android:text="@string/bottom_sheet_option_template"
             android:tag="new_template"
+            android:text="@string/bottom_sheet_option_template"
             android:textColor="@color/md_bottom_sheet_text_color"
             android:textSize="16sp"
-            app:drawableStartCompat="@drawable/ic_baseline_table_rows_24"
+            android:clickable="true"
+            android:focusable="true"
+            app:drawableStartCompat="@drawable/ic_baseline_post_add_24"
             app:drawableTint="@color/md_bottom_sheet_text_color" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_btn_add_device"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:backgroundTint="@android:color/white"
             android:drawablePadding="32dp"
             android:gravity="start|center_vertical"
             android:text="@string/bottom_sheet_option_device"
             android:tag="new_device"
             android:textColor="@color/md_bottom_sheet_text_color"
             android:textSize="16sp"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
             app:drawableStartCompat="@drawable/ic_baseline_sim_card_24"
             app:drawableTint="@color/md_bottom_sheet_text_color" />
 
