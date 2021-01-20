@@ -21,35 +21,37 @@ object TemplatesRepository {
 
     suspend fun loadData(){
         val result = mutableListOf<TemplateGroup>()
-        result.add(TemplateGroup("Квартира на оболони", "кухонные девайсы"))
-        groups = result
-
+        result.add(TemplateGroup(name = "Квартира на оболони", description =  "кухонные девайсы"))
         withContext(Dispatchers.Main){
-            notifyObservers()
+            updateDataAndNotifyObservers(result)
         }
     }
 
     fun addGroup(item: TemplateGroup){
-        groups.add(item)
-        notifyObservers()
+        val newList = groups.toMutableList()
+        newList.add(item)
+        updateDataAndNotifyObservers(newList)
     }
 
     fun updateGroup(item: TemplateGroup){
-        val index = groups.indexOfFirst { item.id == it.id }
-        groups[index] = item
-        notifyObservers()
+        val newList = groups.toMutableList()
+        val index = newList.indexOfFirst { item.id == it.id }
+        newList[index] = item
+        updateDataAndNotifyObservers(newList)
     }
 
     fun removeGroup(group: TemplateGroup){
-        groups.remove(group)
-        notifyObservers()
+        val newList = groups.toMutableList()
+        newList.remove(group)
+        updateDataAndNotifyObservers(newList)
     }
 
     fun clear(){
-        groups.clear()
+        updateDataAndNotifyObservers(mutableListOf())
     }
 
-    fun notifyObservers(){
+    private fun updateDataAndNotifyObservers(newList: MutableList<TemplateGroup>){
+        groups = newList
         _groupsLiveData.value = groups
     }
 }

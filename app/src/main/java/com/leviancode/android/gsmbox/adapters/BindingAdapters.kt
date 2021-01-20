@@ -2,6 +2,7 @@ package com.leviancode.android.gsmbox.adapters
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.leviancode.android.gsmbox.R
@@ -25,7 +26,7 @@ fun ImageView.bindImageIcon(isFold: Boolean) {
 }
 
 @BindingAdapter(value = ["setAdapter"])
-fun RecyclerView.bindRecyclerViewAdapter(adapter: RecyclerView.Adapter<*>) {
+fun RecyclerView.bindRecyclerViewAdapter(adapter: ListAdapter<*, *>) {
     this.run {
         this.setHasFixedSize(true)
         this.adapter = adapter
