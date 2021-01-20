@@ -3,26 +3,21 @@ package com.leviancode.android.gsmbox
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.leviancode.android.gsmbox.databinding.ActivityMainBinding
 import com.leviancode.android.gsmbox.model.TemplateGroup
 import com.leviancode.android.gsmbox.repository.TemplatesRepository
-import com.leviancode.android.gsmbox.ui.templates.TemplateListViewModel
+import com.leviancode.android.gsmbox.ui.dialogs.NewItemDialogFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NewItemDialogFragment.ItemClickListener {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +43,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onAddTemplate(view: View) {
-        Toast.makeText(this, "FAB Clicked", Toast.LENGTH_LONG).show()
-        TemplatesRepository.addGroup(TemplateGroup(name = "Гараж", description =  "отопление"))    }
+       NewItemDialogFragment().show(supportFragmentManager, NewItemDialogFragment.TAG)
+    }
+
+    override fun onItemClick(itemTag: String) {
+       when(itemTag){
+           NewItemDialogFragment.TEMPLATE_TAG -> {
+               TemplatesRepository.addGroup(TemplateGroup(name = "Гараж", description =  "отопление"))
+               Toast.makeText(this, "Add template", Toast.LENGTH_SHORT).show()
+           }
+           NewItemDialogFragment.DEVICE_TAG -> {
+               Toast.makeText(this, "Add device", Toast.LENGTH_SHORT).show()
+           }
+       }
+    }
 }
