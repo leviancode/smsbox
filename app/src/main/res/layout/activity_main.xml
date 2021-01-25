@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/bottomAppBar_coordinator"
+    <FrameLayout
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        tools:context=".MainActivity">
 
         <fragment
             android:id="@+id/nav_host_fragment"
@@ -18,39 +18,29 @@
             app:defaultNavHost="true"
             app:navGraph="@navigation/mobile_navigation" />
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomAppBar"
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/nav_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:fabCradleMargin="6dp"
-            app:fabCradleRoundedCornerRadius="10dp"
-            app:fabCradleVerticalOffset="2dp">
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/nav_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:background="@android:color/transparent"
-                app:elevation="0dp"
-                android:layout_alignParentBottom="true"
-                app:menu="@menu/bottom_nav_menu" />
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav_menu" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/fab_new_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/app_name"
-            android:onClick="onAddTemplate"
-            android:src="@drawable/ic_baseline_add_24"
-            app:backgroundTint="#FFFFFF"
-            app:fabSize="auto"
-            app:layout_anchor="@id/bottomAppBar" />
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_margin="4dp"
+            android:onClick="onCreateItem"
+            app:borderWidth="1dp"
+            app:elevation="8dp"
+            app:fabSize="mini"
+            android:backgroundTint="@android:color/transparent"
+            app:srcCompat="@drawable/ic_baseline_add_24"
+            android:contentDescription="@string/add_new_item" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+    </FrameLayout>
 
 </layout>

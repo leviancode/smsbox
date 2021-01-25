@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.templates
+package com.leviancode.android.gsmbox.ui.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,10 +11,11 @@ import androidx.fragment.app.viewModels
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.databinding.FragmentTemplatesBinding
+import com.leviancode.android.gsmbox.ui.viewmodel.TemplatesViewModel
 
-class TemplateListFragment : Fragment() {
+class TemplatesFragment : Fragment() {
     private lateinit var binding: FragmentTemplatesBinding
-    private val viewModel by viewModels<TemplateListViewModel>()
+    private val viewModel by viewModels<TemplatesViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,11 +25,12 @@ class TemplateListFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_templates, container, false)
         binding.lifecycleOwner = this
         binding.adapter = TemplateListAdapter()
-      //  requireActivity().setActionBar(requireActivity().findViewById(R.id.toolbar))
-
-
-        observeUI()
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        observeUI()
     }
 
     private fun observeUI(){

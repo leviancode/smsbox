@@ -12,14 +12,14 @@
         android:title="@string/title_favorites" />
 
     <item
-        android:id="@+id/placeholder"
+        android:id="@+id/navigation_new_item_placeholder"
         android:enabled="false"
         android:title="" />
 
     <item
-        android:id="@+id/navigation_devices"
-        android:icon="@drawable/ic_baseline_settings_input_component_24"
-        android:title="@string/title_devices" />
+        android:id="@+id/navigation_recipients"
+        android:icon="@drawable/ic_baseline_sim_card_24"
+        android:title="@string/title_recipients" />
 
     <item
         android:id="@+id/navigation_settings"

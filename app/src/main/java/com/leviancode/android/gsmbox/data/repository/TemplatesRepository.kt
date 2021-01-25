@@ -2,7 +2,7 @@ package com.leviancode.android.gsmbox.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.leviancode.android.gsmbox.model.TemplateGroup
+import com.leviancode.android.gsmbox.data.model.TemplateGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,8 +36,16 @@ object TemplatesRepository {
     fun updateGroup(item: TemplateGroup){
         val newList = groups.toMutableList()
         val index = newList.indexOfFirst { item.id == it.id }
-        newList[index] = item
+        if (index == -1){
+            newList.add(item)
+        } else {
+            newList[index] = item
+        }
         updateDataAndNotifyObservers(newList)
+    }
+
+    fun getGroupById(id: String): TemplateGroup?{
+        return groups.find { it.id == id }
     }
 
     fun removeGroup(group: TemplateGroup){

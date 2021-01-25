@@ -3,12 +3,22 @@
 
     <string name="title_favorites">Favorites</string>
     <string name="title_templates">Templates</string>
-    <string name="title_devices">Devices</string>
+    <string name="title_recipients">Recipients</string>
     <string name="title_settings">Settings</string>
     <string name="add_new_item">Add new item</string>
     <string name="bottom_sheet_option_heading">Create</string>
     <string name="bottom_sheet_option_template">Template</string>
-    <string name="bottom_sheet_option_device">Device contact</string>
+    <string name="bottom_sheet_option_recipient">Recipient</string>
     <string name="bottom_sheet_option_placeholder">Placeholder</string>
     <string name="close_create_dialog">Close create dialog</string>
+    <string name="dialog_new_template_title">New Template</string>
+    <string name="title_new_template">New Template</string>
+    <string name="menu_save">Save</string>
+    <string name="divider_group">Group</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_description">Description (optional)</string>
+    <string name="icon_color">Icon color</string>
+    <string name="divider_template">Template</string>
+    <string name="hint_message">Message</string>
+    <string name="hint_recipient">Recipient</string>
 </resources>

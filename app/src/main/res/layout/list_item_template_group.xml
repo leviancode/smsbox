@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.templates.TemplateGroupViewModel" />
+            type="com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupViewModel" />
     </data>
 
 
@@ -18,7 +18,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:onClick="@{viewModel::onFold}"
+        android:onClick="@{viewModel::unfoldGroup}"
         app:cardCornerRadius="6dp"
         app:cardElevation="3dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="16dp"
-                android:text="@{viewModel.groupName}"
+                android:text="@{viewModel.name}"
                 android:textColor="@color/text_title"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -51,7 +51,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:text="@{viewModel.groupDescription}"
+                android:text="@{viewModel.description}"
                 android:textColor="@color/text_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/template_group_image"
@@ -66,13 +66,13 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:padding="4dp"
-                android:tint="@{viewModel.groupIconColor ?? @color/group_icon_tint_default}"
+                android:tint="@{viewModel.iconColor ?? @color/group_icon_tint_default}"
                 app:civ_border_color="@android:color/transparent"
                 app:civ_border_width="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:setImageUri="@{viewModel.imageUri}"
+                app:loadImage="@{viewModel.imageUri}"
                 tools:src="@drawable/ic_baseline_library_books_24" />
 
             <TextView
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="31dp"
-                android:text="@{Integer.toString(viewModel.groupSize)}"
+                android:text="@{Integer.toString(viewModel.size)}"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/template_group_fold_icon"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +96,7 @@
                 android:layout_marginBottom="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:setIcon="@{viewModel.isFold}"
+                app:setIcon="@{viewModel.fold}"
                 tools:src="@drawable/ic_baseline_arrow_down_24"/>
 
 

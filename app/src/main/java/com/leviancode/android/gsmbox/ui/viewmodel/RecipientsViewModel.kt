@@ -1,10 +1,10 @@
-package com.leviancode.android.gsmbox.ui.devices
+package com.leviancode.android.gsmbox.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DevicesViewModel : ViewModel() {
+class RecipientsViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is notifications Fragment"

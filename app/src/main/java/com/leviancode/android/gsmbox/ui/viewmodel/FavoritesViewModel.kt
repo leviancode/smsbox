@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.favorites
+package com.leviancode.android.gsmbox.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

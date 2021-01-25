@@ -1,27 +1,19 @@
-package com.leviancode.android.gsmbox.ui.dialogs
+package com.leviancode.android.gsmbox.ui.view.dialog
 
-import android.app.Dialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.LayerDrawable
-import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.databinding.FragmentNewItemDialogBinding
+import com.leviancode.android.gsmbox.databinding.FragmentBottomSheetBinding
 
 
-class NewItemDialogFragment : BottomSheetDialogFragment(), View.OnClickListener {
-    lateinit var binding: FragmentNewItemDialogBinding
+class BottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListener {
+    lateinit var binding: FragmentBottomSheetBinding
     private var mListener: ItemClickListener? = null
 
     override fun onCreateView(
@@ -30,7 +22,7 @@ class NewItemDialogFragment : BottomSheetDialogFragment(), View.OnClickListener 
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_new_item_dialog,
+            R.layout.fragment_bottom_sheet,
             container,
             false
         )
@@ -68,8 +60,8 @@ class NewItemDialogFragment : BottomSheetDialogFragment(), View.OnClickListener 
     }
 
     companion object{
-        const val TAG = "NewItemDialogFragment"
+        val TAG = BottomSheetDialog::class.java.simpleName
         const val TEMPLATE_TAG = "new_template"
-        const val DEVICE_TAG = "new_device"
+        const val RECIPIENT_TAG = "new_recipient"
     }
 }

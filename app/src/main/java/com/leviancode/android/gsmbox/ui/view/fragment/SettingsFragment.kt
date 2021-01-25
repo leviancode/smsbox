@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.settings
+package com.leviancode.android.gsmbox.ui.view.fragment
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.ui.viewmodel.SettingsViewModel
 
 class SettingsFragment : Fragment() {
     private lateinit var viewModel: SettingsViewModel

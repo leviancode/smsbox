@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.data.model.TemplateGroup
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateGroupBinding
-import com.leviancode.android.gsmbox.model.TemplateGroup
-import com.leviancode.android.gsmbox.ui.templates.TemplateGroupViewModel
+import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupViewModel
 
 class TemplateListAdapter : ListAdapter<TemplateGroup, TemplateListAdapter.TemplateGroupHolder>(TemplateGroupDiffCallback()) {
 

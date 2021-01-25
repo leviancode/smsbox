@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_favorite"
+        android:icon="@drawable/ic_baseline_star_outline_24"
+        android:title=""
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_save"
+        android:title="@string/menu_save"
+        app:showAsAction="ifRoom" />
+</menu>

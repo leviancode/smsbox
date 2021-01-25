@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.leviancode.android.gsmbox.R
 
-@BindingAdapter(value = ["setImageUri"])
-fun ImageView.bindImageUri(uri: String?) {
+@BindingAdapter(value = ["loadImage"])
+fun ImageView.loadImage(uri: String?) {
     if (uri != null && uri.isNotBlank()) {
         load(uri)
     } else {
@@ -17,7 +17,7 @@ fun ImageView.bindImageUri(uri: String?) {
 }
 
 @BindingAdapter(value = ["setIcon"])
-fun ImageView.bindImageIcon(isFold: Boolean) {
+fun ImageView.bindFoldIcon(isFold: Boolean) {
     if (isFold) {
         load(R.drawable.ic_baseline_arrow_up_24)
     } else {
