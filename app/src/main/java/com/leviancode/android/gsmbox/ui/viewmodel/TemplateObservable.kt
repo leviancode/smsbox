@@ -3,15 +3,21 @@ package com.leviancode.android.gsmbox.ui.viewmodel
 import android.view.View
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import com.leviancode.android.gsmbox.BR
 import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.data.model.Template
+import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 
-class TemplateViewModel : BaseObservable() {
+class TemplateObservable : BaseObservable() {
     var template = Template()
         set(value) {
             field = value
-            notifyChange()
+        //    notifyChange()
         }
+
+    fun setGroupId(value: String){
+        template.groupId = value
+    }
 
     @Bindable
     fun isFavorite() = template.favorite
@@ -35,24 +41,15 @@ class TemplateViewModel : BaseObservable() {
     }
 
     @Bindable
-    fun getDescription() = template.description
-    fun setDescription(value: String){
-        if (template.description != value){
-            template.description = value
-            notifyChange()
-        }
-    }
-
-    @Bindable
     fun getIconColor() = template.iconColor
-    fun setIconColor(value: Int?){
+    fun setIconColor(value: Int){
         if (template.iconColor != value){
             template.iconColor = value
-            notifyChange()
+            notifyPropertyChanged(BR.iconColor)
         }
     }
 
-    fun onFavorite(view: View){
+    fun onFavoriteClicked(view: View){
         template.favorite = !template.favorite
     }
 

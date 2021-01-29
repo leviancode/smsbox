@@ -1,65 +1,113 @@
-package com.leviancode.android.gsmbox.repository
+package com.leviancode.android.gsmbox.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.leviancode.android.gsmbox.data.model.Template
 import com.leviancode.android.gsmbox.data.model.TemplateGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 object TemplatesRepository {
-    private var groups = mutableListOf<TemplateGroup>()
-    private val _groupsLiveData = MutableLiveData<MutableList<TemplateGroup>>()
-    val groupsLiveData: LiveData<MutableList<TemplateGroup>> = _groupsLiveData
+    private val _groups = MutableLiveData<List<TemplateGroup>>()
+    val groups: LiveData<List<TemplateGroup>> = _groups
+
+    private val _templates = MutableLiveData<List<Template>>()
+    val templates: LiveData<List<Template>> = _templates
 
     init {
-        CoroutineScope(Dispatchers.IO).launch {
-            loadData()
-        }
+        loadDataFromDb()
     }
 
-    suspend fun loadData(){
-        val result = mutableListOf<TemplateGroup>()
-        result.add(TemplateGroup(name = "Квартира на оболони", description =  "кухонные девайсы"))
-        withContext(Dispatchers.Main){
-            updateDataAndNotifyObservers(result)
+    private fun loadDataFromDb(){
+        CoroutineScope(Dispatchers.Main).launch {
+            val groups = async(Dispatchers.IO) { loadGroups() }
+            val templates = async(Dispatchers.IO) { loadTemplates() }
+            _groups.value = groups.await()
+            _templates.value = templates.await()
         }
+
     }
+
+    private fun loadGroups(): List<TemplateGroup>{
+        val result = mutableListOf<TemplateGroup>()
+        /*result.add(TemplateGroup(name = "Квартира на оболони", description =  "кухня"))
+        result.add(TemplateGroup(name = "Гараж", description =  "отопление"))
+        result.add(TemplateGroup(name = "Работа", description =  "кофе машина"))
+        result.add(TemplateGroup(name = "Дача", description =  "система полива"))
+        result.add(TemplateGroup(name = "Дача2", description =  "система полива"))
+        result.add(TemplateGroup(name = "Дача3", description =  "система полива"))
+        result.add(TemplateGroup(name = "Дача3", description =  "система полива"))
+        result.add(TemplateGroup(name = "Дача3", description =  "система полива"))
+        result.add(TemplateGroup(name = "Дача3", description =  "система полива"))
+        result.add(TemplateGroup(name = "Дача3", description =  "система полива"))
+        result.add(TemplateGroup(name = "Дача3", description =  "система полива"))
+*/
+        return result
+    }
+
+    private fun loadTemplates(): List<Template>{
+        val result = mutableListOf<Template>()
+
+        return result
+    }
+
 
     fun addGroup(item: TemplateGroup){
-        val newList = groups.toMutableList()
-        newList.add(item)
-        updateDataAndNotifyObservers(newList)
-    }
-
-    fun updateGroup(item: TemplateGroup){
-        val newList = groups.toMutableList()
-        val index = newList.indexOfFirst { item.id == it.id }
-        if (index == -1){
-            newList.add(item)
-        } else {
-            newList[index] = item
-        }
-        updateDataAndNotifyObservers(newList)
-    }
-
-    fun getGroupById(id: String): TemplateGroup?{
-        return groups.find { it.id == id }
+        _groups.addItem(item)
     }
 
     fun removeGroup(group: TemplateGroup){
-        val newList = groups.toMutableList()
-        newList.remove(group)
-        updateDataAndNotifyObservers(newList)
+        _groups.removeItem(group)
     }
 
-    fun clear(){
-        updateDataAndNotifyObservers(mutableListOf())
+    fun addTemplate(item: Template){
+        _templates.addItem(item)
     }
 
-    private fun updateDataAndNotifyObservers(newList: MutableList<TemplateGroup>){
-        groups = newList
-        _groupsLiveData.value = groups
+    fun removeTemplate(item: Template){
+        _templates.removeItem(item)
     }
+
+    fun updateGroup(item: TemplateGroup){
+        groups.value?.toMutableList()?.let{ list ->
+            val index = list.indexOfFirst { item.id == it.id }
+            if (index == -1){
+                list.add(item)
+            } else {
+                list[index] = item
+            }
+            _groups.value = list
+        }
+
+    }
+
+    fun updateTemplate(item: Template){
+        templates.value?.toMutableList()?.let{ list ->
+            val index = list.indexOfFirst { item.id == it.id }
+            if (index == -1){
+                list.add(item)
+            } else {
+                list[index] = item
+            }
+            _templates.value = list
+        }
+    }
+
+    fun getGroupById(id: String): TemplateGroup?{
+        return groups.value?.find { it.id == id }
+    }
+}
+
+fun <T> MutableLiveData<List<T>>.addItem(item: T) {
+    val items = this.value as ArrayList
+    items.add(item)
+    this.value = items
+}
+
+fun <T> MutableLiveData<List<T>>.removeItem(item: T) {
+    val items = this.value as ArrayList
+    items.remove(item)
+    this.value = items
 }

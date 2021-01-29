@@ -3,29 +3,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_templates">
+    app:startDestination="@+id/nav_template_group_list">
 
     <fragment
-        android:id="@+id/navigation_templates"
-        android:name="com.leviancode.android.gsmbox.ui.view.fragment.TemplatesFragment"
+        android:id="@+id/nav_template_group_list"
+        android:name="com.leviancode.android.gsmbox.ui.view.fragment.TemplateGroupListFragment"
         android:label="@string/title_templates"
-        tools:layout="@layout/fragment_templates" />
+        tools:layout="@layout/fragment_template_group_list" >
+
+        <action
+            android:id="@+id/action_template_group_list_fragment_to_template_list_fragment"
+            app:destination="@id/nav_template_list"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_favorites"
+        android:id="@+id/nav_template_list"
+        android:name="com.leviancode.android.gsmbox.ui.view.fragment.TemplateListFragment"
+        android:label=""
+        tools:layout="@layout/fragment_template_list"/>
+
+    <fragment
+        android:id="@+id/nav_favorites"
         android:name="com.leviancode.android.gsmbox.ui.view.fragment.FavoritesFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" />
 
     <fragment
-        android:id="@+id/navigation_recipients"
+        android:id="@+id/nav_recipients"
         android:name="com.leviancode.android.gsmbox.ui.view.fragment.RecipientsFragment"
         android:label="@string/title_recipients"
         tools:layout="@layout/fragment_recipients" />
 
     <fragment
-        android:id="@+id/navigation_settings"
+        android:id="@+id/nav_settings"
         android:name="com.leviancode.android.gsmbox.ui.view.fragment.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+
+
 </navigation>

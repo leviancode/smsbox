@@ -3,49 +3,39 @@ package com.leviancode.android.gsmbox.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.TemplateGroup
-import com.leviancode.android.gsmbox.databinding.ListItemTemplateGroupBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupViewModel
+import com.leviancode.android.gsmbox.data.model.Template
+import com.leviancode.android.gsmbox.databinding.ListItemTemplateBinding
+import com.leviancode.android.gsmbox.ui.viewmodel.TemplateObservable
 
-class TemplateListAdapter : ListAdapter<TemplateGroup, TemplateListAdapter.TemplateGroupHolder>(TemplateGroupDiffCallback()) {
+class TemplateListAdapter : ListAdapter<Template, TemplateListAdapter.TemplateHolder>(
+    TemplatesDiffCallback<Template>()
+) {
+    var clickListener: ListItemClickListener<Template>? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TemplateGroupHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TemplateHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding: ListItemTemplateGroupBinding =
-            DataBindingUtil.inflate(inflater, R.layout.list_item_template_group, parent, false)
-        return TemplateGroupHolder(binding)
+        val binding: ListItemTemplateBinding =
+            DataBindingUtil.inflate(inflater, R.layout.list_item_template, parent, false)
+        clickListener?.let { binding.clickListener = it }
+        return TemplateHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: TemplateGroupHolder, position: Int) {
-        val group = getItem(position)
-        holder.bind(group)
+    override fun onBindViewHolder(holder: TemplateHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
-    class TemplateGroupHolder(private val binding: ListItemTemplateGroupBinding)
-        : RecyclerView.ViewHolder(binding.root){
+    class TemplateHolder(val binding: ListItemTemplateBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.viewModel = TemplateGroupViewModel()
+            binding.template = TemplateObservable()
         }
 
-        fun bind(group: TemplateGroup){
-            binding.viewModel?.group = group
+        fun bind(template: Template){
+            binding.template?.template = template
             binding.executePendingBindings()
         }
-    }
-
-    class TemplateGroupDiffCallback : DiffUtil.ItemCallback<TemplateGroup>(){
-        override fun areItemsTheSame(oldItem: TemplateGroup, newItem: TemplateGroup): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: TemplateGroup, newItem: TemplateGroup): Boolean {
-            return oldItem == newItem
-        }
-
     }
 }

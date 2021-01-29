@@ -2,8 +2,8 @@
 <resources>
 
     <!-- Primary-light brand color. -->
-    <color name="primary">@color/blue_400</color>
-    <color name="primaryVariant">@color/blue_600</color>
+    <color name="primary">@color/purple_500</color>
+    <color name="primaryVariant">@color/purple_700</color>
     <color name="onPrimary">@color/white</color>
     <!-- Secondary-light brand color. -->
     <color name="secondary">@color/teal_200</color>
@@ -38,6 +38,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#424242</color>
+    <color name="ltGrey">#ACACAC</color>
 
 
     <color name="text_title">#171717</color>
@@ -47,4 +48,5 @@
     <color name="md_bottom_sheet_title_color">#404040</color>
     <color name="md_bottom_sheet_text_color">#131313</color>
     <color name="bottom_sheet_bg">#FFFFFF</color>
+    <color name="yellow">#FFC167</color>
 </resources>

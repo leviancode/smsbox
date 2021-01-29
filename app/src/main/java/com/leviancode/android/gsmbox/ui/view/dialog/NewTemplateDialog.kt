@@ -5,23 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogNewTemplateBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupViewModel
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplateViewModel
+import com.leviancode.android.gsmbox.ui.viewmodel.TemplateObservable
+import com.leviancode.android.gsmbox.ui.viewmodel.TemplatesViewModel
+import com.leviancode.android.gsmbox.utils.ARG_GROUP_ID
 
 
-class NewTemplateDialog : DialogFragment() {
+class NewTemplateDialog : DefaultFullScreenDialog(){
     private lateinit var binding: DialogNewTemplateBinding
-    private val groupViewModel = TemplateGroupViewModel()
-    private val templateViewModel = TemplateViewModel()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.AppTheme_FullScreenDialog);
-    }
+    private val templateObservable = TemplateObservable()
+    private val viewModel: TemplatesViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,31 +32,26 @@ class NewTemplateDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.group = groupViewModel
-        binding.template = templateViewModel
+        binding.template = templateObservable
+
+        arguments?.getString(ARG_GROUP_ID)?.let { templateObservable.setGroupId(it) }
 
         binding.toolbar.apply {
-            inflateMenu(R.menu.menu_new_template)
             title = getString(R.string.title_new_template)
             setNavigationOnClickListener { v: View? ->
                 showDiscardDialog()
             }
             setOnMenuItemClickListener { item ->
-                groupViewModel.saveTemplate(templateViewModel.template)
+                viewModel.addTemplate(templateObservable.template)
                 dismiss()
                 true
             }
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-        dialog?.apply {
-            val width = ViewGroup.LayoutParams.MATCH_PARENT
-            val height = ViewGroup.LayoutParams.MATCH_PARENT
-            window?.setLayout(width, height)
-            window?.setWindowAnimations(R.style.Theme_GsmBox_Slide)
+        binding.btnTemplateIconColor.setOnClickListener {
+
         }
+
     }
 
     private fun showDiscardDialog(){
@@ -68,11 +59,15 @@ class NewTemplateDialog : DialogFragment() {
     }
 
     companion object {
-        val TAG = NewTemplateDialog::class.java.simpleName
+        private val TAG = NewTemplateDialog::class.java.simpleName
 
-        fun display(fragmentManager: FragmentManager): NewTemplateDialog {
-            val dialog = NewTemplateDialog()
-            dialog.show(fragmentManager, TAG)
+        fun display(manager: FragmentManager, groupId: String): NewTemplateDialog{
+            val args = Bundle()
+            args.putString(ARG_GROUP_ID, groupId)
+            val dialog = NewTemplateDialog().apply {
+                this.arguments = args
+            }
+            dialog.show(manager, TAG)
             return dialog
         }
     }
