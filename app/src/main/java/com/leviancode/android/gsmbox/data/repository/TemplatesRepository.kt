@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.leviancode.android.gsmbox.data.model.Template
 import com.leviancode.android.gsmbox.data.model.TemplateGroup
+import com.leviancode.android.gsmbox.utils.addItem
+import com.leviancode.android.gsmbox.utils.removeItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -32,18 +34,10 @@ object TemplatesRepository {
 
     private fun loadGroups(): List<TemplateGroup>{
         val result = mutableListOf<TemplateGroup>()
-        /*result.add(TemplateGroup(name = "Квартира на оболони", description =  "кухня"))
+        result.add(TemplateGroup(name = "Квартира на оболони", description =  "кухня"))
         result.add(TemplateGroup(name = "Гараж", description =  "отопление"))
         result.add(TemplateGroup(name = "Работа", description =  "кофе машина"))
         result.add(TemplateGroup(name = "Дача", description =  "система полива"))
-        result.add(TemplateGroup(name = "Дача2", description =  "система полива"))
-        result.add(TemplateGroup(name = "Дача3", description =  "система полива"))
-        result.add(TemplateGroup(name = "Дача3", description =  "система полива"))
-        result.add(TemplateGroup(name = "Дача3", description =  "система полива"))
-        result.add(TemplateGroup(name = "Дача3", description =  "система полива"))
-        result.add(TemplateGroup(name = "Дача3", description =  "система полива"))
-        result.add(TemplateGroup(name = "Дача3", description =  "система полива"))
-*/
         return result
     }
 
@@ -98,16 +92,4 @@ object TemplatesRepository {
     fun getGroupById(id: String): TemplateGroup?{
         return groups.value?.find { it.id == id }
     }
-}
-
-fun <T> MutableLiveData<List<T>>.addItem(item: T) {
-    val items = this.value as ArrayList
-    items.add(item)
-    this.value = items
-}
-
-fun <T> MutableLiveData<List<T>>.removeItem(item: T) {
-    val items = this.value as ArrayList
-    items.remove(item)
-    this.value = items
 }

@@ -4,20 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogNewTemplateBinding
 import com.leviancode.android.gsmbox.ui.viewmodel.TemplateObservable
 import com.leviancode.android.gsmbox.ui.viewmodel.TemplatesViewModel
-import com.leviancode.android.gsmbox.utils.ARG_GROUP_ID
 
 
-class NewTemplateDialog : DefaultFullScreenDialog(){
+class NewTemplateDialog : AbstractFullScreenDialog(){
     private lateinit var binding: DialogNewTemplateBinding
     private val templateObservable = TemplateObservable()
     private val viewModel: TemplatesViewModel by activityViewModels()
+    private val args: NewTemplateDialogArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,9 +33,9 @@ class NewTemplateDialog : DefaultFullScreenDialog(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        templateObservable.setGroupId(args.groupId)
         binding.template = templateObservable
-
-        arguments?.getString(ARG_GROUP_ID)?.let { templateObservable.setGroupId(it) }
+        binding.editTextTemplateName.requestFocus()
 
         binding.toolbar.apply {
             title = getString(R.string.title_new_template)
@@ -48,27 +49,39 @@ class NewTemplateDialog : DefaultFullScreenDialog(){
             }
         }
 
-        binding.btnTemplateIconColor.setOnClickListener {
 
+        val btn = binding.toolbar.menu.findItem(R.id.menu_save)
+        binding.editTextTemplateName.doOnTextChanged { text, start, before, count ->
+            btn.isEnabled = count > 0
         }
 
+        binding.btnTemplateIconColor.setOnClickListener { chooseColor() }
+    }
+
+    private fun chooseColor(){
+        hideKeyboard()
+
+        ColorPickerBottomSheet(
+            requireContext(),
+            childFragmentManager,
+            templateObservable.getIconColor()
+        ).show {
+            templateObservable.setIconColor(it)
+        }
     }
 
     private fun showDiscardDialog(){
-        dismiss()
+        hideKeyboard()
+        if (templateObservable.isFieldsEmpty()){
+            dismiss()
+        } else {
+            DiscardDialog(requireContext()).show{ response ->
+                if (response) dismiss()
+            }
+        }
     }
 
     companion object {
         private val TAG = NewTemplateDialog::class.java.simpleName
-
-        fun display(manager: FragmentManager, groupId: String): NewTemplateDialog{
-            val args = Bundle()
-            args.putString(ARG_GROUP_ID, groupId)
-            val dialog = NewTemplateDialog().apply {
-                this.arguments = args
-            }
-            dialog.show(manager, TAG)
-            return dialog
-        }
     }
 }

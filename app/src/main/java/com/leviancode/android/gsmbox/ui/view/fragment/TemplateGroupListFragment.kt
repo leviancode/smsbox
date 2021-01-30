@@ -8,6 +8,7 @@ import androidx.customview.widget.ViewDragHelper
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.card.MaterialCardView
 
@@ -23,6 +24,7 @@ import com.leviancode.android.gsmbox.utils.ARG_GROUP_ID
 class TemplateGroupListFragment : Fragment() {
     private lateinit var binding: FragmentTemplateGroupListBinding
     private val viewModel: TemplatesViewModel by activityViewModels()
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +37,7 @@ class TemplateGroupListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // binding.lifecycleOwner = this
+        navController = view.findNavController()
         binding.adapter = TemplateGroupListAdapter().apply {
             clickListener = ListItemClickListener { openSelectedGroup(it) }
         }
@@ -48,15 +50,16 @@ class TemplateGroupListFragment : Fragment() {
     }
 
     private fun openSelectedGroup(group: TemplateGroup) {
-        // put the bundle with group id
-        val action = TemplateGroupListFragmentDirections.actionTemplateGroupListFragmentToTemplateListFragment()
-       // val args = Bundle().apply { putString(ARG_GROUP_ID, group.id) }
+        val action = TemplateGroupListFragmentDirections
+            .actionTemplateGroupsToTemplates(group.id, group.name)
         
-        view?.findNavController()?.navigate(action)
+        navController.navigate(action)
     }
 
     private fun showNewGroupDialog(){
-        NewGroupDialog().show(requireActivity().supportFragmentManager)
+        val action = TemplateGroupListFragmentDirections
+            .actionTemplateGroupsToNewGroup()
+        navController.navigate(action)
     }
 
     private fun observeUI(){

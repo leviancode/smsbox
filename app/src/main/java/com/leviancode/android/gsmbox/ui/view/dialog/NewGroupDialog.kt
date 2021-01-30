@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogNewGroupBinding
 import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupObservable
 import com.leviancode.android.gsmbox.ui.viewmodel.TemplatesViewModel
 
-class NewGroupDialog() : DefaultFullScreenDialog() {
+class NewGroupDialog : AbstractFullScreenDialog() {
     private lateinit var binding: DialogNewGroupBinding
     private val groupObservable = TemplateGroupObservable()
     private val viewModel: TemplatesViewModel by activityViewModels()
@@ -31,26 +31,53 @@ class NewGroupDialog() : DefaultFullScreenDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = groupObservable
+        binding.group = groupObservable
         binding.toolbar.apply {
             title = getString(R.string.new_group)
             setNavigationOnClickListener { v: View? ->
                 showDiscardDialog()
             }
             setOnMenuItemClickListener { item ->
-                viewModel.addGroup(groupObservable.group)
+                saveGroup()
                 dismiss()
                 true
             }
         }
+
+        binding.editTextGroupName.requestFocus()
+        val btn = binding.toolbar.menu.findItem(R.id.menu_save)
+        binding.editTextGroupName.doOnTextChanged { text, start, before, count ->
+                btn.isEnabled = count > 0
+        }
+
+        binding.btnTemplateIconColor.setOnClickListener{ chooseColor() }
+    }
+
+    private fun saveGroup(){
+        viewModel.addGroup(groupObservable.group)
+    }
+
+    private fun chooseColor(){
+        hideKeyboard()
+
+        ColorPickerBottomSheet(
+            requireContext(),
+            childFragmentManager,
+            groupObservable.getIconColor()
+        ).show {
+            groupObservable.setIconColor(it)
+        }
     }
 
     private fun showDiscardDialog(){
-        dismiss()
-    }
-
-    fun show(manager: FragmentManager) {
-        super.show(manager, TAG)
+        hideKeyboard()
+        if (groupObservable.isFieldsEmpty()){
+            dismiss()
+        } else {
+            DiscardDialog(requireContext()).show{ response ->
+                if (response) dismiss()
+            }
+        }
     }
 
     companion object {

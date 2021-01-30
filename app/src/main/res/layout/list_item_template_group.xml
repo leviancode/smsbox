@@ -64,7 +64,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_template_group_name"
                     tools:text="Description" />
 
-                <com.google.android.material.imageview.ShapeableImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/template_group_image"
                     android:layout_width="42dp"
                     android:layout_height="42dp"
@@ -76,9 +76,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:loadImage="@{group.imageUri}"
-                    app:shapeAppearanceOverlay="@style/circleImageView"
-                    app:srcCompat="@drawable/ic_baseline_library_books_24"
-                    app:strokeColor="@android:color/transparent" />
+                    app:srcCompat="@drawable/ic_baseline_library_books_24" />
 
                 <TextView
                     android:id="@+id/tv_templates_count"

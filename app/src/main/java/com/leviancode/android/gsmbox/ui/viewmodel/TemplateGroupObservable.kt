@@ -11,7 +11,7 @@ class TemplateGroupObservable : BaseObservable() {
     var group = TemplateGroup()
         set(value) {
             field = value
-           // notifyChange()
+            notifyChange()
         }
 
     @Bindable
@@ -52,5 +52,11 @@ class TemplateGroupObservable : BaseObservable() {
 
     @Bindable
     fun getSize() = group.templates.size
+
+    fun isFieldsEmpty(): Boolean {
+        return getName().isBlank()
+                && getDescription().isBlank()
+                && getImageUri() == null
+    }
 
 }

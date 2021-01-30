@@ -1,18 +1,16 @@
 package com.leviancode.android.gsmbox.ui.viewmodel
 
-import android.view.View
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.leviancode.android.gsmbox.BR
 import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.data.model.Template
-import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 
 class TemplateObservable : BaseObservable() {
     var template = Template()
         set(value) {
             field = value
-        //    notifyChange()
+            notifyChange()
         }
 
     fun setGroupId(value: String){
@@ -21,6 +19,12 @@ class TemplateObservable : BaseObservable() {
 
     @Bindable
     fun isFavorite() = template.favorite
+    fun setFavorite(value: Boolean){
+        if (template.favorite != value){
+            template.favorite = value
+            notifyPropertyChanged(BR.favorite)
+        }
+    }
 
     @Bindable
     fun getName() = template.name
@@ -40,6 +44,8 @@ class TemplateObservable : BaseObservable() {
         }
     }
 
+    fun getRecipient() = template.recipients
+
     @Bindable
     fun getIconColor() = template.iconColor
     fun setIconColor(value: Int){
@@ -49,11 +55,19 @@ class TemplateObservable : BaseObservable() {
         }
     }
 
-    fun onFavoriteClicked(view: View){
-        template.favorite = !template.favorite
+    fun onFavoriteClicked(value: Boolean){
+       setFavorite(!value)
     }
 
     fun addRecipient(number: String){
         template.recipients.add(Recipient(phoneNumber = number))
     }
+
+    fun isFieldsEmpty(): Boolean {
+        return getName().isBlank()
+                && getMessage().isBlank()
+               // && getRecipient().isBlank()
+    }
+
+
 }

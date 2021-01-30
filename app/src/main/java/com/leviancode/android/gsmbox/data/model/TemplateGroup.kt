@@ -1,6 +1,7 @@
 package com.leviancode.android.gsmbox.data.model
 
 import android.graphics.Color
+import com.leviancode.android.gsmbox.R
 import java.util.*
 
 data class  TemplateGroup (
@@ -8,6 +9,6 @@ data class  TemplateGroup (
     var name: String = "",
     var description: String = "",
     var imageUri: String? = null,
-    var iconColor: Int = Color.GRAY,
+    var iconColor: Int = Color.parseColor("#90A4AE"),
     var templates: MutableList<Template> = mutableListOf()
 )

@@ -14,8 +14,8 @@
     <string name="close_create_dialog">Close create dialog</string>
     <string name="dialog_new_template_title">New Template</string>
     <string name="title_new_template">New Template</string>
-    <string name="btn_save">Save</string>
-    <string name="btn_cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
     <string name="divider_group">Group</string>
     <string name="hint_name">Name</string>
     <string name="hint_description">Description (optional)</string>
@@ -27,4 +27,10 @@
     <string name="select_group">Select Group</string>
     <string name="desc_create_new_group">Create new group</string>
     <string name="desc_create_new_template">Create new template</string>
+    <string name="discard_draft">Discard draft?</string>
+    <string name="discard">Discard</string>
+
+    <string name="material_dialog_title">Choose Color</string>
+    <string name="material_dialog_negative_button">Cancel</string>
+    <string name="material_dialog_positive_button" translatable="false">Ok</string>
 </resources>

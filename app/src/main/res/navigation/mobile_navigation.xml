@@ -12,17 +12,32 @@
         tools:layout="@layout/fragment_template_group_list" >
 
         <action
-            android:id="@+id/action_template_group_list_fragment_to_template_list_fragment"
+            android:id="@+id/action_template_groups_to_templates"
             app:destination="@id/nav_template_list"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/slide_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_template_groups_to_new_group"
+            app:destination="@id/nav_new_group"/>
     </fragment>
 
     <fragment
         android:id="@+id/nav_template_list"
         android:name="com.leviancode.android.gsmbox.ui.view.fragment.TemplateListFragment"
-        android:label=""
-        tools:layout="@layout/fragment_template_list"/>
+        android:label="{groupName}"
+        tools:layout="@layout/fragment_template_list">
+        <argument
+            android:name="groupId"
+            app:argType="string" />
+        <argument
+            android:name="groupName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_nav_template_list_to_nav_new_template"
+            app:destination="@id/nav_new_template" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_favorites"
@@ -41,6 +56,24 @@
         android:name="com.leviancode.android.gsmbox.ui.view.fragment.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+
+    <dialog
+        android:id="@+id/nav_new_group"
+        android:name="com.leviancode.android.gsmbox.ui.view.dialog.NewGroupDialog"
+        android:label="New Group"
+        tools:layout="@layout/dialog_new_group"/>
+
+    <dialog
+        android:id="@+id/nav_new_template"
+        android:name="com.leviancode.android.gsmbox.ui.view.dialog.NewTemplateDialog"
+        android:label="New Template"
+        tools:layout="@layout/dialog_new_group">
+
+        <argument
+            android:name="groupId"
+            app:argType="string" />
+
+    </dialog>
 
 
 </navigation>

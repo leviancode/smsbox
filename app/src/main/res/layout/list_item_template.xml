@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:onClick="@{() -> clickListener.onClick(template.template)}"
         android:layout_margin="8dp">
 
         <ImageButton
@@ -27,7 +28,7 @@
             android:padding="4dp"
             app:tint="@color/yellow"
             android:background="@android:color/transparent"
-            android:onClick="@{template::onFavoriteClicked}"
+            android:onClick="@{() -> template.onFavoriteClicked(template.favorite)}"
             tools:src="@drawable/ic_baseline_star_outline_24"
             android:src="@{template.favorite ?  @drawable/ic_baseline_star_24 : @drawable/ic_baseline_star_outline_24}" />
 
@@ -39,7 +40,7 @@
             android:layout_marginTop="8dp">
 
             <TextView
-                android:id="@+id/tv_template_name"
+                android:id="@+id/edit_text_template_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -50,7 +51,7 @@
                 tools:text="Title" />
 
             <TextView
-                android:id="@+id/tv_template_message"
+                android:id="@+id/edit_text_template_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -74,17 +75,16 @@
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/ib_template_send"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
-            android:padding="2dp"
+            android:padding="6dp"
             android:scaleType="fitXY"
-            android:onClick="@{() -> clickListener.onClick(template.template)}"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_baseline_send_24"
             android:tint="@{template.iconColor}"
-            tools:tint="@color/primary"/>
+            tools:tint="@color/secondary"/>
 
 
     </LinearLayout>

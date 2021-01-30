@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="viewModel"
+            name="group"
             type="com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupObservable" />
     </data>
 
@@ -13,6 +13,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:animateLayoutChanges="true"
                 tools:context=".ui.view.dialog.NewGroupDialog">
 
                 <com.google.android.material.appbar.AppBarLayout
@@ -42,13 +43,14 @@
                     android:layout_marginStart="16dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tv_group_name"
+                        android:id="@+id/edit_text_group_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/hint_name"
                         android:inputType="text"
+                        android:focusable="true"
                         android:padding="8dp"
-                        android:text="@={viewModel.name}"
+                        android:text="@={group.name}"
                         android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -63,13 +65,13 @@
                     android:layout_marginStart="16dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tv_group_description"
+                        android:id="@+id/edit_text_group_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/hint_description"
                         android:inputType="text"
                         android:padding="8dp"
-                        android:text="@={viewModel.description}"
+                        android:text="@={group.description}"
                         android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -85,7 +87,8 @@
                     android:text="@string/icon_color"
                     android:textColor="@color/grey"
                     app:icon="@drawable/ic_baseline_color_lens_24"
-                    app:iconTint="@color/grey" />
+                    app:iconTint="@{group.iconColor}"
+                    tools:iconTint="@color/blue_grey_300" />
             </LinearLayout>
 
 
