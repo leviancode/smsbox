@@ -1,5 +1,6 @@
 package com.leviancode.android.gsmbox.ui.view.dialog
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ class NewGroupDialog : AbstractFullScreenDialog() {
     private lateinit var binding: DialogNewGroupBinding
     private val groupObservable = TemplateGroupObservable()
     private val viewModel: TemplatesViewModel by activityViewModels()
+    override var saved = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,11 +37,11 @@ class NewGroupDialog : AbstractFullScreenDialog() {
         binding.toolbar.apply {
             title = getString(R.string.new_group)
             setNavigationOnClickListener { v: View? ->
-                showDiscardDialog()
+                closeDialog()
             }
             setOnMenuItemClickListener { item ->
                 saveGroup()
-                dismiss()
+                closeDialog()
                 true
             }
         }
@@ -47,13 +49,14 @@ class NewGroupDialog : AbstractFullScreenDialog() {
         binding.editTextGroupName.requestFocus()
         val btn = binding.toolbar.menu.findItem(R.id.menu_save)
         binding.editTextGroupName.doOnTextChanged { text, start, before, count ->
-                btn.isEnabled = count > 0
+            btn.isEnabled = count > 0
         }
 
         binding.btnTemplateIconColor.setOnClickListener{ chooseColor() }
     }
 
     private fun saveGroup(){
+        saved = true
         viewModel.addGroup(groupObservable.group)
     }
 
@@ -69,15 +72,8 @@ class NewGroupDialog : AbstractFullScreenDialog() {
         }
     }
 
-    private fun showDiscardDialog(){
-        hideKeyboard()
-        if (groupObservable.isFieldsEmpty()){
-            dismiss()
-        } else {
-            DiscardDialog(requireContext()).show{ response ->
-                if (response) dismiss()
-            }
-        }
+    override fun isFieldsEmpty(): Boolean {
+        return groupObservable.isFieldsEmpty()
     }
 
     companion object {

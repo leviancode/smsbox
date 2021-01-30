@@ -1,5 +1,6 @@
 package com.leviancode.android.gsmbox.ui.view.dialog
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
     private val templateObservable = TemplateObservable()
     private val viewModel: TemplatesViewModel by activityViewModels()
     private val args: NewTemplateDialogArgs by navArgs()
+    override var saved = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,11 +42,11 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
         binding.toolbar.apply {
             title = getString(R.string.title_new_template)
             setNavigationOnClickListener { v: View? ->
-                showDiscardDialog()
+                closeDialog()
             }
             setOnMenuItemClickListener { item ->
-                viewModel.addTemplate(templateObservable.template)
-                dismiss()
+                saveTemplate()
+                closeDialog()
                 true
             }
         }
@@ -70,15 +72,13 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
         }
     }
 
-    private fun showDiscardDialog(){
-        hideKeyboard()
-        if (templateObservable.isFieldsEmpty()){
-            dismiss()
-        } else {
-            DiscardDialog(requireContext()).show{ response ->
-                if (response) dismiss()
-            }
-        }
+    override fun isFieldsEmpty(): Boolean {
+        return templateObservable.isFieldsEmpty()
+    }
+    
+    private fun saveTemplate(){
+        saved = true
+        viewModel.addTemplate(templateObservable.template)
     }
 
     companion object {
