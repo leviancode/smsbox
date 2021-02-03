@@ -3,7 +3,7 @@ package com.leviancode.android.gsmbox.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.RecipientObservable
-import com.leviancode.android.gsmbox.repository.RecipientsRepository
+import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -21,16 +21,16 @@ class RecipientViewModel : ViewModel() {
 
     fun loadRecipientById(id: String){
         repository.getRecipientById(id)?.let {
-            recipient.recipient = it
+            recipient.data = it
         }
     }
 
     fun saveRecipient(){
-        repository.addRecipient(recipient.recipient)
+        repository.addOrUpdateRecipient(recipient.data)
     }
 
     fun removeRecipient(){
-        repository.removeRecipient(recipient.recipient)
+        repository.removeRecipient(recipient.data.id)
     }
 
     private fun fieldsChecker(){

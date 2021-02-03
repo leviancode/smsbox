@@ -41,4 +41,8 @@
     <string name="enter_the_name">Enter the name for: %1$s</string>
     <string name="recipient_saved">Recipient saved</string>
     <string name="title_new_recipient">New Recipient</string>
+    <string name="already_saved">Already saved</string>
+    <string name="template_group_saved">Template group saved</string>
+    <string name="select_contact">Select Contact</string>
+    <string name="permission_dined">Permission dined</string>
 </resources>

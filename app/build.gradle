@@ -58,6 +58,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.github.dhaval2404:colorpicker:2.0'
     implementation 'cn.dreamtobe.kpswitch:library:1.6.1'
+    implementation 'com.github.tamir7.contacts:contacts:1.1.7'
     // implementation 'com.alespero:expandable-cardview:0.8'
 
     implementation 'com.github.andrefrsousa:SuperBottomSheet:2.0.0'

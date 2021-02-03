@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:onClick="@{() -> clickListener.onClick(template.template)}"
+        android:onClick="@{() -> clickListener.onClick(template.data)}"
         android:layout_margin="8dp">
 
         <ImageButton

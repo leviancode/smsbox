@@ -75,6 +75,9 @@
         <action
             android:id="@+id/action_new_recipient"
             app:destination="@id/nav_new_recipient" />
+        <action
+            android:id="@+id/action_select_contact"
+            app:destination="@id/nav_select_contact" />
 
     </dialog>
 
@@ -87,6 +90,14 @@
         <argument
             android:name="recipientId"
             app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/nav_select_contact"
+        android:name="com.leviancode.android.gsmbox.ui.view.dialog.ContactsBottomSheetDialog"
+        android:label="Select Contact"
+        tools:layout="@layout/dialog_bottom_sheet_contacts">
 
     </dialog>
 

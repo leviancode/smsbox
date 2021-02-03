@@ -33,6 +33,7 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:title="@string/title_new_template"
                     app:navigationIcon="@drawable/ic_baseline_close_24"
                     app:menu="@menu/toolbar_new_item"/>
 
@@ -89,13 +90,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp">
-
-                <include
-                    android:id="@+id/number"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    layout="@layout/recipient_number_holder"/>
-
 
             </LinearLayout>
 

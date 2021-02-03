@@ -2,8 +2,7 @@ package com.leviancode.android.gsmbox.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.leviancode.android.gsmbox.data.model.Recipient
-import com.leviancode.android.gsmbox.data.model.RecipientObservable
-import com.leviancode.android.gsmbox.repository.RecipientsRepository
+import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 
 class RecipientsViewModel : ViewModel() {
@@ -23,7 +22,7 @@ class RecipientsViewModel : ViewModel() {
     }
 
     fun saveRecipient(recipient: Recipient){
-        repository.addRecipient(recipient)
+        repository.addOrUpdateRecipient(recipient)
     }
 
 

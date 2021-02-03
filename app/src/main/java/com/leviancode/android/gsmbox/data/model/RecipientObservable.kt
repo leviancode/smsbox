@@ -4,26 +4,35 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 
 class RecipientObservable : BaseObservable() {
-    var recipient = Recipient()
+    var data = Recipient()
         set(value) {
             field = value
             notifyChange()
         }
 
+    @get:Bindable
+    var saved = false
+        set(value){
+            if (field != value){
+                field = value
+                notifyChange()
+            }
+        }
+
     @Bindable
-    fun getName() = recipient.name
+    fun getName() = data.name
     fun setName(value: String){
-        if (recipient.name != value){
-            recipient.name = value
+        if (data.name != value){
+            data.name = value
             notifyChange()
         }
     }
 
     @Bindable
-    fun getPhoneNumber() = recipient.phoneNumber
+    fun getPhoneNumber() = data.phoneNumber
     fun setPhoneNumber(value: String){
-        if (recipient.phoneNumber != value){
-            recipient.phoneNumber = value
+        if (data.phoneNumber != value){
+            data.phoneNumber = value
             notifyChange()
         }
     }

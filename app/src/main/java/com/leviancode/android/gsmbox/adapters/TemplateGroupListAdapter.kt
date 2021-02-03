@@ -35,7 +35,7 @@ class TemplateGroupListAdapter : ListAdapter<TemplateGroup, TemplateGroupListAda
         }
 
         fun bind(group: TemplateGroup){
-            binding.group?.group = group
+            binding.group?.data = group
             binding.executePendingBindings()
         }
     }

@@ -2,14 +2,12 @@ package com.leviancode.android.gsmbox.ui.view.dialog
 
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import com.leviancode.android.gsmbox.R
 
 abstract class AbstractFullScreenDialog : DialogFragment() {
@@ -47,10 +45,10 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
         }
     }
 
-    abstract fun isFieldsEmpty(): Boolean
+    abstract fun isFieldsNotEmpty(): Boolean
 
     fun isNeedConfirmation(): Boolean {
-        return !(saved || isFieldsEmpty() || discarded)
+        return !(saved || !isFieldsNotEmpty() || discarded)
     }
 
     fun closeDialog(){

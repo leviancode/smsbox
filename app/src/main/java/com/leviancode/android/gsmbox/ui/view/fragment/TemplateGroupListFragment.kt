@@ -38,12 +38,9 @@ class TemplateGroupListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = view.findNavController()
+        binding.viewModel = viewModel
         binding.adapter = TemplateGroupListAdapter().apply {
             clickListener = ListItemClickListener { openSelectedGroup(it) }
-        }
-
-        binding.fabAddGroup.setOnClickListener{
-            showNewGroupDialog()
         }
 
         binding.templateGroupsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -78,6 +75,8 @@ class TemplateGroupListFragment : Fragment() {
         viewModel.groups.observe(viewLifecycleOwner){ groupList ->
             binding.adapter?.submitList(groupList)
         }
+
+        viewModel.addGroupLiveEvent.observe(viewLifecycleOwner){ showNewGroupDialog() }
     }
 
     private inner class ViewDragHelperCallback : ViewDragHelper.Callback() {

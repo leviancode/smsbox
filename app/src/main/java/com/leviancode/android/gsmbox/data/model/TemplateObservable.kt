@@ -5,53 +5,54 @@ import androidx.databinding.Bindable
 import com.leviancode.android.gsmbox.BR
 
 class TemplateObservable : BaseObservable() {
-    var template = Template()
+    var data = Template()
         set(value) {
             field = value
             notifyChange()
         }
 
     fun setGroupId(value: String){
-        template.groupId = value
+        data.groupId = value
     }
 
     @Bindable
-    fun isFavorite() = template.favorite
+    fun isFavorite() = data.favorite
     fun setFavorite(value: Boolean){
-        if (template.favorite != value){
-            template.favorite = value
+        if (data.favorite != value){
+            data.favorite = value
             notifyPropertyChanged(BR.favorite)
         }
     }
 
     @Bindable
-    fun getName() = template.name
+    fun getName() = data.name
     fun setName(value: String){
-        if (template.name != value){
-            template.name = value
+        if (data.name != value){
+            data.name = value
             notifyChange()
         }
     }
 
     @Bindable
-    fun getMessage() = template.message
+    fun getMessage() = data.message
     fun setMessage(value: String){
-        if (template.message != value){
-            template.message = value
+        if (data.message != value){
+            data.message = value
             notifyChange()
         }
     }
 
-    fun getRecipients() = template.recipients
+    fun getRecipients() = data.recipients
+
     fun setRecipients(value: MutableList<Recipient>){
-        template.recipients = value
+        data.recipients = value
     }
 
     @Bindable
-    fun getIconColor() = template.iconColor
+    fun getIconColor() = data.iconColor
     fun setIconColor(value: Int){
-        if (template.iconColor != value){
-            template.iconColor = value
+        if (data.iconColor != value){
+            data.iconColor = value
             notifyPropertyChanged(BR.iconColor)
         }
     }
@@ -61,10 +62,9 @@ class TemplateObservable : BaseObservable() {
     }
 
 
-    fun isFieldsEmpty(): Boolean {
-        return getName().isBlank()
-                && getMessage().isBlank()
-               // && getRecipient().isBlank()
+    fun isFieldsNotEmpty(): Boolean {
+        return getName().isNotBlank()
+                && getMessage().isNotBlank()
     }
 
 

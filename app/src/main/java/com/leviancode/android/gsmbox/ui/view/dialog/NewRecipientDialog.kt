@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import cn.dreamtobe.kpswitch.util.KeyboardUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
@@ -21,6 +23,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogNewRecipientBinding
 import com.leviancode.android.gsmbox.ui.viewmodel.RecipientViewModel
+import com.leviancode.android.gsmbox.utils.setNavigationResult
 
 class NewRecipientDialog : BottomSheetDialogFragment() {
     private lateinit var binding: DialogNewRecipientBinding
@@ -55,15 +58,13 @@ class NewRecipientDialog : BottomSheetDialogFragment() {
         binding.viewModel = viewModel
         binding.editTextRecipientName.requestFocus()
         binding.toolbar.apply {
-            title = getString(R.string.title_new_recipient)
             setNavigationOnClickListener { v: View? ->
-                viewModel.removeRecipient()
-                dismiss()
+                removeRecipient()
+                closeDialog(false)
             }
             setOnMenuItemClickListener { item ->
-                viewModel.saveRecipient()
-                showToast(getString(R.string.recipient_saved))
-                dismiss()
+                saveRecipient()
+                closeDialog(true)
                 true
             }
         }
@@ -78,22 +79,25 @@ class NewRecipientDialog : BottomSheetDialogFragment() {
         }
     }
 
+    fun saveRecipient(){
+        viewModel.saveRecipient()
+    }
+
+    fun removeRecipient(){
+        viewModel.removeRecipient()
+    }
+
     fun showKeyboard() {
         KeyboardUtil.showKeyboard(binding.root)
-        /*val imm =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)*/
     }
 
     fun hideKeyboard() {
         KeyboardUtil.hideKeyboard(binding.root)
-        /*val imm =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view?.windowToken, 0)*/
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    private fun closeDialog(result: Boolean){
+        setNavigationResult(result, SAVED_REQUEST_KEY)
+        dismiss()
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -104,5 +108,10 @@ class NewRecipientDialog : BottomSheetDialogFragment() {
     override fun onPause() {
         hideKeyboard()
         super.onPause()
+    }
+
+    companion object{
+        val TAG = NewRecipientDialog::class.java.simpleName
+        const val SAVED_REQUEST_KEY = "isSaved"
     }
 }

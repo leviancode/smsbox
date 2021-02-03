@@ -17,14 +17,31 @@
         android:id="@+id/recipient_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:tag="0">
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btn_remove_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{(view) -> viewModel.onRemoveRecipientClick(view, recipient)}"
+            android:padding="3dp"
+            android:src="@drawable/ic_baseline_close_24"
+            android:tint="@color/red_600"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginStart="2dp"
             android:orientation="horizontal">
+
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/edit_text_recipient_number_layout"
@@ -40,7 +57,6 @@
                     android:inputType="phone"
                     android:text="@={recipient.phoneNumber}"
                     android:padding="8dp"
-                    android:tag="0"
                     android:textSize="18sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -52,11 +68,9 @@
                 android:layout_width="70dp"
                 android:layout_height="50dp"
                 android:layout_alignEnd="@id/edit_text_recipient_number_layout"
-                android:tag="0"
                 android:onClick="@{() -> viewModel.onSaveRecipientClick(recipient)}"
                 android:text="@string/save"
-                android:backgroundTint="@color/white"
-                android:textColor="@color/blue_400"
+                android:textColor="@color/secondary"
                 app:visibilityDependingOnText="@{recipient.phoneNumber}" />
 
 

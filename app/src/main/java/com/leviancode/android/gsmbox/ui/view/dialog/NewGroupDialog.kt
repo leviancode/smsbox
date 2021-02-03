@@ -4,18 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogNewGroupBinding
 import com.leviancode.android.gsmbox.data.model.TemplateGroupObservable
 import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupListViewModel
+import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupViewModel
 
 class NewGroupDialog : AbstractFullScreenDialog() {
     private lateinit var binding: DialogNewGroupBinding
-    private val groupObservable = TemplateGroupObservable()
-    private val viewModel: TemplateGroupListViewModel by activityViewModels()
+    private val viewModel: TemplateGroupViewModel by viewModels()
     override var saved = false
 
     override fun onCreateView(
@@ -29,50 +31,55 @@ class NewGroupDialog : AbstractFullScreenDialog() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.group = groupObservable
+        binding.viewModel = viewModel
         binding.toolbar.apply {
-            title = getString(R.string.new_group)
             setNavigationOnClickListener { v: View? ->
                 closeDialog()
             }
             setOnMenuItemClickListener { item ->
                 saveGroup()
+                showMessage(getString(R.string.template_group_saved))
                 closeDialog()
                 true
             }
         }
 
         binding.editTextTemplateGroupName.requestFocus()
-        val btn = binding.toolbar.menu.findItem(R.id.menu_save)
-        binding.editTextTemplateGroupName.doOnTextChanged { text, start, before, count ->
-            btn.isEnabled = count > 0
-        }
+        observeUI()
+    }
 
-        binding.btnTemplateGroupIconColor.setOnClickListener{ chooseColor() }
+    private fun observeUI(){
+        viewModel.chooseColorLiveEvent.observe(viewLifecycleOwner){ chooseColor(it) }
+
+        val btn = binding.toolbar.menu.findItem(R.id.menu_save)
+        viewModel.fieldsNotEmptyLiveEvent.observe(viewLifecycleOwner) { btn.isEnabled = it }
     }
 
     private fun saveGroup(){
         saved = true
-        viewModel.addGroup(groupObservable.group)
+        viewModel.saveGroup()
     }
 
-    private fun chooseColor(){
+    private fun chooseColor(group: TemplateGroupObservable){
         hideKeyboard()
 
         ColorPickerBottomSheet(
             requireContext(),
             childFragmentManager,
-            groupObservable.getIconColor()
+            group.getIconColor()
         ).show {
-            groupObservable.setIconColor(it)
+            group.setIconColor(it)
         }
     }
 
-    override fun isFieldsEmpty(): Boolean {
-        return groupObservable.isFieldsEmpty()
+    override fun isFieldsNotEmpty(): Boolean {
+        return viewModel.isFieldsNotEmpty()
+    }
+
+    private fun showMessage(message: String){
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

@@ -34,7 +34,7 @@ class TemplateListAdapter : ListAdapter<Template, TemplateListAdapter.TemplateHo
         }
 
         fun bind(template: Template){
-            binding.template?.template = template
+            binding.template?.data = template
             binding.executePendingBindings()
         }
     }

@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="group"
-            type="com.leviancode.android.gsmbox.data.model.TemplateGroupObservable" />
+            name="viewModel"
+            type="com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupViewModel" />
     </data>
 
             <LinearLayout
@@ -28,6 +28,7 @@
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:title="@string/new_group"
                         app:navigationIcon="@drawable/ic_baseline_close_24"
                         app:menu="@menu/toolbar_new_item"/>
 
@@ -50,7 +51,7 @@
                         android:inputType="text"
                         android:focusable="true"
                         android:padding="8dp"
-                        android:text="@={group.name}"
+                        android:text="@={viewModel.group.name}"
                         android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -71,7 +72,7 @@
                         android:hint="@string/hint_description"
                         android:inputType="text"
                         android:padding="8dp"
-                        android:text="@={group.description}"
+                        android:text="@={viewModel.group.description}"
                         android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -86,8 +87,9 @@
                     android:layout_marginBottom="8dp"
                     android:text="@string/icon_color"
                     android:textColor="@color/grey"
+                    android:onClick="@{() -> viewModel.onIconColorClick()}"
                     app:icon="@drawable/ic_baseline_color_lens_24"
-                    app:iconTint="@{group.iconColor}"
+                    app:iconTint="@{viewModel.group.iconColor}"
                     tools:iconTint="@color/blue_grey_300" />
             </LinearLayout>
 

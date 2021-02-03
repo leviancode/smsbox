@@ -5,54 +5,54 @@ import androidx.databinding.Bindable
 import com.leviancode.android.gsmbox.BR
 
 class TemplateGroupObservable : BaseObservable() {
-    var group = TemplateGroup()
+    var data = TemplateGroup()
         set(value) {
             field = value
             notifyChange()
         }
 
     @Bindable
-    fun getName() = group.name
+    fun getName() = data.name
     fun setName(value: String){
-        if (group.name != value){
-            group.name = value
+        if (data.name != value){
+            data.name = value
             notifyPropertyChanged(BR.name)
         }
     }
 
     @Bindable
-    fun getDescription() = group.description
+    fun getDescription() = data.description
     fun setDescription(value: String){
-        if (group.description != value){
-            group.description = value
+        if (data.description != value){
+            data.description = value
             notifyPropertyChanged(BR.description)
         }
     }
 
     @Bindable
-    fun getImageUri() = group.imageUri
+    fun getImageUri() = data.imageUri
     fun setImageUri(value: String?){
-        if (group.imageUri != value){
-            group.imageUri = value
+        if (data.imageUri != value){
+            data.imageUri = value
             notifyPropertyChanged(BR.imageUri)
         }
     }
 
     @Bindable
-    fun getIconColor() = group.iconColor
+    fun getIconColor() = data.iconColor
     fun setIconColor(value: Int){
-        if (group.iconColor != value){
-            group.iconColor = value
+        if (data.iconColor != value){
+            data.iconColor = value
             notifyPropertyChanged(BR.iconColor)
         }
     }
 
     @Bindable
-    fun getSize() = group.size
+    fun getSize() = data.size
 
-    fun isFieldsEmpty(): Boolean {
-        return getName().isBlank()
-                && getDescription().isBlank()
+    fun isFieldsNotEmpty(): Boolean {
+        return getName().isNotBlank()
+                && getDescription().isNotBlank()
                 && getImageUri() == null
     }
 
