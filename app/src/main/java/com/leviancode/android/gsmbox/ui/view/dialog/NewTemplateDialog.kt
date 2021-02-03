@@ -1,25 +1,29 @@
 package com.leviancode.android.gsmbox.ui.view.dialog
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.data.model.RecipientObservable
 import com.leviancode.android.gsmbox.databinding.DialogNewTemplateBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplateObservable
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplatesViewModel
+import com.leviancode.android.gsmbox.databinding.RecipientNumberHolderBinding
+import com.leviancode.android.gsmbox.ui.viewmodel.*
 
 
 class NewTemplateDialog : AbstractFullScreenDialog(){
     private lateinit var binding: DialogNewTemplateBinding
-    private val templateObservable = TemplateObservable()
-    private val viewModel: TemplatesViewModel by activityViewModels()
+    private val templateViewModel: TemplateViewModel by viewModels()
     private val args: NewTemplateDialogArgs by navArgs()
+    private lateinit var navController: NavController
     override var saved = false
 
     override fun onCreateView(
@@ -30,13 +34,15 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
         binding = DataBindingUtil.inflate(
             inflater, R.layout.dialog_new_template, container, false
         )
+        binding.lifecycleOwner = this
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        templateObservable.setGroupId(args.groupId)
-        binding.template = templateObservable
+        templateViewModel.addRecipient()
+        navController = requireParentFragment().findNavController()
+        binding.viewModel = templateViewModel
         binding.editTextTemplateName.requestFocus()
 
         binding.toolbar.apply {
@@ -57,28 +63,84 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
             btn.isEnabled = count > 0
         }
 
-        binding.btnTemplateIconColor.setOnClickListener { chooseColor() }
+        observe()
     }
 
-    private fun chooseColor(){
+    private fun observe(){
+        templateViewModel.saveRecipientDialogLiveEvent.observe(viewLifecycleOwner){
+            showSaveRecipientDialog(it)
+        }
+
+        templateViewModel.addRecipientLiveEvent.observe(viewLifecycleOwner){
+            addRecipientLayout(it)
+        }
+
+        templateViewModel.chooseColorLiveEvent.observe(viewLifecycleOwner){
+            chooseColor(it)
+        }
+    }
+
+    private fun chooseColor(defaultColor: Int){
         hideKeyboard()
 
         ColorPickerBottomSheet(
             requireContext(),
             childFragmentManager,
-            templateObservable.getIconColor()
+            defaultColor
         ).show {
-            templateObservable.setIconColor(it)
+            templateViewModel.template.setIconColor(it)
         }
     }
 
+    private fun showSaveRecipientDialog(recipientId: String){
+        /*val editText = TextInputEditText(requireContext()).apply {
+            doOnTextChanged { text, start, before, count ->
+                recipient.setName(text?.toString() ?: "")
+            }
+        }
+        AlertDialog.Builder(requireContext())
+            .setMessage(getString(R.string.enter_the_name, recipient.getPhoneNumber()))
+            .setView(editText)
+            .setNegativeButton(getString(R.string.cancel)){ dialog, _ ->
+                dialog.dismiss()
+            }.setPositiveButton(getString(R.string.save)){ _, _ ->
+                templateViewModel.saveRecipient(recipient)
+                showToast(getString(R.string.recipient_saved))
+            }.show()*/
+
+        val action = NewTemplateDialogDirections.actionNewRecipient(recipientId)
+        navController.navigate(action)
+    }
+
+    // TODO save button invisible after save template
+    private fun addRecipientLayout(recipient: RecipientObservable) {
+        val inflater = LayoutInflater.from(requireContext())
+        val recipientBinding = DataBindingUtil.inflate<RecipientNumberHolderBinding>(
+            inflater, R.layout.recipient_number_holder, binding.recipientsLayout, true)
+
+        recipientBinding.recipient = recipient
+        recipientBinding.viewModel = templateViewModel
+        /*recipientBinding.editTextRecipientNumber.doOnTextChanged { text, start, before, count ->
+            recipientBinding.btnRecipientSave.visibility =
+                if (text.isNullOrBlank()) {
+                    View.INVISIBLE
+                } else {
+                    View.VISIBLE
+                }
+        }*/
+    }
+
     override fun isFieldsEmpty(): Boolean {
-        return templateObservable.isFieldsEmpty()
+        return templateViewModel.template.isFieldsEmpty()
     }
     
     private fun saveTemplate(){
         saved = true
-        viewModel.addTemplate(templateObservable.template)
+        templateViewModel.saveTemplate(args.groupId)
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

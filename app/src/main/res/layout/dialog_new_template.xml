@@ -6,111 +6,130 @@
 
     <data>
         <variable
-            name="template"
-            type="com.leviancode.android.gsmbox.ui.viewmodel.TemplateObservable" />
+            name="viewModel"
+            type="com.leviancode.android.gsmbox.ui.viewmodel.TemplateViewModel" />
     </data>
 
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="6dp"
-            android:paddingEnd="8dp"
-            app:elevation="0dp"
-            android:background="@android:color/transparent">
+            android:scrollbars="vertical"
+            android:orientation="vertical">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
+            <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:navigationIcon="@drawable/ic_baseline_close_24"
-                app:menu="@menu/toolbar_new_item"/>
+                android:paddingStart="6dp"
+                android:paddingEnd="8dp"
+                app:elevation="0dp"
+                android:background="@android:color/transparent">
 
-        </com.google.android.material.appbar.AppBarLayout>
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:navigationIcon="@drawable/ic_baseline_close_24"
+                    app:menu="@menu/toolbar_new_item"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_template_name"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp">
+            </com.google.android.material.appbar.AppBarLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_template_name"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_template_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_name"
-                android:inputType="text"
-                android:padding="8dp"
-                android:text="@={template.name}"
-                android:textSize="18sp" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_template_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_name"
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:text="@={viewModel.template.name}"
+                    android:textSize="18sp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_template_message"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_template_message"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_template_message"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_message"
-                android:inputType="text"
-                android:padding="8dp"
-                android:text="@={template.message}"
-                android:textSize="18sp" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_template_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_message"
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:text="@={viewModel.template.message}"
+                    android:textSize="18sp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_template_recipient"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_template_recipient"
+            <LinearLayout
+                android:id="@+id/recipients_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_recipient"
-                android:inputType="phone"
-                android:padding="8dp"
-                android:textSize="18sp" />
+                android:orientation="vertical"
+                android:animateLayoutChanges="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_template_icon_color"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/icon_color"
-            android:textColor="@color/grey"
-            app:icon="@drawable/ic_baseline_color_lens_24"
-            app:iconTint="@{template.iconColor}"
-            tools:iconTint="@color/blue_grey_300" />
+                <include
+                    android:id="@+id/number"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    layout="@layout/recipient_number_holder"/>
 
 
-    </LinearLayout>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_template_add_recipient"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/add_number"
+                android:textColor="@color/grey"
+                android:onClick="@{() -> viewModel.addRecipient()}"
+                app:icon="@drawable/ic_baseline_add_24"
+                app:iconTint="@color/blue_grey_300" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_template_icon_color"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/icon_color"
+                android:textColor="@color/grey"
+                android:onClick="@{() -> viewModel.onIconColorClick()}"
+                app:icon="@drawable/ic_baseline_color_lens_24"
+                app:iconTint="@{viewModel.template.iconColor}"
+                tools:iconTint="@color/blue_grey_300" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
 
 
 </layout>

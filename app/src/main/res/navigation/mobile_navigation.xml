@@ -19,7 +19,7 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
         <action
-            android:id="@+id/action_template_groups_to_new_group"
+            android:id="@+id/action_new_group"
             app:destination="@id/nav_new_group"/>
     </fragment>
 
@@ -35,7 +35,7 @@
             android:name="groupName"
             app:argType="string" />
         <action
-            android:id="@+id/action_nav_template_list_to_nav_new_template"
+            android:id="@+id/action_new_template"
             app:destination="@id/nav_new_template" />
     </fragment>
 
@@ -67,10 +67,25 @@
         android:id="@+id/nav_new_template"
         android:name="com.leviancode.android.gsmbox.ui.view.dialog.NewTemplateDialog"
         android:label="New Template"
-        tools:layout="@layout/dialog_new_group">
+        tools:layout="@layout/dialog_new_template">
 
         <argument
             android:name="groupId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_new_recipient"
+            app:destination="@id/nav_new_recipient" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/nav_new_recipient"
+        android:name="com.leviancode.android.gsmbox.ui.view.dialog.NewRecipientDialog"
+        android:label="New Recipient"
+        tools:layout="@layout/dialog_new_recipient">
+
+        <argument
+            android:name="recipientId"
             app:argType="string" />
 
     </dialog>

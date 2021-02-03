@@ -1,6 +1,5 @@
 package com.leviancode.android.gsmbox.ui.view.dialog
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +9,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogNewGroupBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupObservable
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplatesViewModel
+import com.leviancode.android.gsmbox.data.model.TemplateGroupObservable
+import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupListViewModel
 
 class NewGroupDialog : AbstractFullScreenDialog() {
     private lateinit var binding: DialogNewGroupBinding
     private val groupObservable = TemplateGroupObservable()
-    private val viewModel: TemplatesViewModel by activityViewModels()
+    private val viewModel: TemplateGroupListViewModel by activityViewModels()
     override var saved = false
 
     override fun onCreateView(
@@ -46,13 +45,13 @@ class NewGroupDialog : AbstractFullScreenDialog() {
             }
         }
 
-        binding.editTextGroupName.requestFocus()
+        binding.editTextTemplateGroupName.requestFocus()
         val btn = binding.toolbar.menu.findItem(R.id.menu_save)
-        binding.editTextGroupName.doOnTextChanged { text, start, before, count ->
+        binding.editTextTemplateGroupName.doOnTextChanged { text, start, before, count ->
             btn.isEnabled = count > 0
         }
 
-        binding.btnTemplateIconColor.setOnClickListener{ chooseColor() }
+        binding.btnTemplateGroupIconColor.setOnClickListener{ chooseColor() }
     }
 
     private fun saveGroup(){

@@ -6,6 +6,7 @@ import com.leviancode.android.gsmbox.data.model.Template
 import com.leviancode.android.gsmbox.data.model.TemplateGroup
 import com.leviancode.android.gsmbox.utils.addItem
 import com.leviancode.android.gsmbox.utils.removeItem
+import com.leviancode.android.gsmbox.utils.update
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -38,6 +39,12 @@ object TemplatesRepository {
         result.add(TemplateGroup(name = "Гараж", description =  "отопление"))
         result.add(TemplateGroup(name = "Работа", description =  "кофе машина"))
         result.add(TemplateGroup(name = "Дача", description =  "система полива"))
+        result.add(TemplateGroup(name = "Дача2", description =  "система полива"))
+        result.add(TemplateGroup(name = "Дача3", description =  "система полива"))
+        result.add(TemplateGroup(name = "Дача4", description =  "система полива"))
+        result.add(TemplateGroup(name = "Дача5", description =  "система полива"))
+        result.add(TemplateGroup(name = "Дача6", description =  "система полива"))
+        result.add(TemplateGroup(name = "Дача7", description =  "система полива"))
         return result
     }
 
@@ -58,10 +65,30 @@ object TemplatesRepository {
 
     fun addTemplate(item: Template){
         _templates.addItem(item)
+        increaseGroupSize(item.groupId)
     }
 
     fun removeTemplate(item: Template){
         _templates.removeItem(item)
+        decreaseGroupSize(item.groupId)
+    }
+
+    fun increaseGroupSize(id: String){
+        getGroupById(id)?.run {
+                size++
+                updateGroups()
+        }
+    }
+
+    fun decreaseGroupSize(id: String){
+        getGroupById(id)?.run {
+                size--
+                updateGroups()
+        }
+    }
+
+    fun updateGroups(){
+        _groups.update()
     }
 
     fun updateGroup(item: TemplateGroup){
@@ -91,5 +118,9 @@ object TemplatesRepository {
 
     fun getGroupById(id: String): TemplateGroup?{
         return groups.value?.find { it.id == id }
+    }
+
+    fun getTemplateById(id: String): Template?{
+        return templates.value?.find { it.id == id }
     }
 }

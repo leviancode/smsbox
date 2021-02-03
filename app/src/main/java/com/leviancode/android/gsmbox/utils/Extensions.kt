@@ -15,3 +15,9 @@ fun <T> MutableLiveData<List<T>>.removeItem(item: T) {
         value = it
     }
 }
+
+fun <T> MutableLiveData<List<T>>.update() {
+    value?.toMutableList()?.let {
+        value = it
+    }
+}

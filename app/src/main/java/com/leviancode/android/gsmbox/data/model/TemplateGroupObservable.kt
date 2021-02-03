@@ -1,11 +1,8 @@
-package com.leviancode.android.gsmbox.ui.viewmodel
+package com.leviancode.android.gsmbox.data.model
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.leviancode.android.gsmbox.BR
-import com.leviancode.android.gsmbox.data.model.Template
-import com.leviancode.android.gsmbox.data.model.TemplateGroup
-import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 
 class TemplateGroupObservable : BaseObservable() {
     var group = TemplateGroup()
@@ -51,7 +48,7 @@ class TemplateGroupObservable : BaseObservable() {
     }
 
     @Bindable
-    fun getSize() = group.templates.size
+    fun getSize() = group.size
 
     fun isFieldsEmpty(): Boolean {
         return getName().isBlank()

@@ -10,7 +10,7 @@
             type="com.leviancode.android.gsmbox.adapters.TemplateGroupListAdapter" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.viewmodel.TemplatesViewModel" />
+            type="com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupListViewModel" />
     </data>
 
     <FrameLayout

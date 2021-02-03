@@ -33,4 +33,12 @@
     <string name="material_dialog_title">Choose Color</string>
     <string name="material_dialog_negative_button">Cancel</string>
     <string name="material_dialog_positive_button" translatable="false">Ok</string>
+    <string name="add_recipient">Add Recipient</string>
+    <string name="add_to_favorites">Add To Favorites</string>
+    <string name="contacts">Contacts</string>
+    <string name="hint_phone_number">Phone number</string>
+    <string name="add_number">Add number</string>
+    <string name="enter_the_name">Enter the name for: %1$s</string>
+    <string name="recipient_saved">Recipient saved</string>
+    <string name="title_new_recipient">New Recipient</string>
 </resources>

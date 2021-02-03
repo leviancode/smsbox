@@ -6,7 +6,7 @@
     <data>
         <variable
             name="template"
-            type="com.leviancode.android.gsmbox.ui.viewmodel.TemplateObservable" />
+            type="com.leviancode.android.gsmbox.data.model.TemplateObservable" />
         <variable
             name="clickListener"
             type="com.leviancode.android.gsmbox.adapters.ListItemClickListener" />

@@ -1,10 +1,8 @@
-package com.leviancode.android.gsmbox.ui.viewmodel
+package com.leviancode.android.gsmbox.data.model
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.leviancode.android.gsmbox.BR
-import com.leviancode.android.gsmbox.data.model.Recipient
-import com.leviancode.android.gsmbox.data.model.Template
 
 class TemplateObservable : BaseObservable() {
     var template = Template()
@@ -44,7 +42,10 @@ class TemplateObservable : BaseObservable() {
         }
     }
 
-    fun getRecipient() = template.recipients
+    fun getRecipients() = template.recipients
+    fun setRecipients(value: MutableList<Recipient>){
+        template.recipients = value
+    }
 
     @Bindable
     fun getIconColor() = template.iconColor
@@ -59,9 +60,6 @@ class TemplateObservable : BaseObservable() {
        setFavorite(!value)
     }
 
-    fun addRecipient(number: String){
-        template.recipients.add(Recipient(phoneNumber = number))
-    }
 
     fun isFieldsEmpty(): Boolean {
         return getName().isBlank()

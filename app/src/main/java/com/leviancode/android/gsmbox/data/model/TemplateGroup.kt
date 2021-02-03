@@ -10,5 +10,5 @@ data class  TemplateGroup (
     var description: String = "",
     var imageUri: String? = null,
     var iconColor: Int = Color.parseColor("#90A4AE"),
-    var templates: MutableList<Template> = mutableListOf()
+    var size: Int = 0
 )

@@ -41,8 +41,9 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
         dialog?.apply {
             val width = ViewGroup.LayoutParams.MATCH_PARENT
             val height = ViewGroup.LayoutParams.MATCH_PARENT
+            view?.visibility = View.VISIBLE
             window?.setLayout(width, height)
-            window?.setWindowAnimations(R.style.Theme_GsmBox_Slide)
+           // window?.setWindowAnimations(R.style.Theme_GsmBox_Slide)
         }
     }
 

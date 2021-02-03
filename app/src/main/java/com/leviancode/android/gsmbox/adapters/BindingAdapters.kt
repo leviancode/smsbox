@@ -1,6 +1,7 @@
 package com.leviancode.android.gsmbox.adapters
 
 import android.graphics.Color
+import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
@@ -46,6 +47,13 @@ fun RecyclerView.bindRecyclerViewAdapter(adapter: RecyclerView.Adapter<*>) {
     this.run {
         this.setHasFixedSize(true)
         this.adapter = adapter
+    }
+}
+
+@BindingAdapter(value = ["visibilityDependingOnText"])
+fun MaterialButton.setVisibility(text: String?) {
+    this.run {
+        visibility = if (text.isNullOrBlank()) View.INVISIBLE else View.VISIBLE
     }
 }
 

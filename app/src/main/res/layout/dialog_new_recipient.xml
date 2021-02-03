@@ -5,15 +5,19 @@
 
     <data>
         <variable
-            name="group"
-            type="com.leviancode.android.gsmbox.data.model.TemplateGroupObservable" />
+            name="viewModel"
+            type="com.leviancode.android.gsmbox.ui.viewmodel.RecipientViewModel" />
     </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:animateLayoutChanges="true"
                 tools:context=".ui.view.dialog.NewGroupDialog">
 
                 <com.google.android.material.appbar.AppBarLayout
@@ -34,7 +38,7 @@
                 </com.google.android.material.appbar.AppBarLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_template_group_name"
+                    android:id="@+id/layout_recipient_name"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -43,53 +47,44 @@
                     android:layout_marginStart="16dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_text_template_group_name"
+                        android:id="@+id/edit_text_recipient_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/hint_name"
                         android:inputType="text"
                         android:focusable="true"
                         android:padding="8dp"
-                        android:text="@={group.name}"
+                        android:text="@={viewModel.recipient.name}"
                         android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_template_group_description"
+                    android:id="@+id/layout_recipient_phone_number"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp">
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="16dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_text_template_group_description"
+                        android:id="@+id/edit_text_recipient_phone_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/hint_description"
-                        android:inputType="text"
+                        android:hint="@string/hint_phone_number"
+                        android:inputType="phone"
                         android:padding="8dp"
-                        android:text="@={group.description}"
+                        android:text="@={viewModel.recipient.phoneNumber}"
                         android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_template_group_icon_color"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/icon_color"
-                    android:textColor="@color/grey"
-                    app:icon="@drawable/ic_baseline_color_lens_24"
-                    app:iconTint="@{group.iconColor}"
-                    tools:iconTint="@color/blue_grey_300" />
             </LinearLayout>
+
+    </FrameLayout>
+
 
 
 </layout>
