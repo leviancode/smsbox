@@ -5,14 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogNewGroupBinding
 import com.leviancode.android.gsmbox.data.model.TemplateGroupObservable
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupListViewModel
 import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupViewModel
 
 class NewGroupDialog : AbstractFullScreenDialog() {
@@ -68,9 +65,9 @@ class NewGroupDialog : AbstractFullScreenDialog() {
         ColorPickerBottomSheet(
             requireContext(),
             childFragmentManager,
-            group.getIconColor()
+            group.getTemplateGroupIconColor()
         ).show {
-            group.setIconColor(it)
+            group.setTemplateGroupIconColor(it)
         }
     }
 

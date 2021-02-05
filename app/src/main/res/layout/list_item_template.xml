@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="template"
-            type="com.leviancode.android.gsmbox.data.model.TemplateObservable" />
+            name="viewModel"
+            type="com.leviancode.android.gsmbox.ui.viewmodel.TemplateViewModel" />
         <variable
             name="clickListener"
             type="com.leviancode.android.gsmbox.adapters.ListItemClickListener" />
@@ -16,7 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:onClick="@{() -> clickListener.onClick(template.data)}"
         android:layout_margin="8dp">
 
         <ImageButton
@@ -28,9 +27,9 @@
             android:padding="4dp"
             app:tint="@color/yellow"
             android:background="@android:color/transparent"
-            android:onClick="@{() -> template.onFavoriteClicked(template.favorite)}"
+            android:onClick="@{() -> viewModel.onFavoriteClick()}"
             tools:src="@drawable/ic_baseline_star_outline_24"
-            android:src="@{template.favorite ?  @drawable/ic_baseline_star_24 : @drawable/ic_baseline_star_outline_24}" />
+            android:src="@{viewModel.template.favorite ?  @drawable/ic_baseline_star_24 : @drawable/ic_baseline_star_outline_24}" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -44,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:text="@{template.name}"
+                android:text="@{viewModel.template.templateName}"
                 android:textColor="@color/text_title"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -56,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="4dp"
-                android:text="@{template.message}"
+                android:text="@{viewModel.template.message}"
                 android:textColor="#252525"
                 tools:text="Message" />
 
@@ -67,7 +66,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="4dp"
                 android:fontFamily="sans-serif-light"
-                android:text="@{template.message}"
+                android:text="@{viewModel.template.recipientsAsString}"
                 android:textColor="@color/text_description"
                 tools:text="+3801234567" />
 
@@ -82,8 +81,9 @@
             android:padding="6dp"
             android:scaleType="fitXY"
             android:layout_gravity="center_vertical"
+            android:onClick="@{() -> clickListener.onClick(viewModel.template.data)}"
             android:src="@drawable/ic_baseline_send_24"
-            android:tint="@{template.iconColor}"
+            android:tint="@{viewModel.template.templateIconColor}"
             tools:tint="@color/secondary"/>
 
 

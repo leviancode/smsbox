@@ -25,7 +25,7 @@ class TemplateGroupViewModel : ViewModel() {
     }
 
     fun removeGroup(group: TemplateGroup) {
-        repository.removeGroup(group)
+        repository.removeGroup(group.id)
     }
 
     fun onIconColorClick(){

@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.Template
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateBinding
-import com.leviancode.android.gsmbox.data.model.TemplateObservable
+import com.leviancode.android.gsmbox.ui.viewmodel.TemplateViewModel
 
 class TemplateListAdapter : ListAdapter<Template, TemplateListAdapter.TemplateHolder>(
-    TemplatesDiffCallback<Template>()
+    ListItemDiffCallback<Template>()
 ) {
     var clickListener: ListItemClickListener<Template>? = null
 
@@ -28,13 +28,13 @@ class TemplateListAdapter : ListAdapter<Template, TemplateListAdapter.TemplateHo
     }
 
     class TemplateHolder(val binding: ListItemTemplateBinding) : RecyclerView.ViewHolder(binding.root) {
-
+        private val viewModel = TemplateViewModel()
         init {
-            binding.template = TemplateObservable()
+            binding.viewModel = viewModel
         }
 
         fun bind(template: Template){
-            binding.template?.data = template
+            viewModel.setData(template)
             binding.executePendingBindings()
         }
     }

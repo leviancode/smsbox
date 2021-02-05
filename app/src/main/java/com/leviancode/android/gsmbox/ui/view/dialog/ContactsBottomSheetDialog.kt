@@ -1,44 +1,39 @@
 package com.leviancode.android.gsmbox.ui.view.dialog
 
-import android.Manifest
-import android.content.pm.PackageManager
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.github.tamir7.contacts.Contact
 import com.github.tamir7.contacts.Contacts
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.ContactListAdapter
 import com.leviancode.android.gsmbox.adapters.ListItemClickListener
 import com.leviancode.android.gsmbox.databinding.DialogBottomSheetContactsBinding
+import com.leviancode.android.gsmbox.utils.REQUEST_KEY_SELECTED
 import com.leviancode.android.gsmbox.utils.setNavigationResult
+import java.util.*
 
 
 class ContactsBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var binding: DialogBottomSheetContactsBinding
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            fetchContacts()
-        } else {
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.permission_dined),
-                Toast.LENGTH_SHORT
-            ).show()
-            closeDialog()
-        }
-    }
 
-    override fun getTheme() = R.style.CustomBottomSheetDialog
+    //override fun getTheme() = R.style.CustomBottomSheetDialog
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        if (dialog is BottomSheetDialog) {
+            dialog.behavior.skipCollapsed = true
+            dialog.behavior.state = BottomSheetBehavior.STATE_DRAGGING
+        }
+        return dialog
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,13 +43,13 @@ class ContactsBottomSheetDialog : BottomSheetDialogFragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.dialog_bottom_sheet_contacts, container, false
         )
-        checkPermission()
         binding.ibCloseDialog.setOnClickListener { closeDialog() }
+        fetchContacts()
         return binding.root
     }
 
     private fun selectContact(contact: Contact) {
-        setNavigationResult(contact.phoneNumbers[0].number, NewRecipientDialog.SAVED_REQUEST_KEY)
+        setNavigationResult(contact.phoneNumbers[0].number, REQUEST_KEY_SELECTED)
         closeDialog()
     }
 
@@ -67,25 +62,8 @@ class ContactsBottomSheetDialog : BottomSheetDialogFragment() {
         binding.bottomSheetContactList.adapter = listAdapter
     }
 
-    fun checkPermission() {
-        if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.READ_CONTACTS
-            )
-        ) {
-            fetchContacts()
-        } else {
-            requestPermissionLauncher.launch(
-                Manifest.permission.READ_CONTACTS
-            )
-        }
-    }
-
     private fun closeDialog() {
-        requireParentFragment().findNavController().navigateUp()
+       findNavController().navigateUp()
     }
 
-    companion object{
-        val TAG = ContactsBottomSheetDialog::class.java.simpleName
-        const val SAVED_REQUEST_KEY = "isSaved"
-    }
 }

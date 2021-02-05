@@ -47,9 +47,13 @@
 
     <fragment
         android:id="@+id/nav_recipients"
-        android:name="com.leviancode.android.gsmbox.ui.view.fragment.RecipientsFragment"
+        android:name="com.leviancode.android.gsmbox.ui.view.fragment.RecipientListFragment"
         android:label="@string/title_recipients"
-        tools:layout="@layout/fragment_recipients" />
+        tools:layout="@layout/fragment_recipient_list" >
+        <action
+            android:id="@+id/action_new_recipient"
+            app:destination="@id/nav_new_recipient" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_settings"
@@ -89,6 +93,7 @@
 
         <argument
             android:name="recipientId"
+            app:nullable="true"
             app:argType="string" />
 
     </dialog>

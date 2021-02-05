@@ -11,7 +11,7 @@ import com.leviancode.android.gsmbox.databinding.ListItemTemplateGroupBinding
 import com.leviancode.android.gsmbox.data.model.TemplateGroupObservable
 
 class TemplateGroupListAdapter : ListAdapter<TemplateGroup, TemplateGroupListAdapter.TemplateGroupHolder>(
-    TemplatesDiffCallback<TemplateGroup>()
+    ListItemDiffCallback<TemplateGroup>()
 ) {
     var clickListener: ListItemClickListener<TemplateGroup>? = null
 

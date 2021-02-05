@@ -51,7 +51,7 @@
                         android:inputType="text"
                         android:focusable="true"
                         android:padding="8dp"
-                        android:text="@={viewModel.group.name}"
+                        android:text="@={viewModel.group.templateGroupName}"
                         android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -89,7 +89,7 @@
                     android:textColor="@color/grey"
                     android:onClick="@{() -> viewModel.onIconColorClick()}"
                     app:icon="@drawable/ic_baseline_color_lens_24"
-                    app:iconTint="@{viewModel.group.iconColor}"
+                    app:iconTint="@{viewModel.group.templateGroupIconColor}"
                     tools:iconTint="@color/blue_grey_300" />
             </LinearLayout>
 

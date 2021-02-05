@@ -12,11 +12,11 @@ class TemplateGroupObservable : BaseObservable() {
         }
 
     @Bindable
-    fun getName() = data.name
-    fun setName(value: String){
+    fun getTemplateGroupName() = data.name
+    fun setTemplateGroupName(value: String){
         if (data.name != value){
             data.name = value
-            notifyPropertyChanged(BR.name)
+            notifyPropertyChanged(BR.templateGroupName)
         }
     }
 
@@ -30,20 +30,20 @@ class TemplateGroupObservable : BaseObservable() {
     }
 
     @Bindable
-    fun getImageUri() = data.imageUri
-    fun setImageUri(value: String?){
+    fun getTemplateGroupImageUri() = data.imageUri
+    fun setTemplateGroupImageUri(value: String?){
         if (data.imageUri != value){
             data.imageUri = value
-            notifyPropertyChanged(BR.imageUri)
+            notifyPropertyChanged(BR.templateGroupImageUri)
         }
     }
 
     @Bindable
-    fun getIconColor() = data.iconColor
-    fun setIconColor(value: Int){
+    fun getTemplateGroupIconColor() = data.iconColor
+    fun setTemplateGroupIconColor(value: Int){
         if (data.iconColor != value){
             data.iconColor = value
-            notifyPropertyChanged(BR.iconColor)
+            notifyPropertyChanged(BR.templateGroupIconColor)
         }
     }
 
@@ -51,9 +51,9 @@ class TemplateGroupObservable : BaseObservable() {
     fun getSize() = data.size
 
     fun isFieldsNotEmpty(): Boolean {
-        return getName().isNotBlank()
+        return getTemplateGroupName().isNotBlank()
                 && getDescription().isNotBlank()
-                && getImageUri() == null
+                && getTemplateGroupImageUri() == null
     }
 
 }

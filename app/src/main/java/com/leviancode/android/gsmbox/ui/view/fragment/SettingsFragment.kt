@@ -6,23 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.databinding.FragmentSettingsBinding
 import com.leviancode.android.gsmbox.ui.viewmodel.SettingsViewModel
 
 class SettingsFragment : Fragment() {
-    private lateinit var viewModel: SettingsViewModel
+    private lateinit var binding: FragmentSettingsBinding
+    private val viewModel: SettingsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_settings, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
-        // TODO: Use the ViewModel
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
+        return binding.root
     }
 
 }

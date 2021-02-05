@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.viewmodel.TemplateViewModel" />
+            type="com.leviancode.android.gsmbox.ui.viewmodel.NewTemplateDialogViewModel" />
         <variable
             name="recipient"
             type="com.leviancode.android.gsmbox.data.model.RecipientObservable" />
@@ -38,10 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="2dp"
             android:orientation="horizontal">
-
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/edit_text_recipient_number_layout"
@@ -55,6 +52,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_phone_number"
                     android:inputType="phone"
+                    android:paddingEnd="55dp"
                     android:text="@={recipient.phoneNumber}"
                     android:padding="8dp"
                     android:textSize="18sp" />
@@ -64,27 +62,27 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_recipient_save"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                tools:visibility="visible"
                 android:layout_width="70dp"
-                android:layout_height="50dp"
-                android:layout_alignEnd="@id/edit_text_recipient_number_layout"
+                android:padding="1dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:onClick="@{() -> viewModel.onSaveRecipientClick(recipient)}"
                 android:text="@string/save"
                 android:textColor="@color/secondary"
-                app:visibilityDependingOnText="@{recipient.phoneNumber}" />
+                app:visibilityDependingOnText="@{recipient.phoneNumber}"
+                tools:visibility="visible" />
 
 
         </RelativeLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_template_contacts"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="2dp"
-            android:padding="2dp"
-            android:tag="0"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
             android:text="@string/contacts"
             android:textColor="@color/grey"
             android:textSize="12sp"

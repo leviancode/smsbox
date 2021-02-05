@@ -59,10 +59,17 @@ dependencies {
     implementation 'com.github.dhaval2404:colorpicker:2.0'
     implementation 'cn.dreamtobe.kpswitch:library:1.6.1'
     implementation 'com.github.tamir7.contacts:contacts:1.1.7'
+    implementation 'com.klinkerapps:android-smsmms:5.2.6'
+    implementation 'com.karumi:dexter:6.2.2'
+    implementation 'com.github.andrefrsousa:SuperBottomSheet:2.0.0'
     // implementation 'com.alespero:expandable-cardview:0.8'
 
-    implementation 'com.github.andrefrsousa:SuperBottomSheet:2.0.0'
+    def room_version = "2.2.6"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
 
+    testImplementation "androidx.room:room-testing:$room_version"
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

@@ -25,11 +25,11 @@ class TemplateObservable : BaseObservable() {
     }
 
     @Bindable
-    fun getName() = data.name
-    fun setName(value: String){
+    fun getTemplateName() = data.name
+    fun setTemplateName(value: String){
         if (data.name != value){
             data.name = value
-            notifyChange()
+            notifyPropertyChanged(BR.templateName)
         }
     }
 
@@ -38,32 +38,28 @@ class TemplateObservable : BaseObservable() {
     fun setMessage(value: String){
         if (data.message != value){
             data.message = value
-            notifyChange()
+            notifyPropertyChanged(BR.message)
         }
     }
+    @Bindable
+    fun getRecipientsAsString() = data.recipients.joinToString(", ")
 
     fun getRecipients() = data.recipients
-
-    fun setRecipients(value: MutableList<Recipient>){
+    fun setRecipients(value: MutableList<String>){
         data.recipients = value
     }
 
     @Bindable
-    fun getIconColor() = data.iconColor
-    fun setIconColor(value: Int){
+    fun getTemplateIconColor() = data.iconColor
+    fun setTemplateIconColor(value: Int){
         if (data.iconColor != value){
             data.iconColor = value
-            notifyPropertyChanged(BR.iconColor)
+           notifyPropertyChanged(BR.templateIconColor)
         }
     }
 
-    fun onFavoriteClicked(value: Boolean){
-       setFavorite(!value)
-    }
-
-
     fun isFieldsNotEmpty(): Boolean {
-        return getName().isNotBlank()
+        return getTemplateName().isNotBlank()
                 && getMessage().isNotBlank()
     }
 

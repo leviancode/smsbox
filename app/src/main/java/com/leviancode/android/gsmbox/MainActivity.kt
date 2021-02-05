@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.leviancode.android.gsmbox.data.dao.AppDatabase
 import com.leviancode.android.gsmbox.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(){
@@ -18,8 +18,8 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        AppDatabase.init(applicationContext)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        //setSupportActionBar(binding.toolbarMain)
 
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment)

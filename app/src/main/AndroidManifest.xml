@@ -3,6 +3,7 @@
     package="com.leviancode.android.gsmbox">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS"/>
 
     <application
         android:allowBackup="true"

@@ -1,5 +1,6 @@
 package com.leviancode.android.gsmbox.ui.view.dialog
 
+import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,18 +11,21 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.github.tamir7.contacts.Contact
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.single.BasePermissionListener
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.RecipientObservable
 import com.leviancode.android.gsmbox.databinding.DialogNewTemplateBinding
 import com.leviancode.android.gsmbox.databinding.RecipientNumberHolderBinding
 import com.leviancode.android.gsmbox.ui.viewmodel.*
-import com.leviancode.android.gsmbox.utils.getNavigationResult
+import com.leviancode.android.gsmbox.utils.*
 
 
 class NewTemplateDialog : AbstractFullScreenDialog(){
     private lateinit var binding: DialogNewTemplateBinding
-    private val viewModel: TemplateViewModel by viewModels()
+    private val viewModel: NewTemplateDialogViewModel by viewModels()
     private val args: NewTemplateDialogArgs by navArgs()
     private lateinit var navController: NavController
     override var saved = false
@@ -40,7 +44,7 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = requireParentFragment().findNavController()
+        navController = findNavController()
         viewModel.addRecipient()
         binding.viewModel = viewModel
         binding.editTextTemplateName.requestFocus()
@@ -68,12 +72,12 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
             addRecipientLayout(recipient)
         }
 
-        viewModel.selectColorLiveEvent.observe(viewLifecycleOwner){ color ->
-            selectColor(color)
-        }
-
         viewModel.removeRecipientLiveEvent.observe(viewLifecycleOwner){ view ->
             removeRecipientLayout(view)
+        }
+
+        viewModel.selectColorLiveEvent.observe(viewLifecycleOwner){ color ->
+            selectColor(color)
         }
 
         viewModel.selectContactLiveEvent.observe(viewLifecycleOwner){ recipient ->
@@ -87,16 +91,31 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
     }
 
     private fun selectContact(recipient: RecipientObservable){
-        getNavigationResult<String>(ContactsBottomSheetDialog.SAVED_REQUEST_KEY)?.observe(viewLifecycleOwner){ result ->
+        hideKeyboard()
+
+        Dexter.withContext(requireContext())
+            .withPermission(Manifest.permission.READ_CONTACTS)
+            .withListener(object : BasePermissionListener() {
+                override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
+                    showContactsDialog(recipient)
+                }
+
+                override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
+                   showToast(getString(R.string.permission_dined))
+                }
+            }).check()
+    }
+
+    private fun showContactsDialog(recipient: RecipientObservable) {
+        getNavigationResult<String>(REQUEST_KEY_SELECTED)?.observe(viewLifecycleOwner){ result ->
             if (!result.isNullOrBlank()){
                 recipient.setPhoneNumber(result)
+                removeNavigationResult<String>(REQUEST_KEY_SELECTED)
             }
         }
 
-        hideKeyboard()
         val action = NewTemplateDialogDirections.actionSelectContact()
         navController.navigate(action)
-
     }
 
     private fun selectColor(defaultColor: Int){
@@ -107,16 +126,17 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
             childFragmentManager,
             defaultColor
         ).show {
-            viewModel.template.setIconColor(it)
+            viewModel.template.setTemplateIconColor(it)
         }
     }
 
     private fun showSaveRecipientDialog(recipient: RecipientObservable){
-        getNavigationResult<Boolean>(NewRecipientDialog.SAVED_REQUEST_KEY)?.observe(viewLifecycleOwner){ result ->
-            if (result){
-                showToast(getString(R.string.recipient_saved))
-                recipient.saved = true
-                hideKeyboard()
+        getNavigationResult<String>(REQUEST_KEY_SAVED)?.observe(viewLifecycleOwner){ result ->
+            when (result){
+                RESULT_OK -> {
+                    showToast(getString(R.string.recipient_saved))
+                    hideKeyboard()
+                }
             }
         }
 
@@ -134,6 +154,7 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
 
         if (binding.recipientsLayout.childCount > 1){
             recipientBinding.btnRemoveNumber.visibility = View.VISIBLE
+            recipientBinding.editTextRecipientNumber.requestFocus()
         }
     }
 

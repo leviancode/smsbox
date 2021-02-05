@@ -1,20 +1,14 @@
 package com.leviancode.android.gsmbox.ui.view.dialog
 
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import cn.dreamtobe.kpswitch.util.KeyboardUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
@@ -22,15 +16,19 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogNewRecipientBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.RecipientViewModel
+import com.leviancode.android.gsmbox.ui.viewmodel.NewRecipientDialogViewModel
+import com.leviancode.android.gsmbox.utils.REQUEST_KEY_SAVED
+import com.leviancode.android.gsmbox.utils.RESULT_CANCEL
+import com.leviancode.android.gsmbox.utils.RESULT_OK
 import com.leviancode.android.gsmbox.utils.setNavigationResult
 
 class NewRecipientDialog : BottomSheetDialogFragment() {
     private lateinit var binding: DialogNewRecipientBinding
-    private val viewModel: RecipientViewModel by viewModels()
+    private val viewModel: NewRecipientDialogViewModel by viewModels()
     private val args: NewRecipientDialogArgs by navArgs()
+    private var editMode = false
 
-    override fun getTheme(): Int = R.style.CustomBottomSheetDialog
+    override fun getTheme(): Int = R.style.CustomBottomSheetDialogWithKeyboard
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -54,17 +52,18 @@ class NewRecipientDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showKeyboard()
-        viewModel.loadRecipientById(args.recipientId)
+        editMode = viewModel.loadRecipientById(args.recipientId)
+
         binding.viewModel = viewModel
         binding.editTextRecipientName.requestFocus()
         binding.toolbar.apply {
             setNavigationOnClickListener { v: View? ->
                 removeRecipient()
-                closeDialog(false)
+                closeDialog(RESULT_CANCEL)
             }
             setOnMenuItemClickListener { item ->
                 saveRecipient()
-                closeDialog(true)
+                closeDialog(RESULT_OK)
                 true
             }
         }
@@ -84,7 +83,7 @@ class NewRecipientDialog : BottomSheetDialogFragment() {
     }
 
     fun removeRecipient(){
-        viewModel.removeRecipient()
+        if (editMode) viewModel.removeRecipient()
     }
 
     fun showKeyboard() {
@@ -95,8 +94,8 @@ class NewRecipientDialog : BottomSheetDialogFragment() {
         KeyboardUtil.hideKeyboard(binding.root)
     }
 
-    private fun closeDialog(result: Boolean){
-        setNavigationResult(result, SAVED_REQUEST_KEY)
+    private fun closeDialog(result: String){
+        setNavigationResult(result, REQUEST_KEY_SAVED)
         dismiss()
     }
 
@@ -108,10 +107,5 @@ class NewRecipientDialog : BottomSheetDialogFragment() {
     override fun onPause() {
         hideKeyboard()
         super.onPause()
-    }
-
-    companion object{
-        val TAG = NewRecipientDialog::class.java.simpleName
-        const val SAVED_REQUEST_KEY = "isSaved"
     }
 }

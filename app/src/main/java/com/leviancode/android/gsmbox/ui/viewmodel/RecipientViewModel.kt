@@ -1,46 +1,14 @@
 package com.leviancode.android.gsmbox.ui.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.data.model.RecipientObservable
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
-import com.leviancode.android.gsmbox.utils.SingleLiveEvent
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
-class RecipientViewModel : ViewModel() {
+class RecipientViewModel {
     private val repository = RecipientsRepository
-    val recipient = RecipientObservable()
-    val saveLiveEvent = SingleLiveEvent<String>()
-    val fieldsNotEmptyLiveEvent = SingleLiveEvent<Boolean>()
+    var recipient = RecipientObservable()
 
-    init {
-        fieldsChecker()
-    }
-
-    fun loadRecipientById(id: String){
-        repository.getRecipientById(id)?.let {
-            recipient.data = it
-        }
-    }
-
-    fun saveRecipient(){
-        repository.addOrUpdateRecipient(recipient.data)
-    }
-
-    fun removeRecipient(){
-        repository.removeRecipient(recipient.data.id)
-    }
-
-    private fun fieldsChecker(){
-        viewModelScope.launch(Dispatchers.IO) {
-            while(true){
-                if (fieldsNotEmptyLiveEvent.value != recipient.isFieldsNotEmpty()) {
-                    fieldsNotEmptyLiveEvent.postValue(recipient.isFieldsNotEmpty())
-                }
-                delay(500)
-            }
-        }
+    fun setData(data: Recipient) {
+        recipient.data = data
     }
 }

@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:layout_marginTop="16dp"
-                        android:text="@{group.name}"
+                        android:text="@{group.templateGroupName}"
                         android:textColor="@color/text_title"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -72,11 +72,11 @@
                         android:layout_margin="8dp"
                         android:padding="4dp"
                         android:scaleType="fitCenter"
-                        android:tint="@{group.iconColor}"
+                        android:tint="@{group.templateGroupIconColor}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:loadImage="@{group.imageUri}"
+                        app:loadImage="@{group.templateGroupImageUri}"
                         app:srcCompat="@drawable/ic_baseline_library_books_24" />
 
                     <TextView
