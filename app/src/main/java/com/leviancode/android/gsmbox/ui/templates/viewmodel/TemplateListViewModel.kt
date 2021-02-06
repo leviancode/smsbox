@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.viewmodel
+package com.leviancode.android.gsmbox.ui.templates.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -28,6 +28,8 @@ class TemplateListViewModel : ViewModel() {
             repository.removeTemplate(template)
         }
     }
+
+    fun getGroupTemplates (groupId: String) = repository.getTemplatesByGroupId(groupId)
 
     fun onCreateTemplateClick(){
         createTemplateLiveEvent.call()

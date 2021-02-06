@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.view.dialog
+package com.leviancode.android.gsmbox.ui.templates.view.dialog
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog

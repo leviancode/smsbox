@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.view.fragment
+package com.leviancode.android.gsmbox.ui.templates.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,11 +14,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.adapters.ListItemClickListener
 import com.leviancode.android.gsmbox.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.data.model.Template
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateListBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplateListViewModel
+import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
 import com.leviancode.android.gsmbox.utils.SmsManager
 import kotlinx.coroutines.launch
 
@@ -59,11 +58,14 @@ class TemplateListFragment : Fragment(){
     }
 
     private fun observeUI() {
-        viewModel.templates.observe(viewLifecycleOwner){ list ->
+        /*viewModel.templates.observe(viewLifecycleOwner){ list ->
             val templates = list.filter { it.groupId == args.groupId }
             binding.adapter?.submitList(templates)
-        }
+        }*/
 
+        viewModel.getGroupTemplates(args.groupId).observe(viewLifecycleOwner){
+            binding.adapter?.submitList(it)
+        }
         viewModel.createTemplateLiveEvent.observe(viewLifecycleOwner){
             showNewTemplateDialog()
         }

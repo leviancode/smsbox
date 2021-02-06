@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.view.dialog
+package com.leviancode.android.gsmbox.ui.templates.view.dialog
 
 import android.app.Dialog
 import android.content.Context

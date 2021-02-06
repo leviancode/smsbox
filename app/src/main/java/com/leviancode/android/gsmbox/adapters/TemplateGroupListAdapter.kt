@@ -3,17 +3,19 @@ package com.leviancode.android.gsmbox.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.data.model.Template
 import com.leviancode.android.gsmbox.data.model.TemplateGroup
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateGroupBinding
 import com.leviancode.android.gsmbox.data.model.TemplateGroupObservable
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupListViewModel
+import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateGroupListViewModel
 
 class TemplateGroupListAdapter(val viewModel: TemplateGroupListViewModel) :
     ListAdapter<TemplateGroup, TemplateGroupListAdapter.TemplateGroupHolder>(
-        ListItemDiffCallback<TemplateGroup>()
+        GroupListDiffCallback()
     ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TemplateGroupHolder {
@@ -40,6 +42,16 @@ class TemplateGroupListAdapter(val viewModel: TemplateGroupListViewModel) :
             binding.viewModel = viewModel
             binding.group?.data = group
             binding.executePendingBindings()
+        }
+    }
+
+    class GroupListDiffCallback : DiffUtil.ItemCallback<TemplateGroup>() {
+        override fun areItemsTheSame(oldItem: TemplateGroup, newItem: TemplateGroup): Boolean {
+            return oldItem.groupId == newItem.groupId
+        }
+
+        override fun areContentsTheSame(oldItem: TemplateGroup, newItem: TemplateGroup): Boolean {
+            return oldItem == newItem
         }
     }
 }

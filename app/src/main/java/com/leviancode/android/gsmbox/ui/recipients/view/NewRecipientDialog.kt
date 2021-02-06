@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.view.dialog
+package com.leviancode.android.gsmbox.ui.recipients.view
 
 import android.app.Dialog
 import android.content.DialogInterface
@@ -16,7 +16,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogNewRecipientBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.NewRecipientDialogViewModel
 import com.leviancode.android.gsmbox.utils.REQUEST_KEY_SAVED
 import com.leviancode.android.gsmbox.utils.RESULT_CANCEL
 import com.leviancode.android.gsmbox.utils.RESULT_OK

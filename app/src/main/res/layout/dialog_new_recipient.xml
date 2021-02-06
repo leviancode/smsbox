@@ -4,97 +4,89 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.viewmodel.NewRecipientDialogViewModel" />
+            type="com.leviancode.android.gsmbox.ui.recipients.view.NewRecipientDialogViewModel" />
     </data>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:orientation="vertical"
+        tools:context=".ui.templates.view.dialog.NewGroupDialog">
 
-            <LinearLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="6dp"
+            android:paddingEnd="8dp"
+            app:elevation="0dp"
+            app:menu="@menu/toolbar_new_item"
+            app:navigationIcon="@drawable/ic_baseline_close_24"
+            app:title="@string/title_new_recipient">
+
+            <!--<com.google.android.material.button.MaterialButton
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_gravity="end"
+                android:text="@string/save"
+                android:textColor="@{viewModel.isFieldsFilled ? @color/secondary : @color/ltgrey}"
+                android:enabled="@{viewModel.isFieldsFilled}"
+                tools:textColor="@color/ltGrey"
+                tools:enabled="true"
+                android:onClick="@{() -> viewModel.saveRecipient()}"/>-->
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_recipient_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_recipient_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                tools:context=".ui.view.dialog.NewGroupDialog">
+                android:focusable="true"
+                android:hint="@string/hint_name"
+                android:inputType="text"
+                android:padding="8dp"
+                android:text="@={viewModel.recipient.recipientName}"
+                android:textSize="18sp" />
 
-                    <com.google.android.material.appbar.MaterialToolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="6dp"
-                        android:paddingEnd="8dp"
-                        app:elevation="0dp"
-                        app:title="@string/title_new_recipient"
-                        app:menu="@menu/toolbar_new_item"
-                        app:navigationIcon="@drawable/ic_baseline_close_24">
+        </com.google.android.material.textfield.TextInputLayout>
 
-                        <!--<com.google.android.material.button.MaterialButton
-                            style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_gravity="end"
-                            android:text="@string/save"
-                            android:textColor="@{viewModel.isFieldsFilled ? @color/secondary : @color/ltgrey}"
-                            android:enabled="@{viewModel.isFieldsFilled}"
-                            tools:textColor="@color/ltGrey"
-                            tools:enabled="true"
-                            android:onClick="@{() -> viewModel.saveRecipient()}"/>-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_recipient_phone_number"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp">
 
-                    </com.google.android.material.appbar.MaterialToolbar>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_recipient_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_phone_number"
+                android:inputType="phone"
+                android:padding="8dp"
+                android:text="@={viewModel.recipient.phoneNumber}"
+                android:textSize="18sp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_recipient_name"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp">
+        </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_text_recipient_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/hint_name"
-                        android:inputType="text"
-                        android:focusable="true"
-                        android:padding="8dp"
-                        android:text="@={viewModel.recipient.recipientName}"
-                        android:textSize="18sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_recipient_phone_number"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="16dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_text_recipient_phone_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/hint_phone_number"
-                        android:inputType="phone"
-                        android:padding="8dp"
-                        android:text="@={viewModel.recipient.phoneNumber}"
-                        android:textSize="18sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-    </FrameLayout>
-
-
+    </LinearLayout>
 
 </layout>

@@ -25,6 +25,6 @@ object RecipientsRepository {
     }
 
     suspend fun getRecipientById(id: String) = withContext(IO){
-        return@withContext dao.get(id)
+        dao.get(id)
     }
 }

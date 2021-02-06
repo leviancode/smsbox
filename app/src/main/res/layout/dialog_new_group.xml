@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupViewModel" />
+            type="com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateGroupViewModel" />
     </data>
 
             <LinearLayout
@@ -14,7 +14,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:animateLayoutChanges="true"
-                tools:context=".ui.view.dialog.NewGroupDialog">
+                tools:context=".ui.templates.view.dialog.NewGroupDialog">
 
                 <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"

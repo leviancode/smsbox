@@ -47,6 +47,10 @@ object TemplatesRepository {
         decreaseGroupSize(item.groupId)
     }
 
+    fun getTemplatesByGroupId(groupId: String): LiveData<List<Template>> {
+        return templatesDao.getByGroupId(groupId)
+    }
+
     private suspend fun increaseGroupSize(id: String){
         getGroupById(id)?.let {
                 it.size++

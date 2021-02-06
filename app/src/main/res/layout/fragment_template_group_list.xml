@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.view.fragment.TemplateGroupListFragment">
+    tools:context=".ui.templates.view.TemplateGroupListFragment">
 
     <data>
         <variable
@@ -10,7 +10,7 @@
             type="com.leviancode.android.gsmbox.adapters.TemplateGroupListAdapter" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateGroupListViewModel" />
     </data>
 
     <FrameLayout

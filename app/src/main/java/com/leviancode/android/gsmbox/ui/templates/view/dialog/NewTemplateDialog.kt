@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.view.dialog
+package com.leviancode.android.gsmbox.ui.templates.view.dialog
 
 import android.Manifest
 import android.os.Bundle
@@ -19,8 +19,8 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.RecipientObservable
 import com.leviancode.android.gsmbox.data.model.TemplateObservable
 import com.leviancode.android.gsmbox.databinding.DialogNewTemplateBinding
-import com.leviancode.android.gsmbox.databinding.RecipientNumberHolderBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.*
+import com.leviancode.android.gsmbox.databinding.DialogNewTemplateNumberHolderBinding
+import com.leviancode.android.gsmbox.ui.templates.viewmodel.NewTemplateDialogViewModel
 import com.leviancode.android.gsmbox.utils.*
 
 
@@ -122,7 +122,7 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
     private fun selectColor(template: TemplateObservable){
         hideKeyboard()
 
-        ColorPickerBottomSheet(
+        ColorPickerDialog(
             requireContext(),
             childFragmentManager,
             template.getTemplateIconColor()
@@ -148,8 +148,8 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
 
     private fun addRecipientLayout(recipient: RecipientObservable) {
         val inflater = LayoutInflater.from(requireContext())
-        val recipientBinding = DataBindingUtil.inflate<RecipientNumberHolderBinding>(
-            inflater, R.layout.recipient_number_holder, binding.recipientsLayout, true)
+        val recipientBinding = DataBindingUtil.inflate<DialogNewTemplateNumberHolderBinding>(
+            inflater, R.layout.dialog_new_template_number_holder, binding.recipientsLayout, true)
 
         recipientBinding.recipient = recipient
         recipientBinding.viewModel = viewModel

@@ -1,7 +1,7 @@
 package com.leviancode.android.gsmbox.utils
 
-import java.util.*
 
+const val DATABASE_NAME = "gsm_box_db"
 const val ARG_GROUP_ID = "group_id"
 const val ARG_GROUP_NAME = "group_name"
 const val RESULT_OK = "result_ok"

@@ -16,6 +16,9 @@ interface TemplateDao {
     @Query("SELECT * FROM templates")
     fun getAll(): LiveData<List<Template>>
 
+    @Query("SELECT * FROM templates WHERE group_id = :id")
+    fun getByGroupId(id: String): LiveData<List<Template>>
+
     @Query("DELETE FROM templates WHERE template_id = :id")
     suspend fun deleteById(id: String)
 }

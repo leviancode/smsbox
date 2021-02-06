@@ -1,6 +1,5 @@
-package com.leviancode.android.gsmbox.ui.view.fragment
+package com.leviancode.android.gsmbox.ui.settings
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.FragmentSettingsBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.SettingsViewModel
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding

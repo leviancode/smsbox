@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.viewmodel.NewTemplateDialogViewModel" />
+            type="com.leviancode.android.gsmbox.ui.templates.viewmodel.NewTemplateDialogViewModel" />
         <variable
             name="recipient"
             type="com.leviancode.android.gsmbox.data.model.RecipientObservable" />
@@ -32,7 +32,8 @@
             android:src="@drawable/ic_baseline_close_24"
             android:tint="@color/red_600"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            android:contentDescription="@string/remove_phone_number" />
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -55,7 +56,8 @@
                     android:paddingEnd="55dp"
                     android:text="@={recipient.phoneNumber}"
                     android:padding="8dp"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:ignore="RtlSymmetry" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -9,6 +9,7 @@ import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.data.model.Template
 import com.leviancode.android.gsmbox.data.model.TemplateGroup
 import com.leviancode.android.gsmbox.utils.Converters
+import com.leviancode.android.gsmbox.utils.DATABASE_NAME
 
 @Database(entities = [Template::class, TemplateGroup::class, Recipient::class], version = 1)
 @TypeConverters(Converters::class)
@@ -23,7 +24,7 @@ abstract class AppDatabase : RoomDatabase(){
         fun init(context: Context){
             INCTANCE = Room.databaseBuilder(
                 context,
-                AppDatabase::class.java, "gsm_box"
+                AppDatabase::class.java, DATABASE_NAME
             ).build()
         }
     }

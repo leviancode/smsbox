@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.view.dialog
+package com.leviancode.android.gsmbox.ui.recipients.view
 
 import android.app.Dialog
 import android.os.Bundle
@@ -21,10 +21,8 @@ import com.leviancode.android.gsmbox.utils.setNavigationResult
 import java.util.*
 
 
-class ContactsBottomSheetDialog : BottomSheetDialogFragment() {
+class ContactListDialog : BottomSheetDialogFragment() {
     private lateinit var binding: DialogBottomSheetContactsBinding
-
-    //override fun getTheme() = R.style.CustomBottomSheetDialog
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)

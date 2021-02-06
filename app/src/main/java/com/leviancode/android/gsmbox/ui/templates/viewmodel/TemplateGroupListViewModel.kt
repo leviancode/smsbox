@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.viewmodel
+package com.leviancode.android.gsmbox.ui.templates.viewmodel
 
 import android.view.View
 import androidx.lifecycle.*

@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.view.fragment
+package com.leviancode.android.gsmbox.ui.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.data.model.Template
 import com.leviancode.android.gsmbox.databinding.FragmentFavoritesBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplateListViewModel
+import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
 import com.leviancode.android.gsmbox.utils.SmsManager
 import kotlinx.coroutines.launch
 

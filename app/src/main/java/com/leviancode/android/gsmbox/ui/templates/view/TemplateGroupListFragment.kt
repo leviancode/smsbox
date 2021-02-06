@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.view.fragment
+package com.leviancode.android.gsmbox.ui.templates.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.adapters.ListItemClickListener
 import com.leviancode.android.gsmbox.adapters.TemplateGroupListAdapter
 import com.leviancode.android.gsmbox.data.model.TemplateGroup
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateGroupListBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupListViewModel
+import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateGroupListViewModel
 
 class TemplateGroupListFragment : Fragment() {
     private lateinit var binding: FragmentTemplateGroupListBinding
@@ -56,15 +55,16 @@ class TemplateGroupListFragment : Fragment() {
     }
 
     private fun openSelectedGroup(group: TemplateGroup) {
-        val action = TemplateGroupListFragmentDirections
-            .actionTemplateGroupsToTemplates(group.groupId, group.name)
+        val action = TemplateGroupListFragmentDirections.actionOpenGroupTemplates(
+            group.groupId,
+            group.name
+        )
         
         navController.navigate(action)
     }
 
     private fun showNewGroupDialog(){
-        val action = TemplateGroupListFragmentDirections
-            .actionNewGroup()
+        val action = TemplateGroupListFragmentDirections.actionNewGroup()
         navController.navigate(action)
     }
 

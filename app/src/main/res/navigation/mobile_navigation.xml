@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/nav_template_group_list"
-        android:name="com.leviancode.android.gsmbox.ui.view.fragment.TemplateGroupListFragment"
+        android:name="com.leviancode.android.gsmbox.ui.templates.view.TemplateGroupListFragment"
         android:label="@string/title_templates"
         tools:layout="@layout/fragment_template_group_list" >
 
         <action
-            android:id="@+id/action_template_groups_to_templates"
+            android:id="@+id/action_open_group_templates"
             app:destination="@id/nav_template_list"
             app:enterAnim="@anim/slide_left"
             app:exitAnim="@anim/slide_right"
@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/nav_template_list"
-        android:name="com.leviancode.android.gsmbox.ui.view.fragment.TemplateListFragment"
+        android:name="com.leviancode.android.gsmbox.ui.templates.view.TemplateListFragment"
         android:label="{groupName}"
         tools:layout="@layout/fragment_template_list">
         <argument
@@ -41,13 +41,13 @@
 
     <fragment
         android:id="@+id/nav_favorites"
-        android:name="com.leviancode.android.gsmbox.ui.view.fragment.FavoritesFragment"
+        android:name="com.leviancode.android.gsmbox.ui.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" />
 
     <fragment
         android:id="@+id/nav_recipients"
-        android:name="com.leviancode.android.gsmbox.ui.view.fragment.RecipientListFragment"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.RecipientListFragment"
         android:label="@string/title_recipients"
         tools:layout="@layout/fragment_recipient_list" >
         <action
@@ -57,19 +57,19 @@
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.leviancode.android.gsmbox.ui.view.fragment.SettingsFragment"
+        android:name="com.leviancode.android.gsmbox.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
 
     <dialog
         android:id="@+id/nav_new_group"
-        android:name="com.leviancode.android.gsmbox.ui.view.dialog.NewGroupDialog"
+        android:name="com.leviancode.android.gsmbox.ui.templates.view.dialog.NewGroupDialog"
         android:label="New Group"
         tools:layout="@layout/dialog_new_group"/>
 
     <dialog
         android:id="@+id/nav_new_template"
-        android:name="com.leviancode.android.gsmbox.ui.view.dialog.NewTemplateDialog"
+        android:name="com.leviancode.android.gsmbox.ui.templates.view.dialog.NewTemplateDialog"
         android:label="New Template"
         tools:layout="@layout/dialog_new_template">
 
@@ -87,7 +87,7 @@
 
     <dialog
         android:id="@+id/nav_new_recipient"
-        android:name="com.leviancode.android.gsmbox.ui.view.dialog.NewRecipientDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.NewRecipientDialog"
         android:label="New Recipient"
         tools:layout="@layout/dialog_new_recipient">
 
@@ -100,7 +100,7 @@
 
     <dialog
         android:id="@+id/nav_select_contact"
-        android:name="com.leviancode.android.gsmbox.ui.view.dialog.ContactsBottomSheetDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.ContactListDialog"
         android:label="Select Contact"
         tools:layout="@layout/dialog_bottom_sheet_contacts">
 

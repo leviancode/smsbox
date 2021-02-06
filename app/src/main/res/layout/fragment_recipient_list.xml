@@ -10,7 +10,7 @@
             type="com.leviancode.android.gsmbox.adapters.RecipientListAdapter" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.viewmodel.RecipientListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientListViewModel" />
     </data>
 
     <FrameLayout

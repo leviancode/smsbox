@@ -1,6 +1,5 @@
 package com.leviancode.android.gsmbox.adapters
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -11,8 +10,7 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.Template
 import com.leviancode.android.gsmbox.data.model.TemplateObservable
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplateListViewModel
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplateViewModel
+import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
 
 class TemplateListAdapter(val viewModel: TemplateListViewModel) :
     ListAdapter<Template, TemplateListAdapter.TemplateHolder>(TemplateDiffCallback()) {

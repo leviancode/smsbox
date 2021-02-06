@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.view.fragment
+package com.leviancode.android.gsmbox.ui.recipients.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,9 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientListAdapter
-import com.leviancode.android.gsmbox.data.model.RecipientObservable
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientListBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.RecipientListViewModel
+import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientListViewModel
 
 class RecipientListFragment : Fragment() {
     private val viewModel: RecipientListViewModel by viewModels()

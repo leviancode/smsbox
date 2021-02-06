@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.view.dialog
+package com.leviancode.android.gsmbox.ui.templates.view.dialog
 
 import android.content.Context
 import androidx.fragment.app.FragmentManager
@@ -6,7 +6,7 @@ import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.github.dhaval2404.colorpicker.model.ColorSwatch
 
-class ColorPickerBottomSheet(
+class ColorPickerDialog(
     private val context: Context,
     private val manager: FragmentManager,
     private val defaultColor: Int

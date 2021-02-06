@@ -16,9 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:fitsSystemWindows="true"
-            android:layout_marginBottom="?attr/actionBarSize"
-            app:behavior_hideable="true"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            android:layout_marginBottom="?attr/actionBarSize">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="40dp"

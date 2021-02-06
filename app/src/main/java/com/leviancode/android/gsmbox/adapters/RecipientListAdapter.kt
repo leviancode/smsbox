@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientBinding
-import com.leviancode.android.gsmbox.ui.viewmodel.RecipientViewModel
+import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientViewModel
 
 class RecipientListAdapter : ListAdapter<Recipient, RecipientListAdapter.RecipientHolder>(ListItemDiffCallback()) {
 

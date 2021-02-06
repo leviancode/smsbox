@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.view.dialog
+package com.leviancode.android.gsmbox.ui.templates.view.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogNewGroupBinding
 import com.leviancode.android.gsmbox.data.model.TemplateGroupObservable
-import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupViewModel
+import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateGroupViewModel
 
 class NewGroupDialog : AbstractFullScreenDialog() {
     private lateinit var binding: DialogNewGroupBinding
@@ -61,7 +61,7 @@ class NewGroupDialog : AbstractFullScreenDialog() {
     private fun chooseColor(group: TemplateGroupObservable){
         hideKeyboard()
 
-        ColorPickerBottomSheet(
+        ColorPickerDialog(
             requireContext(),
             childFragmentManager,
             group.getTemplateGroupIconColor()
