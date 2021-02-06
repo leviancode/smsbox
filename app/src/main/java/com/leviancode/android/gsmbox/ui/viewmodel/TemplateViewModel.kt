@@ -3,6 +3,9 @@ package com.leviancode.android.gsmbox.ui.viewmodel
 import com.leviancode.android.gsmbox.data.model.Template
 import com.leviancode.android.gsmbox.data.model.TemplateObservable
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class TemplateViewModel {
     private val repository = TemplatesRepository
@@ -14,6 +17,10 @@ class TemplateViewModel {
 
     fun onFavoriteClick(){
         template.setFavorite(!template.isFavorite())
-        repository.updateTemplate(template.data)
+        CoroutineScope(Dispatchers.Main).launch {
+            repository.updateTemplate(template.data)
+        }
     }
+
+    
 }

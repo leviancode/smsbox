@@ -57,7 +57,7 @@
     <color name="negativeButtonTextColor">@color/colorAccent</color>
     <color name="bottomSheetDividerColor">#F5F5F5</color>
 
-    <color name="default_group_icon_color">#90A4AE</color>
+    <color name="default_group_icon_color">@color/blue_grey_400</color>
     <color name="default_send_icon_color">@color/secondary</color>
 
 </resources>

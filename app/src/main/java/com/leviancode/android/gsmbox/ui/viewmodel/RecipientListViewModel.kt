@@ -6,9 +6,8 @@ import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 
 class RecipientListViewModel : ViewModel() {
     private val repository = RecipientsRepository
-    var recipientsLiveData = repository.recipients
+    var recipientsLiveData = repository.data
     val addRecipientLiveEvent = SingleLiveEvent<Unit>()
-
 
     fun onAddRecipientClick(){
         addRecipientLiveEvent.call()

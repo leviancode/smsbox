@@ -9,7 +9,9 @@ import java.util.*
 
 @Entity(tableName = "templates")
 data class Template(
-    @PrimaryKey var id: String = UUID.randomUUID().toString(),
+    @PrimaryKey
+    @ColumnInfo(name = "template_id")
+    var templateId: String = UUID.randomUUID().toString(),
     @ColumnInfo(name = "group_id") var groupId: String = "",
     @ColumnInfo(name = "name") var name: String = "",
     @ColumnInfo(name = "message") var message: String = "",

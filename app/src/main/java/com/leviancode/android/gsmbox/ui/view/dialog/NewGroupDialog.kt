@@ -37,7 +37,6 @@ class NewGroupDialog : AbstractFullScreenDialog() {
             }
             setOnMenuItemClickListener { item ->
                 saveGroup()
-                showMessage(getString(R.string.template_group_saved))
                 closeDialog()
                 true
             }

@@ -9,32 +9,35 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.TemplateGroup
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateGroupBinding
 import com.leviancode.android.gsmbox.data.model.TemplateGroupObservable
+import com.leviancode.android.gsmbox.ui.viewmodel.TemplateGroupListViewModel
 
-class TemplateGroupListAdapter : ListAdapter<TemplateGroup, TemplateGroupListAdapter.TemplateGroupHolder>(
-    ListItemDiffCallback<TemplateGroup>()
-) {
-    var clickListener: ListItemClickListener<TemplateGroup>? = null
+class TemplateGroupListAdapter(val viewModel: TemplateGroupListViewModel) :
+    ListAdapter<TemplateGroup, TemplateGroupListAdapter.TemplateGroupHolder>(
+        ListItemDiffCallback<TemplateGroup>()
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TemplateGroupHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding: ListItemTemplateGroupBinding =
             DataBindingUtil.inflate(inflater, R.layout.list_item_template_group, parent, false)
-        clickListener?.let { binding.clickListener = it }
-        return TemplateGroupHolder(binding)
+        return TemplateGroupHolder(binding, viewModel)
     }
 
     override fun onBindViewHolder(holder: TemplateGroupHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class TemplateGroupHolder(private val binding: ListItemTemplateGroupBinding)
-        : RecyclerView.ViewHolder(binding.root){
+    class TemplateGroupHolder(
+        private val binding: ListItemTemplateGroupBinding,
+        val viewModel: TemplateGroupListViewModel
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.group = TemplateGroupObservable()
         }
 
-        fun bind(group: TemplateGroup){
+        fun bind(group: TemplateGroup) {
+            binding.viewModel = viewModel
             binding.group?.data = group
             binding.executePendingBindings()
         }

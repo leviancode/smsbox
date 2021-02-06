@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import cn.dreamtobe.kpswitch.util.KeyboardUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
@@ -52,51 +52,51 @@ class NewRecipientDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showKeyboard()
-        editMode = viewModel.loadRecipientById(args.recipientId)
+        viewModel.loadRecipientById(args.recipientId)
 
         binding.viewModel = viewModel
         binding.editTextRecipientName.requestFocus()
         binding.toolbar.apply {
-            setNavigationOnClickListener { v: View? ->
+            setNavigationOnClickListener {
                 removeRecipient()
                 closeDialog(RESULT_CANCEL)
             }
-            setOnMenuItemClickListener { item ->
+            setOnMenuItemClickListener {
                 saveRecipient()
                 closeDialog(RESULT_OK)
                 true
             }
         }
 
-        observe()
+        observeUI()
     }
 
-    fun observe(){
+    private fun observeUI(){
         val btnSave = binding.toolbar.menu.findItem(R.id.menu_save)
         viewModel.fieldsNotEmptyLiveEvent.observe(viewLifecycleOwner){
             btnSave.isEnabled = it
         }
     }
 
-    fun saveRecipient(){
+    private fun saveRecipient(){
         viewModel.saveRecipient()
     }
 
-    fun removeRecipient(){
-        if (editMode) viewModel.removeRecipient()
+    private fun removeRecipient(){
+        viewModel.removeRecipient()
     }
 
-    fun showKeyboard() {
+    private fun showKeyboard() {
         KeyboardUtil.showKeyboard(binding.root)
     }
 
-    fun hideKeyboard() {
+    private fun hideKeyboard() {
         KeyboardUtil.hideKeyboard(binding.root)
     }
 
     private fun closeDialog(result: String){
         setNavigationResult(result, REQUEST_KEY_SAVED)
-        dismiss()
+        findNavController().navigateUp()
     }
 
     override fun onDismiss(dialog: DialogInterface) {

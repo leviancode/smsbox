@@ -4,9 +4,7 @@ import androidx.lifecycle.*
 import com.leviancode.android.gsmbox.data.model.RecipientObservable
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class NewRecipientDialogViewModel : ViewModel() {
     private val repository = RecipientsRepository
@@ -32,26 +30,36 @@ class NewRecipientDialogViewModel : ViewModel() {
         fieldsChecker()
     }
 
-    fun loadRecipientById(id: String?): Boolean{
-        if (id.isNullOrBlank()) return false
-        repository.getRecipientById(id)?.let {
-            recipient.data = it
-            return true
+    fun loadRecipientById(id: String?){
+        if (id.isNullOrBlank()) return
+        viewModelScope.launch {
+            repository.getRecipientById(id)?.let {
+                recipient.data = it
+            }
         }
-        return false
     }
 
     fun saveRecipient(){
-        repository.addRecipient(recipient.data)
+        viewModelScope.launch {
+            repository.addRecipient(recipient.data)
+        }
+    }
+
+    fun updateRecipient() {
+        viewModelScope.launch {
+            repository.updateRecipient(recipient.data)
+        }
     }
 
     fun removeRecipient(){
-        repository.removeRecipient(recipient.data.id)
+        viewModelScope.launch {
+            repository.removeRecipient(recipient.data)
+        }
     }
 
     private fun fieldsChecker(){
         viewModelScope.launch(Dispatchers.IO) {
-            while(true){
+            while(isActive){
                 if (fieldsNotEmptyLiveEvent.value != recipient.isFieldsNotEmpty()) {
                     fieldsNotEmptyLiveEvent.postValue(recipient.isFieldsNotEmpty())
                 }
@@ -59,4 +67,6 @@ class NewRecipientDialogViewModel : ViewModel() {
             }
         }
     }
+
+
 }

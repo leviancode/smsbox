@@ -6,13 +6,16 @@ import com.leviancode.android.gsmbox.data.model.Template
 
 @Dao
 interface TemplateDao {
-    @Insert suspend fun insert(vararg template: Template)
-    @Update suspend fun update(vararg template: Template)
-    @Delete suspend fun delete(vararg template: Template)
+    @Insert suspend fun insert(vararg item: Template)
+    @Update suspend fun update(vararg item: Template)
+    @Delete suspend fun delete(vararg item: Template)
 
-    @Query("SELECT * from templates WHERE id = :id")
+    @Query("SELECT * from templates WHERE template_id = :id")
     suspend fun get(id: String): Template?
 
     @Query("SELECT * FROM templates")
     fun getAll(): LiveData<List<Template>>
+
+    @Query("DELETE FROM templates WHERE template_id = :id")
+    suspend fun deleteById(id: String)
 }

@@ -52,8 +52,6 @@ class TemplateGroupObservable : BaseObservable() {
 
     fun isFieldsNotEmpty(): Boolean {
         return getTemplateGroupName().isNotBlank()
-                && getDescription().isNotBlank()
-                && getTemplateGroupImageUri() == null
     }
 
 }

@@ -12,6 +12,7 @@ import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class NewTemplateDialogViewModel : ViewModel() {
@@ -21,9 +22,10 @@ class NewTemplateDialogViewModel : ViewModel() {
     val addRecipientLiveEvent = MutableLiveData<RecipientObservable>()
     val removeRecipientLiveEvent = SingleLiveEvent<View>()
     val saveRecipientDialogLiveEvent = SingleLiveEvent<RecipientObservable>()
-    val selectColorLiveEvent = SingleLiveEvent<Int>()
-    val fieldsNotEmptyLiveEvent = SingleLiveEvent<Boolean>()
+
+    val selectColorLiveEvent = SingleLiveEvent<TemplateObservable>()
     val selectContactLiveEvent = SingleLiveEvent<RecipientObservable>()
+    val fieldsNotEmptyLiveEvent = SingleLiveEvent<Boolean>()
 
     init {
         fieldsChecker()
@@ -45,7 +47,9 @@ class NewTemplateDialogViewModel : ViewModel() {
     }
 
     private fun saveRecipient(recipient: Recipient){
-        RecipientsRepository.addRecipient(recipient)
+        viewModelScope.launch {
+            RecipientsRepository.addRecipient(recipient)
+        }
     }
 
     fun onSaveRecipientClick(recipient: RecipientObservable){
@@ -54,7 +58,7 @@ class NewTemplateDialogViewModel : ViewModel() {
     }
 
     fun onIconColorClick(){
-        selectColorLiveEvent.value = template.getTemplateIconColor()
+        selectColorLiveEvent.value = template
     }
 
     fun onContactsClick(recipient: RecipientObservable){
@@ -78,7 +82,7 @@ class NewTemplateDialogViewModel : ViewModel() {
 
     private fun fieldsChecker(){
         viewModelScope.launch(Dispatchers.IO) {
-            while(true){
+            while(isActive){
                 val notEmpty = isFieldsNotEmpty()
                 if (fieldsNotEmptyLiveEvent.value != notEmpty) {
                     fieldsNotEmptyLiveEvent.postValue(notEmpty)

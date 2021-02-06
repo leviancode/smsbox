@@ -4,14 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.Template
+import com.leviancode.android.gsmbox.data.model.TemplateObservable
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TemplateListViewModel : ViewModel() {
     private val repository = TemplatesRepository
     val templates: LiveData<List<Template>> = repository.templates
-    val createGroupLiveEvent = SingleLiveEvent<Unit>()
+    val createTemplateLiveEvent = SingleLiveEvent<Unit>()
+    val sendMessageLiveEvent = SingleLiveEvent<Template>()
 
     fun addTemplate(template: Template) {
         viewModelScope.launch {
@@ -20,10 +24,23 @@ class TemplateListViewModel : ViewModel() {
     }
 
     fun removeTemplate(template: Template) {
-        repository.removeTemplate(template)
+        viewModelScope.launch {
+            repository.removeTemplate(template)
+        }
     }
 
-    fun onCreateGroupClick(){
-        createGroupLiveEvent.call()
+    fun onCreateTemplateClick(){
+        createTemplateLiveEvent.call()
+    }
+
+    fun onSendMessage(template: TemplateObservable){
+        sendMessageLiveEvent.value = template.data
+    }
+
+    fun onFavoriteClick(template: TemplateObservable){
+        template.setFavorite(!template.isFavorite())
+        viewModelScope.launch {
+            repository.updateTemplate(template.data)
+        }
     }
 }

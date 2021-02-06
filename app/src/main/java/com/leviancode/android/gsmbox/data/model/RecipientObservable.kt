@@ -11,15 +11,6 @@ class RecipientObservable : BaseObservable() {
             notifyChange()
         }
 
-    @get:Bindable
-    var saved = false
-        set(value){
-            if (field != value){
-                field = value
-                notifyPropertyChanged(BR.saved)
-            }
-        }
-
     @Bindable
     fun getRecipientName() = data.name
     fun setRecipientName(value: String){

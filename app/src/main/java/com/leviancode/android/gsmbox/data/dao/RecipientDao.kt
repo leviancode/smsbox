@@ -1,17 +1,18 @@
 package com.leviancode.android.gsmbox.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.leviancode.android.gsmbox.data.model.Recipient
 
 @Dao
 interface RecipientDao {
-    @Insert
-    fun insert(vararg template: Recipient)
-    @Update
-    fun update(vararg template: Recipient)
-    @Delete
-    fun delete(vararg template: Recipient)
+    @Insert suspend fun insert(vararg item: Recipient)
+    @Update suspend fun update(vararg item: Recipient)
+    @Delete suspend fun delete(vararg item: Recipient)
+
+    @Query("SELECT * from recipients WHERE recipient_id = :id")
+    suspend fun get(id: String): Recipient?
 
     @Query("SELECT * FROM recipients")
-    fun getAll(): List<Recipient>
+    fun getAll(): LiveData<List<Recipient>>
 }

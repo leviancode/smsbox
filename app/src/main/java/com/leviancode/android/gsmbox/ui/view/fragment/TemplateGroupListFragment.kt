@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.customview.widget.ViewDragHelper
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -39,9 +38,7 @@ class TemplateGroupListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = view.findNavController()
         binding.viewModel = viewModel
-        binding.adapter = TemplateGroupListAdapter().apply {
-            clickListener = ListItemClickListener { openSelectedGroup(it) }
-        }
+        binding.adapter = TemplateGroupListAdapter(viewModel)
 
         binding.templateGroupsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -60,7 +57,7 @@ class TemplateGroupListFragment : Fragment() {
 
     private fun openSelectedGroup(group: TemplateGroup) {
         val action = TemplateGroupListFragmentDirections
-            .actionTemplateGroupsToTemplates(group.id, group.name)
+            .actionTemplateGroupsToTemplates(group.groupId, group.name)
         
         navController.navigate(action)
     }
@@ -77,6 +74,7 @@ class TemplateGroupListFragment : Fragment() {
         }
 
         viewModel.addGroupLiveEvent.observe(viewLifecycleOwner){ showNewGroupDialog() }
+        viewModel.selectGroupLiveEvent.observe(viewLifecycleOwner){ openSelectedGroup(it) }
     }
 
     private inner class ViewDragHelperCallback : ViewDragHelper.Callback() {

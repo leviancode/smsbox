@@ -17,6 +17,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.single.BasePermissionListener
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.RecipientObservable
+import com.leviancode.android.gsmbox.data.model.TemplateObservable
 import com.leviancode.android.gsmbox.databinding.DialogNewTemplateBinding
 import com.leviancode.android.gsmbox.databinding.RecipientNumberHolderBinding
 import com.leviancode.android.gsmbox.ui.viewmodel.*
@@ -118,15 +119,15 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
         navController.navigate(action)
     }
 
-    private fun selectColor(defaultColor: Int){
+    private fun selectColor(template: TemplateObservable){
         hideKeyboard()
 
         ColorPickerBottomSheet(
             requireContext(),
             childFragmentManager,
-            defaultColor
+            template.getTemplateIconColor()
         ).show {
-            viewModel.template.setTemplateIconColor(it)
+            template.setTemplateIconColor(it)
         }
     }
 
@@ -138,9 +139,10 @@ class NewTemplateDialog : AbstractFullScreenDialog(){
                     hideKeyboard()
                 }
             }
+            removeNavigationResult<String>(REQUEST_KEY_SAVED)
         }
 
-        val action = NewTemplateDialogDirections.actionNewRecipient(recipient.data.id)
+        val action = NewTemplateDialogDirections.actionNewRecipient(recipient.data.recipientId)
         navController.navigate(action)
     }
 
