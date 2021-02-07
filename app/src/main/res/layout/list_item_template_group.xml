@@ -32,11 +32,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/template_group_image"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:padding="4dp"
+                    android:layout_marginStart="8dp"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@{group.templateGroupIconColor}"
+                    app:loadImage="@{group.templateGroupImageUri}"
+                    app:srcCompat="@drawable/ic_baseline_library_books_24" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_template_group_name"
@@ -48,9 +64,6 @@
                         android:textColor="@color/text_title"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_template_group_description"
-                        app:layout_constraintStart_toEndOf="@+id/template_group_image"
-                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="Title" />
 
                     <TextView
@@ -62,60 +75,33 @@
                         android:layout_marginBottom="16dp"
                         android:text="@{group.description}"
                         android:textColor="@color/text_description"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/template_group_image"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_template_group_name"
                         tools:text="Description" />
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/template_group_image"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_margin="8dp"
-                        android:padding="4dp"
-                        android:scaleType="fitCenter"
-                        android:tint="@{group.templateGroupIconColor}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:loadImage="@{group.templateGroupImageUri}"
-                        app:srcCompat="@drawable/ic_baseline_library_books_24" />
+                </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_templates_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:padding="4dp"
-                        android:text="@{Integer.toString(group.size)}"
-                        android:textAlignment="center"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/template_group_arrow_icon"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="7" />
+                <TextView
+                    android:id="@+id/tv_templates_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:text="@{Integer.toString(group.size)}"
+                    android:textSize="14sp"
+                    tools:text="8" />
 
-                    <ImageView
-                        android:id="@+id/template_group_arrow_icon"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_marginEnd="16dp"
-                        android:padding="2dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_baseline_arrow_right_24"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="ContentDescription" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/ib_popup_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/open_option_menu"
+                    android:onClick="@{(view) -> viewModel.onPopupMenuClick(view, group)}"
+                    android:padding="4dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_baseline_more_vert_24" />
 
             </LinearLayout>
-
-
-
-
         </com.google.android.material.card.MaterialCardView>
 
 </layout>

@@ -1,5 +1,6 @@
 package com.leviancode.android.gsmbox.ui.templates.viewmodel
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,60 +13,94 @@ import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
-class NewTemplateDialogViewModel : ViewModel() {
+class EditableTemplateViewModel : ViewModel() {
+    private val repository = TemplatesRepository
+    private var editMode = false
     val template = TemplateObservable()
     val recipients = mutableListOf<Recipient>()
 
-    val addRecipientLiveEvent = MutableLiveData<RecipientObservable>()
+    val addNumberFieldLiveEvent = MutableLiveData<RecipientObservable>()
     val removeRecipientLiveEvent = SingleLiveEvent<View>()
-    val saveRecipientDialogLiveEvent = SingleLiveEvent<RecipientObservable>()
+    val openRecipientDialogLiveEvent = SingleLiveEvent<Recipient>()
 
     val selectColorLiveEvent = SingleLiveEvent<TemplateObservable>()
     val selectContactLiveEvent = SingleLiveEvent<RecipientObservable>()
     val fieldsNotEmptyLiveEvent = SingleLiveEvent<Boolean>()
+    val closeDialogLiveEvent = SingleLiveEvent<Boolean>()
 
     init {
         fieldsChecker()
     }
 
-    fun addRecipient() {
+    private fun setRecipients(numbers: List<String>) {
+        for (number in numbers) {
+            val recipient = RecipientObservable()
+            recipient.setPhoneNumber(number)
+
+            recipients.add(recipient.data)
+            addNumberFieldLiveEvent.value = recipient
+        }
+    }
+
+    fun onAddRecipient() {
         val recipient = RecipientObservable()
         recipients.add(recipient.data)
-        addRecipientLiveEvent.value = recipient
+        addNumberFieldLiveEvent.value = recipient
     }
 
-    fun saveTemplate(groupId: String){
-        template.setGroupId(groupId)
+    fun loadTemplateById(id: String) = flow {
+        repository.getTemplateById(id)?.let { result ->
+            template.data = result
+            setRecipients(result.recipients)
+            editMode = true
+            emit(result.name)
+        }
+    }
+
+    fun createTemplate(groupId: String?) {
+        onAddRecipient()
+        groupId?.let {
+            template.setGroupId(it)
+        }
+    }
+
+    private fun saveTemplate() {
         template.setRecipients(getNotEmptyRecipients())
-
         viewModelScope.launch {
-            TemplatesRepository.addTemplate(template.data)
+            repository.addTemplate(template.data)
         }
     }
 
-    private fun saveRecipient(recipient: Recipient){
+    private fun updateTemplate() {
+        template.setRecipients(getNotEmptyRecipients())
         viewModelScope.launch {
-            RecipientsRepository.addRecipient(recipient)
+            repository.updateTemplate(template.data)
         }
     }
 
-    fun onSaveRecipientClick(recipient: RecipientObservable){
-        saveRecipient(recipient.data)
-        saveRecipientDialogLiveEvent.value = recipient
+    fun onSaveClick(){
+        closeDialogLiveEvent.value = true
+        if (editMode) saveTemplate()
+        else updateTemplate()
+    }
+    
+    fun onSaveRecipientClick(recipient: RecipientObservable) {
+        openRecipientDialogLiveEvent.value = recipient.data
     }
 
-    fun onIconColorClick(){
+    fun onIconColorClick() {
         selectColorLiveEvent.value = template
     }
 
-    fun onContactsClick(recipient: RecipientObservable){
+    fun onContactsClick(recipient: RecipientObservable) {
         selectContactLiveEvent.value = recipient
     }
 
-    fun onRemoveRecipientClick(view: View, recipient: RecipientObservable){
+    fun onRemoveRecipientClick(view: View, recipient: RecipientObservable) {
         recipients.remove(recipient.data)
         removeRecipientLiveEvent.value = view
     }
@@ -74,15 +109,15 @@ class NewTemplateDialogViewModel : ViewModel() {
         return template.isFieldsNotEmpty() && getNotEmptyRecipients().size > 0
     }
 
-    private fun getNotEmptyRecipients(): MutableList<String>{
+    private fun getNotEmptyRecipients(): MutableList<String> {
         return recipients.filter { it.phoneNumber.isNotBlank() }
             .map { it.phoneNumber }
             .toMutableList()
     }
 
-    private fun fieldsChecker(){
+    private fun fieldsChecker() {
         viewModelScope.launch(Dispatchers.IO) {
-            while(isActive){
+            while (isActive) {
                 val notEmpty = isFieldsNotEmpty()
                 if (fieldsNotEmptyLiveEvent.value != notEmpty) {
                     fieldsNotEmptyLiveEvent.postValue(notEmpty)

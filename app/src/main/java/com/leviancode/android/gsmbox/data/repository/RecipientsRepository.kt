@@ -20,7 +20,7 @@ object RecipientsRepository {
         dao.update(item)
     }
 
-    suspend fun removeRecipient(item: Recipient) = withContext(IO){
+    suspend fun deleteRecipient(item: Recipient) = withContext(IO){
         dao.delete(item)
     }
 

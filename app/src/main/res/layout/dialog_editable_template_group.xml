@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateGroupViewModel" />
+            type="com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateGroupViewModel" />
     </data>
 
             <LinearLayout
@@ -14,7 +14,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:animateLayoutChanges="true"
-                tools:context=".ui.templates.view.dialog.NewGroupDialog">
+                tools:context=".ui.templates.view.dialog.EditableTemplateGroupDialog">
 
                 <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
@@ -29,8 +29,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:title="@string/new_group"
-                        app:navigationIcon="@drawable/ic_baseline_close_24"
-                        app:menu="@menu/toolbar_new_item"/>
+                        app:navigationIcon="@drawable/ic_baseline_close_24">
+
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:id="@+id/btn_group_save"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:text="@string/save"
+                            android:textColor="@color/secondary"
+                            android:onClick="@{() -> viewModel.onSaveClick()}"/>
+
+                    </com.google.android.material.appbar.MaterialToolbar>
+
+
 
                 </com.google.android.material.appbar.AppBarLayout>
 

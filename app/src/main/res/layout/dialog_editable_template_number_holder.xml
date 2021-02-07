@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.templates.viewmodel.NewTemplateDialogViewModel" />
+            type="com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateViewModel" />
         <variable
             name="recipient"
             type="com.leviancode.android.gsmbox.data.model.RecipientObservable" />
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@android:color/transparent"
+            android:background="?android:selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
             android:onClick="@{(view) -> viewModel.onRemoveRecipientClick(view, recipient)}"
@@ -66,6 +66,7 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="70dp"
                 android:padding="1dp"
+                android:layout_marginTop="2dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:onClick="@{() -> viewModel.onSaveRecipientClick(recipient)}"

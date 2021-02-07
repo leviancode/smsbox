@@ -19,8 +19,8 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
         <action
-            android:id="@+id/action_new_group"
-            app:destination="@id/nav_new_group"/>
+            android:id="@+id/action_open_editable_group"
+            app:destination="@id/nav_editable_group"/>
     </fragment>
 
     <fragment
@@ -35,8 +35,8 @@
             android:name="groupName"
             app:argType="string" />
         <action
-            android:id="@+id/action_new_template"
-            app:destination="@id/nav_new_template" />
+            android:id="@+id/action_open_editable_template"
+            app:destination="@id/nav_editable_template" />
     </fragment>
 
     <fragment
@@ -51,8 +51,8 @@
         android:label="@string/title_recipients"
         tools:layout="@layout/fragment_recipient_list" >
         <action
-            android:id="@+id/action_new_recipient"
-            app:destination="@id/nav_new_recipient" />
+            android:id="@+id/action_open_editable_recipient"
+            app:destination="@id/nav_editable_recipient" />
     </fragment>
 
     <fragment
@@ -62,23 +62,36 @@
         tools:layout="@layout/fragment_settings" />
 
     <dialog
-        android:id="@+id/nav_new_group"
-        android:name="com.leviancode.android.gsmbox.ui.templates.view.dialog.NewGroupDialog"
+        android:id="@+id/nav_editable_group"
+        android:name="com.leviancode.android.gsmbox.ui.templates.view.dialog.EditableTemplateGroupDialog"
         android:label="New Group"
-        tools:layout="@layout/dialog_new_group"/>
-
-    <dialog
-        android:id="@+id/nav_new_template"
-        android:name="com.leviancode.android.gsmbox.ui.templates.view.dialog.NewTemplateDialog"
-        android:label="New Template"
-        tools:layout="@layout/dialog_new_template">
+        tools:layout="@layout/dialog_editable_template_group">
 
         <argument
             android:name="groupId"
+            app:nullable="true"
+            app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/nav_editable_template"
+        android:name="com.leviancode.android.gsmbox.ui.templates.view.dialog.EditableTemplateDialog"
+        android:label="New Template"
+        tools:layout="@layout/dialog_editable_template">
+
+        <argument
+            android:name="templateId"
+            app:nullable="true"
+            app:argType="string" />
+
+        <argument
+            android:name="groupId"
+            app:nullable="true"
             app:argType="string" />
         <action
-            android:id="@+id/action_new_recipient"
-            app:destination="@id/nav_new_recipient" />
+            android:id="@+id/action_open_editable_recipient"
+            app:destination="@id/nav_editable_recipient" />
         <action
             android:id="@+id/action_select_contact"
             app:destination="@id/nav_select_contact" />
@@ -86,15 +99,15 @@
     </dialog>
 
     <dialog
-        android:id="@+id/nav_new_recipient"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.NewRecipientDialog"
+        android:id="@+id/nav_editable_recipient"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.EditableRecipientDialog"
         android:label="New Recipient"
-        tools:layout="@layout/dialog_new_recipient">
+        tools:layout="@layout/dialog_editable_recipient">
 
         <argument
-            android:name="recipientId"
+            android:name="recipient"
             app:nullable="true"
-            app:argType="string" />
+            app:argType="com.leviancode.android.gsmbox.data.model.Recipient" />
 
     </dialog>
 

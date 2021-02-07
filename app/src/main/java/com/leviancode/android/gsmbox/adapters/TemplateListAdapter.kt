@@ -51,6 +51,7 @@ class TemplateListAdapter(val viewModel: TemplateListViewModel) :
             return oldItem.name == newItem.name
                     && oldItem.message == newItem.message
                     && oldItem.iconColor == newItem.iconColor
+                    && oldItem.recipients == newItem.recipients
         }
     }
 }

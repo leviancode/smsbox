@@ -25,7 +25,7 @@ object TemplatesRepository {
         groupsDao.update(item)
     }
 
-    suspend fun removeGroup(item: TemplateGroup) = withContext(IO){
+    suspend fun deleteGroup(item: TemplateGroup) = withContext(IO){
         groupsDao.delete(item)
     }
 
@@ -42,7 +42,7 @@ object TemplatesRepository {
         templatesDao.update(item)
     }
 
-    suspend fun removeTemplate(item: Template) = withContext(IO) {
+    suspend fun deleteTemplate(item: Template) = withContext(IO) {
         templatesDao.delete(item)
         decreaseGroupSize(item.groupId)
     }
@@ -65,12 +65,12 @@ object TemplatesRepository {
         }
     }
 
-    private fun getGroupById(id: String): TemplateGroup?{
-        return groups.value?.find { it.groupId == id }
+    suspend fun getGroupById(id: String) = withContext(IO){
+        groupsDao.get(id)
     }
 
-    private fun getTemplateById(id: String): Template?{
-        return templates.value?.find { it.templateId == id }
+    suspend fun getTemplateById(id: String) = withContext(IO){
+       templatesDao.get(id)
     }
 
     suspend fun updateTemplates() = withContext(IO) {

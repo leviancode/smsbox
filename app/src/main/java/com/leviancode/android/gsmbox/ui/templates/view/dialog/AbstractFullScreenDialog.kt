@@ -2,6 +2,7 @@ package com.leviancode.android.gsmbox.ui.templates.view.dialog
 
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +10,11 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.DialogFragment
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.ui.extra.DiscardDialog
 
 abstract class AbstractFullScreenDialog : DialogFragment() {
     var discarded = false
-    abstract var saved: Boolean
+    var saved = false
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return object : Dialog(requireActivity(), theme){
@@ -30,7 +32,6 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        showKeyboard()
         setStyle(STYLE_NORMAL, R.style.AppTheme_FullScreenDialog)
     }
 
@@ -76,6 +77,11 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
         val imm =
             requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        hideKeyboard()
+        super.onDismiss(dialog)
     }
 
     override fun onPause() {
