@@ -41,15 +41,12 @@ class RecipientListFragment : Fragment() {
 
     private fun observeUI() {
         viewModel.recipientsLiveData.observe(viewLifecycleOwner){
-            Log.i("OBSERVE", "list: ")
-            it.forEach {
-                Log.i("OBSERVE", "list: ${it.recipientId}, ${it.name}, ${it.phoneNumber}")
-            }
-
             binding.adapter?.submitList(it)
         }
 
-        viewModel.addRecipientLiveEvent.observe(viewLifecycleOwner){ showEditableRecipientDialog(null) }
+        viewModel.addRecipientLiveEvent.observe(viewLifecycleOwner){
+            showEditableRecipientDialog(null)
+        }
 
         viewModel.popupMenuLiveEvent.observe(viewLifecycleOwner){
             showPopupMenu(it)

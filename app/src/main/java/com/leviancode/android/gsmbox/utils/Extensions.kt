@@ -1,9 +1,9 @@
 package com.leviancode.android.gsmbox.utils
 
+import androidx.databinding.Observable
+import androidx.databinding.ObservableField
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 
 fun <T> MutableLiveData<List<T>>.addItem(item: T) {
@@ -29,10 +29,8 @@ fun <T> MutableLiveData<List<T>>.removeItem(item: T) {
     }
 }
 
-fun <T> MutableLiveData<List<T>>.update() {
-    value?.toMutableList()?.let {
-        value = it
-    }
+fun <T> MutableLiveData<T>.update() {
+    value = value
 }
 
 fun <T> Fragment.getNavigationResult(key: String = "result") =
@@ -44,3 +42,42 @@ fun <T> Fragment.setNavigationResult(result: T, key: String = "result") {
 fun <T> Fragment.removeNavigationResult(key: String = "result") {
     findNavController().previousBackStackEntry?.savedStateHandle?.remove<T>(key)
 }
+
+inline fun <T, R> ObservableField<T>.map(crossinline transformFunc: (value: T?) -> R): ObservableField<R> =
+    object : ObservableField<R>(this) {
+        override fun get(): R? {
+            return transformFunc(this@map.get())
+        }
+    }
+
+/*inline fun <T, R> LiveData<T>.map(crossinline transformFunc: (value: T?) -> R): MutableLiveData<R> =
+    object : MutableLiveData<R>() {
+        override fun getValue(): R? {
+            return transformFunc(this@map.value)
+        }
+    }*/
+
+inline fun <T> dependantObservableField(vararg dependencies: Observable, defaultValue: T? = null, crossinline mapper: () -> T?) =
+    object : ObservableField<T>(*dependencies) {
+        override fun get(): T? {
+            return mapper()
+        }
+    }.apply { set(defaultValue) }
+
+inline fun <T> dependantLiveData(vararg dependencies: LiveData<out Any>, defaultValue: T? = null, crossinline mapper: () -> T?): LiveData<T> =
+    MediatorLiveData<T>().also { mediatorLiveData ->
+        val observer = Observer<Any> { mediatorLiveData.value = mapper() }
+        dependencies.forEach { dependencyLiveData ->
+            mediatorLiveData.addSource(dependencyLiveData, observer)
+        }
+    }.apply { value = defaultValue }
+
+fun isNotBlankLiveData(vararg dependencies: LiveData<out String>, defaultValue: Boolean = false): LiveData<Boolean> =
+    MediatorLiveData<Boolean>().also { mediatorLiveData ->
+        val observer = Observer<String> { mediatorLiveData.value = it.isNotBlank() }
+        dependencies.forEach { dependencyLiveData ->
+            mediatorLiveData.addSource(dependencyLiveData, observer)
+        }
+    }.apply { value = defaultValue }
+
+fun isNotEmpty(vararg strings: String): Boolean = strings.count { it.isNotBlank() } == strings.size

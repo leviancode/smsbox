@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.data.model.TemplateGroup
 import com.leviancode.android.gsmbox.data.model.TemplateGroupObservable
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateGroupBinding
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateGroupViewModel
@@ -57,34 +58,26 @@ class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
 
         viewModel.chooseColorLiveEvent.observe(viewLifecycleOwner){ chooseColor(it) }
 
-        viewModel.fieldsNotEmptyLiveEvent.observe(viewLifecycleOwner) { enabled ->
-            binding.btnGroupSave.apply {
-                if (enabled) setTextColor(resources.getColor(R.color.secondary, null))
-                else setTextColor(resources.getColor(R.color.ltGrey, null))
-                isEnabled = enabled
-            }
-        }
-
         viewModel.closeDialogLiveEvent.observe(viewLifecycleOwner){
             saved = true
             closeDialog()
         }
     }
 
-    private fun chooseColor(group: TemplateGroupObservable){
+    private fun chooseColor(color: Int){
         hideKeyboard()
 
         ColorPickerDialog(
             requireContext(),
             childFragmentManager,
-            group.getTemplateGroupIconColor()
+            color
         ).show {
-            group.setTemplateGroupIconColor(it)
+            viewModel.setIconColor(it)
         }
     }
 
     override fun isFieldsNotEmpty(): Boolean {
-        return viewModel.isFieldsNotEmpty()
+        return viewModel.isAllFieldsFilled()
     }
 
     private fun showMessage(message: String){

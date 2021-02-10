@@ -5,72 +5,36 @@ import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.TemplateGroupObservable
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class EditableTemplateGroupViewModel : ViewModel() {
     private val repository = TemplatesRepository
-    private var editMode = false
-    val group = TemplateGroupObservable()
-    val chooseColorLiveEvent = SingleLiveEvent<TemplateGroupObservable>()
-    val fieldsNotEmptyLiveEvent = SingleLiveEvent<Boolean>()
+    var data = TemplateGroupObservable()
+    val chooseColorLiveEvent = SingleLiveEvent<Int>()
     val closeDialogLiveEvent = SingleLiveEvent<Boolean>()
-
-    init {
-        fieldsChecker()
-    }
 
     fun loadGroupById(id: String) = flow {
         repository.getGroupById(id)?.let {
-            group.data = it
+            data.model = it
             emit(it.name)
         }
     }
 
-    private fun saveGroup() {
-        viewModelScope.launch {
-            repository.addGroup(group.data)
-        }
-    }
-
-    fun removeGroup() {
-        viewModelScope.launch {
-            repository.deleteGroup(group.data)
-        }
-    }
-
-    private fun updateGroup() {
-        viewModelScope.launch {
-            repository.updateGroup(group.data)
-        }
-    }
-
     fun onSaveClick(){
+        viewModelScope.launch {
+            repository.saveGroup(data.model)
+        }
         closeDialogLiveEvent.value = true
-        if (editMode) saveGroup()
-        else updateGroup()
     }
 
     fun onIconColorClick() {
-        chooseColorLiveEvent.value = group
+        chooseColorLiveEvent.value = data.getTemplateGroupIconColor()
     }
 
-    fun isFieldsNotEmpty(): Boolean {
-        return group.isFieldsNotEmpty()
+    fun setIconColor(color: Int) {
+        data.setTemplateGroupIconColor(color)
     }
 
-    private fun fieldsChecker() {
-        viewModelScope.launch(Dispatchers.IO) {
-            while (isActive) {
-                val notEmpty = isFieldsNotEmpty()
-                if (fieldsNotEmptyLiveEvent.value != notEmpty) {
-                    fieldsNotEmptyLiveEvent.postValue(notEmpty)
-                }
-                delay(500)
-            }
-        }
-    }
+    fun isAllFieldsFilled() = data.isAllFieldsFilled()
 }

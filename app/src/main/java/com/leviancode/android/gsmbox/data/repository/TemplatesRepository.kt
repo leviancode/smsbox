@@ -8,14 +8,14 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
 object TemplatesRepository {
-    private val templatesDao = AppDatabase.INCTANCE!!.templateDao()
-    private val groupsDao = AppDatabase.INCTANCE!!.templateGroupDao()
+    private val templatesDao = AppDatabase.INSTANCE!!.templateDao()
+    private val groupsDao = AppDatabase.INSTANCE!!.templateGroupDao()
 
     val groups: LiveData<List<TemplateGroup>> = groupsDao.getAll()
     val templates: LiveData<List<Template>> = templatesDao.getAll()
 
 
-    suspend fun addGroup(item: TemplateGroup) = withContext(IO){
+    suspend fun saveGroup(item: TemplateGroup) = withContext(IO){
         val group = getGroupById(item.groupId)
         if (group == null) groupsDao.insert(item)
         else groupsDao.update(item)
@@ -29,7 +29,7 @@ object TemplatesRepository {
         groupsDao.delete(item)
     }
 
-    suspend fun addTemplate(item: Template) = withContext(IO){
+    suspend fun saveTemplate(item: Template) = withContext(IO){
         val template = getTemplateById(item.templateId)
         if (template == null)  {
             templatesDao.insert(item)

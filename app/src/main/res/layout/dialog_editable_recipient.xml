@@ -33,8 +33,8 @@
                 android:layout_gravity="end"
                 android:text="@string/save"
                 tools:textColor="@color/secondary"
-                android:enabled="@{viewModel.isFieldsFilled}"
-                android:textColor="@{viewModel.isFieldsFilled ? @color/secondary : @color/ltGrey}"
+                android:enabled="@{viewModel.data.fieldsFilled}"
+                android:textColor="@drawable/save_button_text_color_selector"
                 android:onClick="@{() -> viewModel.onSaveClick()}"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
@@ -56,7 +56,7 @@
                 android:hint="@string/hint_name"
                 android:inputType="text"
                 android:padding="8dp"
-                android:text="@={viewModel.recipientName}"
+                android:text="@={viewModel.data.recipientName}"
                 android:textSize="18sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -78,7 +78,7 @@
                 android:hint="@string/hint_phone_number"
                 android:inputType="phone"
                 android:padding="8dp"
-                android:text="@={viewModel.recipientPhoneNUmber}"
+                android:text="@={viewModel.data.phoneNumber}"
                 android:textSize="18sp" />
 
         </com.google.android.material.textfield.TextInputLayout>

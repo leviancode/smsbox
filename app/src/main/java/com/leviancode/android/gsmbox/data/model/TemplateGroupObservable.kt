@@ -2,56 +2,56 @@ package com.leviancode.android.gsmbox.data.model
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import com.leviancode.android.gsmbox.BR
+import com.leviancode.android.gsmbox.utils.isNotEmpty
 
 class TemplateGroupObservable : BaseObservable() {
-    var data = TemplateGroup()
+    var model = TemplateGroup()
         set(value) {
             field = value
             notifyChange()
         }
 
     @Bindable
-    fun getTemplateGroupName() = data.name
+    fun getTemplateGroupName() = model.name
     fun setTemplateGroupName(value: String){
-        if (data.name != value){
-            data.name = value
-            notifyPropertyChanged(BR.templateGroupName)
+        if (model.name != value){
+            model.name = value
+            notifyChange()
         }
     }
 
     @Bindable
-    fun getDescription() = data.description
-    fun setDescription(value: String){
-        if (data.description != value){
-            data.description = value
-            notifyPropertyChanged(BR.description)
+    fun getTemplateGroupDescription() = model.description
+    fun setTemplateGroupDescription(value: String){
+        if (model.description != value){
+            model.description = value
+            notifyChange()
         }
     }
 
     @Bindable
-    fun getTemplateGroupImageUri() = data.imageUri
-    fun setTemplateGroupImageUri(value: String?){
-        if (data.imageUri != value){
-            data.imageUri = value
-            notifyPropertyChanged(BR.templateGroupImageUri)
-        }
-    }
-
-    @Bindable
-    fun getTemplateGroupIconColor() = data.iconColor
+    fun getTemplateGroupIconColor() = model.iconColor
     fun setTemplateGroupIconColor(value: Int){
-        if (data.iconColor != value){
-            data.iconColor = value
-            notifyPropertyChanged(BR.templateGroupIconColor)
+        if (model.iconColor != value){
+            model.iconColor = value
+            notifyChange()
         }
     }
 
     @Bindable
-    fun getSize() = data.size
-
-    fun isFieldsNotEmpty(): Boolean {
-        return getTemplateGroupName().isNotBlank()
+    fun getTemplateGroupImageUri() = model.imageUri
+    fun setTemplateGroupImageUri(value: String){
+        if (model.imageUri != value){
+            model.imageUri = value
+            notifyChange()
+        }
     }
 
+    @Bindable
+    fun getTemplateGroupSize() = model.size.toString()
+
+    @Bindable
+    fun isRequiredFieldsFilled() = isNotEmpty(getTemplateGroupName())
+
+    fun isAllFieldsFilled() = isNotEmpty(getTemplateGroupName(), getTemplateGroupDescription())
 }

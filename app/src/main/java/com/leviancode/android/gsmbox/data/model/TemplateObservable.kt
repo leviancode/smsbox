@@ -2,66 +2,72 @@ package com.leviancode.android.gsmbox.data.model
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import com.leviancode.android.gsmbox.BR
+import com.leviancode.android.gsmbox.utils.isNotEmpty
 
 class TemplateObservable : BaseObservable() {
-    var data = Template()
+    var model = Template()
         set(value) {
             field = value
             notifyChange()
         }
 
-    fun setGroupId(value: String){
-        data.groupId = value
-    }
-
     @Bindable
-    fun isFavorite() = data.favorite
+    fun isFavorite() = model.favorite
     fun setFavorite(value: Boolean){
-        if (data.favorite != value){
-            data.favorite = value
-            notifyPropertyChanged(BR.favorite)
+        if (model.favorite != value){
+            model.favorite = value
+            notifyChange()
         }
     }
 
     @Bindable
-    fun getTemplateName() = data.name
+    fun getTemplateName() = model.name
     fun setTemplateName(value: String){
-        if (data.name != value){
-            data.name = value
-            notifyPropertyChanged(BR.templateName)
+        if (model.name != value){
+            model.name = value
+            notifyChange()
         }
     }
 
     @Bindable
-    fun getMessage() = data.message
+    fun getMessage() = model.message
     fun setMessage(value: String){
-        if (data.message != value){
-            data.message = value
-            notifyPropertyChanged(BR.message)
+        if (model.message != value){
+            model.message = value
+            notifyChange()
         }
     }
-    @Bindable
-    fun getRecipientsAsString() = data.recipients.joinToString(", ")
-
-    fun getRecipients() = data.recipients
-    fun setRecipients(value: MutableList<String>){
-        data.recipients = value
-    }
 
     @Bindable
-    fun getTemplateIconColor() = data.iconColor
+    fun getTemplateIconColor() = model.iconColor
     fun setTemplateIconColor(value: Int){
-        if (data.iconColor != value){
-            data.iconColor = value
-           notifyPropertyChanged(BR.templateIconColor)
+        if (model.iconColor != value){
+            model.iconColor = value
+            notifyChange()
         }
     }
 
-    fun isFieldsNotEmpty(): Boolean {
-        return getTemplateName().isNotBlank()
-                && getMessage().isNotBlank()
+    @Bindable
+    fun getRecipientsAsString() = model.recipients.joinToString(", "){it.phoneNumber}
+
+    fun getRecipients() = model.recipients
+    fun setRecipients(value: MutableList<Recipient>){
+        model.recipients = value
+        notifyChange()
     }
 
+    fun addRecipient(recipient: Recipient){
+        model.recipients.add(recipient)
+    }
 
+    fun removeRecipient(recipient: Recipient){
+        model.recipients.remove(recipient)
+    }
+
+    @Bindable
+    fun isFieldsFilled() = isNotEmpty(getTemplateName(), getMessage(), getRecipientsAsString())
+
+    fun setGroupId(value: String){
+        model.groupId = value
+    }
 }

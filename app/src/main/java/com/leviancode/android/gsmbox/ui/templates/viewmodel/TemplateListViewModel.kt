@@ -17,12 +17,6 @@ class TemplateListViewModel : ViewModel() {
     val sendMessageLiveEvent = SingleLiveEvent<Template>()
     val popupMenuLiveEvent = SingleLiveEvent<Pair<View, Template>>()
 
-    fun addTemplate(template: Template) {
-        viewModelScope.launch {
-            repository.addTemplate(template)
-        }
-    }
-
     fun deleteTemplate(template: Template) {
         viewModelScope.launch {
             repository.deleteTemplate(template)
@@ -35,18 +29,18 @@ class TemplateListViewModel : ViewModel() {
         createTemplateLiveEvent.call()
     }
 
-    fun onSendMessage(template: TemplateObservable){
-        sendMessageLiveEvent.value = template.data
+    fun onSendMessage(template: Template){
+        sendMessageLiveEvent.value = template
     }
 
-    fun onPopupMenuClick(view: View, item: TemplateObservable){
-        popupMenuLiveEvent.value = Pair(view, item.data)
+    fun onPopupMenuClick(view: View, item: Template){
+        popupMenuLiveEvent.value = Pair(view, item)
     }
 
     fun onFavoriteClick(template: TemplateObservable){
         template.setFavorite(!template.isFavorite())
         viewModelScope.launch {
-            repository.updateTemplate(template.data)
+            repository.updateTemplate(template.model)
         }
     }
 }

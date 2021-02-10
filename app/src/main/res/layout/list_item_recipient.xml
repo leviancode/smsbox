@@ -45,7 +45,7 @@
                 android:textColor="@color/text_title"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="@={recipient.recipientName}"
+                android:text="@{recipient.recipientName}"
                 tools:text="Name" />
 
             <TextView
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="4dp"
-                android:text="@={recipient.phoneNumber}"
+                android:text="@{recipient.phoneNumber}"
                 android:textColor="#252525"
                 tools:text="Phone Number" />
 
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/open_option_menu"
-            android:onClick="@{(view) -> viewModel.onPopupMenuClick(view, recipient)}"
+            android:onClick="@{(view) -> viewModel.onPopupMenuClick(view, recipient.model)}"
             android:padding="4dp"
             android:layout_marginEnd="8dp"
             android:background="?android:selectableItemBackgroundBorderless"

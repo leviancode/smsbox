@@ -106,7 +106,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog(){
         }
     }
 
-    private fun selectContact(recipient: RecipientObservable){
+    private fun selectContact(recipient: Recipient){
         hideKeyboard()
 
         Dexter.withContext(requireContext())
@@ -122,10 +122,10 @@ class EditableTemplateDialog : AbstractFullScreenDialog(){
             }).check()
     }
 
-    private fun showContactsDialog(recipient: RecipientObservable) {
+    private fun showContactsDialog(recipient: Recipient) {
         getNavigationResult<String>(REQUEST_KEY_SELECTED)?.observe(viewLifecycleOwner){ result ->
             if (!result.isNullOrBlank()){
-                recipient.setPhoneNumber(result)
+                recipient.phoneNumber = result
                 removeNavigationResult<String>(REQUEST_KEY_SELECTED)
             }
         }
@@ -135,15 +135,15 @@ class EditableTemplateDialog : AbstractFullScreenDialog(){
         )
     }
 
-    private fun selectColor(template: TemplateObservable){
+    private fun selectColor(color: Int){
         hideKeyboard()
 
         ColorPickerDialog(
             requireContext(),
             childFragmentManager,
-            template.getTemplateIconColor()
+            color
         ).show {
-            template.setTemplateIconColor(it)
+            viewModel.setIconColor(it)
         }
     }
 

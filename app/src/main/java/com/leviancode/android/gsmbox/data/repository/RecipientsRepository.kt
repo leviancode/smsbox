@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
 object RecipientsRepository {
-    private val dao = AppDatabase.INCTANCE!!.recipientDao()
+    private val dao = AppDatabase.INSTANCE!!.recipientDao()
     var data: LiveData<List<Recipient>> = dao.getAll()
 
     suspend fun addRecipient(item: Recipient) = withContext(IO){

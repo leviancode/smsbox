@@ -40,7 +40,7 @@ class TemplateGroupListAdapter(val viewModel: TemplateGroupListViewModel) :
 
         fun bind(group: TemplateGroup) {
             binding.viewModel = viewModel
-            binding.group?.data = group
+            binding.group?.model = group
             binding.executePendingBindings()
         }
     }

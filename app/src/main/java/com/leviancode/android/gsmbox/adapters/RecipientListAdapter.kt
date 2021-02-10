@@ -10,7 +10,6 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientListAdapter.*
 import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.data.model.RecipientObservable
-import com.leviancode.android.gsmbox.data.model.Template
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientListViewModel
 
@@ -40,7 +39,7 @@ class RecipientListAdapter(val viewModel: RecipientListViewModel) :
         }
 
         fun bind(item: Recipient) {
-            recipient.data = item
+            recipient.model = item
             binding.executePendingBindings()
         }
     }

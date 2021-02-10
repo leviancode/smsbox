@@ -53,7 +53,10 @@ class EditableRecipientDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setRecipient(args.recipient)
+        args.recipient?.let {
+            viewModel.setRecipient(it)
+            if (it.name.isNotBlank()) binding.toolbar.title = it.name
+        }
         showKeyboard()
 
         binding.viewModel = viewModel

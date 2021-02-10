@@ -37,8 +37,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
+                            android:enabled="@{viewModel.data.requiredFieldsFilled}"
                             android:text="@string/save"
-                            android:textColor="@color/secondary"
+                            android:textColor="@drawable/save_button_text_color_selector"
                             android:onClick="@{() -> viewModel.onSaveClick()}"/>
 
                     </com.google.android.material.appbar.MaterialToolbar>
@@ -64,7 +65,7 @@
                         android:inputType="text"
                         android:focusable="true"
                         android:padding="8dp"
-                        android:text="@={viewModel.group.templateGroupName}"
+                        android:text="@={viewModel.data.templateGroupName}"
                         android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -85,7 +86,7 @@
                         android:hint="@string/hint_description"
                         android:inputType="text"
                         android:padding="8dp"
-                        android:text="@={viewModel.group.description}"
+                        android:text="@={viewModel.data.templateGroupDescription}"
                         android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -102,9 +103,7 @@
                     android:textColor="@color/grey"
                     android:onClick="@{() -> viewModel.onIconColorClick()}"
                     app:icon="@drawable/ic_baseline_color_lens_24"
-                    app:iconTint="@{viewModel.group.templateGroupIconColor}"
-                    tools:iconTint="@color/blue_grey_300" />
+                    app:iconTint="@{viewModel.data.templateGroupIconColor}"
+                    tools:iconTint="@color/blue_grey_300"/>
             </LinearLayout>
-
-
 </layout>

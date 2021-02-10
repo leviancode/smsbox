@@ -67,7 +67,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="4dp"
                 android:fontFamily="sans-serif-light"
-                android:text="@{template.recipientsAsString}"
+                android:text="@{template.getRecipientsAsString}"
                 android:textColor="@color/text_description"
                 tools:text="+3801234567" />
 
@@ -82,7 +82,7 @@
             android:padding="6dp"
             android:scaleType="fitXY"
             android:layout_gravity="center_vertical"
-            android:onClick="@{() -> viewModel.onSendMessage(template)}"
+            android:onClick="@{() -> viewModel.onSendMessage(template.model)}"
             android:src="@drawable/ic_baseline_send_24"
             android:tint="@{template.templateIconColor}"
             tools:tint="@color/secondary"/>
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/open_option_menu"
-            android:onClick="@{(view) -> viewModel.onPopupMenuClick(view, template)}"
+            android:onClick="@{(view) -> viewModel.onPopupMenuClick(view, template.model)}"
             android:padding="4dp"
             android:layout_marginEnd="8dp"
             android:background="?android:selectableItemBackgroundBorderless"

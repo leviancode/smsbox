@@ -13,13 +13,12 @@ import com.leviancode.android.gsmbox.data.dao.AppDatabase
 import com.leviancode.android.gsmbox.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(){
-    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         AppDatabase.init(applicationContext)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment)
@@ -33,7 +32,6 @@ class MainActivity : AppCompatActivity(){
             )
         )
          binding.toolbarMain.setupWithNavController(navController, appBarConfiguration)
-        //setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 }

@@ -17,5 +17,5 @@ data class Template(
     @ColumnInfo(name = "message") var message: String = "",
     @ColumnInfo(name = "icon_color") var iconColor: Int = Color.parseColor("#66BB6A"),
     @ColumnInfo(name = "favorite") var favorite: Boolean = false,
-    var recipients: MutableList<String> = mutableListOf()
+    @ColumnInfo(name = "recipients") var recipients: MutableList<Recipient> = mutableListOf()
 )

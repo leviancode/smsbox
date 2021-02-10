@@ -37,7 +37,7 @@ class TemplateListAdapter(val viewModel: TemplateListViewModel) :
         }
 
         fun bind(item: Template) {
-            binding.template?.data = item
+            binding.template?.model = item
             binding.executePendingBindings()
         }
     }
