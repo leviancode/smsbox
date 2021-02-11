@@ -4,7 +4,7 @@ import android.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.leviancode.android.gsmbox.R
+import java.io.Serializable
 import java.util.*
 
 @Entity(tableName = "templates")
@@ -18,4 +18,4 @@ data class Template(
     @ColumnInfo(name = "icon_color") var iconColor: Int = Color.parseColor("#66BB6A"),
     @ColumnInfo(name = "favorite") var favorite: Boolean = false,
     @ColumnInfo(name = "recipients") var recipients: MutableList<Recipient> = mutableListOf()
-)
+) : Serializable

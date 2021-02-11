@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class TemplateListViewModel : ViewModel() {
     private val repository = TemplatesRepository
     val templates: LiveData<List<Template>> = repository.templates
-    val createTemplateLiveEvent = SingleLiveEvent<Unit>()
+    val createTemplateLiveEvent = SingleLiveEvent<Template>()
     val sendMessageLiveEvent = SingleLiveEvent<Template>()
     val popupMenuLiveEvent = SingleLiveEvent<Pair<View, Template>>()
 
@@ -26,7 +26,7 @@ class TemplateListViewModel : ViewModel() {
     fun getGroupTemplates (groupId: String) = repository.getTemplatesByGroupId(groupId)
 
     fun onCreateTemplateClick(){
-        createTemplateLiveEvent.call()
+        createTemplateLiveEvent.value = Template()
     }
 
     fun onSendMessage(template: Template){

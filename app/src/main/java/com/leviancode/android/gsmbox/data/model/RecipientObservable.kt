@@ -5,7 +5,10 @@ import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import com.leviancode.android.gsmbox.utils.isNotEmpty
 
-class RecipientObservable : BaseObservable(){
+class RecipientObservable() : BaseObservable(){
+    constructor(model: Recipient) : this() {
+        this.model = model
+    }
     var model = Recipient()
         set(value) {
             field = value
@@ -18,6 +21,7 @@ class RecipientObservable : BaseObservable(){
         if (model.name != value){
             model.name = value
             notifyPropertyChanged(BR.recipientName)
+            notifyPropertyChanged(BR.fieldsFilled)
         }
     }
 
@@ -27,6 +31,7 @@ class RecipientObservable : BaseObservable(){
         if (model.phoneNumber != value){
             model.phoneNumber = value
             notifyPropertyChanged(BR.phoneNumber)
+            notifyPropertyChanged(BR.fieldsFilled)
         }
     }
 

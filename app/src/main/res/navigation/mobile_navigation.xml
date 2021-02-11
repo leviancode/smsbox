@@ -81,20 +81,16 @@
         tools:layout="@layout/dialog_editable_template">
 
         <argument
-            android:name="templateId"
-            app:nullable="true"
-            app:argType="string" />
+            android:name="template"
+            app:argType="com.leviancode.android.gsmbox.data.model.Template" />
 
-        <argument
-            android:name="groupId"
-            app:nullable="true"
-            app:argType="string" />
         <action
             android:id="@+id/action_open_editable_recipient"
             app:destination="@id/nav_editable_recipient" />
         <action
             android:id="@+id/action_select_contact"
             app:destination="@id/nav_select_contact" />
+
 
     </dialog>
 

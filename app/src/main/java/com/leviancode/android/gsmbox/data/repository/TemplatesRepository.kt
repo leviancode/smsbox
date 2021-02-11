@@ -60,7 +60,7 @@ object TemplatesRepository {
 
     private suspend fun decreaseGroupSize(id: String) {
         getGroupById(id)?.let {
-                it.size++
+                it.size--
                 groupsDao.update(it)
         }
     }

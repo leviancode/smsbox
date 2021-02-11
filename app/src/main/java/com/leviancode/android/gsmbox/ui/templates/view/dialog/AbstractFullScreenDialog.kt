@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.DialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.ui.extra.DiscardDialog
+import com.leviancode.android.gsmbox.utils.KeyboardUtil
 
 abstract class AbstractFullScreenDialog : DialogFragment() {
     var discarded = false
@@ -67,16 +68,12 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
         }
     }
 
-    fun showKeyboard() {
-        val imm =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    fun showKeyboard(view: View) {
+        KeyboardUtil.showKeyboard(view)
     }
 
     fun hideKeyboard() {
-        val imm =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+        KeyboardUtil.hideKeyboard(requireView())
     }
 
     override fun onDismiss(dialog: DialogInterface) {

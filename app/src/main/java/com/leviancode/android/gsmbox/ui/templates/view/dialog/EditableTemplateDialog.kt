@@ -4,6 +4,8 @@ import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.FOCUS_DOWN
+import android.view.View.FOCUS_UP
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -27,7 +29,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
-class EditableTemplateDialog : AbstractFullScreenDialog(){
+class EditableTemplateDialog : AbstractFullScreenDialog() {
     private lateinit var binding: DialogEditableTemplateBinding
     private val viewModel: EditableTemplateViewModel by viewModels()
     private val args: EditableTemplateDialogArgs by navArgs()
@@ -47,57 +49,47 @@ class EditableTemplateDialog : AbstractFullScreenDialog(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (args.templateId != null){
-            loadTemplate()
-        } else {
-            showKeyboard()
-            viewModel.createTemplate(args.groupId)
-        }
+        viewModel.setTemplate(args.template)
+        showKeyboard(binding.editTextTemplateName)
 
         binding.viewModel = viewModel
-        binding.editTextTemplateName.requestFocus()
         binding.toolbar.apply {
+            args.template.name.let {
+                if (it.isNotBlank()) title = it
+            }
             setNavigationOnClickListener { closeDialog() }
         }
 
         observe()
     }
 
-    private fun loadTemplate(){
-        lifecycleScope.launch {
-            viewModel.loadTemplateById(args.templateId!!).collect {
-                binding.toolbar.title = it
-            }
-        }
-    }
-
-    private fun observe(){
-        viewModel.openRecipientDialogLiveEvent.observe(viewLifecycleOwner){ recipient ->
+    private fun observe() {
+        viewModel.openRecipientDialogLiveEvent.observe(viewLifecycleOwner) { recipient ->
             showSaveRecipientDialog(recipient)
         }
 
-        viewModel.addNumberFieldLiveEvent.observe(viewLifecycleOwner){ recipient ->
+        viewModel.addNumberFieldLiveEvent.observe(viewLifecycleOwner) { recipient ->
             addNumberField(recipient)
         }
 
-        viewModel.removeRecipientLiveEvent.observe(viewLifecycleOwner){ view ->
+        viewModel.removeRecipientLiveEvent.observe(viewLifecycleOwner) { view ->
             removeRecipientLayout(view)
         }
 
-        viewModel.selectColorLiveEvent.observe(viewLifecycleOwner){ color ->
+        viewModel.selectColorLiveEvent.observe(viewLifecycleOwner) { color ->
             selectColor(color)
         }
 
-        viewModel.selectContactLiveEvent.observe(viewLifecycleOwner){ recipient ->
+        viewModel.selectContactLiveEvent.observe(viewLifecycleOwner) { recipient ->
             selectContact(recipient)
         }
 
-        viewModel.closeDialogLiveEvent.observe(viewLifecycleOwner){
+        viewModel.closeDialogLiveEvent.observe(viewLifecycleOwner) {
             saved = it
             closeDialog()
         }
 
-        viewModel.fieldsNotEmptyLiveEvent.observe(viewLifecycleOwner){ enabled ->
+        viewModel.fieldsNotEmptyLiveEvent.observe(viewLifecycleOwner) { enabled ->
             binding.btnTemplateSave.apply {
                 if (enabled) setTextColor(resources.getColor(R.color.secondary, null))
                 else setTextColor(resources.getColor(R.color.ltGrey, null))
@@ -106,7 +98,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog(){
         }
     }
 
-    private fun selectContact(recipient: Recipient){
+    private fun selectContact(recipient: Recipient) {
         hideKeyboard()
 
         Dexter.withContext(requireContext())
@@ -117,14 +109,14 @@ class EditableTemplateDialog : AbstractFullScreenDialog(){
                 }
 
                 override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-                   showToast(getString(R.string.permission_dined))
+                    showToast(getString(R.string.permission_dined))
                 }
             }).check()
     }
 
     private fun showContactsDialog(recipient: Recipient) {
-        getNavigationResult<String>(REQUEST_KEY_SELECTED)?.observe(viewLifecycleOwner){ result ->
-            if (!result.isNullOrBlank()){
+        getNavigationResult<String>(REQUEST_KEY_SELECTED)?.observe(viewLifecycleOwner) { result ->
+            if (!result.isNullOrBlank()) {
                 recipient.phoneNumber = result
                 removeNavigationResult<String>(REQUEST_KEY_SELECTED)
             }
@@ -135,7 +127,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog(){
         )
     }
 
-    private fun selectColor(color: Int){
+    private fun selectColor(color: Int) {
         hideKeyboard()
 
         ColorPickerDialog(
@@ -147,9 +139,9 @@ class EditableTemplateDialog : AbstractFullScreenDialog(){
         }
     }
 
-    private fun showSaveRecipientDialog(recipient: Recipient){
-        getNavigationResult<String>(REQUEST_KEY_SAVED)?.observe(viewLifecycleOwner){ result ->
-            when (result){
+    private fun showSaveRecipientDialog(recipient: Recipient) {
+        getNavigationResult<String>(REQUEST_KEY_SAVED)?.observe(viewLifecycleOwner) { result ->
+            when (result) {
                 RESULT_OK -> {
                     showToast(getString(R.string.recipient_saved))
                     hideKeyboard()
@@ -166,20 +158,28 @@ class EditableTemplateDialog : AbstractFullScreenDialog(){
     private fun addNumberField(recipient: RecipientObservable) {
         val inflater = LayoutInflater.from(requireContext())
         val recipientBinding = DataBindingUtil.inflate<DialogEditableTemplateNumberHolderBinding>(
-            inflater, R.layout.dialog_editable_template_number_holder, binding.recipientsLayout, true)
+            inflater,
+            R.layout.dialog_editable_template_number_holder,
+            binding.recipientsLayout,
+            true
+        )
 
         recipientBinding.recipient = recipient
         recipientBinding.viewModel = viewModel
 
-        if (binding.recipientsLayout.childCount > 1){
+        if (binding.recipientsLayout.childCount > 1) {
+            showKeyboard(recipientBinding.editTextRecipientNumber)
             recipientBinding.btnRemoveNumber.visibility = View.VISIBLE
-            recipientBinding.editTextRecipientNumber.requestFocus()
-            showKeyboard()
         }
     }
 
-    private fun removeRecipientLayout(view: View){
-        binding.recipientsLayout.removeView(view.parent as ViewGroup)
+    private fun removeRecipientLayout(view: View) {
+        val parent = view.parent as ViewGroup
+        val index = binding.recipientsLayout.indexOfChild(parent)
+        val child = binding.recipientsLayout.getChildAt(index - 1)
+            .findViewById<View>(R.id.edit_text_recipient_number)
+        showKeyboard(child)
+        binding.recipientsLayout.removeView(parent)
     }
 
     override fun isFieldsNotEmpty(): Boolean {

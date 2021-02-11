@@ -1,15 +1,19 @@
 package com.leviancode.android.gsmbox.ui.templates.viewmodel
 
+import android.util.Log
 import android.view.View
+import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.data.model.RecipientObservable
+import com.leviancode.android.gsmbox.data.model.Template
 import com.leviancode.android.gsmbox.data.model.TemplateObservable
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class EditableTemplateViewModel : ViewModel() {
@@ -25,29 +29,30 @@ class EditableTemplateViewModel : ViewModel() {
     val fieldsNotEmptyLiveEvent = SingleLiveEvent<Boolean>()
     val closeDialogLiveEvent = SingleLiveEvent<Boolean>()
 
-    fun addRecipient(recipient: Recipient) {
-        data.addRecipient(recipient)
-        addNumberFieldLiveEvent.value = RecipientObservable().apply {
-            model = recipient
+    init {
+        fieldsChecker()
+    }
+
+    fun setTemplate(template: Template){
+        data.model = template
+        if (template.recipients.isEmpty()) {
+            onAddNumberClick()
+        } else {
+            template.recipients.forEach {
+                Log.i("SET", "recipient: ${it.phoneNumber}")
+                addNumberField(it)
+            }
         }
+    }
+
+    private fun addNumberField(recipient: Recipient) {
+        addNumberFieldLiveEvent.value = RecipientObservable(recipient)
     }
 
     fun onAddNumberClick(){
-        addRecipient(Recipient())
-    }
-
-    fun loadTemplateById(id: String) = flow {
-        repository.getTemplateById(id)?.let { result ->
-            data.model = result
-            result.recipients.forEach { addRecipient(it) }
-            emit(result.name)
-        }
-    }
-
-    fun createTemplate(groupId: String?) {
-        addRecipient(Recipient())
-        groupId?.let {
-            data.setGroupId(it)
+        Recipient().let {
+            data.addRecipient(it)
+            addNumberField(it)
         }
     }
 
@@ -81,5 +86,14 @@ class EditableTemplateViewModel : ViewModel() {
 
     fun isFieldsNotEmpty(): Boolean {
         return data.isFieldsFilled()
+    }
+
+    private fun fieldsChecker(){
+        viewModelScope.launch{
+            while (isActive) {
+                data.notifyPropertyChanged(BR.fieldsFilled)
+                delay(500)
+            }
+        }
     }
 }

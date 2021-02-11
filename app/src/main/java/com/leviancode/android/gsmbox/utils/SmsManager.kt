@@ -8,7 +8,7 @@ import com.leviancode.android.gsmbox.data.model.Template
 object SmsManager {
     fun sendSms(context: Context, template: Template) {
         val addresses = template.recipients
-            .joinToString(";", "smsto:")
+            .joinToString(";", "smsto:"){ it.phoneNumber }
 
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(addresses)

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.data.model.Template
-import com.leviancode.android.gsmbox.data.model.TemplateGroup
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateListBinding
 import com.leviancode.android.gsmbox.ui.extra.DeleteConfirmationDialog
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
@@ -63,17 +61,17 @@ class TemplateListFragment : Fragment() {
     }
 
     private fun observeUI() {
-        /*viewModel.getGroupTemplates(args.groupId).observe(viewLifecycleOwner){
+        viewModel.getGroupTemplates(args.groupId).observe(viewLifecycleOwner){
             binding.adapter?.submitList(it)
-        }*/
+        }
 
-        viewModel.templates.observe(viewLifecycleOwner) { list ->
+        /*viewModel.templates.observe(viewLifecycleOwner) { list ->
             list.filter { it.groupId == args.groupId }
                 .let { binding.adapter?.submitList(it) }
+        }*/
 
-        }
         viewModel.createTemplateLiveEvent.observe(viewLifecycleOwner) {
-            showEditableTemplateDialog(null)
+            showEditableTemplateDialog(it)
         }
 
         viewModel.sendMessageLiveEvent.observe(viewLifecycleOwner) { sendMessage(it) }
@@ -84,7 +82,7 @@ class TemplateListFragment : Fragment() {
     private fun showPopup(pair: Pair<View, Template>) {
         ItemPopupMenu(requireContext(), pair.first).show { result ->
             when (result) {
-                EDIT -> showEditableTemplateDialog(pair.second.templateId)
+                EDIT -> showEditableTemplateDialog(pair.second)
                 DELETE -> deleteTemplate(pair.second)
             }
         }
@@ -106,15 +104,11 @@ class TemplateListFragment : Fragment() {
         }
     }
 
-    private fun showEditableTemplateDialog(templateId: String?) {
+    private fun showEditableTemplateDialog(template: Template) {
         val action =
-            TemplateListFragmentDirections.actionOpenEditableTemplate(templateId, args.groupId)
+            TemplateListFragmentDirections.actionOpenEditableTemplate(
+                template.apply { groupId = args.groupId }
+            )
         navController.navigate(action)
     }
-
-    private fun showEditDialog(template: Template) {
-        Toast.makeText(requireContext(), "Template ${template.name} clicked!", Toast.LENGTH_SHORT)
-            .show()
-    }
-
 }

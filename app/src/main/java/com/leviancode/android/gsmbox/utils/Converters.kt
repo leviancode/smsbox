@@ -7,13 +7,14 @@ class Converters {
 
     @TypeConverter
     fun stringFromRecipients(value: List<Recipient>): String {
-        return value.joinToString(";"){ it.phoneNumber }
+        return value.filter{ it.phoneNumber.isNotBlank() }
+                    .joinToString(";"){ it.phoneNumber }
     }
 
     @TypeConverter
     fun recipientsFromString(value: String): MutableList<Recipient> {
         return value.split(";")
-            .map{ Recipient (phoneNumber = it) }
-            .toMutableList()
+                    .map{ Recipient (phoneNumber = it) }
+                    .toMutableList()
     }
 }

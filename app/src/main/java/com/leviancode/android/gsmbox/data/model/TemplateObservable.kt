@@ -2,9 +2,13 @@ package com.leviancode.android.gsmbox.data.model
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.databinding.library.baseAdapters.BR
 import com.leviancode.android.gsmbox.utils.isNotEmpty
 
-class TemplateObservable : BaseObservable() {
+class TemplateObservable() : BaseObservable() {
+    constructor(model: Template) : this() {
+        this.model = model
+    }
     var model = Template()
         set(value) {
             field = value
@@ -16,7 +20,7 @@ class TemplateObservable : BaseObservable() {
     fun setFavorite(value: Boolean){
         if (model.favorite != value){
             model.favorite = value
-            notifyChange()
+            notifyPropertyChanged(BR.favorite)
         }
     }
 
@@ -25,7 +29,7 @@ class TemplateObservable : BaseObservable() {
     fun setTemplateName(value: String){
         if (model.name != value){
             model.name = value
-            notifyChange()
+            notifyPropertyChanged(BR.templateName)
         }
     }
 
@@ -34,7 +38,7 @@ class TemplateObservable : BaseObservable() {
     fun setMessage(value: String){
         if (model.message != value){
             model.message = value
-            notifyChange()
+            notifyPropertyChanged(BR.message)
         }
     }
 
@@ -43,12 +47,12 @@ class TemplateObservable : BaseObservable() {
     fun setTemplateIconColor(value: Int){
         if (model.iconColor != value){
             model.iconColor = value
-            notifyChange()
+            notifyPropertyChanged(BR.templateIconColor)
         }
     }
 
     @Bindable
-    fun getRecipientsAsString() = model.recipients.joinToString(", "){it.phoneNumber}
+    fun getRecipientsAsString() = model.recipients.joinToString("; "){it.phoneNumber}
 
     fun getRecipients() = model.recipients
     fun setRecipients(value: MutableList<Recipient>){

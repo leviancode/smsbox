@@ -2,6 +2,7 @@ package com.leviancode.android.gsmbox.data.model
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.databinding.library.baseAdapters.BR
 import com.leviancode.android.gsmbox.utils.isNotEmpty
 
 class TemplateGroupObservable : BaseObservable() {
@@ -16,7 +17,8 @@ class TemplateGroupObservable : BaseObservable() {
     fun setTemplateGroupName(value: String){
         if (model.name != value){
             model.name = value
-            notifyChange()
+            notifyPropertyChanged(BR.templateGroupName)
+            notifyPropertyChanged(BR.requiredFieldsFilled)
         }
     }
 
@@ -25,7 +27,7 @@ class TemplateGroupObservable : BaseObservable() {
     fun setTemplateGroupDescription(value: String){
         if (model.description != value){
             model.description = value
-            notifyChange()
+            notifyPropertyChanged(BR.templateGroupDescription)
         }
     }
 
@@ -34,7 +36,7 @@ class TemplateGroupObservable : BaseObservable() {
     fun setTemplateGroupIconColor(value: Int){
         if (model.iconColor != value){
             model.iconColor = value
-            notifyChange()
+            notifyPropertyChanged(BR.templateGroupIconColor)
         }
     }
 
@@ -43,7 +45,7 @@ class TemplateGroupObservable : BaseObservable() {
     fun setTemplateGroupImageUri(value: String){
         if (model.imageUri != value){
             model.imageUri = value
-            notifyChange()
+            notifyPropertyChanged(BR.templateGroupImageUri)
         }
     }
 

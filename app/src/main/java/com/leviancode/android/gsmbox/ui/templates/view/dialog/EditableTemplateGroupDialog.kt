@@ -36,12 +36,11 @@ class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        binding.editTextTemplateGroupName.requestFocus()
 
         if (args.groupId != null){
             loadGroup()
         } else {
-            showKeyboard()
+            showKeyboard(binding.editTextTemplateGroupName)
         }
 
         observeUI()
