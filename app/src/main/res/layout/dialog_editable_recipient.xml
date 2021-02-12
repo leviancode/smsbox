@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingBottom="12dp"
         tools:context=".ui.templates.view.dialog.EditableTemplateGroupDialog">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -70,8 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginEnd="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_recipient_phone_number"
@@ -84,6 +84,24 @@
                 android:textSize="18sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:id="@+id/btn_recipient_contacts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="4dp"
+            android:padding="4dp"
+            android:text="@string/contacts"
+            android:textColor="@color/grey"
+            android:textSize="14sp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:onClick="@{() -> viewModel.onContactsClick()}"
+            app:icon="@drawable/ic_baseline_people_24"
+            app:iconTint="@color/blue_grey_400" />
 
     </LinearLayout>
 

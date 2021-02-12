@@ -102,7 +102,6 @@
 
         <argument
             android:name="recipient"
-            app:nullable="true"
             app:argType="com.leviancode.android.gsmbox.data.model.Recipient" />
 
     </dialog>

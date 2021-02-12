@@ -12,11 +12,11 @@ import kotlinx.coroutines.launch
 class RecipientListViewModel : ViewModel() {
     private val repository = RecipientsRepository
     var recipients: LiveData<List<Recipient>> = repository.data
-    val addRecipientLiveEvent = SingleLiveEvent<Unit>()
+    val addRecipientLiveEvent = SingleLiveEvent<Recipient>()
     val popupMenuLiveEvent = SingleLiveEvent<Pair<View, Recipient>>()
 
     fun onAddRecipientClick(){
-        addRecipientLiveEvent.call()
+        addRecipientLiveEvent.value = Recipient()
     }
 
     fun onPopupMenuClick(view: View, item: Recipient){

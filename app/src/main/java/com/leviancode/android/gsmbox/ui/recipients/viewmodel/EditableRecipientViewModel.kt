@@ -11,6 +11,7 @@ class EditableRecipientViewModel : ViewModel() {
     private val repository = RecipientsRepository
     val data = RecipientObservable()
     val closeDialogLiveEvent = SingleLiveEvent<Unit>()
+    val selectContactLiveEvent = SingleLiveEvent<Unit>()
 
     fun onSaveClick(){
         viewModelScope.launch {
@@ -19,7 +20,11 @@ class EditableRecipientViewModel : ViewModel() {
         closeDialogLiveEvent.call()
     }
 
-    fun setRecipient(item: Recipient) {
-        data.model = item
+    fun setRecipient(item: Recipient?) {
+        item?.let { data.model = it }
+    }
+
+    fun onContactsClick(){
+        selectContactLiveEvent.call()
     }
 }

@@ -45,7 +45,7 @@ class RecipientListFragment : Fragment() {
         }
 
         viewModel.addRecipientLiveEvent.observe(viewLifecycleOwner){
-            showEditableRecipientDialog(null)
+            showEditableRecipientDialog(it)
         }
 
         viewModel.popupMenuLiveEvent.observe(viewLifecycleOwner){
@@ -72,7 +72,7 @@ class RecipientListFragment : Fragment() {
         }
     }
 
-    private fun showEditableRecipientDialog(recipient: Recipient?) {
+    private fun showEditableRecipientDialog(recipient: Recipient) {
         findNavController().navigate(
             RecipientListFragmentDirections.actionOpenEditableRecipient(recipient)
         )

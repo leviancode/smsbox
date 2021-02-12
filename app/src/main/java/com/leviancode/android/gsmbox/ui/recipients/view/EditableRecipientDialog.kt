@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,6 +23,7 @@ class EditableRecipientDialog : BottomSheetDialogFragment() {
     private lateinit var binding: DialogEditableRecipientBinding
     private val viewModel: EditableRecipientViewModel by viewModels()
     private val args: EditableRecipientDialogArgs by navArgs()
+    private lateinit var contactsLauncher: ActivityResultLauncher<Void>
 
     override fun getTheme(): Int = R.style.CustomBottomSheetDialogWithKeyboard
 
@@ -45,9 +48,16 @@ class EditableRecipientDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        args.recipient?.let {
+        contactsLauncher = registerForActivityResult(ActivityResultContracts.PickContact()) { result ->
+            viewModel.setRecipient(ContactsManager.parseUri(requireContext(), result))
+        }
+        args.recipient.let {
             viewModel.setRecipient(it)
-            if (it.name.isNotBlank()) binding.toolbar.title = it.name
+            if (it.name.isNotBlank()) {
+                binding.toolbar.title = it.name
+            } else if (isEmpty(it.name, it.phoneNumber)) {
+                binding.btnRecipientContacts.visibility = View.VISIBLE
+            }
         }
 
         binding.viewModel = viewModel
@@ -59,6 +69,15 @@ class EditableRecipientDialog : BottomSheetDialogFragment() {
 
     private fun observeUI(){
         viewModel.closeDialogLiveEvent.observe(viewLifecycleOwner){ closeDialog(RESULT_OK) }
+
+        viewModel.selectContactLiveEvent.observe(viewLifecycleOwner){
+            selectContact()
+        }
+    }
+
+    private fun selectContact() {
+        hideKeyboard()
+        ContactsManager.openContactsApp(requireContext(), contactsLauncher)
     }
 
     private fun showKeyboard(view: View) {

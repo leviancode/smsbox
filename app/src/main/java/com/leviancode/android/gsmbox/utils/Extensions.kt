@@ -75,8 +75,4 @@ fun isNotBlankLiveData(vararg dependencies: LiveData<out String>, defaultValue: 
     }.apply { value = defaultValue }
 
 fun isNotEmpty(vararg strings: String): Boolean = strings.count { it.isNotBlank() } == strings.size
-
-fun EditText.focus() {
-    requestFocus()
-    setSelection(length())
-}
+fun isEmpty(vararg strings: String): Boolean = strings.count { it.isBlank() } == strings.size

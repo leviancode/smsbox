@@ -26,7 +26,6 @@ class EditableTemplateViewModel : ViewModel() {
 
     val selectColorLiveEvent = SingleLiveEvent<Int>()
     val selectContactLiveEvent = MutableLiveData<RecipientObservable>()
-    val fieldsNotEmptyLiveEvent = SingleLiveEvent<Boolean>()
     val closeDialogLiveEvent = SingleLiveEvent<Boolean>()
 
     init {
@@ -97,9 +96,10 @@ class EditableTemplateViewModel : ViewModel() {
         }
     }
 
-    fun addContact(phoneNumber: String?) {
-        phoneNumber?.let {
-            selectContactLiveEvent.value?.setPhoneNumber(it)
+    fun addContact(recipient: Recipient?) {
+        recipient?.let {
+            data.addRecipient(it)
+            selectContactLiveEvent.value?.model = it
         }
     }
 }
