@@ -1,29 +1,21 @@
 package com.leviancode.android.gsmbox.ui.recipients.view
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import cn.dreamtobe.kpswitch.util.KeyboardUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.EditableRecipientViewModel
-import com.leviancode.android.gsmbox.utils.REQUEST_KEY_SAVED
-import com.leviancode.android.gsmbox.utils.RESULT_CANCEL
-import com.leviancode.android.gsmbox.utils.RESULT_OK
-import com.leviancode.android.gsmbox.utils.setNavigationResult
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import com.leviancode.android.gsmbox.utils.*
 
 class EditableRecipientDialog : BottomSheetDialogFragment() {
     private lateinit var binding: DialogEditableRecipientBinding
@@ -57,16 +49,11 @@ class EditableRecipientDialog : BottomSheetDialogFragment() {
             viewModel.setRecipient(it)
             if (it.name.isNotBlank()) binding.toolbar.title = it.name
         }
-        showKeyboard()
 
         binding.viewModel = viewModel
-        binding.editTextRecipientName.requestFocus()
-        binding.toolbar.apply {
-            setNavigationOnClickListener {
-                closeDialog(RESULT_CANCEL)
-            }
-        }
+        binding.toolbar.setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
 
+        showKeyboard(binding.editTextRecipientName)
         observeUI()
     }
 
@@ -74,26 +61,22 @@ class EditableRecipientDialog : BottomSheetDialogFragment() {
         viewModel.closeDialogLiveEvent.observe(viewLifecycleOwner){ closeDialog(RESULT_OK) }
     }
 
-    private fun showKeyboard() {
-        KeyboardUtil.showKeyboard(binding.root)
+    private fun showKeyboard(view: View) {
+        KeyboardUtil.showKeyboard(view)
     }
 
     private fun hideKeyboard() {
-        KeyboardUtil.hideKeyboard(binding.root)
+        KeyboardUtil.hideKeyboard(requireView())
     }
 
     private fun closeDialog(result: String){
-        setNavigationResult(result, REQUEST_KEY_SAVED)
+        hideKeyboard()
+        setNavigationResult(result, REQUEST_SAVED)
         findNavController().navigateUp()
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        hideKeyboard()
-        super.onDismiss(dialog)
-    }
-
     override fun onPause() {
-        hideKeyboard()
         super.onPause()
+        hideKeyboard()
     }
 }

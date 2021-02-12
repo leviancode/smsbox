@@ -25,7 +25,7 @@ class EditableTemplateViewModel : ViewModel() {
     val openRecipientDialogLiveEvent = SingleLiveEvent<Recipient>()
 
     val selectColorLiveEvent = SingleLiveEvent<Int>()
-    val selectContactLiveEvent = SingleLiveEvent<Recipient>()
+    val selectContactLiveEvent = MutableLiveData<RecipientObservable>()
     val fieldsNotEmptyLiveEvent = SingleLiveEvent<Boolean>()
     val closeDialogLiveEvent = SingleLiveEvent<Boolean>()
 
@@ -71,7 +71,7 @@ class EditableTemplateViewModel : ViewModel() {
         selectColorLiveEvent.value = data.getTemplateIconColor()
     }
 
-    fun onContactsClick(recipient: Recipient) {
+    fun onContactsClick(recipient: RecipientObservable) {
         selectContactLiveEvent.value = recipient
     }
 
@@ -94,6 +94,12 @@ class EditableTemplateViewModel : ViewModel() {
                 data.notifyPropertyChanged(BR.fieldsFilled)
                 delay(500)
             }
+        }
+    }
+
+    fun addContact(phoneNumber: String?) {
+        phoneNumber?.let {
+            selectContactLiveEvent.value?.setPhoneNumber(it)
         }
     }
 }

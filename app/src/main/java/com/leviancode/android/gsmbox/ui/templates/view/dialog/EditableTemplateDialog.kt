@@ -4,13 +4,12 @@ import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.FOCUS_DOWN
-import android.view.View.FOCUS_UP
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.karumi.dexter.Dexter
@@ -20,19 +19,17 @@ import com.karumi.dexter.listener.single.BasePermissionListener
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.data.model.RecipientObservable
-import com.leviancode.android.gsmbox.data.model.TemplateObservable
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateBinding
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateNumberHolderBinding
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateViewModel
 import com.leviancode.android.gsmbox.utils.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 
 class EditableTemplateDialog : AbstractFullScreenDialog() {
     private lateinit var binding: DialogEditableTemplateBinding
     private val viewModel: EditableTemplateViewModel by viewModels()
     private val args: EditableTemplateDialogArgs by navArgs()
+    private var contactPicker: ActivityResultLauncher<Void>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +45,9 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        contactPicker = registerForActivityResult(PickContact()) { result ->
+            viewModel.addContact(ContactsManager.getPhoneNumberByContactUri(requireContext(), result))
+        }
         viewModel.setTemplate(args.template)
         showKeyboard(binding.editTextTemplateName)
 
@@ -80,9 +79,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
             selectColor(color)
         }
 
-        viewModel.selectContactLiveEvent.observe(viewLifecycleOwner) { recipient ->
-            selectContact(recipient)
-        }
+        viewModel.selectContactLiveEvent.observe(viewLifecycleOwner) { selectContact() }
 
         viewModel.closeDialogLiveEvent.observe(viewLifecycleOwner) {
             saved = it
@@ -98,14 +95,14 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         }
     }
 
-    private fun selectContact(recipient: Recipient) {
+    private fun selectContact() {
         hideKeyboard()
 
         Dexter.withContext(requireContext())
             .withPermission(Manifest.permission.READ_CONTACTS)
             .withListener(object : BasePermissionListener() {
                 override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
-                    showContactsDialog(recipient)
+                    showContactsDialog()
                 }
 
                 override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
@@ -114,17 +111,19 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
             }).check()
     }
 
-    private fun showContactsDialog(recipient: Recipient) {
-        getNavigationResult<String>(REQUEST_KEY_SELECTED)?.observe(viewLifecycleOwner) { result ->
+    private fun showContactsDialog() {
+        /*getNavigationResult<String>(REQUEST_SELECTED)?.observe(viewLifecycleOwner) { result ->
             if (!result.isNullOrBlank()) {
                 recipient.phoneNumber = result
-                removeNavigationResult<String>(REQUEST_KEY_SELECTED)
+                removeNavigationResult<String>(REQUEST_SELECTED)
             }
         }
 
         findNavController().navigate(
             EditableTemplateDialogDirections.actionSelectContact()
-        )
+        )*/
+
+        contactPicker?.launch(null)
     }
 
     private fun selectColor(color: Int) {
@@ -140,14 +139,14 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
     }
 
     private fun showSaveRecipientDialog(recipient: Recipient) {
-        getNavigationResult<String>(REQUEST_KEY_SAVED)?.observe(viewLifecycleOwner) { result ->
+        getNavigationResult<String>(REQUEST_SAVED)?.observe(viewLifecycleOwner) { result ->
             when (result) {
                 RESULT_OK -> {
                     showToast(getString(R.string.recipient_saved))
                     hideKeyboard()
                 }
             }
-            removeNavigationResult<String>(REQUEST_KEY_SAVED)
+            removeNavigationResult<String>(REQUEST_SAVED)
         }
 
         findNavController().navigate(

@@ -1,6 +1,7 @@
 package com.leviancode.android.gsmbox.ui.recipients.viewmodel
 
 import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.Recipient
@@ -10,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class RecipientListViewModel : ViewModel() {
     private val repository = RecipientsRepository
-    var recipientsLiveData = repository.data
+    var recipients: LiveData<List<Recipient>> = repository.data
     val addRecipientLiveEvent = SingleLiveEvent<Unit>()
     val popupMenuLiveEvent = SingleLiveEvent<Pair<View, Recipient>>()
 

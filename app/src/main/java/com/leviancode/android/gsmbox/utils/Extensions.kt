@@ -1,5 +1,6 @@
 package com.leviancode.android.gsmbox.utils
 
+import android.widget.EditText
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.fragment.app.Fragment
@@ -50,13 +51,6 @@ inline fun <T, R> ObservableField<T>.map(crossinline transformFunc: (value: T?) 
         }
     }
 
-/*inline fun <T, R> LiveData<T>.map(crossinline transformFunc: (value: T?) -> R): MutableLiveData<R> =
-    object : MutableLiveData<R>() {
-        override fun getValue(): R? {
-            return transformFunc(this@map.value)
-        }
-    }*/
-
 inline fun <T> dependantObservableField(vararg dependencies: Observable, defaultValue: T? = null, crossinline mapper: () -> T?) =
     object : ObservableField<T>(*dependencies) {
         override fun get(): T? {
@@ -81,3 +75,8 @@ fun isNotBlankLiveData(vararg dependencies: LiveData<out String>, defaultValue: 
     }.apply { value = defaultValue }
 
 fun isNotEmpty(vararg strings: String): Boolean = strings.count { it.isNotBlank() } == strings.size
+
+fun EditText.focus() {
+    requestFocus()
+    setSelection(length())
+}

@@ -14,7 +14,7 @@ class EditableRecipientViewModel : ViewModel() {
 
     fun onSaveClick(){
         viewModelScope.launch {
-            repository.addRecipient(data.model)
+            repository.saveRecipient(data.model)
         }
         closeDialogLiveEvent.call()
     }

@@ -50,9 +50,7 @@ class RecipientListAdapter(val viewModel: RecipientListViewModel) :
         }
 
         override fun areContentsTheSame(oldItem: Recipient, newItem: Recipient): Boolean {
-            return oldItem.name == newItem.name
-                    && oldItem.phoneNumber == newItem.phoneNumber
-
+            return oldItem == newItem
         }
     }
 }

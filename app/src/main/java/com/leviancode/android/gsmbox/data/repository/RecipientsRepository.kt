@@ -10,14 +10,10 @@ object RecipientsRepository {
     private val dao = AppDatabase.INSTANCE!!.recipientDao()
     var data: LiveData<List<Recipient>> = dao.getAll()
 
-    suspend fun addRecipient(item: Recipient) = withContext(IO){
+    suspend fun saveRecipient(item: Recipient) = withContext(IO){
         val recipient = getRecipientById(item.recipientId)
         if (recipient == null) dao.insert(item)
         else dao.update(item)
-    }
-
-    suspend fun updateRecipient(item: Recipient) = withContext(IO){
-        dao.update(item)
     }
 
     suspend fun deleteRecipient(item: Recipient) = withContext(IO){

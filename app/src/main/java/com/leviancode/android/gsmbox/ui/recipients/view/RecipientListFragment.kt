@@ -1,7 +1,6 @@
 package com.leviancode.android.gsmbox.ui.recipients.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,14 +33,15 @@ class RecipientListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.adapter = RecipientListAdapter(viewModel)
         binding.viewModel = viewModel
+        binding.adapter = RecipientListAdapter(viewModel)
         observeUI()
     }
 
     private fun observeUI() {
-        viewModel.recipientsLiveData.observe(viewLifecycleOwner){
+        viewModel.recipients.observe(viewLifecycleOwner){
             binding.adapter?.submitList(it)
+            binding.adapter?.notifyDataSetChanged()
         }
 
         viewModel.addRecipientLiveEvent.observe(viewLifecycleOwner){

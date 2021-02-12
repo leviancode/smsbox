@@ -11,7 +11,7 @@ import com.leviancode.android.gsmbox.data.model.TemplateGroup
 import com.leviancode.android.gsmbox.utils.Converters
 import com.leviancode.android.gsmbox.utils.DATABASE_NAME
 
-@Database(entities = [Template::class, TemplateGroup::class, Recipient::class], version = 2)
+@Database(entities = [Template::class, TemplateGroup::class, Recipient::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase(){
     abstract fun templateDao(): TemplateDao

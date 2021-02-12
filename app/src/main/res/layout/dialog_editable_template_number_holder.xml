@@ -89,7 +89,7 @@
             android:text="@string/contacts"
             android:textColor="@color/grey"
             android:textSize="12sp"
-            android:onClick="@{() -> viewModel.onContactsClick(recipient.model)}"
+            android:onClick="@{() -> viewModel.onContactsClick(recipient)}"
             app:icon="@drawable/ic_baseline_people_24"
             app:iconTint="@color/blue_grey_400" />
 
