@@ -1,6 +1,5 @@
 package com.leviancode.android.gsmbox.ui.templates.viewmodel
 
-import android.util.Log
 import android.view.View
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +9,7 @@ import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.data.model.RecipientObservable
 import com.leviancode.android.gsmbox.data.model.Template
 import com.leviancode.android.gsmbox.data.model.TemplateObservable
+import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import kotlinx.coroutines.delay
@@ -18,9 +18,11 @@ import kotlinx.coroutines.launch
 
 class EditableTemplateViewModel : ViewModel() {
     private val repository = TemplatesRepository
+    var original: Template? = null
     val data = TemplateObservable()
+    val recipients = RecipientsRepository.data
 
-    val addNumberFieldLiveEvent = MutableLiveData<RecipientObservable>()
+    val addNumberFieldLiveEvent = SingleLiveEvent<RecipientObservable>()
     val removeRecipientLiveEvent = SingleLiveEvent<View>()
     val openRecipientDialogLiveEvent = SingleLiveEvent<Recipient>()
 
@@ -34,13 +36,9 @@ class EditableTemplateViewModel : ViewModel() {
 
     fun setTemplate(template: Template){
         data.model = template
+        original = template.copy()
         if (template.recipients.isEmpty()) {
             onAddNumberClick()
-        } else {
-            template.recipients.forEach {
-                Log.i("SET", "recipient: ${it.phoneNumber}")
-                addNumberField(it)
-            }
         }
     }
 
@@ -83,8 +81,8 @@ class EditableTemplateViewModel : ViewModel() {
         data.setTemplateIconColor(color)
     }
 
-    fun isFieldsNotEmpty(): Boolean {
-        return data.isFieldsFilled()
+    fun isTemplateEdited(): Boolean {
+        return original != data.model
     }
 
     private fun fieldsChecker(){

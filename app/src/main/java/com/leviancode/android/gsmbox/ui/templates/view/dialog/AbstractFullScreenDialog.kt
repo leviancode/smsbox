@@ -1,13 +1,11 @@
 package com.leviancode.android.gsmbox.ui.templates.view.dialog
 
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.DialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.ui.extra.DiscardDialog
@@ -47,10 +45,10 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
         }
     }
 
-    abstract fun isFieldsNotEmpty(): Boolean
+    abstract fun isDataEdited(): Boolean
 
     fun isNeedConfirmation(): Boolean {
-        return !(saved || !isFieldsNotEmpty() || discarded)
+        return !(saved || !isDataEdited() || discarded)
     }
 
     fun closeDialog(){

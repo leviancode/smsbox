@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.*
+import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -25,6 +26,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
     private val viewModel: EditableTemplateViewModel by viewModels()
     private val args: EditableTemplateDialogArgs by navArgs()
     private lateinit var contactsLauncher: ActivityResultLauncher<Void>
+    private var recipientList = listOf<Recipient>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,8 +45,6 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         contactsLauncher = registerForActivityResult(PickContact()) { result ->
             viewModel.addContact(ContactsManager.parseUri(requireContext(), result))
         }
-        viewModel.setTemplate(args.template)
-        showKeyboard(binding.editTextTemplateName)
 
         binding.viewModel = viewModel
         binding.toolbar.apply {
@@ -54,10 +54,24 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
             setNavigationOnClickListener { closeDialog() }
         }
 
+        setupViews()
         observeUI()
     }
 
+    private fun setupViews(){
+        args.template.recipients
+            .takeIf{ it.isNotEmpty() }
+            ?.forEach { addNumberField(RecipientObservable(it)) }
+        viewModel.setTemplate(args.template)
+        showKeyboard(binding.editTextTemplateName)
+    }
+
     private fun observeUI() {
+        viewModel.recipients.observe(viewLifecycleOwner){ list ->
+            recipientList = list
+            updateListForAutoComplete(list)
+        }
+
         viewModel.openRecipientDialogLiveEvent.observe(viewLifecycleOwner) { recipient ->
             showSaveRecipientDialog(recipient)
         }
@@ -79,6 +93,15 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         viewModel.closeDialogLiveEvent.observe(viewLifecycleOwner) {
             saved = it
             closeDialog()
+        }
+    }
+
+    private fun updateListForAutoComplete(list: List<Recipient>){
+        binding.recipientsLayout.children.forEach {
+            val bindingView =
+                DataBindingUtil.getBinding<DialogEditableTemplateNumberHolderBinding>(it)
+            bindingView?.autoCompleteList = list
+            bindingView?.executePendingBindings()
         }
     }
 
@@ -138,12 +161,14 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         )
 
         recipientBinding.recipient = recipient
+        recipientBinding.autoCompleteList = recipientList
         recipientBinding.viewModel = viewModel
 
         if (binding.recipientsLayout.childCount > 1) {
             showKeyboard(recipientBinding.editTextRecipientNumber)
             recipientBinding.btnRemoveNumber.visibility = View.VISIBLE
         }
+        recipientBinding.executePendingBindings()
     }
 
     private fun removeRecipientLayout(view: View) {
@@ -155,8 +180,8 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         binding.recipientsLayout.removeView(parent)
     }
 
-    override fun isFieldsNotEmpty(): Boolean {
-        return viewModel.isFieldsNotEmpty()
+    override fun isDataEdited(): Boolean {
+        return viewModel.isTemplateEdited()
     }
 
     private fun showToast(message: String) {

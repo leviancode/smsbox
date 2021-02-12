@@ -68,9 +68,8 @@
         tools:layout="@layout/dialog_editable_template_group">
 
         <argument
-            android:name="groupId"
-            app:nullable="true"
-            app:argType="string" />
+            android:name="group"
+            app:argType="com.leviancode.android.gsmbox.data.model.TemplateGroup" />
 
     </dialog>
 

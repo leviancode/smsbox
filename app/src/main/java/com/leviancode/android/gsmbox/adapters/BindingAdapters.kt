@@ -1,20 +1,16 @@
 package com.leviancode.android.gsmbox.adapters
 
-import android.graphics.Color
 import android.view.View
-import android.widget.Button
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
-import androidx.databinding.BindingConversion
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.google.android.material.button.MaterialButton
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.data.model.Recipient
 
 @BindingAdapter(value = ["loadImage"])
 fun ImageView.loadImage(uri: String?) {
@@ -50,6 +46,19 @@ fun RecyclerView.bindRecyclerViewAdapter(adapter: ListAdapter<*, *>) {
 fun MaterialButton.setVisibility(text: String?) {
     this.run {
         visibility = if (text.isNullOrBlank()) View.INVISIBLE else View.VISIBLE
+    }
+}
+
+@BindingAdapter(value = ["setAutoCompleteList"])
+fun AutoCompleteTextView.setAdapter(recipients: List<Recipient>?){
+    recipients?.let {
+        setAdapter(
+            ArrayAdapter(
+                context,
+                android.R.layout.simple_spinner_dropdown_item,
+                recipients.map { it.phoneNumber }
+            )
+        )
     }
 }
 

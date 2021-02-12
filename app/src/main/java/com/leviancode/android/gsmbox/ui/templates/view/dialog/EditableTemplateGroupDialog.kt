@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.TemplateGroup
-import com.leviancode.android.gsmbox.data.model.TemplateGroupObservable
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateGroupBinding
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateGroupViewModel
 import kotlinx.coroutines.flow.collect
@@ -37,19 +34,13 @@ class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
-        if (args.groupId != null){
-            loadGroup()
-        } else {
-            showKeyboard(binding.editTextTemplateGroupName)
+        viewModel.setGroup(args.group)
+        showKeyboard(binding.editTextTemplateGroupName)
+        args.group.name.takeIf { it.isNotBlank() }?.let {
+            binding.toolbar.title = it
         }
 
         observeUI()
-    }
-
-    private fun loadGroup(){
-        lifecycleScope.launch {
-            viewModel.loadGroupById(args.groupId!!).collect { binding.toolbar.title = it }
-        }
     }
 
     private fun observeUI(){
@@ -75,15 +66,7 @@ class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
         }
     }
 
-    override fun isFieldsNotEmpty(): Boolean {
-        return viewModel.isAllFieldsFilled()
-    }
-
-    private fun showMessage(message: String){
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
-    companion object {
-        val TAG = EditableTemplateGroupDialog::class.java.simpleName
+    override fun isDataEdited(): Boolean {
+        return viewModel.isGroupEdited()
     }
 }

@@ -76,8 +76,8 @@ class TemplateGroupListFragment : Fragment() {
         navController.navigate(action)
     }
 
-    private fun showEditableGroupDialog(groupId: String?) {
-        val action = TemplateGroupListFragmentDirections.actionOpenEditableGroup(groupId)
+    private fun showEditableGroupDialog(group: TemplateGroup) {
+        val action = TemplateGroupListFragmentDirections.actionOpenEditableGroup(group)
         navController.navigate(action)
     }
 
@@ -86,18 +86,15 @@ class TemplateGroupListFragment : Fragment() {
             binding.adapter?.submitList(groupList)
         }
 
-        viewModel.addGroupLiveEvent.observe(viewLifecycleOwner) { showEditableGroupDialog(null) }
+        viewModel.addGroupLiveEvent.observe(viewLifecycleOwner) { showEditableGroupDialog(it) }
         viewModel.selectGroupLiveEvent.observe(viewLifecycleOwner) { openSelectedGroup(it) }
-
-        viewModel.popupMenuLiveEvent.observe(viewLifecycleOwner) {
-            showPopup(it)
-        }
+        viewModel.popupMenuLiveEvent.observe(viewLifecycleOwner) { showPopup(it) }
     }
 
     private fun showPopup(pair: Pair<View, TemplateGroup>) {
         ItemPopupMenu(requireContext(), pair.first).show { result ->
             when (result) {
-                EDIT -> showEditableGroupDialog(pair.second.groupId)
+                EDIT -> showEditableGroupDialog(pair.second)
                 DELETE -> deleteGroup(pair.second)
             }
         }
@@ -107,7 +104,7 @@ class TemplateGroupListFragment : Fragment() {
         DeleteConfirmationDialog(requireContext()).apply {
             title = getString(R.string.delete_group)
             message = getString(R.string.delete_group_confirmation)
-            show{ result ->
+            show { result ->
                 if (result) viewModel.deleteGroup(item)
             }
         }

@@ -10,12 +10,12 @@ import kotlinx.coroutines.launch
 class TemplateGroupListViewModel : ViewModel() {
     private val repository = TemplatesRepository
     val groups: LiveData<List<TemplateGroup>> = repository.groups
-    val addGroupLiveEvent = SingleLiveEvent<Unit>()
+    val addGroupLiveEvent = SingleLiveEvent<TemplateGroup>()
     val selectGroupLiveEvent = SingleLiveEvent<TemplateGroup>()
     val popupMenuLiveEvent = SingleLiveEvent<Pair<View, TemplateGroup>>()
 
     fun onAddGroupClick(){
-        addGroupLiveEvent.call()
+        addGroupLiveEvent.value = TemplateGroup()
     }
 
     fun onItemClick(item: TemplateGroup){
