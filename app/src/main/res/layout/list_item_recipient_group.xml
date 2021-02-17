@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="group"
+            type="com.leviancode.android.gsmbox.data.model.RecipientGroupObservable" />
+
+        <variable
+            name="viewModel"
+            type="com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel" />
+    </data>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
+            android:paddingStart="16dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="12dp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/recipient_group_image"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="12dp"
+                android:padding="4dp"
+                android:scaleType="center"
+                android:tint="@{group.iconColor}"
+                android:src="@drawable/ic_baseline_library_books_24" />
+
+            <TextView
+                android:id="@+id/tv_recipient_group_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                android:text="@{group.name}"
+                android:textColor="@color/text_title"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="Title" />
+
+            <TextView
+                android:id="@+id/tv_templates_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:text="@{group.size}"
+                android:textSize="14sp"
+                tools:text="8" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ib_popup_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/open_option_menu"
+                android:onClick="@{(view) -> viewModel.onGroupPopupMenuClick(view, group.model)}"
+                android:padding="4dp"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_baseline_more_vert_24" />
+
+        </LinearLayout>
+
+</layout>

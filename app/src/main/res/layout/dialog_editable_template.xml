@@ -70,7 +70,7 @@
                         android:hint="@string/hint_name"
                         android:inputType="text"
                         android:padding="8dp"
-                        android:text="@={viewModel.data.templateName}"
+                        android:text="@={viewModel.data.name}"
                         android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -108,18 +108,43 @@
 
                 </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_template_add_recipient"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/add_number"
-                    android:textColor="@color/grey"
-                    android:onClick="@{() -> viewModel.onAddNumberClick()}"
-                    app:icon="@drawable/ic_baseline_add_24"
-                    app:iconTint="@color/blue_grey_300" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_template_add_recipient"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:onClick="@{() -> viewModel.onAddNumberClick()}"
+                        android:text="@string/recipient"
+                        android:textColor="@color/grey"
+                        app:icon="@drawable/ic_baseline_add_24"
+                        app:iconTint="@color/blue_grey_300"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_template_add_recipient_group"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:onClick="@{() -> viewModel.onAddNumberClick()}"
+                        android:text="@string/recipient_group"
+                        android:textColor="@color/grey"
+                        app:icon="@drawable/ic_baseline_library_add_24"
+                        app:iconTint="@color/blue_grey_300"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_template_icon_color"
@@ -132,7 +157,7 @@
                     android:textColor="@color/grey"
                     android:onClick="@{() -> viewModel.onIconColorClick()}"
                     app:icon="@drawable/ic_baseline_color_lens_24"
-                    app:iconTint="@{viewModel.data.templateIconColor}"
+                    app:iconTint="@{viewModel.data.iconColor}"
                     tools:iconTint="@color/blue_grey_300" />
 
             </LinearLayout>

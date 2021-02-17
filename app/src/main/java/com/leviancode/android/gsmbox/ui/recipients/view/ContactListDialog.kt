@@ -15,13 +15,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.ContactListAdapter
 import com.leviancode.android.gsmbox.adapters.ListItemClickListener
-import com.leviancode.android.gsmbox.databinding.DialogBottomSheetContactsBinding
+import com.leviancode.android.gsmbox.databinding.DialogSelectListContactsBinding
 import com.leviancode.android.gsmbox.utils.REQUEST_SELECTED
 import com.leviancode.android.gsmbox.utils.setNavigationResult
 
 
 class ContactListDialog : BottomSheetDialogFragment() {
-    private lateinit var binding: DialogBottomSheetContactsBinding
+    private lateinit var binding: DialogSelectListContactsBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -38,7 +38,7 @@ class ContactListDialog : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.dialog_bottom_sheet_contacts, container, false
+            inflater, R.layout.dialog_select_list_contacts, container, false
         )
         binding.ibCloseDialog.setOnClickListener { closeDialog() }
         fetchContacts()

@@ -13,11 +13,12 @@
 
         <action
             android:id="@+id/action_open_group_templates"
-            app:destination="@id/nav_template_list"
             app:enterAnim="@anim/slide_left"
             app:exitAnim="@anim/slide_right"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:destination="@id/nav_template_list" />
+
         <action
             android:id="@+id/action_open_editable_group"
             app:destination="@id/nav_editable_group"/>
@@ -47,12 +48,15 @@
 
     <fragment
         android:id="@+id/nav_recipients"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.RecipientListFragment"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.RecipientsFragment"
         android:label="@string/title_recipients"
-        tools:layout="@layout/fragment_recipient_list" >
+        tools:layout="@layout/fragment_recipients" >
         <action
             android:id="@+id/action_open_editable_recipient"
             app:destination="@id/nav_editable_recipient" />
+        <action
+            android:id="@+id/action_open_editable_recipient_group"
+            app:destination="@id/nav_editable_recipient_group" />
     </fragment>
 
     <fragment
@@ -102,6 +106,21 @@
         <argument
             android:name="recipient"
             app:argType="com.leviancode.android.gsmbox.data.model.Recipient" />
+        <action
+            android:id="@+id/action_open_recipient_group_list"
+            app:destination="@id/nav_select_recipient_group" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/nav_editable_recipient_group"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.EditableRecipientGroupDialog"
+        android:label="New Group"
+        tools:layout="@layout/dialog_editable_recipient_group">
+
+        <argument
+            android:name="group"
+            app:argType="com.leviancode.android.gsmbox.data.model.RecipientGroup" />
 
     </dialog>
 
@@ -109,8 +128,18 @@
         android:id="@+id/nav_select_contact"
         android:name="com.leviancode.android.gsmbox.ui.recipients.view.ContactListDialog"
         android:label="Select Contact"
-        tools:layout="@layout/dialog_bottom_sheet_contacts">
+        tools:layout="@layout/dialog_select_list_contacts">
+    </dialog>
 
+    <dialog
+        android:id="@+id/nav_select_recipient_group"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.RecipientGroupSelectListDialog"
+        android:label="Select Group"
+        tools:layout="@layout/dialog_select_list_recipient_group">
+
+        <argument
+            android:name="groupId"
+            app:argType="string"/>
     </dialog>
 
 

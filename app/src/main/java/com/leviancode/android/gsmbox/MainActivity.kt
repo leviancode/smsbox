@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(){
                 R.id.nav_settings
             )
         )
-         binding.toolbarMain.setupWithNavController(navController, appBarConfiguration)
+      //  binding.toolbarMain.setupWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 }

@@ -6,7 +6,6 @@ import com.leviancode.android.gsmbox.data.model.TemplateGroup
 import com.leviancode.android.gsmbox.data.model.TemplateGroupObservable
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class EditableTemplateGroupViewModel : ViewModel() {
@@ -30,11 +29,11 @@ class EditableTemplateGroupViewModel : ViewModel() {
     }
 
     fun onIconColorClick() {
-        chooseColorLiveEvent.value = data.getTemplateGroupIconColor()
+        chooseColorLiveEvent.value = data.getIconColor()
     }
 
     fun setIconColor(color: Int) {
-        data.setTemplateGroupIconColor(color)
+        data.setIconColor(color)
     }
 
     fun isGroupEdited() = original != data.model

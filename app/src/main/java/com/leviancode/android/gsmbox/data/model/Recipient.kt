@@ -12,5 +12,7 @@ data class Recipient(
     @ColumnInfo(name = "recipient_id")
     var recipientId: String = UUID.randomUUID().toString(),
     @ColumnInfo(name = "name") var name: String = "",
-    @ColumnInfo(name = "phone_number") var phoneNumber: String = ""
+    @ColumnInfo(name = "phone_number") var phoneNumber: String = "",
+    @ColumnInfo(name = "group_name") var groupName: String = "",
+    @ColumnInfo(name = "group_id") var groupId: String = ""
 ) : Serializable

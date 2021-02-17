@@ -1,12 +1,15 @@
 package com.leviancode.android.gsmbox.ui.templates.view.dialog
 
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.transition.MaterialContainerTransform
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.ui.extra.DiscardDialog
 import com.leviancode.android.gsmbox.utils.KeyboardUtil
@@ -14,6 +17,8 @@ import com.leviancode.android.gsmbox.utils.KeyboardUtil
 abstract class AbstractFullScreenDialog : DialogFragment() {
     var discarded = false
     var saved = false
+
+    override fun getTheme() = R.style.AppTheme_FullScreenDialog
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return object : Dialog(requireActivity(), theme){
@@ -29,12 +34,7 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View?
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.AppTheme_FullScreenDialog)
-    }
-
-    override fun onStart() {
+    /*override fun onStart() {
         super.onStart()
         dialog?.apply {
             val width = ViewGroup.LayoutParams.MATCH_PARENT
@@ -43,7 +43,7 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
             window?.setLayout(width, height)
            // window?.setWindowAnimations(R.style.Theme_GsmBox_Slide)
         }
-    }
+    }*/
 
     abstract fun isDataEdited(): Boolean
 

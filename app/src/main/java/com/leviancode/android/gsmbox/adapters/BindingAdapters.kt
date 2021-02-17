@@ -1,9 +1,7 @@
 package com.leviancode.android.gsmbox.adapters
 
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.ImageView
+import android.widget.*
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,12 +13,12 @@ import com.leviancode.android.gsmbox.data.model.Recipient
 @BindingAdapter(value = ["loadImage"])
 fun ImageView.loadImage(uri: String?) {
     if (uri.isNullOrBlank()) {
-        load(R.drawable.ic_baseline_library_books_24)
+        load(R.drawable.ic_baseline_source_24)
     } else {
         try {
             load(uri)
         } catch (e: Exception) {
-            load(R.drawable.ic_baseline_library_books_24)
+            load(R.drawable.ic_baseline_source_24)
         }
     }
 }
@@ -40,6 +38,11 @@ fun RecyclerView.bindRecyclerViewAdapter(adapter: ListAdapter<*, *>) {
         this.setHasFixedSize(true)
         this.adapter = adapter
     }
+}
+
+@BindingAdapter(value = ["setExpandableAdapter"])
+fun ExpandableListView.bindExpandableListAdapter(adapter: BaseExpandableListAdapter){
+    setAdapter(adapter)
 }
 
 @BindingAdapter(value = ["visibilityDependingOnText"])

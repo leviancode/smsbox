@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -15,6 +16,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDE
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.data.model.Recipient
+import com.leviancode.android.gsmbox.data.model.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.EditableRecipientViewModel
 import com.leviancode.android.gsmbox.utils.*
@@ -48,9 +51,7 @@ class EditableRecipientDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        contactsLauncher = registerForActivityResult(ActivityResultContracts.PickContact()) { result ->
-            viewModel.setRecipient(ContactsManager.parseUri(requireContext(), result))
-        }
+        binding.viewModel = viewModel
         args.recipient.let {
             viewModel.setRecipient(it)
             if (it.name.isNotBlank()) {
@@ -59,20 +60,38 @@ class EditableRecipientDialog : BottomSheetDialogFragment() {
                 binding.btnRecipientContacts.visibility = View.VISIBLE
             }
         }
-
-        binding.viewModel = viewModel
-        binding.toolbar.setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
-
+        setupContactPickerLauncher()
         showKeyboard(binding.editTextRecipientName)
         observeUI()
     }
 
+    private fun setupContactPickerLauncher(){
+        contactsLauncher = registerForActivityResult(PickContact()) { result ->
+            viewModel.setRecipient(ContactsManager.parseUri(requireContext(), result))
+        }
+    }
+
     private fun observeUI(){
+        binding.toolbar.setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
+
         viewModel.closeDialogLiveEvent.observe(viewLifecycleOwner){ closeDialog(RESULT_OK) }
 
-        viewModel.selectContactLiveEvent.observe(viewLifecycleOwner){
-            selectContact()
+        viewModel.selectContactLiveEvent.observe(viewLifecycleOwner){ selectContact() }
+
+        viewModel.selectGroupLiveEvent.observe(viewLifecycleOwner){ selectGroup(it) }
+    }
+
+    private fun selectGroup(groupId: String) {
+        hideKeyboard()
+        getNavigationResult<RecipientGroup>(REQUEST_SELECTED)?.observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                viewModel.setGroup(result)
+                removeNavigationResult<RecipientGroup>(REQUEST_SELECTED)
+            }
         }
+        findNavController().navigate(
+            EditableRecipientDialogDirections.actionOpenRecipientGroupList(groupId)
+        )
     }
 
     private fun selectContact() {

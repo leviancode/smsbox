@@ -17,11 +17,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:elevation="@dimen/app_bar_elevation"
+            android:background="@android:color/white">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar_template_groups"
+                android:layout_width="match_parent"
+                app:title="@string/title_templates"
+                android:layout_height="?attr/actionBarSize"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/template_groups_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
+            android:layout_marginTop="?attr/actionBarSize"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:setAdapter="@{adapter}"
             tools:listitem="@layout/list_item_template_group" >
@@ -37,8 +53,10 @@
             android:layout_marginBottom="16dp"
             android:src="@drawable/ic_baseline_add_24"
             android:onClick="@{() -> viewModel.onAddGroupClick()}"
+            app:fabSize="auto"
             app:backgroundTint="@color/white"
-            android:contentDescription="@string/desc_create_new_group" />
+            android:contentDescription="@string/desc_create_new_group"
+            android:transitionName="@string/transition_edit_template_group"/>
 
     </FrameLayout>
 

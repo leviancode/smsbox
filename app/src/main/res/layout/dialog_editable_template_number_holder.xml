@@ -50,7 +50,7 @@
                 android:id="@+id/edit_text_recipient_number_layout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/number_holder_height">
+                android:layout_height="@dimen/edit_text_layout_height">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/edit_text_recipient_number"
@@ -73,7 +73,7 @@
                 android:id="@+id/btn_recipient_save"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="@dimen/number_holder_save_btn_width"
-                android:layout_height="@dimen/number_holder_height"
+                android:layout_height="@dimen/edit_text_layout_height"
                 android:layout_alignParentEnd="true"
                 android:onClick="@{() -> viewModel.onSaveRecipientClick(recipient.model)}"
                 android:text="@string/save"

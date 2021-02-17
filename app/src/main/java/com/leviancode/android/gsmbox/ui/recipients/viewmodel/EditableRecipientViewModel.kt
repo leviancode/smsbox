@@ -2,6 +2,7 @@ package com.leviancode.android.gsmbox.ui.recipients.viewmodel
 
 import androidx.lifecycle.*
 import com.leviancode.android.gsmbox.data.model.Recipient
+import com.leviancode.android.gsmbox.data.model.RecipientGroup
 import com.leviancode.android.gsmbox.data.model.RecipientObservable
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
@@ -12,6 +13,7 @@ class EditableRecipientViewModel : ViewModel() {
     val data = RecipientObservable()
     val closeDialogLiveEvent = SingleLiveEvent<Unit>()
     val selectContactLiveEvent = SingleLiveEvent<Unit>()
+    val selectGroupLiveEvent = SingleLiveEvent<String>()
 
     fun onSaveClick(){
         viewModelScope.launch {
@@ -24,7 +26,16 @@ class EditableRecipientViewModel : ViewModel() {
         item?.let { data.model = it }
     }
 
+    fun setGroup(group: RecipientGroup) {
+        data.setGroupId(group.groupId)
+        data.setGroupName(group.name)
+    }
+
     fun onContactsClick(){
         selectContactLiveEvent.call()
+    }
+
+    fun onGroupsClick(){
+        selectGroupLiveEvent.value = data.getGroupId()
     }
 }

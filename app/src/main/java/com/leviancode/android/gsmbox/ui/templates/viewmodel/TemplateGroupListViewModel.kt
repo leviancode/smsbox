@@ -11,7 +11,7 @@ class TemplateGroupListViewModel : ViewModel() {
     private val repository = TemplatesRepository
     val groups: LiveData<List<TemplateGroup>> = repository.groups
     val addGroupLiveEvent = SingleLiveEvent<TemplateGroup>()
-    val selectGroupLiveEvent = SingleLiveEvent<TemplateGroup>()
+    val selectedGroupLiveEvent = SingleLiveEvent<TemplateGroup>()
     val popupMenuLiveEvent = SingleLiveEvent<Pair<View, TemplateGroup>>()
 
     fun onAddGroupClick(){
@@ -19,11 +19,11 @@ class TemplateGroupListViewModel : ViewModel() {
     }
 
     fun onItemClick(item: TemplateGroup){
-        selectGroupLiveEvent.value = item
+        selectedGroupLiveEvent.value = item
     }
 
     fun onPopupMenuClick(view: View, item: TemplateGroup){
-        popupMenuLiveEvent.value = Pair(view, item)
+        popupMenuLiveEvent.value = view to item
     }
 
     fun deleteGroup(item: TemplateGroup) {

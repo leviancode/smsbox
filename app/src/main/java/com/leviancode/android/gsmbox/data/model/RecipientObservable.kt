@@ -2,7 +2,7 @@ package com.leviancode.android.gsmbox.data.model
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import androidx.databinding.library.baseAdapters.BR
+import com.leviancode.android.gsmbox.BR
 import com.leviancode.android.gsmbox.utils.isNotEmpty
 
 class RecipientObservable() : BaseObservable(){
@@ -16,11 +16,11 @@ class RecipientObservable() : BaseObservable(){
         }
 
     @Bindable
-    fun getRecipientName() = model.name
-    fun setRecipientName(value: String){
+    fun getName() = model.name
+    fun setName(value: String){
         if (model.name != value){
             model.name = value
-            notifyPropertyChanged(BR.recipientName)
+            notifyPropertyChanged(BR.name)
             notifyPropertyChanged(BR.fieldsFilled)
         }
     }
@@ -36,6 +36,20 @@ class RecipientObservable() : BaseObservable(){
     }
 
     @Bindable
-    fun isFieldsFilled() = isNotEmpty(getRecipientName(), getPhoneNumber())
+    fun isFieldsFilled() = isNotEmpty(getName(), getPhoneNumber())
+
+    @Bindable
+    fun getGroupName() = model.groupName
+    fun setGroupName(value: String){
+        if (model.groupName != value){
+            model.groupName = value
+            notifyPropertyChanged(BR.groupName)
+        }
+    }
+
+    fun getGroupId() = model.groupId
+    fun setGroupId(value: String){
+        model.groupId = value
+    }
 
 }

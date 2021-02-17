@@ -6,18 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateGroupBinding
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateGroupViewModel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
     private lateinit var binding: DialogEditableTemplateGroupBinding
     private val viewModel: EditableTemplateGroupViewModel by viewModels()
     private val args: EditableTemplateGroupDialogArgs by navArgs()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +44,7 @@ class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
     private fun observeUI(){
         binding.toolbar.setNavigationOnClickListener { closeDialog() }
 
-        viewModel.chooseColorLiveEvent.observe(viewLifecycleOwner){ chooseColor(it) }
+        viewModel.chooseColorLiveEvent.observe(viewLifecycleOwner){ selectColor(it) }
 
         viewModel.closeDialogLiveEvent.observe(viewLifecycleOwner){
             saved = true
@@ -54,7 +52,7 @@ class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
         }
     }
 
-    private fun chooseColor(color: Int){
+    private fun selectColor(color: Int){
         hideKeyboard()
 
         ColorPickerDialog(

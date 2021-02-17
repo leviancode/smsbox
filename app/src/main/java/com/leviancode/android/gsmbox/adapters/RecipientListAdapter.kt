@@ -1,6 +1,7 @@
 package com.leviancode.android.gsmbox.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
@@ -11,9 +12,9 @@ import com.leviancode.android.gsmbox.adapters.RecipientListAdapter.*
 import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.data.model.RecipientObservable
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientBinding
-import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientListViewModel
+import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
 
-class RecipientListAdapter(val viewModel: RecipientListViewModel) :
+class RecipientListAdapter(val viewModel: RecipientsViewModel) :
     ListAdapter<Recipient, RecipientHolder>(RecipientsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipientHolder {
@@ -29,13 +30,14 @@ class RecipientListAdapter(val viewModel: RecipientListViewModel) :
 
     class RecipientHolder(
         val binding: ListItemRecipientBinding,
-        val viewModel: RecipientListViewModel
+        val viewModel: RecipientsViewModel
     ) : RecyclerView.ViewHolder(binding.root) {
         private val recipient = RecipientObservable()
 
         init {
             binding.recipient = recipient
             binding.viewModel = viewModel
+            binding.space.visibility = View.GONE
         }
 
         fun bind(item: Recipient) {

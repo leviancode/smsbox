@@ -41,11 +41,12 @@
 
         </com.google.android.material.appbar.MaterialToolbar>
 
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_recipient_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/edit_text_layout_height"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp">
@@ -59,49 +60,100 @@
                 android:selectAllOnFocus="true"
                 android:inputType="text"
                 android:padding="8dp"
-                android:text="@={viewModel.data.recipientName}"
+                android:text="@={viewModel.data.name}"
                 android:textSize="18sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_recipient_phone_number"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp">
+            android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_recipient_phone_number"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/edit_text_layout_height"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_recipient_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_phone_number"
+                    android:inputType="phone"
+                    android:padding="8dp"
+                    android:text="@={viewModel.data.phoneNumber}"
+                    android:textSize="18sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_recipient_contacts"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="@dimen/button_width_small"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_phone_number"
-                android:inputType="phone"
-                android:padding="8dp"
-                android:text="@={viewModel.data.phoneNumber}"
-                android:textSize="18sp" />
+                android:layout_marginEnd="16dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="4dp"
+                android:onClick="@{() -> viewModel.onContactsClick()}"
+                android:text="@string/contacts"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:icon="@drawable/ic_baseline_people_24"
+                app:iconTint="@color/blue_grey_400"
+                tools:visibility="visible" />
+        </LinearLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:id="@+id/btn_recipient_contacts"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="4dp"
-            android:padding="4dp"
-            android:text="@string/contacts"
-            android:textColor="@color/grey"
-            android:textSize="14sp"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:onClick="@{() -> viewModel.onContactsClick()}"
-            app:icon="@drawable/ic_baseline_people_24"
-            app:iconTint="@color/blue_grey_400" />
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/edit_text_layout_height"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_recipient_group_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_group_name"
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:text="@={viewModel.data.groupName}"
+                    android:textSize="18sp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_recipient_select_group"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="4dp"
+                android:onClick="@{() -> viewModel.onGroupsClick()}"
+                android:text="@string/groups"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_baseline_library_books_24"
+                app:iconTint="@color/blue_grey_400"/>
+        </LinearLayout>
 
     </LinearLayout>
 

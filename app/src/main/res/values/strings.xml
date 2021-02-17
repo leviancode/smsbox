@@ -57,4 +57,15 @@
     <string name="delete_group">Delete Group?</string>
     <string name="delete_template">Delete Template?</string>
     <string name="delete_recipient">Delete Recipient?</string>
+    <string name="add_group">Add Group</string>
+    <string name="transition_edit_template_group">transition_edit_template_group</string>
+    <string name="transition_open_template_group">transition_open_template_group</string>
+    <string name="all">All</string>
+    <string name="groups">Groups</string>
+    <string name="add_to_group">Add to group</string>
+    <string name="selected_item">Selected item</string>
+    <string name="ok">OK</string>
+    <string name="hint_group_name">Group name (optional)</string>
+    <string name="recipient">Recipient</string>
+    <string name="recipient_group">Recipient group</string>
 </resources>

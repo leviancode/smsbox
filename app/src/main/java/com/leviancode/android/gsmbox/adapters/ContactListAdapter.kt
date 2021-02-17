@@ -8,8 +8,10 @@ import com.github.tamir7.contacts.Contact
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.ListItemContactBinding
 
-class ContactListAdapter(val contacts: List<Contact>,
-                         val listener: ListItemClickListener<Contact>) : RecyclerView.Adapter<ContactListAdapter.ContactHolder>() {
+class ContactListAdapter(
+    val contacts: List<Contact>,
+    val listener: ListItemClickListener<Contact>
+) : RecyclerView.Adapter<ContactListAdapter.ContactHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -25,10 +27,10 @@ class ContactListAdapter(val contacts: List<Contact>,
 
     override fun getItemCount() = contacts.size
 
-    class ContactHolder(val binding: ListItemContactBinding)
-        : RecyclerView.ViewHolder(binding.root){
+    class ContactHolder(val binding: ListItemContactBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(contact: Contact){
+        fun bind(contact: Contact) {
             binding.contact = contact
             binding.editTextContactName.text = contact.displayName
             binding.editTextContactNumber.text = contact.phoneNumbers[0].number.toString()

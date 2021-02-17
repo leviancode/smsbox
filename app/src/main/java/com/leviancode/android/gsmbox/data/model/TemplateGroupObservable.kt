@@ -2,7 +2,7 @@ package com.leviancode.android.gsmbox.data.model
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import androidx.databinding.library.baseAdapters.BR
+import com.leviancode.android.gsmbox.BR
 import com.leviancode.android.gsmbox.utils.isNotEmpty
 
 class TemplateGroupObservable : BaseObservable() {
@@ -13,47 +13,47 @@ class TemplateGroupObservable : BaseObservable() {
         }
 
     @Bindable
-    fun getTemplateGroupName() = model.name
-    fun setTemplateGroupName(value: String){
+    fun getName() = model.name
+    fun setName(value: String){
         if (model.name != value){
             model.name = value
-            notifyPropertyChanged(BR.templateGroupName)
+            notifyPropertyChanged(BR.name)
             notifyPropertyChanged(BR.requiredFieldsFilled)
         }
     }
 
     @Bindable
-    fun getTemplateGroupDescription() = model.description
-    fun setTemplateGroupDescription(value: String){
+    fun getDescription() = model.description
+    fun setDescription(value: String){
         if (model.description != value){
             model.description = value
-            notifyPropertyChanged(BR.templateGroupDescription)
+            notifyPropertyChanged(BR.description)
         }
     }
 
     @Bindable
-    fun getTemplateGroupIconColor() = model.iconColor
-    fun setTemplateGroupIconColor(value: Int){
+    fun getIconColor() = model.iconColor
+    fun setIconColor(value: Int){
         if (model.iconColor != value){
             model.iconColor = value
-            notifyPropertyChanged(BR.templateGroupIconColor)
+            notifyPropertyChanged(BR.iconColor)
         }
     }
 
     @Bindable
-    fun getTemplateGroupImageUri() = model.imageUri
-    fun setTemplateGroupImageUri(value: String){
+    fun getImageUri() = model.imageUri
+    fun setImageUri(value: String){
         if (model.imageUri != value){
             model.imageUri = value
-            notifyPropertyChanged(BR.templateGroupImageUri)
+            notifyPropertyChanged(BR.imageUri)
         }
     }
 
     @Bindable
-    fun getTemplateGroupSize() = model.size.toString()
+    fun getSize() = model.size.toString()
 
     @Bindable
-    fun isRequiredFieldsFilled() = isNotEmpty(getTemplateGroupName())
+    fun isRequiredFieldsFilled() = isNotEmpty(getName())
 
-    fun isAllFieldsFilled() = isNotEmpty(getTemplateGroupName(), getTemplateGroupDescription())
+    fun isAllFieldsFilled() = isNotEmpty(getName(), getDescription())
 }

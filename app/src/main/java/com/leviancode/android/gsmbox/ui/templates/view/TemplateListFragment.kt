@@ -1,6 +1,8 @@
 package com.leviancode.android.gsmbox.ui.templates.view
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialFadeThrough
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.data.model.Template
@@ -22,6 +26,7 @@ import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewMode
 import com.leviancode.android.gsmbox.utils.DELETE
 import com.leviancode.android.gsmbox.utils.EDIT
 import com.leviancode.android.gsmbox.utils.SmsManager
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class TemplateListFragment : Fragment() {
@@ -45,6 +50,10 @@ class TemplateListFragment : Fragment() {
         navController = findNavController()
         binding.viewModel = viewModel
         binding.adapter = TemplateListAdapter(viewModel)
+        binding.toolbarTemplateList.apply {
+            title = args.groupName
+            setNavigationOnClickListener { navController.navigateUp() }
+        }
 
         binding.templatesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -64,11 +73,6 @@ class TemplateListFragment : Fragment() {
         viewModel.getGroupTemplates(args.groupId).observe(viewLifecycleOwner){
             binding.adapter?.submitList(it)
         }
-
-        /*viewModel.templates.observe(viewLifecycleOwner) { list ->
-            list.filter { it.groupId == args.groupId }
-                .let { binding.adapter?.submitList(it) }
-        }*/
 
         viewModel.createTemplateLiveEvent.observe(viewLifecycleOwner) {
             showEditableTemplateDialog(it)
@@ -111,4 +115,5 @@ class TemplateListFragment : Fragment() {
             )
         navController.navigate(action)
     }
+
 }

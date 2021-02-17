@@ -73,7 +73,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         }
 
         viewModel.openRecipientDialogLiveEvent.observe(viewLifecycleOwner) { recipient ->
-            showSaveRecipientDialog(recipient)
+            showEditableRecipientDialog(recipient)
         }
 
         viewModel.addNumberFieldLiveEvent.observe(viewLifecycleOwner) { recipient ->
@@ -135,7 +135,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         }
     }
 
-    private fun showSaveRecipientDialog(recipient: Recipient) {
+    private fun showEditableRecipientDialog(recipient: Recipient) {
         getNavigationResult<String>(REQUEST_SAVED)?.observe(viewLifecycleOwner) { result ->
             when (result) {
                 RESULT_OK -> {

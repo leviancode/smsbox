@@ -11,68 +11,92 @@
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        android:layout_margin="8dp">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_contact_icon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical"
-            android:padding="4dp"
-            android:tint="@color/blue_grey_300"
-            app:srcCompat="@drawable/ic_baseline_sim_card_24" />
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/recipient_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical">
+            android:orientation="horizontal"
+            android:padding="12dp">
 
-            <TextView
-                android:id="@+id/edit_text_contact_name"
+            <Space
+                android:id="@+id/space"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="10dp"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_contact_icon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:padding="4dp"
+                android:tint="@color/blue_grey_300"
+                app:srcCompat="@drawable/ic_baseline_sim_card_24" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/edit_text_contact_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:textColor="@color/text_title"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="@{recipient.name}"
+                    tools:text="Name" />
+
+                <TextView
+                    android:id="@+id/edit_text_contact_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@{recipient.phoneNumber}"
+                    android:textColor="#252525"
+                    tools:text="Phone Number" />
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ib_popup_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:textColor="@color/text_title"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="@{recipient.recipientName}"
-                tools:text="Name" />
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/open_option_menu"
+                android:onClick="@{(view) -> viewModel.onRecipientPopupMenuClick(view, recipient.model)}"
+                android:padding="4dp"
+                android:layout_marginEnd="8dp"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_baseline_more_vert_24" />
 
-            <TextView
-                android:id="@+id/edit_text_contact_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="4dp"
-                android:text="@{recipient.phoneNumber}"
-                android:textColor="#252525"
-                tools:text="Phone Number" />
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/ib_popup_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/open_option_menu"
-            android:onClick="@{(view) -> viewModel.onPopupMenuClick(view, recipient.model)}"
-            android:padding="4dp"
-            android:layout_marginEnd="8dp"
-            android:background="?android:selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_baseline_more_vert_24" />
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:background="?android:attr/listDivider" />
 
 
     </LinearLayout>
+
 
 </layout>

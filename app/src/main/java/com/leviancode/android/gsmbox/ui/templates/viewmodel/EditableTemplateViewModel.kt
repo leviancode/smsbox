@@ -20,7 +20,7 @@ class EditableTemplateViewModel : ViewModel() {
     private val repository = TemplatesRepository
     var original: Template? = null
     val data = TemplateObservable()
-    val recipients = RecipientsRepository.data
+    val recipients = RecipientsRepository.recipients
 
     val addNumberFieldLiveEvent = SingleLiveEvent<RecipientObservable>()
     val removeRecipientLiveEvent = SingleLiveEvent<View>()
@@ -65,7 +65,7 @@ class EditableTemplateViewModel : ViewModel() {
     }
 
     fun onIconColorClick() {
-        selectColorLiveEvent.value = data.getTemplateIconColor()
+        selectColorLiveEvent.value = data.getIconColor()
     }
 
     fun onContactsClick(recipient: RecipientObservable) {
@@ -78,7 +78,7 @@ class EditableTemplateViewModel : ViewModel() {
     }
 
     fun setIconColor(color: Int) {
-        data.setTemplateIconColor(color)
+        data.setIconColor(color)
     }
 
     fun isTemplateEdited(): Boolean {

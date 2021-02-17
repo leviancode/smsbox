@@ -16,7 +16,7 @@
 
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_view_group"
+            android:id="@+id/card_template_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -34,8 +34,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-
-
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/template_group_image"
                     android:layout_width="42dp"
@@ -44,9 +42,9 @@
                     android:layout_marginStart="8dp"
                     android:scaleType="fitCenter"
                     android:layout_gravity="center_vertical"
-                    android:tint="@{group.templateGroupIconColor}"
-                    app:loadImage="@{group.templateGroupImageUri}"
-                    app:srcCompat="@drawable/ic_baseline_library_books_24" />
+                    android:tint="@{group.iconColor}"
+                    app:loadImage="@{group.imageUri}"
+                    app:srcCompat="@drawable/ic_baseline_source_24" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -60,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:layout_marginTop="16dp"
-                        android:text="@{group.templateGroupName}"
+                        android:text="@{group.name}"
                         android:textColor="@color/text_title"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -73,7 +71,7 @@
                         android:layout_marginStart="12dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="16dp"
-                        android:text="@{group.templateGroupDescription}"
+                        android:text="@{group.description}"
                         android:textColor="@color/text_description"
                         tools:text="Description" />
 
@@ -85,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="8dp"
-                    android:text="@{group.templateGroupSize}"
+                    android:text="@{group.size}"
                     android:textSize="14sp"
                     tools:text="8" />
 

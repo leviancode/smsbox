@@ -2,7 +2,7 @@ package com.leviancode.android.gsmbox.data.model
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import androidx.databinding.library.baseAdapters.BR
+import com.leviancode.android.gsmbox.BR
 import com.leviancode.android.gsmbox.utils.isNotEmpty
 
 class TemplateObservable() : BaseObservable() {
@@ -16,20 +16,11 @@ class TemplateObservable() : BaseObservable() {
         }
 
     @Bindable
-    fun isFavorite() = model.favorite
-    fun setFavorite(value: Boolean){
-        if (model.favorite != value){
-            model.favorite = value
-            notifyPropertyChanged(BR.favorite)
-        }
-    }
-
-    @Bindable
-    fun getTemplateName() = model.name
-    fun setTemplateName(value: String){
+    fun getName() = model.name
+    fun setName(value: String){
         if (model.name != value){
             model.name = value
-            notifyPropertyChanged(BR.templateName)
+            notifyPropertyChanged(BR.name)
         }
     }
 
@@ -43,11 +34,20 @@ class TemplateObservable() : BaseObservable() {
     }
 
     @Bindable
-    fun getTemplateIconColor() = model.iconColor
-    fun setTemplateIconColor(value: Int){
+    fun isFavorite() = model.favorite
+    fun setFavorite(value: Boolean){
+        if (model.favorite != value){
+            model.favorite = value
+            notifyPropertyChanged(BR.favorite)
+        }
+    }
+
+    @Bindable
+    fun getIconColor() = model.iconColor
+    fun setIconColor(value: Int){
         if (model.iconColor != value){
             model.iconColor = value
-            notifyPropertyChanged(BR.templateIconColor)
+            notifyPropertyChanged(BR.iconColor)
         }
     }
 
@@ -69,7 +69,7 @@ class TemplateObservable() : BaseObservable() {
     }
 
     @Bindable
-    fun isFieldsFilled() = isNotEmpty(getTemplateName(), getMessage(), getRecipientsAsString())
+    fun isFieldsFilled() = isNotEmpty(getName(), getMessage(), getRecipientsAsString())
 
     fun setGroupId(value: String){
         model.groupId = value

@@ -1,25 +1,25 @@
 package com.leviancode.android.gsmbox.ui.templates.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
-import androidx.appcompat.view.menu.MenuBuilder
-import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.customview.widget.ViewDragHelper
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.transition.Hold
+import com.google.android.material.transition.MaterialFadeThrough
 
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateGroupListAdapter
 import com.leviancode.android.gsmbox.data.model.TemplateGroup
-import com.leviancode.android.gsmbox.data.model.TemplateGroupObservable
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateGroupListBinding
 import com.leviancode.android.gsmbox.ui.extra.DeleteConfirmationDialog
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
@@ -67,6 +67,22 @@ class TemplateGroupListFragment : Fragment() {
         observeUI()
     }
 
+    private fun observeUI() {
+        viewModel.groups.observe(viewLifecycleOwner) { groupList ->
+            binding.adapter?.submitList(groupList)
+        }
+
+        viewModel.addGroupLiveEvent.observe(viewLifecycleOwner) {
+            showEditableGroupDialog(it)
+        }
+        viewModel.selectedGroupLiveEvent.observe(viewLifecycleOwner) {
+            openSelectedGroup(it)
+        }
+        viewModel.popupMenuLiveEvent.observe(viewLifecycleOwner) {
+            showPopup(it.first, it.second)
+        }
+    }
+
     private fun openSelectedGroup(group: TemplateGroup) {
         val action = TemplateGroupListFragmentDirections.actionOpenGroupTemplates(
             group.groupId,
@@ -81,21 +97,11 @@ class TemplateGroupListFragment : Fragment() {
         navController.navigate(action)
     }
 
-    private fun observeUI() {
-        viewModel.groups.observe(viewLifecycleOwner) { groupList ->
-            binding.adapter?.submitList(groupList)
-        }
-
-        viewModel.addGroupLiveEvent.observe(viewLifecycleOwner) { showEditableGroupDialog(it) }
-        viewModel.selectGroupLiveEvent.observe(viewLifecycleOwner) { openSelectedGroup(it) }
-        viewModel.popupMenuLiveEvent.observe(viewLifecycleOwner) { showPopup(it) }
-    }
-
-    private fun showPopup(pair: Pair<View, TemplateGroup>) {
-        ItemPopupMenu(requireContext(), pair.first).show { result ->
+    private fun showPopup(view: View, group: TemplateGroup) {
+        ItemPopupMenu(requireContext(), view).show { result ->
             when (result) {
-                EDIT -> showEditableGroupDialog(pair.second)
-                DELETE -> deleteGroup(pair.second)
+                EDIT -> showEditableGroupDialog(group)
+                DELETE -> deleteGroup(group)
             }
         }
     }
