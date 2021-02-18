@@ -36,7 +36,7 @@ object RecipientsRepository {
     }
 
     suspend fun deleteGroup(item: RecipientGroup) = withContext(IO) {
-        recipientDao.deleteGroupForAllRecipients(item.groupId)
+        recipientDao.deleteGroupFromAll(item.groupName)
         groupDao.delete(item)
     }
 
@@ -55,5 +55,9 @@ object RecipientsRepository {
 
     suspend fun getGroupByName(name: String) = withContext(IO) {
         groupDao.getByName(name)
+    }
+
+    suspend fun removeGroupFromAllRecipients(item: RecipientGroup) = withContext(IO) {
+        recipientDao.deleteGroupFromAll(item.groupName)
     }
 }

@@ -69,4 +69,6 @@
     <string name="recipient">Recipient</string>
     <string name="recipient_group">Recipient group</string>
     <string name="remove_from_group">Remove recipient from group</string>
+    <string name="clear_group">Clear Group</string>
+    <string name="saved">Saved</string>
 </resources>

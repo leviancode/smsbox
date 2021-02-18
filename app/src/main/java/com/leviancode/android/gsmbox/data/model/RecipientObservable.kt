@@ -36,9 +36,6 @@ class RecipientObservable() : BaseObservable(){
     }
 
     @Bindable
-    fun isFieldsFilled() = isNotEmpty(getName(), getPhoneNumber())
-
-    @Bindable
     fun getGroupName() = model.groupName ?: ""
     fun setGroupName(value: String?){
         if (model.groupName != value){
@@ -46,4 +43,7 @@ class RecipientObservable() : BaseObservable(){
             notifyPropertyChanged(BR.groupName)
         }
     }
+
+    @Bindable
+    fun isFieldsFilled() = isNotEmpty(getName(), getPhoneNumber())
 }

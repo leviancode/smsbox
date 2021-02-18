@@ -13,3 +13,4 @@ const val REQUEST_PICK_CONTACT = 1
 const val EDIT = "edit"
 const val DELETE = "delete"
 const val ADD = "add"
+const val CLEAR = "clear"

@@ -14,7 +14,7 @@ class EditableTemplateGroupViewModel : ViewModel() {
     var data = TemplateGroupObservable()
 
     val chooseColorLiveEvent = SingleLiveEvent<Int>()
-    val closeDialogLiveEvent = SingleLiveEvent<Boolean>()
+    val savedLiveEvent = SingleLiveEvent<Unit>()
 
     fun setGroup(value: TemplateGroup){
         data.model = value
@@ -25,7 +25,7 @@ class EditableTemplateGroupViewModel : ViewModel() {
         viewModelScope.launch {
             repository.saveGroup(data.model)
         }
-        closeDialogLiveEvent.value = true
+        savedLiveEvent.call()
     }
 
     fun onIconColorClick() {

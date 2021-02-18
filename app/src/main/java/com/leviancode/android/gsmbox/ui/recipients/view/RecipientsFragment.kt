@@ -18,6 +18,7 @@ import com.leviancode.android.gsmbox.ui.extra.DeleteConfirmationDialog
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
 import com.leviancode.android.gsmbox.utils.ADD
+import com.leviancode.android.gsmbox.utils.CLEAR
 import com.leviancode.android.gsmbox.utils.DELETE
 import com.leviancode.android.gsmbox.utils.EDIT
 
@@ -99,9 +100,14 @@ class RecipientsFragment : Fragment() {
             when (result) {
                 ADD -> showEditableRecipientDialog(Recipient(groupName = group.groupName))
                 EDIT -> showEditableRecipientGroupDialog(group)
+                CLEAR -> clearGroup(group)
                 DELETE -> deleteGroup(group)
             }
         }
+    }
+
+    private fun clearGroup(group: RecipientGroup) {
+        viewModel.clearGroup(group)
     }
 
     private fun deleteRecipient(item: Recipient) {

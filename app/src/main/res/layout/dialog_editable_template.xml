@@ -58,7 +58,7 @@
                     android:id="@+id/layout_template_name"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/edit_text_layout_height"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp">
@@ -71,7 +71,7 @@
                         android:inputType="text"
                         android:padding="8dp"
                         android:text="@={viewModel.data.name}"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/form_text_size" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,7 +79,7 @@
                     android:id="@+id/layout_template_message"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/edit_text_layout_height"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp">
@@ -92,7 +92,7 @@
                         android:inputType="text"
                         android:padding="8dp"
                         android:text="@={viewModel.data.message}"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/form_text_size" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -118,7 +118,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:onClick="@{() -> viewModel.onAddNumberClick()}"
+                        android:onClick="@{() -> viewModel.onAddRecipientClick()}"
                         android:text="@string/recipient"
                         android:textColor="@color/grey"
                         app:icon="@drawable/ic_baseline_add_24"
@@ -133,7 +133,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:onClick="@{() -> viewModel.onAddNumberClick()}"
+                        android:onClick="@{() -> viewModel.onRecipientGroupClick()}"
                         android:text="@string/recipient_group"
                         android:textColor="@color/grey"
                         app:icon="@drawable/ic_baseline_library_add_24"

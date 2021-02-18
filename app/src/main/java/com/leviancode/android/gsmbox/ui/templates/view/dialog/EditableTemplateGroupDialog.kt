@@ -10,12 +10,13 @@ import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateGroupBinding
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateGroupViewModel
+import com.leviancode.android.gsmbox.utils.RESULT_CANCEL
+import com.leviancode.android.gsmbox.utils.RESULT_OK
 
 class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
     private lateinit var binding: DialogEditableTemplateGroupBinding
     private val viewModel: EditableTemplateGroupViewModel by viewModels()
     private val args: EditableTemplateGroupDialogArgs by navArgs()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,14 +43,11 @@ class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
     }
 
     private fun observeUI(){
-        binding.toolbar.setNavigationOnClickListener { closeDialog() }
+        binding.toolbar.setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
 
         viewModel.chooseColorLiveEvent.observe(viewLifecycleOwner){ selectColor(it) }
 
-        viewModel.closeDialogLiveEvent.observe(viewLifecycleOwner){
-            saved = true
-            closeDialog()
-        }
+        viewModel.savedLiveEvent.observe(viewLifecycleOwner){ closeDialog(RESULT_OK) }
     }
 
     private fun selectColor(color: Int){

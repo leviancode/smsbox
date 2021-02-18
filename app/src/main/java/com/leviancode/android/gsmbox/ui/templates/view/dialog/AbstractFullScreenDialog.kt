@@ -9,21 +9,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialContainerTransform
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.ui.extra.DiscardDialog
 import com.leviancode.android.gsmbox.utils.KeyboardUtil
+import com.leviancode.android.gsmbox.utils.RESULT_CANCEL
+import com.leviancode.android.gsmbox.utils.RESULT_OK
+import com.leviancode.android.gsmbox.utils.showToast
 
 abstract class AbstractFullScreenDialog : DialogFragment() {
-    var discarded = false
-    var saved = false
-
-    override fun getTheme() = R.style.AppTheme_FullScreenDialog
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return object : Dialog(requireActivity(), theme){
+        return object : Dialog(requireActivity(), R.style.AppTheme_FullScreenDialog){
             override fun onBackPressed() {
-                closeDialog()
+                closeDialog(RESULT_CANCEL)
             }
         }
     }
@@ -34,34 +33,29 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View?
 
-    /*override fun onStart() {
-        super.onStart()
-        dialog?.apply {
-            val width = ViewGroup.LayoutParams.MATCH_PARENT
-            val height = ViewGroup.LayoutParams.MATCH_PARENT
-            view?.visibility = View.VISIBLE
-            window?.setLayout(width, height)
-           // window?.setWindowAnimations(R.style.Theme_GsmBox_Slide)
-        }
-    }*/
-
     abstract fun isDataEdited(): Boolean
 
-    fun isNeedConfirmation(): Boolean {
-        return !(saved || !isDataEdited() || discarded)
-    }
-
-    fun closeDialog(){
+    fun closeDialog(result: String){
         hideKeyboard()
-        if (isNeedConfirmation()) showDiscardDialog()
-        else dismiss()
+        when (result) {
+            RESULT_OK -> {
+                showToast(requireContext(), getString(R.string.saved))
+                findNavController().navigateUp()
+            }
+            RESULT_CANCEL -> {
+                if (isDataEdited()) {
+                    showDiscardDialog()
+                } else {
+                    findNavController().navigateUp()
+                }
+            }
+        }
     }
 
     fun showDiscardDialog() {
         DiscardDialog(requireContext()).show { response ->
             if (response) {
-                discarded = true
-                dismiss()
+                findNavController().navigateUp()
             }
         }
     }

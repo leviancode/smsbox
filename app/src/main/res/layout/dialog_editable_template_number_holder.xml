@@ -5,10 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <data>
-        <import type="com.leviancode.android.gsmbox.data.model.Recipient"/>
         <variable
             name="autoCompleteList"
-            type="java.util.List&lt;Recipient>" />
+            type="java.util.List&lt;String>" />
         <variable
             name="viewModel"
             type="com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateViewModel" />
@@ -63,7 +62,7 @@
                     android:padding="8dp"
                     android:paddingEnd="55dp"
                     android:text="@={recipient.phoneNumber}"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/form_text_size"
                     app:setAutoCompleteList="@{autoCompleteList}"
                     tools:ignore="RtlSymmetry" />
 

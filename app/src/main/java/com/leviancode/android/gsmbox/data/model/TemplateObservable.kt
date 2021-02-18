@@ -70,8 +70,4 @@ class TemplateObservable() : BaseObservable() {
 
     @Bindable
     fun isFieldsFilled() = isNotEmpty(getName(), getMessage(), getRecipientsAsString())
-
-    fun setGroupId(value: String){
-        model.groupId = value
-    }
 }

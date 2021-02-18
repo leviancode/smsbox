@@ -53,13 +53,13 @@ fun View.setVisibility(text: String?) {
 }
 
 @BindingAdapter(value = ["setAutoCompleteList"])
-fun AutoCompleteTextView.setAdapter(recipients: List<Recipient>?){
-    recipients?.let {
+fun AutoCompleteTextView.bindAutoCompleteList(list: List<*>?){
+    list?.let {
         setAdapter(
             ArrayAdapter(
                 context,
                 android.R.layout.simple_spinner_dropdown_item,
-                recipients.map { it.phoneNumber }
+                list
             )
         )
     }

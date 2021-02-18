@@ -10,7 +10,6 @@ import com.leviancode.android.gsmbox.data.model.RecipientGroup
 import com.leviancode.android.gsmbox.data.model.RecipientGroupWithRecipients
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
-import com.leviancode.android.gsmbox.utils.dependantLiveData
 import kotlinx.coroutines.launch
 
 class RecipientsViewModel : ViewModel() {
@@ -52,5 +51,11 @@ class RecipientsViewModel : ViewModel() {
     fun onAddGroupClick(view: View){
         (view.parent as FloatingActionMenu).close(true)
         addGroupLiveEvent.value = RecipientGroup()
+    }
+
+    fun clearGroup(group: RecipientGroup) {
+        viewModelScope.launch {
+            repository.removeGroupFromAllRecipients(group)
+        }
     }
 }

@@ -20,5 +20,5 @@ interface RecipientDao {
     suspend fun deleteByGroupName(name: String)
 
     @Query("UPDATE recipients SET groupName = null WHERE groupName =:groupName")
-    suspend fun deleteGroupForAllRecipients(groupName: String)
+    suspend fun deleteGroupFromAll(groupName: String)
 }

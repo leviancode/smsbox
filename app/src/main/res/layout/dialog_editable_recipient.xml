@@ -5,19 +5,16 @@
 
     <data>
         <variable
+            name="autoCompleteList"
+            type="java.util.List&lt;String>" />
+        <variable
             name="viewModel"
             type="com.leviancode.android.gsmbox.ui.recipients.viewmodel.EditableRecipientViewModel" />
     </data>
 
-    <LinearLayout
-        android:id="@+id/layout_recipient"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="12dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        tools:context=".ui.templates.view.dialog.EditableTemplateGroupDialog">
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -41,136 +38,151 @@
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_recipient_name"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/edit_text_layout_height"
-            android:layout_marginTop="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_recipient_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="true"
-                android:hint="@string/hint_name"
-                android:selectAllOnFocus="true"
-                android:inputType="text"
-                android:padding="8dp"
-                android:text="@={viewModel.data.name}"
-                android:textSize="@dimen/form_text_size" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
         <LinearLayout
+            android:id="@+id/layout_recipient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="6dp">
+            android:layout_marginTop="?attr/actionBarSize"
+            android:orientation="vertical"
+            android:paddingBottom="12dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            tools:context=".ui.templates.view.dialog.EditableTemplateGroupDialog">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_recipient_name"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="@dimen/edit_text_layout_height">
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_layout_height"
+                android:layout_marginTop="16dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_recipient_phone_number"
+                    android:id="@+id/edit_text_recipient_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_phone_number"
-                    android:inputType="phone"
+                    android:focusable="true"
+                    android:hint="@string/hint_name"
+                    android:selectAllOnFocus="true"
+                    android:inputType="text"
                     android:padding="8dp"
-                    android:text="@={viewModel.data.phoneNumber}"
+                    android:text="@={viewModel.data.name}"
                     android:textSize="@dimen/form_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_recipient_contacts"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="@dimen/button_width_small"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="4dp"
-                android:paddingEnd="2dp"
-                android:layout_gravity="center_vertical"
-                android:onClick="@{() -> viewModel.onContactsClick()}"
-                android:text="@string/contacts"
-                android:textColor="@color/grey"
-                android:textSize="12sp"
-                app:icon="@drawable/ic_baseline_people_24"
-                app:iconTint="@color/blue_grey_400"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="6dp">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="@dimen/edit_text_layout_height">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_text_recipient_group_name"
+                        android:id="@+id/edit_text_recipient_phone_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/hint_group_name"
-                        android:inputType="text"
+                        android:hint="@string/hint_phone_number"
+                        android:inputType="phone"
                         android:padding="8dp"
-                        android:text="@={viewModel.data.groupName}"
-                        android:textSize="@dimen/form_text_size"/>
+                        android:text="@={viewModel.data.phoneNumber}"
+                        android:textSize="@dimen/form_text_size" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageButton
-                    android:id="@+id/btn_remove_number"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_recipient_contacts"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="@dimen/button_width_small"
                     android:layout_height="wrap_content"
-                    android:background="?android:selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerInParent="true"
-                    android:onClick="@{() -> viewModel.onRemoveGroupClick()}"
-                    android:padding="3dp"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/ic_baseline_close_24"
-                    android:tint="@color/red_600"
-                    app:visibilityDependingOnText="@{viewModel.data.groupName}"
-                    tools:visibility="visible"
-                    android:contentDescription="@string/remove_from_group" />
+                    android:paddingStart="4dp"
+                    android:paddingEnd="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:onClick="@{() -> viewModel.onContactsClick()}"
+                    android:text="@string/contacts"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    app:icon="@drawable/ic_baseline_people_24"
+                    app:iconTint="@color/blue_grey_400"/>
 
-            </RelativeLayout>
+            </LinearLayout>
 
-
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_recipient_select_group"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="@dimen/button_width_small"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="4dp"
-                android:paddingEnd="2dp"
-                android:layout_gravity="center_vertical"
-                android:onClick="@{() -> viewModel.onGroupsClick()}"
-                android:text="@string/groups"
-                android:textColor="@color/grey"
-                android:textSize="12sp"
-                app:icon="@drawable/ic_baseline_library_books_24"
-                app:iconTint="@color/blue_grey_400"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edit_text_layout_height">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/edit_text_recipient_group_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_group_name"
+                            android:inputType="text"
+                            android:completionThreshold="1"
+                            app:setAutoCompleteList="@{autoCompleteList}"
+                            android:padding="8dp"
+                            android:text="@={viewModel.data.groupName}"
+                            android:textSize="@dimen/form_text_size"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageButton
+                        android:id="@+id/btn_remove_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:onClick="@{() -> viewModel.onRemoveGroupClick()}"
+                        android:padding="2dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_baseline_close_24"
+                        android:tint="@color/red_600"
+                        app:visibilityDependingOnText="@{viewModel.data.groupName}"
+                        tools:visibility="visible"
+                        android:contentDescription="@string/remove_from_group" />
+
+                </RelativeLayout>
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_recipient_select_group"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="@dimen/button_width_small"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:onClick="@{() -> viewModel.onGroupsClick()}"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="2dp"
+                    android:text="@string/groups"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    app:icon="@drawable/ic_baseline_library_books_24"
+                    app:iconTint="@color/blue_grey_400" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </FrameLayout>
+
 
 </layout>

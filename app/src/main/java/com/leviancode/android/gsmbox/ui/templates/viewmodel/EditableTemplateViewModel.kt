@@ -28,7 +28,7 @@ class EditableTemplateViewModel : ViewModel() {
 
     val selectColorLiveEvent = SingleLiveEvent<Int>()
     val selectContactLiveEvent = MutableLiveData<RecipientObservable>()
-    val closeDialogLiveEvent = SingleLiveEvent<Boolean>()
+    val savedLiveEvent = SingleLiveEvent<Unit>()
 
     init {
         fieldsChecker()
@@ -38,7 +38,7 @@ class EditableTemplateViewModel : ViewModel() {
         data.model = template
         original = template.copy()
         if (template.recipients.isEmpty()) {
-            onAddNumberClick()
+            onAddRecipientClick()
         }
     }
 
@@ -46,18 +46,22 @@ class EditableTemplateViewModel : ViewModel() {
         addNumberFieldLiveEvent.value = RecipientObservable(recipient)
     }
 
-    fun onAddNumberClick(){
+    fun onAddRecipientClick(){
         Recipient().let {
             data.addRecipient(it)
             addNumberField(it)
         }
     }
 
+    fun onRecipientGroupClick(){
+
+    }
+
     fun onSaveClick(){
         viewModelScope.launch {
             repository.saveTemplate(data.model)
         }
-        closeDialogLiveEvent.value = true
+        savedLiveEvent.call()
     }
     
     fun onSaveRecipientClick(recipient: Recipient) {
@@ -85,19 +89,19 @@ class EditableTemplateViewModel : ViewModel() {
         return original != data.model
     }
 
+    fun addRecipient(recipient: Recipient?) {
+        recipient?.let {
+            data.addRecipient(it)
+            selectContactLiveEvent.value?.model = it
+        }
+    }
+
     private fun fieldsChecker(){
         viewModelScope.launch{
             while (isActive) {
                 data.notifyPropertyChanged(BR.fieldsFilled)
                 delay(500)
             }
-        }
-    }
-
-    fun addContact(recipient: Recipient?) {
-        recipient?.let {
-            data.addRecipient(it)
-            selectContactLiveEvent.value?.model = it
         }
     }
 }
