@@ -35,12 +35,11 @@ class TemplateGroupListAdapter(val viewModel: TemplateGroupListViewModel) :
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.group = TemplateGroupObservable()
+            binding.viewModel = viewModel
         }
 
         fun bind(group: TemplateGroup) {
-            binding.viewModel = viewModel
-            binding.group?.model = group
+            binding.group = TemplateGroupObservable(group)
             binding.executePendingBindings()
         }
     }

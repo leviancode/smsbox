@@ -5,7 +5,10 @@ import androidx.databinding.Bindable
 import com.leviancode.android.gsmbox.BR
 import com.leviancode.android.gsmbox.utils.isNotEmpty
 
-class TemplateGroupObservable : BaseObservable() {
+class TemplateGroupObservable() : BaseObservable() {
+    constructor(model: TemplateGroup) : this(){
+        this.model = model
+    }
     var model = TemplateGroup()
         set(value) {
             field = value

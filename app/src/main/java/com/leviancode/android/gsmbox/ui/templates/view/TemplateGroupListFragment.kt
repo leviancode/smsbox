@@ -1,6 +1,7 @@
 package com.leviancode.android.gsmbox.ui.templates.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.google.android.material.card.MaterialCardView
 
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateGroupListAdapter
+import com.leviancode.android.gsmbox.data.model.RecipientGroup
 import com.leviancode.android.gsmbox.data.model.TemplateGroup
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateGroupListBinding
 import com.leviancode.android.gsmbox.ui.extra.DeleteConfirmationDialog
@@ -64,8 +66,9 @@ class TemplateGroupListFragment : Fragment() {
     }
 
     private fun observeUI() {
-        viewModel.groups.observe(viewLifecycleOwner) { groupList ->
-            binding.adapter?.submitList(groupList)
+        viewModel.groups.observe(viewLifecycleOwner) { list ->
+            binding.adapter?.submitList(list)
+            binding.adapter?.notifyDataSetChanged()
         }
 
         viewModel.addGroupLiveEvent.observe(viewLifecycleOwner) {
