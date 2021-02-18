@@ -39,7 +39,7 @@ object ContactsManager {
         )?.also { cur ->
             cur.moveToFirst()
             val id: String = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID))
-            recipient.name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+            recipient.recipientName = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
 
             contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,

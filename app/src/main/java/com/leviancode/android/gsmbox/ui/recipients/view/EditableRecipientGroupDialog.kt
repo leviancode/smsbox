@@ -55,7 +55,7 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
     }
 
     private fun setTitle(){
-        if (args.group.name.isNotBlank()) binding.toolbar.title = args.group.name
+        if (args.group.groupName.isNotBlank()) binding.toolbar.title = args.group.groupName
     }
 
     private fun observeUI(){

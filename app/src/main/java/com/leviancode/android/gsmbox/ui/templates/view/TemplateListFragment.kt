@@ -1,8 +1,6 @@
 package com.leviancode.android.gsmbox.ui.templates.view
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +12,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.transition.MaterialContainerTransform
-import com.google.android.material.transition.MaterialFadeThrough
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.data.model.Template
@@ -26,7 +22,6 @@ import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewMode
 import com.leviancode.android.gsmbox.utils.DELETE
 import com.leviancode.android.gsmbox.utils.EDIT
 import com.leviancode.android.gsmbox.utils.SmsManager
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class TemplateListFragment : Fragment() {
@@ -84,7 +79,7 @@ class TemplateListFragment : Fragment() {
     }
 
     private fun showPopup(pair: Pair<View, Template>) {
-        ItemPopupMenu(requireContext(), pair.first).show { result ->
+        ItemPopupMenu(requireContext(), pair.first).showSimple { result ->
             when (result) {
                 EDIT -> showEditableTemplateDialog(pair.second)
                 DELETE -> deleteTemplate(pair.second)

@@ -48,8 +48,11 @@ class RecipientGroupListFragment : Fragment() {
             }
         }
 
-        viewModel.groupsForExpandableList.observe(viewLifecycleOwner){ list ->
-            binding.adapter?.setData(list)
+        viewModel.groupedRecipients.observe(viewLifecycleOwner){ list ->
+            list.forEach { it.group.size = it.recipients.size }
+            binding.adapter?.data = list
         }
+
+
     }
 }

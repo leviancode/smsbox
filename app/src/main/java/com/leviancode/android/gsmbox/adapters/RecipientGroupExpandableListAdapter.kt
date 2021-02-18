@@ -7,10 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import androidx.databinding.DataBindingUtil
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.Recipient
-import com.leviancode.android.gsmbox.data.model.RecipientGroup
-import com.leviancode.android.gsmbox.data.model.RecipientGroupObservable
-import com.leviancode.android.gsmbox.data.model.RecipientObservable
+import com.leviancode.android.gsmbox.data.model.*
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientBinding
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientGroupBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
@@ -19,9 +16,8 @@ import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
 class RecipientGroupExpandableListAdapter(
     val context: Context,
     val viewModel: RecipientsViewModel,
-    var parentList: List<RecipientGroup> = listOf(),
 ) : BaseExpandableListAdapter() {
-    var data: List<Pair<RecipientGroup, List<Recipient>>> = listOf()
+    var data: List<RecipientGroupWithRecipients> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -29,12 +25,12 @@ class RecipientGroupExpandableListAdapter(
 
     override fun getGroupCount() = data.size
 
-    override fun getChildrenCount(groupPosition: Int) = data[groupPosition].second.size
+    override fun getChildrenCount(groupPosition: Int) = data[groupPosition].recipients.size
 
-    override fun getGroup(groupPosition: Int): Any = data[groupPosition].first
+    override fun getGroup(groupPosition: Int): Any = data[groupPosition].group
 
     override fun getChild(groupPosition: Int, childPosition: Int): Any {
-        return parentList[groupPosition].recipients[childPosition]
+        return data[groupPosition].recipients[childPosition]
     }
 
     override fun getGroupId(groupPosition: Int): Long {
@@ -58,11 +54,11 @@ class RecipientGroupExpandableListAdapter(
         if (convertView == null) {
             val inflater = LayoutInflater.from(context)
             binding = DataBindingUtil.inflate(inflater, R.layout.list_item_recipient_group, parent, false)
-            binding?.group = RecipientGroupObservable(this.parentList[groupPosition])
+            binding?.group = RecipientGroupObservable(data[groupPosition].group)
             binding?.viewModel = viewModel
         } else {
             binding = DataBindingUtil.getBinding(convertView)
-            binding?.group?.model = this.parentList[groupPosition]
+            binding?.group?.model = data[groupPosition].group
         }
         binding?.executePendingBindings()
 
@@ -77,15 +73,15 @@ class RecipientGroupExpandableListAdapter(
         parent: ViewGroup?
     ): View {
         var binding: ListItemRecipientBinding?
-        val model = this.parentList[groupPosition].recipients[childPosition]
+        val model = data[groupPosition].recipients[childPosition]
 
         if (convertView == null) {
             val inflater = LayoutInflater.from(context)
             binding = DataBindingUtil.inflate(inflater, R.layout.list_item_recipient, parent, false)
-            binding?.run{
-                recipient = RecipientObservable(model)
-                viewModel = viewModel
-                space.visibility = View.VISIBLE
+            binding?.let{
+                it.recipient = RecipientObservable(model)
+                it.viewModel = viewModel
+                it.space.visibility = View.VISIBLE
             }
         } else {
             binding = DataBindingUtil.getBinding(convertView)

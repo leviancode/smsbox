@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.clans.fab.FloatingActionMenu
 import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.data.model.RecipientGroup
+import com.leviancode.android.gsmbox.data.model.RecipientGroupWithRecipients
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import com.leviancode.android.gsmbox.utils.dependantLiveData
@@ -16,13 +17,7 @@ class RecipientsViewModel : ViewModel() {
     private val repository = RecipientsRepository
     var recipients: LiveData<List<Recipient>> = repository.recipients
     var groups: LiveData<List<RecipientGroup>> = repository.groups
-    var groupsForExpandableList = dependantLiveData(recipients, groups, defaultValue = listOf()){
-        groups.value?.onEach { group ->
-            recipients.value?.filter { group.groupId == it.groupId }
-                .orEmpty()
-                .also { group.recipients.addAll(it) }
-        }.orEmpty()
-    }
+    var groupedRecipients: LiveData<List<RecipientGroupWithRecipients>> = repository.groupedRecipients
 
     val addRecipientLiveEvent = SingleLiveEvent<Recipient>()
     val addGroupLiveEvent = SingleLiveEvent<RecipientGroup>()

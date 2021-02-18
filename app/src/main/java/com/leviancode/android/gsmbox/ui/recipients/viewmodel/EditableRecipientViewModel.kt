@@ -26,9 +26,8 @@ class EditableRecipientViewModel : ViewModel() {
         item?.let { data.model = it }
     }
 
-    fun setGroup(group: RecipientGroup) {
-        data.setGroupId(group.groupId)
-        data.setGroupName(group.name)
+    fun setGroupName(name: String) {
+        data.setGroupName(name)
     }
 
     fun onContactsClick(){
@@ -36,6 +35,10 @@ class EditableRecipientViewModel : ViewModel() {
     }
 
     fun onGroupsClick(){
-        selectGroupLiveEvent.value = data.getGroupId()
+        selectGroupLiveEvent.value = data.getGroupName()
+    }
+
+    fun onRemoveGroupClick(){
+        data.setGroupName(null)
     }
 }

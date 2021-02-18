@@ -46,9 +46,9 @@ fun ExpandableListView.bindExpandableListAdapter(adapter: BaseExpandableListAdap
 }
 
 @BindingAdapter(value = ["visibilityDependingOnText"])
-fun MaterialButton.setVisibility(text: String?) {
+fun View.setVisibility(text: String?) {
     this.run {
-        visibility = if (text.isNullOrBlank()) View.INVISIBLE else View.VISIBLE
+        visibility = if (text.isNullOrBlank()) View.GONE else View.VISIBLE
     }
 }
 

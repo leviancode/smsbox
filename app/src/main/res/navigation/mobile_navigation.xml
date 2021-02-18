@@ -138,7 +138,8 @@
         tools:layout="@layout/dialog_select_list_recipient_group">
 
         <argument
-            android:name="groupId"
+            android:name="groupName"
+            app:nullable="true"
             app:argType="string"/>
     </dialog>
 

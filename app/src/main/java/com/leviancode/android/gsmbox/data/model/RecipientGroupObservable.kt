@@ -23,10 +23,10 @@ class RecipientGroupObservable() : BaseObservable(){
         }
 
     @Bindable
-    fun getName() = model.name
+    fun getName() = model.groupName
     fun setName(value: String){
-        if (model.name != value){
-            model.name = value
+        if (model.groupName != value){
+            model.groupName = value
             notifyPropertyChanged(BR.name)
             notifyPropertyChanged(BR.fieldsFilled)
         }
@@ -42,10 +42,10 @@ class RecipientGroupObservable() : BaseObservable(){
     }*/
 
     @Bindable
-    fun getIconColor() = model.iconColor
+    fun getIconColor() = model.groupIconColor
     fun setIconColor(value: Int){
-        if (model.iconColor != value){
-            model.iconColor = value
+        if (model.groupIconColor != value){
+            model.groupIconColor = value
             notifyPropertyChanged(BR.iconColor)
         }
     }

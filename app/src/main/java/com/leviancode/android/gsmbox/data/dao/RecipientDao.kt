@@ -10,9 +10,15 @@ interface RecipientDao {
     @Update suspend fun update(vararg item: Recipient)
     @Delete suspend fun delete(vararg item: Recipient)
 
-    @Query("SELECT * from recipients WHERE recipient_id = :id")
+    @Query("SELECT * FROM recipients WHERE recipientId = :id")
     suspend fun get(id: String): Recipient?
 
     @Query("SELECT * FROM recipients")
     fun getAll(): LiveData<List<Recipient>>
+
+    @Query("DELETE FROM recipients WHERE groupName = :name")
+    suspend fun deleteByGroupName(name: String)
+
+    @Query("UPDATE recipients SET groupName = null WHERE groupName =:groupName")
+    suspend fun deleteGroupForAllRecipients(groupName: String)
 }

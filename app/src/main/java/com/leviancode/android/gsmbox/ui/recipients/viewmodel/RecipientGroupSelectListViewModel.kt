@@ -15,7 +15,7 @@ class RecipientGroupSelectListViewModel : ViewModel() {
         Transformations.map(repository.groups) { list ->
             list.map { RecipientGroupObservable(it) }
         }
-    val selectedItem = MutableLiveData<RecipientGroup>()
+    val selectedItem = MutableLiveData<String>()
 
     fun onItemClick(item: RecipientGroupObservable) {
         if (lastSelectedItem?.getGroupId() == item.getGroupId()) return
@@ -23,6 +23,6 @@ class RecipientGroupSelectListViewModel : ViewModel() {
         lastSelectedItem?.let { it.selected = false }
         item.selected = true
         lastSelectedItem = item
-        selectedItem.value = item.model
+        selectedItem.value = item.getName()
     }
 }

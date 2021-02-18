@@ -1,7 +1,6 @@
 package com.leviancode.android.gsmbox.ui.templates.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.transition.Hold
-import com.google.android.material.transition.MaterialFadeThrough
 
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateGroupListAdapter
@@ -98,7 +94,7 @@ class TemplateGroupListFragment : Fragment() {
     }
 
     private fun showPopup(view: View, group: TemplateGroup) {
-        ItemPopupMenu(requireContext(), view).show { result ->
+        ItemPopupMenu(requireContext(), view).showSimple { result ->
             when (result) {
                 EDIT -> showEditableGroupDialog(group)
                 DELETE -> deleteGroup(group)

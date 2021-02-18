@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -16,7 +15,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDE
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.data.model.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.EditableRecipientViewModel
@@ -54,10 +52,10 @@ class EditableRecipientDialog : BottomSheetDialogFragment() {
         binding.viewModel = viewModel
         args.recipient.let {
             viewModel.setRecipient(it)
-            if (it.name.isNotBlank()) {
-                binding.toolbar.title = it.name
-            } else if (isEmpty(it.name, it.phoneNumber)) {
-                binding.btnRecipientContacts.visibility = View.VISIBLE
+            if (it.recipientName.isNotBlank()) {
+                binding.toolbar.title = it.recipientName
+            } else if (it.recipientName.isBlank() && it.phoneNumber.isNotBlank()) {
+                binding.btnRecipientContacts.visibility = View.GONE
             }
         }
         setupContactPickerLauncher()
@@ -67,7 +65,14 @@ class EditableRecipientDialog : BottomSheetDialogFragment() {
 
     private fun setupContactPickerLauncher(){
         contactsLauncher = registerForActivityResult(PickContact()) { result ->
-            viewModel.setRecipient(ContactsManager.parseUri(requireContext(), result))
+            ContactsManager.parseUri(requireContext(), result)?.let {
+                viewModel.setRecipient(
+                    args.recipient.apply {
+                        recipientName = it.recipientName
+                        phoneNumber = it.phoneNumber
+                    }
+                )
+            }
         }
     }
 
@@ -81,16 +86,16 @@ class EditableRecipientDialog : BottomSheetDialogFragment() {
         viewModel.selectGroupLiveEvent.observe(viewLifecycleOwner){ selectGroup(it) }
     }
 
-    private fun selectGroup(groupId: String) {
+    private fun selectGroup(groupName: String?) {
         hideKeyboard()
-        getNavigationResult<RecipientGroup>(REQUEST_SELECTED)?.observe(viewLifecycleOwner) { result ->
+        getNavigationResult<String>(REQUEST_SELECTED)?.observe(viewLifecycleOwner) { result ->
             if (result != null) {
-                viewModel.setGroup(result)
-                removeNavigationResult<RecipientGroup>(REQUEST_SELECTED)
+                viewModel.setGroupName(result)
+                removeNavigationResult<String>(REQUEST_SELECTED)
             }
         }
         findNavController().navigate(
-            EditableRecipientDialogDirections.actionOpenRecipientGroupList(groupId)
+            EditableRecipientDialogDirections.actionOpenRecipientGroupList(groupName)
         )
     }
 
