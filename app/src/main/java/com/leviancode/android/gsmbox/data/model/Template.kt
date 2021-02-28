@@ -13,9 +13,10 @@ data class Template(
     @ColumnInfo(name = "template_id")
     var templateId: String = UUID.randomUUID().toString(),
     @ColumnInfo(name = "group_id") var groupId: String = "",
-    @ColumnInfo(name = "name") var name: String = "",
-    @ColumnInfo(name = "message") var message: String = "",
+    var name: String = "",
+    var message: String = "",
     @ColumnInfo(name = "icon_color") var iconColor: Int = Color.parseColor("#66BB6A"),
-    @ColumnInfo(name = "favorite") var favorite: Boolean = false,
-    @ColumnInfo(name = "recipients") var recipients: MutableList<Recipient> = mutableListOf()
+    var favorite: Boolean = false,
+    var recipients: MutableList<Recipient> = mutableListOf(),
+    @ColumnInfo(name = "recipient_group_name") var recipientGroupName: String = ""
 ) : Serializable

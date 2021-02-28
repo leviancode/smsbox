@@ -34,6 +34,19 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <TextView
+            android:id="@+id/tv_list_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="30dp"
+            android:fontFamily="serif-monospace"
+            android:text="@string/template_group_empty"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/templates_recycler_view"
             android:layout_width="match_parent"

@@ -60,4 +60,8 @@ object RecipientsRepository {
     suspend fun removeGroupFromAllRecipients(item: RecipientGroup) = withContext(IO) {
         recipientDao.deleteGroupFromAll(item.groupName)
     }
+
+    suspend fun getRecipientsByGroupName(groupName: String) = withContext(IO) {
+        recipientDao.getByGroupName(groupName)
+    }
 }

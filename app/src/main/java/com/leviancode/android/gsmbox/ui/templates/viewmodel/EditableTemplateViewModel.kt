@@ -16,18 +16,23 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
+
 class EditableTemplateViewModel : ViewModel() {
     private val repository = TemplatesRepository
+    val recipients = RecipientsRepository.recipients
     var original: Template? = null
     val data = TemplateObservable()
-    val recipients = RecipientsRepository.recipients
+    var recipientGroupMode = false
 
     val addNumberFieldLiveEvent = SingleLiveEvent<RecipientObservable>()
     val removeRecipientLiveEvent = SingleLiveEvent<View>()
-    val openRecipientDialogLiveEvent = SingleLiveEvent<Recipient>()
+    val removeAllRecipientLiveEvent = SingleLiveEvent<Unit>()
+    val saveRecipientLiveEvent = SingleLiveEvent<Recipient>()
 
-    val selectColorLiveEvent = SingleLiveEvent<Int>()
+    val selectRecipientGroupLiveEvent = SingleLiveEvent<String>()
+    val selectRecipientLiveEvent = SingleLiveEvent<RecipientObservable>()
     val selectContactLiveEvent = MutableLiveData<RecipientObservable>()
+    val selectColorLiveEvent = SingleLiveEvent<Int>()
     val savedLiveEvent = SingleLiveEvent<Unit>()
 
     init {
@@ -53,8 +58,12 @@ class EditableTemplateViewModel : ViewModel() {
         }
     }
 
-    fun onRecipientGroupClick(){
+    fun onSelectRecipientGroupsClick(){
+        selectRecipientGroupLiveEvent.value = data.getRecipientGroupName()
+    }
 
+    fun onSelectRecipientClick(recipient: RecipientObservable){
+        selectRecipientLiveEvent.value = recipient
     }
 
     fun onSaveClick(){
@@ -65,7 +74,7 @@ class EditableTemplateViewModel : ViewModel() {
     }
     
     fun onSaveRecipientClick(recipient: Recipient) {
-        openRecipientDialogLiveEvent.value = recipient
+        saveRecipientLiveEvent.value = recipient
     }
 
     fun onIconColorClick() {
@@ -102,6 +111,15 @@ class EditableTemplateViewModel : ViewModel() {
                 data.notifyPropertyChanged(BR.fieldsFilled)
                 delay(500)
             }
+        }
+    }
+
+    fun setRecipientGroup(groupName: String) {
+        data.setRecipientGroupName(groupName)
+        viewModelScope.launch {
+            removeAllRecipientLiveEvent.call()
+            data.setRecipients(RecipientsRepository.getRecipientsByGroupName(groupName))
+            data.getRecipients().forEach(::addNumberField)
         }
     }
 }

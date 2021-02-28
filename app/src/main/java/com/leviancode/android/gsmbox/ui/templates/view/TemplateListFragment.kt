@@ -65,8 +65,9 @@ class TemplateListFragment : Fragment() {
     }
 
     private fun observeUI() {
-        viewModel.getGroupTemplates(args.groupId).observe(viewLifecycleOwner){
-            binding.adapter?.submitList(it)
+        viewModel.getGroupTemplates(args.groupId).observe(viewLifecycleOwner){ list ->
+            binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+            binding.adapter?.submitList(list)
         }
 
         viewModel.createTemplateLiveEvent.observe(viewLifecycleOwner) {

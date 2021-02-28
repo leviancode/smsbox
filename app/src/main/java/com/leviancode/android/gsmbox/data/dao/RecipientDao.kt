@@ -19,6 +19,9 @@ interface RecipientDao {
     @Query("DELETE FROM recipients WHERE groupName = :name")
     suspend fun deleteByGroupName(name: String)
 
+    @Query("SELECT * FROM recipients WHERE groupName =:groupName")
+    suspend fun getByGroupName(groupName: String): List<Recipient>
+
     @Query("UPDATE recipients SET groupName = null WHERE groupName =:groupName")
     suspend fun deleteGroupFromAll(groupName: String)
 }

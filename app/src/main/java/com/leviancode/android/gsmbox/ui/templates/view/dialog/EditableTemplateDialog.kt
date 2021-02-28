@@ -46,6 +46,12 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         }
 
         binding.viewModel = viewModel
+
+        setupViews()
+        observeUI()
+    }
+
+    private fun setupViews(){
         binding.toolbar.apply {
             args.template.name.let {
                 if (it.isNotBlank()) title = it
@@ -53,14 +59,9 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
             setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
         }
 
-        setupViews()
-        observeUI()
-    }
-
-    private fun setupViews(){
-        args.template.recipients
-            .takeIf{ it.isNotEmpty() }
-            ?.forEach { addNumberField(RecipientObservable(it)) }
+        args.template.recipients.ifNotEmpty { list ->
+            list.forEach { addNumberField(RecipientObservable(it)) }
+        }
         viewModel.setTemplate(args.template)
         showKeyboard(binding.editTextTemplateName)
     }
@@ -71,7 +72,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
             updateAutoCompleteList(phoneNumberList)
         }
 
-        viewModel.openRecipientDialogLiveEvent.observe(viewLifecycleOwner) { recipient ->
+        viewModel.saveRecipientLiveEvent.observe(viewLifecycleOwner) { recipient ->
             showEditableRecipientDialog(recipient)
         }
 
@@ -83,6 +84,10 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
             removeRecipientLayout(view)
         }
 
+        viewModel.removeAllRecipientLiveEvent.observe(viewLifecycleOwner) {
+            removeAllRecipientLayouts()
+        }
+
         viewModel.selectColorLiveEvent.observe(viewLifecycleOwner) { color ->
             selectColor(color)
         }
@@ -92,6 +97,73 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         viewModel.savedLiveEvent.observe(viewLifecycleOwner) {
             closeDialog(RESULT_OK)
         }
+
+        viewModel.selectRecipientLiveEvent.observe(viewLifecycleOwner){
+            showSelectRecipientDialog(it.getRecipientId())
+        }
+
+        viewModel.selectRecipientGroupLiveEvent.observe(viewLifecycleOwner){
+            showSelectRecipientGroupDialog(it)
+        }
+
+        binding.switchToRecipientGroup.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked){
+                hideRecipientsLayout()
+                showRecipientGroupLayout()
+            } else {
+                hideRecipientGroupLayout()
+                showRecipientsLayout()
+            }
+            viewModel.recipientGroupMode = isChecked
+        }
+    }
+
+    private fun showSelectRecipientGroupDialog(groupName: String) {
+        hideKeyboard()
+
+        getNavigationResult<String>(REQUEST_SELECTED)?.observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                viewModel.setRecipientGroup(result)
+                removeNavigationResult<String>(REQUEST_SELECTED)
+            }
+        }
+
+        findNavController().navigate(
+            EditableTemplateDialogDirections.actionSelectRecipientGroup(groupName)
+        )
+    }
+
+    private fun showSelectRecipientDialog(recipientId: String) {
+        hideKeyboard()
+
+        getNavigationResult<Recipient>(REQUEST_SELECTED)?.observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                viewModel.addRecipient(result)
+                removeNavigationResult<String>(REQUEST_SELECTED)
+            }
+        }
+
+        findNavController().navigate(
+            EditableTemplateDialogDirections.actionSelectRecipient(recipientId)
+        )
+    }
+
+    private fun showRecipientsLayout() {
+        binding.recipientsLayout.visibility = View.VISIBLE
+        binding.btnTemplateAddRecipient.isEnabled = true
+    }
+
+    private fun hideRecipientsLayout() {
+        binding.recipientsLayout.visibility = View.GONE
+        binding.btnTemplateAddRecipient.isEnabled = false
+    }
+
+    private fun showRecipientGroupLayout() {
+        binding.recipientGroupLayout.visibility = View.VISIBLE
+    }
+
+    private fun hideRecipientGroupLayout() {
+        binding.recipientGroupLayout.visibility = View.GONE
     }
 
     private fun updateAutoCompleteList(list: List<String>){
@@ -140,7 +212,9 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         recipientBinding.viewModel = viewModel
 
         if (binding.recipientsLayout.childCount > 1) {
-            showKeyboard(recipientBinding.editTextRecipientNumber)
+            if(!binding.switchToRecipientGroup.isChecked){
+                showKeyboard(recipientBinding.editTextRecipientNumber)
+            }
             recipientBinding.btnRemoveNumber.visibility = View.VISIBLE
         }
         recipientBinding.executePendingBindings()
@@ -153,6 +227,10 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
             .findViewById<View>(R.id.edit_text_recipient_number)
         showKeyboard(child)
         binding.recipientsLayout.removeView(parent)
+    }
+
+    private fun removeAllRecipientLayouts() {
+        binding.recipientsLayout.removeAllViews()
     }
 
     override fun isDataEdited(): Boolean {

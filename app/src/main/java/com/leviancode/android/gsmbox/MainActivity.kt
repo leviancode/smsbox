@@ -35,4 +35,5 @@ class MainActivity : AppCompatActivity(){
       //  binding.toolbarMain.setupWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+
 }

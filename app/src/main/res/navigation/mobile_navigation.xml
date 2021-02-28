@@ -90,10 +90,13 @@
         <action
             android:id="@+id/action_open_editable_recipient"
             app:destination="@id/nav_editable_recipient" />
-        <action
-            android:id="@+id/action_select_contact"
-            app:destination="@id/nav_select_contact" />
 
+        <action
+            android:id="@+id/action_select_recipient_group"
+            app:destination="@id/nav_select_recipient_group" />
+        <action
+            android:id="@+id/action_select_recipient"
+            app:destination="@id/nav_select_recipient" />
 
     </dialog>
 
@@ -125,13 +128,6 @@
     </dialog>
 
     <dialog
-        android:id="@+id/nav_select_contact"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.ContactListDialog"
-        android:label="Select Contact"
-        tools:layout="@layout/dialog_select_list_contacts">
-    </dialog>
-
-    <dialog
         android:id="@+id/nav_select_recipient_group"
         android:name="com.leviancode.android.gsmbox.ui.recipients.view.RecipientGroupSelectListDialog"
         android:label="Select Group"
@@ -139,6 +135,18 @@
 
         <argument
             android:name="groupName"
+            app:nullable="true"
+            app:argType="string"/>
+    </dialog>
+
+    <dialog
+        android:id="@+id/nav_select_recipient"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.RecipientSelectListDialog"
+        android:label="Select Recipient"
+        tools:layout="@layout/dialog_select_list_recipient">
+
+        <argument
+            android:name="recipientId"
             app:nullable="true"
             app:argType="string"/>
     </dialog>

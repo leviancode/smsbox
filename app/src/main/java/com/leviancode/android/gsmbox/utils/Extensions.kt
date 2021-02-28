@@ -76,3 +76,7 @@ fun isNotBlankLiveData(vararg dependencies: LiveData<out String>, defaultValue: 
 
 fun isNotEmpty(vararg strings: String): Boolean = strings.count { it.isNotBlank() } == strings.size
 fun isEmpty(vararg strings: String): Boolean = strings.count { it.isBlank() } == strings.size
+
+inline fun <T>List<T>.ifNotEmpty(defaultValue: (List<T>) -> Unit){
+    if (isNotEmpty()) defaultValue(this)
+}

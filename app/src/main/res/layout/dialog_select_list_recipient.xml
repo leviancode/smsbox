@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/bottom_sheet_recipient_groups_layout"
+        android:id="@+id/bottom_sheet_recipients_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -29,10 +29,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                app:title="@string/select_group">
+                app:title="@string/select_recipient">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_ok_recipient_group"
+                    android:id="@+id/btn_ok_recipient"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <TextView
-            android:id="@+id/tv_no_groups"
+            android:id="@+id/tv_no_recipients"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center|center_vertical"
@@ -56,17 +56,17 @@
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/no_groups"
+            android:text="@string/no_recipients"
             android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/bottom_sheet_recipient_group_list"
+            android:id="@+id/bottom_sheet_recipient_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/select_list_item_recipient_group" />
+            tools:listitem="@layout/select_list_item_recipient" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

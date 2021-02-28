@@ -1,7 +1,7 @@
 package com.leviancode.android.gsmbox.data.model
 
-import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.io.Serializable
 import java.util.*
@@ -12,5 +12,6 @@ data class Recipient(
     var recipientId: String = UUID.randomUUID().toString(),
     var recipientName: String = "",
     var phoneNumber: String = "",
-    var groupName: String? = null
+    var groupName: String? = null,
+    @Ignore var saved: Boolean = false
 ) : Serializable

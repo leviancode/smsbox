@@ -15,6 +15,13 @@ class RecipientObservable() : BaseObservable(){
             notifyChange()
         }
 
+    @get:Bindable
+    var selected = false
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.selected)
+        }
+
     @Bindable
     fun getName() = model.recipientName
     fun setName(value: String){
@@ -43,6 +50,8 @@ class RecipientObservable() : BaseObservable(){
             notifyPropertyChanged(BR.groupName)
         }
     }
+
+    fun getRecipientId() = model.recipientId
 
     @Bindable
     fun isFieldsFilled() = isNotEmpty(getName(), getPhoneNumber())

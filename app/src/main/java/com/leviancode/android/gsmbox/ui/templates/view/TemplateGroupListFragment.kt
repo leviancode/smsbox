@@ -67,6 +67,7 @@ class TemplateGroupListFragment : Fragment() {
 
     private fun observeUI() {
         viewModel.groups.observe(viewLifecycleOwner) { list ->
+            binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
             binding.adapter?.submitList(list)
             binding.adapter?.notifyDataSetChanged()
         }

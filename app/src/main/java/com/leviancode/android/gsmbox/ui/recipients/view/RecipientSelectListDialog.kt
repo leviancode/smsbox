@@ -13,18 +13,19 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.adapters.RecipientGroupSelectListAdapter
-import com.leviancode.android.gsmbox.databinding.DialogSelectListRecipientGroupBinding
-import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientGroupSelectListViewModel
+import com.leviancode.android.gsmbox.adapters.RecipientSelectListAdapter
+import com.leviancode.android.gsmbox.data.model.Recipient
+import com.leviancode.android.gsmbox.databinding.DialogSelectListRecipientBinding
+import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientSelectListViewModel
 import com.leviancode.android.gsmbox.utils.REQUEST_SELECTED
 import com.leviancode.android.gsmbox.utils.setNavigationResult
 
-class RecipientGroupSelectListDialog : BottomSheetDialogFragment() {
-    private lateinit var binding: DialogSelectListRecipientGroupBinding
-    private val viewModel: RecipientGroupSelectListViewModel by viewModels()
-    private val args: RecipientGroupSelectListDialogArgs by navArgs()
-    private lateinit var listAdapter: RecipientGroupSelectListAdapter
-    private var selectedGroupName: String? = null
+class RecipientSelectListDialog : BottomSheetDialogFragment() {
+    private lateinit var binding: DialogSelectListRecipientBinding
+    private val viewModel: RecipientSelectListViewModel by viewModels()
+    private val args: RecipientSelectListDialogArgs by navArgs()
+    private lateinit var listAdapter: RecipientSelectListAdapter
+    private var selectedRecipient: Recipient? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -41,41 +42,41 @@ class RecipientGroupSelectListDialog : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.dialog_select_list_recipient_group, container, false
+            inflater, R.layout.dialog_select_list_recipient, container, false
         )
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        listAdapter = RecipientGroupSelectListAdapter(viewModel)
-        binding.bottomSheetRecipientGroupList.adapter = listAdapter
+        listAdapter = RecipientSelectListAdapter(viewModel)
+        binding.bottomSheetRecipientList.adapter = listAdapter
 
-        viewModel.groups.observe(viewLifecycleOwner){ list ->
-            list.find { it.getName() == args.groupName }?.let {
+        viewModel.recipients.observe(viewLifecycleOwner){ list ->
+            list.find { it.getRecipientId() == args.recipientId }?.let {
                 viewModel.onItemClick(it)
             }
             if (list.isEmpty()){
-                binding.tvNoGroups.visibility = View.VISIBLE
-                binding.btnOkRecipientGroup.isEnabled = true
+                binding.tvNoRecipients.visibility = View.VISIBLE
+                binding.btnOkRecipient.isEnabled = true
             } else {
-                binding.tvNoGroups.visibility = View.GONE
+                binding.tvNoRecipients.visibility = View.GONE
             }
 
-            listAdapter.groups = list
+            listAdapter.recipients = list
         }
         viewModel.selectedItem.observe(viewLifecycleOwner){
-            binding.btnOkRecipientGroup.isEnabled = true
-            selectedGroupName = it
+            binding.btnOkRecipient.isEnabled = true
+            selectedRecipient = it
         }
 
-        binding.btnOkRecipientGroup.setOnClickListener {
+        binding.btnOkRecipient.setOnClickListener {
             setSelectedAndExit()
         }
     }
 
     private fun setSelectedAndExit(){
-        setNavigationResult(selectedGroupName, REQUEST_SELECTED)
+        setNavigationResult(selectedRecipient, REQUEST_SELECTED)
         closeDialog()
     }
 

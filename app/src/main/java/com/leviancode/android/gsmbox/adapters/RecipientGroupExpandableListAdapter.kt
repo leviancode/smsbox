@@ -49,20 +49,21 @@ class RecipientGroupExpandableListAdapter(
         convertView: View?,
         parent: ViewGroup?
     ): View {
-        var binding: ListItemRecipientGroupBinding?
-
+        var binding: ListItemRecipientGroupBinding
         if (convertView == null) {
             val inflater = LayoutInflater.from(context)
             binding = DataBindingUtil.inflate(inflater, R.layout.list_item_recipient_group, parent, false)
             binding?.group = RecipientGroupObservable(data[groupPosition].group)
             binding?.viewModel = viewModel
         } else {
-            binding = DataBindingUtil.getBinding(convertView)
-            binding?.group?.model = data[groupPosition].group
+            binding = DataBindingUtil.getBinding(convertView)!!
+            binding.group?.model = data[groupPosition].group
         }
-        binding?.executePendingBindings()
+        binding.executePendingBindings()
 
-        return binding?.root!!
+        binding.divider.visibility = if (isExpanded) View.INVISIBLE else View.VISIBLE
+
+        return binding.root
     }
 
     override fun getChildView(
@@ -72,7 +73,7 @@ class RecipientGroupExpandableListAdapter(
         convertView: View?,
         parent: ViewGroup?
     ): View {
-        var binding: ListItemRecipientBinding?
+        var binding: ListItemRecipientBinding
         val model = data[groupPosition].recipients[childPosition]
 
         if (convertView == null) {
@@ -84,15 +85,15 @@ class RecipientGroupExpandableListAdapter(
                 it.space.visibility = View.VISIBLE
             }
         } else {
-            binding = DataBindingUtil.getBinding(convertView)
-            binding?.recipient?.model = model
+            binding = DataBindingUtil.getBinding(convertView)!!
+            binding.recipient?.model = model
         }
 
-        binding?.divider?.visibility = if (isLastChild) View.VISIBLE else View.GONE
+        binding.divider.visibility = if (isLastChild) View.VISIBLE else View.GONE
 
-        binding?.executePendingBindings()
+        binding.executePendingBindings()
 
-        return binding?.root!!
+        return binding.root
     }
 
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
