@@ -95,7 +95,7 @@
             android:textColor="@color/grey"
             android:textAlignment="textStart"
             android:textSize="12sp"
-            android:onClick="@{() -> viewModel.onContactsClick(recipient)}"
+            android:onClick="@{() -> viewModel.onSelectRecipientClick(recipient)}"
             app:icon="@drawable/ic_baseline_person_24"
             app:iconTint="@color/blue_grey_400" />
 

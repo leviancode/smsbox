@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -17,7 +20,9 @@ import com.leviancode.android.gsmbox.adapters.RecipientSelectListAdapter
 import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.databinding.DialogSelectListRecipientBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientSelectListViewModel
+import com.leviancode.android.gsmbox.utils.ContactsManager
 import com.leviancode.android.gsmbox.utils.REQUEST_SELECTED
+import com.leviancode.android.gsmbox.utils.REQUEST_SELECT_RECIPIENT
 import com.leviancode.android.gsmbox.utils.setNavigationResult
 
 class RecipientSelectListDialog : BottomSheetDialogFragment() {
@@ -25,6 +30,7 @@ class RecipientSelectListDialog : BottomSheetDialogFragment() {
     private val viewModel: RecipientSelectListViewModel by viewModels()
     private val args: RecipientSelectListDialogArgs by navArgs()
     private lateinit var listAdapter: RecipientSelectListAdapter
+    private lateinit var contactsLauncher: ActivityResultLauncher<Void>
     private var selectedRecipient: Recipient? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -49,8 +55,23 @@ class RecipientSelectListDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        contactsLauncher = registerForActivityResult(ActivityResultContracts.PickContact()) { result ->
+            selectedRecipient = ContactsManager.parseUri(requireContext(), result)
+            setSelectedAndExit()
+        }
         listAdapter = RecipientSelectListAdapter(viewModel)
         binding.bottomSheetRecipientList.adapter = listAdapter
+
+        /*val layoutParams = binding.bottomSheet.layoutParams as CoordinatorLayout.LayoutParams
+        val bottomSheetBehavior = layoutParams.behavior as BottomSheetBehavior
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
+            override fun onStateChanged(bottomSheet: View, newState: Int) {}
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                binding.bottomSheet.progress = slideOffset
+            }
+        })*/
+
+
 
         viewModel.recipients.observe(viewLifecycleOwner){ list ->
             list.find { it.getRecipientId() == args.recipientId }?.let {
@@ -73,10 +94,18 @@ class RecipientSelectListDialog : BottomSheetDialogFragment() {
         binding.btnOkRecipient.setOnClickListener {
             setSelectedAndExit()
         }
+
+        binding.btnContacts.setOnClickListener {
+            selectContact()
+        }
+    }
+
+    private fun selectContact() {
+        ContactsManager.openContactsApp(requireContext(), contactsLauncher)
     }
 
     private fun setSelectedAndExit(){
-        setNavigationResult(selectedRecipient, REQUEST_SELECTED)
+        setNavigationResult(selectedRecipient, REQUEST_SELECT_RECIPIENT)
         closeDialog()
     }
 

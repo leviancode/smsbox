@@ -27,7 +27,7 @@
     <string name="select_group">Select Group</string>
     <string name="desc_create_new_group">Create new group</string>
     <string name="desc_create_new_template">Create new template</string>
-    <string name="discard_draft">Discard draft?</string>
+    <string name="discard_draft">Discard changes?</string>
     <string name="discard">Discard</string>
 
     <string name="material_dialog_title">Choose Color</string>

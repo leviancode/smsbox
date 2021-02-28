@@ -30,7 +30,7 @@ class EditableTemplateViewModel : ViewModel() {
     val saveRecipientLiveEvent = SingleLiveEvent<Recipient>()
 
     val selectRecipientGroupLiveEvent = SingleLiveEvent<String>()
-    val selectRecipientLiveEvent = SingleLiveEvent<RecipientObservable>()
+    val selectRecipientLiveEvent = MutableLiveData<RecipientObservable>()
     val selectContactLiveEvent = MutableLiveData<RecipientObservable>()
     val selectColorLiveEvent = SingleLiveEvent<Int>()
     val savedLiveEvent = SingleLiveEvent<Unit>()
@@ -66,6 +66,10 @@ class EditableTemplateViewModel : ViewModel() {
         selectRecipientLiveEvent.value = recipient
     }
 
+    fun onContactsClick(recipient: RecipientObservable) {
+        selectContactLiveEvent.value = recipient
+    }
+
     fun onSaveClick(){
         viewModelScope.launch {
             repository.saveTemplate(data.model)
@@ -79,10 +83,6 @@ class EditableTemplateViewModel : ViewModel() {
 
     fun onIconColorClick() {
         selectColorLiveEvent.value = data.getIconColor()
-    }
-
-    fun onContactsClick(recipient: RecipientObservable) {
-        selectContactLiveEvent.value = recipient
     }
 
     fun onRemoveRecipientClick(view: View, recipient: Recipient) {
@@ -101,7 +101,7 @@ class EditableTemplateViewModel : ViewModel() {
     fun addRecipient(recipient: Recipient?) {
         recipient?.let {
             data.addRecipient(it)
-            selectContactLiveEvent.value?.model = it
+            selectRecipientLiveEvent.value?.model = it
         }
     }
 

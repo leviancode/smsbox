@@ -8,6 +8,7 @@ const val RESULT_OK = "result_ok"
 const val RESULT_CANCEL = "result_cancel"
 const val REQUEST_SAVED = "request_saved"
 const val REQUEST_SELECTED = "request_selected"
+const val REQUEST_SELECT_RECIPIENT = "request_select_recipient"
 const val REQUEST_GROUP_SELECTED = "request_group_selected"
 const val REQUEST_PICK_CONTACT = 1
 const val EDIT = "edit"

@@ -24,7 +24,6 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
     private lateinit var binding: DialogEditableTemplateBinding
     private val viewModel: EditableTemplateViewModel by viewModels()
     private val args: EditableTemplateDialogArgs by navArgs()
-    private lateinit var contactsLauncher: ActivityResultLauncher<Void>
     private var phoneNumberList = listOf<String>()
 
     override fun onCreateView(
@@ -41,10 +40,6 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        contactsLauncher = registerForActivityResult(PickContact()) { result ->
-            viewModel.addRecipient(ContactsManager.parseUri(requireContext(), result))
-        }
-
         binding.viewModel = viewModel
 
         setupViews()
@@ -92,8 +87,6 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
             selectColor(color)
         }
 
-        viewModel.selectContactLiveEvent.observe(viewLifecycleOwner) { selectContact() }
-
         viewModel.savedLiveEvent.observe(viewLifecycleOwner) {
             closeDialog(RESULT_OK)
         }
@@ -136,10 +129,10 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
     private fun showSelectRecipientDialog(recipientId: String) {
         hideKeyboard()
 
-        getNavigationResult<Recipient>(REQUEST_SELECTED)?.observe(viewLifecycleOwner) { result ->
+        getNavigationResult<Recipient>(REQUEST_SELECT_RECIPIENT)?.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 viewModel.addRecipient(result)
-                removeNavigationResult<String>(REQUEST_SELECTED)
+                removeNavigationResult<Recipient>(REQUEST_SELECT_RECIPIENT)
             }
         }
 
@@ -173,11 +166,6 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
             bindingView?.autoCompleteList = list
             bindingView?.executePendingBindings()
         }
-    }
-
-    private fun selectContact() {
-        hideKeyboard()
-        ContactsManager.openContactsApp(requireContext(), contactsLauncher)
     }
 
     private fun selectColor(color: Int) {
