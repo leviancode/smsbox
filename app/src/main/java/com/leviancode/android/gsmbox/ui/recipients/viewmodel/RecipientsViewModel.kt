@@ -37,6 +37,12 @@ class RecipientsViewModel : ViewModel() {
         }
     }
 
+    fun updateRecipient(recipient: Recipient) {
+        viewModelScope.launch {
+            repository.saveRecipient(recipient)
+        }
+    }
+
     fun deleteGroup(item: RecipientGroup) {
         viewModelScope.launch {
             repository.deleteGroup(item)
@@ -58,4 +64,6 @@ class RecipientsViewModel : ViewModel() {
             repository.removeGroupFromAllRecipients(group)
         }
     }
+
+
 }

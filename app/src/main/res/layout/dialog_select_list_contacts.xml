@@ -11,8 +11,9 @@
         android:fitsSystemWindows="true">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/bottom_sheet_handler_width"
+            android:layout_height="@dimen/bottom_sheet_handler_height"
+            android:layout_marginTop="16dp"
             android:layout_gravity="center"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/ic_baseline_horizontal_rule_24" />

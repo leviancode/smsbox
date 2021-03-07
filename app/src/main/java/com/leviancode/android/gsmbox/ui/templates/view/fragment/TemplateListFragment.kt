@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.templates.view
+package com.leviancode.android.gsmbox.ui.templates.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,10 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.data.model.Template
@@ -19,16 +16,13 @@ import com.leviancode.android.gsmbox.databinding.FragmentTemplateListBinding
 import com.leviancode.android.gsmbox.ui.extra.DeleteConfirmationDialog
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
-import com.leviancode.android.gsmbox.utils.DELETE
-import com.leviancode.android.gsmbox.utils.EDIT
-import com.leviancode.android.gsmbox.utils.SmsManager
+import com.leviancode.android.gsmbox.utils.*
 import kotlinx.coroutines.launch
 
 class TemplateListFragment : Fragment() {
     private lateinit var binding: FragmentTemplateListBinding
     private val viewModel: TemplateListViewModel by viewModels()
     private val args: TemplateListFragmentArgs by navArgs()
-    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,24 +36,12 @@ class TemplateListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = findNavController()
         binding.viewModel = viewModel
         binding.adapter = TemplateListAdapter(viewModel)
         binding.toolbarTemplateList.apply {
             title = args.groupName
-            setNavigationOnClickListener { navController.navigateUp() }
+            setNavigationOnClickListener { goBack() }
         }
-
-        binding.templatesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (dy < 0) {
-                    binding.fabAddTemplate.show()
-                } else if (dy > 0) {
-                    binding.fabAddTemplate.hide()
-                }
-            }
-        })
 
         observeUI()
     }
@@ -105,11 +87,11 @@ class TemplateListFragment : Fragment() {
     }
 
     private fun showEditableTemplateDialog(template: Template) {
-        val action =
+        navigate {
             TemplateListFragmentDirections.actionOpenEditableTemplate(
                 template.apply { groupId = args.groupId }
             )
-        navController.navigate(action)
+        }
     }
 
 }

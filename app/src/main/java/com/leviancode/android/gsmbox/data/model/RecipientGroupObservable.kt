@@ -51,7 +51,9 @@ class RecipientGroupObservable() : BaseObservable(){
     }
 
     @Bindable
-    fun getSize() = model.size.toString()
+    fun getSizeAsString() = model.size.toString()
+
+    fun getSize() = model.size
 
     @Bindable
     fun isFieldsFilled() = isNotEmpty(getName())

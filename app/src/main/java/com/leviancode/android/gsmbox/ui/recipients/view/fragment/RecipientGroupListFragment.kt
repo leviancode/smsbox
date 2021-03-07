@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.recipients.view
+package com.leviancode.android.gsmbox.ui.recipients.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientGroupExpandableListAdapter
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientGroupListBinding
@@ -14,7 +14,7 @@ import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
 
 class RecipientGroupListFragment : Fragment() {
     private lateinit var binding: FragmentRecipientGroupListBinding
-    private val viewModel: RecipientsViewModel by viewModels({requireParentFragment()})
+    private val viewModel: RecipientsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,19 +40,8 @@ class RecipientGroupListFragment : Fragment() {
     }
 
     private fun observeUI() {
-        binding.recipientExpandableList.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY < 0) {
-                //  binding.fabMenuRecipients.showMenuButton(true)
-            } else if (scrollY > 0) {
-                //  binding.fabMenuRecipients.hideMenuButton(true)
-            }
-        }
-
         viewModel.groupedRecipients.observe(viewLifecycleOwner){ list ->
-            list.forEach { it.group.size = it.recipients.size }
             binding.adapter?.data = list
         }
-
-
     }
 }

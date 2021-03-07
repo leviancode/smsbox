@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.recipients.view
+package com.leviancode.android.gsmbox.ui.recipients.view.dialog
 
 import android.app.Dialog
 import android.os.Bundle
@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -17,6 +16,7 @@ import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientGroupBin
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.EditableRecipientGroupViewModel
 import com.leviancode.android.gsmbox.ui.templates.view.dialog.ColorPickerDialog
 import com.leviancode.android.gsmbox.utils.KeyboardUtil
+import com.leviancode.android.gsmbox.utils.goBack
 
 class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
     private lateinit var binding: DialogEditableRecipientGroupBinding
@@ -90,7 +90,7 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
 
     private fun closeDialog(){
         hideKeyboard()
-        findNavController().navigateUp()
+        goBack()
     }
 
     override fun onPause() {

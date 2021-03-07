@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.recipients.view.RecipientsFragment">
+    tools:context=".ui.recipients.view.fragment.RecipientsPagerFragment">
 
     <data>
         <variable
@@ -11,58 +11,53 @@
             type="com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel" />
     </data>
 
-    <FrameLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/app_bar_layout_recipients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
                 android:elevation="@dimen/app_bar_elevation"
+                android:background="@color/white"
                 android:fitsSystemWindows="true">
 
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/toolbar_recipients"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:title="@string/title_recipients"/>
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:id="@+id/toolbar_recipients"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:layout_scrollFlags="scroll|snap"
+                        app:title="@string/title_recipients" />
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_layout_recipient"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/tab_layout_height"
-                    app:tabMode="fixed">
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tab_layout_recipient"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/tab_layout_height"
+                        app:tabMode="fixed">
 
-                    <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tab_item_all_recipients"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/all" />
+                        <com.google.android.material.tabs.TabItem
+                            android:id="@+id/tab_item_all_recipients"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/all" />
 
-                    <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tab_item_recipient_groups"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/groups" />
+                        <com.google.android.material.tabs.TabItem
+                            android:id="@+id/tab_item_recipient_groups"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/groups" />
 
-                </com.google.android.material.tabs.TabLayout>
+                    </com.google.android.material.tabs.TabLayout>
 
             </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/list_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/app_bar_layout_recipients"/>
-
-        </RelativeLayout>
-
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/recipients_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/fab_menu_recipients"
@@ -71,6 +66,7 @@
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="7dp"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
             app:menu_colorNormal="@color/white"
             app:menu_colorPressed="@color/ltGrey"
             app:menu_colorRipple="@color/ltGrey"
@@ -121,6 +117,6 @@
             app:fabSize="auto" />
 
 
-    </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

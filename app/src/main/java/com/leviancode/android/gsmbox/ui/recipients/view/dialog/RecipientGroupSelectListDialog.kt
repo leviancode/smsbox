@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.recipients.view
+package com.leviancode.android.gsmbox.ui.recipients.view.dialog
 
 import android.app.Dialog
 import android.os.Bundle
@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -17,6 +16,7 @@ import com.leviancode.android.gsmbox.adapters.RecipientGroupSelectListAdapter
 import com.leviancode.android.gsmbox.databinding.DialogSelectListRecipientGroupBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientGroupSelectListViewModel
 import com.leviancode.android.gsmbox.utils.REQUEST_SELECTED
+import com.leviancode.android.gsmbox.utils.goBack
 import com.leviancode.android.gsmbox.utils.setNavigationResult
 
 class RecipientGroupSelectListDialog : BottomSheetDialogFragment() {
@@ -61,8 +61,7 @@ class RecipientGroupSelectListDialog : BottomSheetDialogFragment() {
             } else {
                 binding.tvNoGroups.visibility = View.GONE
             }
-
-            listAdapter.groups = list
+            listAdapter.groups = if (args.showEmpty) list else list.filter { it.getSize() > 0 }
         }
         viewModel.selectedItem.observe(viewLifecycleOwner){
             binding.btnOkRecipientGroup.isEnabled = true
@@ -76,10 +75,6 @@ class RecipientGroupSelectListDialog : BottomSheetDialogFragment() {
 
     private fun setSelectedAndExit(){
         setNavigationResult(selectedGroupName, REQUEST_SELECTED)
-        closeDialog()
-    }
-
-    private fun closeDialog() {
-        findNavController().navigateUp()
+        goBack()
     }
 }

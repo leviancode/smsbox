@@ -1,21 +1,16 @@
-package com.leviancode.android.gsmbox.ui.recipients.view
+package com.leviancode.android.gsmbox.ui.recipients.view.dialog
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientBinding
-import com.leviancode.android.gsmbox.ui.extra.DiscardDialog
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.EditableRecipientViewModel
 import com.leviancode.android.gsmbox.ui.templates.view.dialog.AbstractFullScreenDialog
 import com.leviancode.android.gsmbox.utils.*
@@ -92,9 +87,9 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
                 removeNavigationResult<String>(REQUEST_SELECTED)
             }
         }
-        findNavController().navigate(
+        navigate {
             EditableRecipientDialogDirections.actionOpenRecipientGroupList(groupName)
-        )
+        }
     }
 
     private fun selectContact() {

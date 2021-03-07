@@ -13,10 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialContainerTransform
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.ui.extra.DiscardDialog
-import com.leviancode.android.gsmbox.utils.KeyboardUtil
-import com.leviancode.android.gsmbox.utils.RESULT_CANCEL
-import com.leviancode.android.gsmbox.utils.RESULT_OK
-import com.leviancode.android.gsmbox.utils.showToast
+import com.leviancode.android.gsmbox.utils.*
 
 abstract class AbstractFullScreenDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -40,13 +37,13 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
         when (result) {
             RESULT_OK -> {
                 showToast(requireContext(), getString(R.string.saved))
-                findNavController().navigateUp()
+                goBack()
             }
             RESULT_CANCEL -> {
                 if (isDataEdited()) {
                     showDiscardDialog()
                 } else {
-                    findNavController().navigateUp()
+                    goBack()
                 }
             }
         }
@@ -55,7 +52,7 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
     fun showDiscardDialog() {
         DiscardDialog(requireContext()).show { response ->
             if (response) {
-                findNavController().navigateUp()
+                goBack()
             }
         }
     }

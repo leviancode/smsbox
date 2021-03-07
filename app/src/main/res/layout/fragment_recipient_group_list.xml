@@ -8,12 +8,15 @@
             type="com.leviancode.android.gsmbox.adapters.RecipientGroupExpandableListAdapter" />
     </data>
 
-    <ExpandableListView
-        android:id="@+id/recipient_expandable_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@android:color/transparent"
-        android:childDivider="@android:color/transparent"
-        app:setExpandableAdapter="@{adapter}"/>
+        <ExpandableListView
+            android:id="@+id/recipient_expandable_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="true"
+            android:divider="@android:color/transparent"
+            android:childDivider="@android:color/transparent"
+            app:setExpandableAdapter="@{adapter}"/>
+
+
 
 </layout>

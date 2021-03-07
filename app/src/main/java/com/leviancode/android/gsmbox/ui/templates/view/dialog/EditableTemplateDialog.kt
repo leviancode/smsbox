@@ -121,9 +121,9 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
             }
         }
 
-        findNavController().navigate(
-            EditableTemplateDialogDirections.actionSelectRecipientGroup(groupName)
-        )
+        navigate {
+            EditableTemplateDialogDirections.actionSelectRecipientGroup(groupName, false)
+        }
     }
 
     private fun showSelectRecipientDialog(recipientId: String) {
@@ -136,9 +136,9 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
             }
         }
 
-        findNavController().navigate(
+        navigate{
             EditableTemplateDialogDirections.actionSelectRecipient(recipientId)
-        )
+        }
     }
 
     private fun showRecipientsLayout() {
@@ -181,9 +181,9 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
     }
 
     private fun showEditableRecipientDialog(recipient: Recipient) {
-        findNavController().navigate(
+        navigate {
             EditableTemplateDialogDirections.actionOpenEditableRecipient(recipient)
-        )
+        }
     }
 
     private fun addNumberField(recipient: RecipientObservable) {

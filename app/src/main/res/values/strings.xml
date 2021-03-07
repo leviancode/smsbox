@@ -77,9 +77,10 @@
     <string name="recipients">Recipients</string>
     <string name="select">Select</string>
     <string name="list_empty">List empty</string>
-    <string name="group_list_empty">Group list empty</string>
+    <string name="group_list_empty">Add your first template group</string>
     <string name="template_group_empty">Template group empty</string>
     <string name="group">Group:</string>
     <string name="select_recipient">Select Recipient</string>
     <string name="no_recipients">No saved recipients</string>
+    <string name="toast_add_to_group">Added to %1$s</string>
 </resources>

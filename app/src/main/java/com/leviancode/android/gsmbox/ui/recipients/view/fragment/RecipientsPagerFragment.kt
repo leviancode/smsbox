@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.recipients.view
+package com.leviancode.android.gsmbox.ui.recipients.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,32 +6,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.tabs.TabLayout
+import androidx.fragment.app.activityViewModels
+import com.google.android.material.tabs.TabLayoutMediator
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.adapters.RecipientsViewPagerAdapter
 import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.data.model.RecipientGroup
-import com.leviancode.android.gsmbox.databinding.FragmentRecipientsBinding
+import com.leviancode.android.gsmbox.databinding.FragmentRecipientsPagerBinding
 import com.leviancode.android.gsmbox.ui.extra.DeleteConfirmationDialog
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
-import com.leviancode.android.gsmbox.utils.ADD
-import com.leviancode.android.gsmbox.utils.CLEAR
-import com.leviancode.android.gsmbox.utils.DELETE
-import com.leviancode.android.gsmbox.utils.EDIT
+import com.leviancode.android.gsmbox.utils.*
 
-class RecipientsFragment : Fragment() {
-    private lateinit var binding: FragmentRecipientsBinding
-    private val viewModel: RecipientsViewModel by viewModels()
+class RecipientsPagerFragment : Fragment() {
+    private lateinit var binding: FragmentRecipientsPagerBinding
+    private val viewModel: RecipientsViewModel by activityViewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipients, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipients_pager, container, false)
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -39,24 +35,21 @@ class RecipientsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        openAllRecipientsList()
+        setupViewPager()
         observeUI()
     }
 
-    private fun observeUI() {
-        binding.tabLayoutRecipient.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                when(tab.position){
-                    0 -> openAllRecipientsList()
-                    1 -> openGroupList()
-                }
+    private fun setupViewPager() {
+        binding.recipientsViewPager.adapter = RecipientsViewPagerAdapter(requireActivity())
+        TabLayoutMediator(binding.tabLayoutRecipient, binding.recipientsViewPager){ tab, position ->
+            tab.text = when (position) {
+                0 -> getString(R.string.all)
+                else -> getString(R.string.groups)
             }
+        }.attach()
+    }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-
-        })
-
+    private fun observeUI() {
         viewModel.addGroupLiveEvent.observe(viewLifecycleOwner){
             showEditableRecipientGroupDialog(it)
         }
@@ -74,18 +67,6 @@ class RecipientsFragment : Fragment() {
         }
     }
 
-    private fun openAllRecipientsList(){
-        childFragmentManager.commit {
-            replace(R.id.list_container, RecipientListFragment())
-        }
-    }
-
-    private fun openGroupList(){
-        childFragmentManager.commit {
-            replace(R.id.list_container, RecipientGroupListFragment())
-        }
-    }
-
     private fun showRecipientPopupMenu(view: View, recipient: Recipient) {
         ItemPopupMenu(requireContext(),view).showSimple { result ->
             when (result) {
@@ -98,11 +79,25 @@ class RecipientsFragment : Fragment() {
     private fun showGroupPopupMenu(view: View, group: RecipientGroup) {
         ItemPopupMenu(requireContext(),view).showForRecipientGroup { result ->
             when (result) {
-                ADD -> showEditableRecipientDialog(Recipient(groupName = group.groupName))
+                ADD -> showSelectRecipientDialog(group)
                 EDIT -> showEditableRecipientGroupDialog(group)
                 CLEAR -> clearGroup(group)
                 DELETE -> deleteGroup(group)
             }
+        }
+    }
+
+    private fun showSelectRecipientDialog(group: RecipientGroup) {
+        getNavigationResult<Recipient>(REQUEST_SELECT_RECIPIENT)?.observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                result.groupName = group.groupName
+                viewModel.updateRecipient(result)
+                showToast(requireContext(), getString(R.string.toast_add_to_group, group.groupName))
+                removeNavigationResult<Recipient>(REQUEST_SELECT_RECIPIENT)
+            }
+        }
+        navigate {
+            RecipientsPagerFragmentDirections.actionOpenSelectRecipient(null)
         }
     }
 
@@ -131,14 +126,14 @@ class RecipientsFragment : Fragment() {
     }
 
     private fun showEditableRecipientGroupDialog(group: RecipientGroup) {
-        findNavController().navigate(
-            RecipientsFragmentDirections.actionOpenEditableRecipientGroup(group)
-        )
+        navigate {
+            RecipientsPagerFragmentDirections.actionOpenEditableRecipientGroup(group)
+        }
     }
 
     private fun showEditableRecipientDialog(recipient: Recipient) {
-        findNavController().navigate(
-            RecipientsFragmentDirections.actionOpenEditableRecipient(recipient)
-        )
+        navigate {
+            RecipientsPagerFragmentDirections.actionOpenEditableRecipient(recipient)
+        }
     }
 }

@@ -61,7 +61,7 @@ class RecipientGroupExpandableListAdapter(
         }
         binding.executePendingBindings()
 
-        binding.divider.visibility = if (isExpanded) View.INVISIBLE else View.VISIBLE
+        binding.divider.visibility = if (isExpanded && data[groupPosition].recipients.isNotEmpty()) View.INVISIBLE else View.VISIBLE
 
         return binding.root
     }
@@ -88,11 +88,8 @@ class RecipientGroupExpandableListAdapter(
             binding = DataBindingUtil.getBinding(convertView)!!
             binding.recipient?.model = model
         }
-
         binding.divider.visibility = if (isLastChild) View.VISIBLE else View.GONE
-
         binding.executePendingBindings()
-
         return binding.root
     }
 

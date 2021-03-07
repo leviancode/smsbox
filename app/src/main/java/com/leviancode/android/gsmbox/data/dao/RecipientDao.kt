@@ -6,7 +6,8 @@ import com.leviancode.android.gsmbox.data.model.Recipient
 
 @Dao
 interface RecipientDao {
-    @Insert suspend fun insert(vararg item: Recipient)
+    @Insert
+    suspend fun insert(vararg item: Recipient)
     @Update suspend fun update(vararg item: Recipient)
     @Delete suspend fun delete(vararg item: Recipient)
 

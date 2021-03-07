@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.recipients.view
+package com.leviancode.android.gsmbox.ui.recipients.view.dialog
 
 import android.app.Dialog
 import android.os.Bundle
@@ -17,6 +17,7 @@ import com.leviancode.android.gsmbox.adapters.ContactListAdapter
 import com.leviancode.android.gsmbox.adapters.ListItemClickListener
 import com.leviancode.android.gsmbox.databinding.DialogSelectListContactsBinding
 import com.leviancode.android.gsmbox.utils.REQUEST_SELECTED
+import com.leviancode.android.gsmbox.utils.goBack
 import com.leviancode.android.gsmbox.utils.setNavigationResult
 
 
@@ -40,14 +41,14 @@ class ContactListDialog : BottomSheetDialogFragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.dialog_select_list_contacts, container, false
         )
-        binding.ibCloseDialog.setOnClickListener { closeDialog() }
+        binding.ibCloseDialog.setOnClickListener { goBack() }
         fetchContacts()
         return binding.root
     }
 
     private fun selectContact(contact: Contact) {
         setNavigationResult(contact.phoneNumbers[0].number, REQUEST_SELECTED)
-        closeDialog()
+        goBack()
     }
 
     private fun fetchContacts() {
@@ -58,9 +59,4 @@ class ContactListDialog : BottomSheetDialogFragment() {
         val listAdapter = ContactListAdapter(contacts, ListItemClickListener { selectContact(it) })
         binding.bottomSheetContactList.adapter = listAdapter
     }
-
-    private fun closeDialog() {
-       findNavController().navigateUp()
-    }
-
 }

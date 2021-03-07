@@ -1,6 +1,7 @@
 package com.leviancode.android.gsmbox.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.leviancode.android.gsmbox.data.dao.AppDatabase
 import com.leviancode.android.gsmbox.data.model.Recipient
 import com.leviancode.android.gsmbox.data.model.RecipientGroup
@@ -12,7 +13,9 @@ object RecipientsRepository {
     private val groupDao = AppDatabase.INSTANCE!!.recipientGroupDao()
     var groups: LiveData<List<RecipientGroup>> = groupDao.getAll()
     var recipients: LiveData<List<Recipient>> = recipientDao.getAll()
-    var groupedRecipients = groupDao.getGroupsWithRecipients()
+    var groupedRecipients = groupDao.getGroupsWithRecipients().map { list ->
+        list.onEach { it.group.size = it.recipients.size }
+    }
 
     suspend fun saveRecipient(item: Recipient) = withContext(IO) {
         if (!item.groupName.isNullOrEmpty()){

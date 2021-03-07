@@ -1,10 +1,12 @@
 package com.leviancode.android.gsmbox.utils
 
+import android.util.Log
 import android.widget.EditText
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 
 fun <T> MutableLiveData<List<T>>.addItem(item: T) {
@@ -79,4 +81,16 @@ fun isEmpty(vararg strings: String): Boolean = strings.count { it.isBlank() } ==
 
 inline fun <T>List<T>.ifNotEmpty(defaultValue: (List<T>) -> Unit){
     if (isNotEmpty()) defaultValue(this)
+}
+
+fun Fragment.navigate(action: () -> NavDirections){
+    findNavController().navigate(action())
+}
+
+fun Fragment.goBack(){
+    findNavController().navigateUp()
+}
+
+fun Fragment.log(message: String){
+    Log.i("APP", message)
 }
