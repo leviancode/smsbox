@@ -10,8 +10,8 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientsViewPagerAdapter
-import com.leviancode.android.gsmbox.data.model.Recipient
-import com.leviancode.android.gsmbox.data.model.RecipientGroup
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientsPagerBinding
 import com.leviancode.android.gsmbox.ui.extra.DeleteConfirmationDialog
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu

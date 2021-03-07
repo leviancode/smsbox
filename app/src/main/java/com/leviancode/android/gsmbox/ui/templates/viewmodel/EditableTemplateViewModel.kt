@@ -5,10 +5,10 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leviancode.android.gsmbox.data.model.Recipient
-import com.leviancode.android.gsmbox.data.model.RecipientObservable
-import com.leviancode.android.gsmbox.data.model.Template
-import com.leviancode.android.gsmbox.data.model.TemplateObservable
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable
+import com.leviancode.android.gsmbox.data.model.templates.Template
+import com.leviancode.android.gsmbox.data.model.templates.TemplateObservable
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent

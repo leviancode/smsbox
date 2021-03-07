@@ -8,12 +8,15 @@ import androidx.customview.widget.ViewDragHelper
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.card.MaterialCardView
 
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateGroupListAdapter
-import com.leviancode.android.gsmbox.data.model.TemplateGroup
+import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateGroupListBinding
+import com.leviancode.android.gsmbox.helpers.ItemDragHelperCallback
+import com.leviancode.android.gsmbox.helpers.ItemDragListener
 import com.leviancode.android.gsmbox.ui.extra.DeleteConfirmationDialog
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateGroupListViewModel
@@ -21,9 +24,11 @@ import com.leviancode.android.gsmbox.utils.DELETE
 import com.leviancode.android.gsmbox.utils.EDIT
 import com.leviancode.android.gsmbox.utils.navigate
 
-class TemplateGroupListFragment : Fragment() {
+class TemplateGroupListFragment : Fragment(), ItemDragListener {
     private lateinit var binding: FragmentTemplateGroupListBinding
     private val viewModel: TemplateGroupListViewModel by viewModels()
+    private lateinit var listAdapter: TemplateGroupListAdapter
+    private lateinit var itemTouchHelper: ItemTouchHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,8 +47,11 @@ class TemplateGroupListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        binding.adapter = TemplateGroupListAdapter(viewModel)
-
+        listAdapter = TemplateGroupListAdapter(viewModel)
+        binding.adapter = listAdapter
+        itemTouchHelper = ItemTouchHelper(ItemDragHelperCallback(this)).apply {
+            attachToRecyclerView(binding.templateGroupsRecyclerView)
+        }
         observeUI()
     }
 
@@ -54,14 +62,17 @@ class TemplateGroupListFragment : Fragment() {
             binding.adapter?.notifyDataSetChanged()
         }
 
-        viewModel.addGroupLiveEvent.observe(viewLifecycleOwner) {
+        viewModel.addGroupEvent.observe(viewLifecycleOwner) {
             showEditableGroupDialog(it)
         }
-        viewModel.selectedGroupLiveEvent.observe(viewLifecycleOwner) {
+        viewModel.selectedGroupEvent.observe(viewLifecycleOwner) {
             openSelectedGroup(it)
         }
-        viewModel.popupMenuLiveEvent.observe(viewLifecycleOwner) {
+        viewModel.popupMenuEvent.observe(viewLifecycleOwner) {
             showPopup(it.first, it.second)
+        }
+        viewModel.startDragEvent.observe(viewLifecycleOwner){
+            itemTouchHelper.startDrag(it)
         }
     }
 
@@ -99,22 +110,11 @@ class TemplateGroupListFragment : Fragment() {
         }
     }
 
-    private inner class ViewDragHelperCallback : ViewDragHelper.Callback() {
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        listAdapter.moveItems(fromPosition, toPosition)
+    }
 
-        override fun onViewCaptured(capturedChild: View, activePointerId: Int) {
-            if (capturedChild is MaterialCardView) {
-                (view as MaterialCardView).isDragged = true
-            }
-        }
-
-        override fun onViewReleased(releaseChild: View, xVel: Float, yVel: Float) {
-            if (releaseChild is MaterialCardView) {
-                (view as MaterialCardView).isDragged = false
-            }
-        }
-
-        override fun tryCaptureView(child: View, pointerId: Int): Boolean {
-            TODO("Not yet implemented")
-        }
+    override fun onMoveFinished() {
+        viewModel.updateAll(listAdapter.currentList)
     }
 }

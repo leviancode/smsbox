@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
             name="group"
-            type="com.leviancode.android.gsmbox.data.model.RecipientGroupObservable" />
+            type="com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupObservable" />
 
         <variable
             name="viewModel"
@@ -21,7 +20,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/recipient_holder_height"
             android:descendantFocusability="blocksDescendants"
             android:paddingStart="16dp"
             android:paddingBottom="6dp"
@@ -49,7 +48,7 @@
                 android:layout_marginStart="8dp"
                 android:text="@{group.name}"
                 android:textColor="@color/text_title"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
                 tools:text="Title" />
 
@@ -68,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/popup_btn_margin_end"
                 android:contentDescription="@string/open_option_menu"
                 android:onClick="@{(view) -> viewModel.onGroupPopupMenuClick(view, group.model)}"
                 android:padding="4dp"

@@ -2,8 +2,8 @@ package com.leviancode.android.gsmbox.ui.templates.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leviancode.android.gsmbox.data.model.TemplateGroup
-import com.leviancode.android.gsmbox.data.model.TemplateGroupObservable
+import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
+import com.leviancode.android.gsmbox.data.model.templates.TemplateGroupObservable
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import kotlinx.coroutines.launch

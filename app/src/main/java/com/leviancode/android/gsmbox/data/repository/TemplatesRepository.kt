@@ -2,8 +2,8 @@ package com.leviancode.android.gsmbox.data.repository
 
 import androidx.lifecycle.LiveData
 import com.leviancode.android.gsmbox.data.dao.AppDatabase
-import com.leviancode.android.gsmbox.data.model.Template
-import com.leviancode.android.gsmbox.data.model.TemplateGroup
+import com.leviancode.android.gsmbox.data.model.templates.Template
+import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
@@ -73,9 +73,11 @@ object TemplatesRepository {
        templatesDao.get(id)
     }
 
-    suspend fun updateTemplates() = withContext(IO) {
-        templates.value?.toTypedArray()?.let {
-            templatesDao.update(*it)
-        }
+    suspend fun updateAllTemplates(list: List<Template>) = withContext(IO) {
+        templatesDao.insert(*list.toTypedArray())
+    }
+
+    suspend fun updateAllGroups(list: List<TemplateGroup>) = withContext(IO) {
+        groupsDao.insert(*list.toTypedArray())
     }
 }

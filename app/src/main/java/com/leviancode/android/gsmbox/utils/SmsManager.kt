@@ -3,7 +3,7 @@ package com.leviancode.android.gsmbox.utils
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.leviancode.android.gsmbox.data.model.Template
+import com.leviancode.android.gsmbox.data.model.templates.Template
 
 object SmsManager {
     fun sendSms(context: Context, template: Template) {

@@ -1,8 +1,9 @@
-package com.leviancode.android.gsmbox.data.model
+package com.leviancode.android.gsmbox.data.model.templates
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.leviancode.android.gsmbox.BR
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.utils.isNotEmpty
 
 class TemplateObservable() : BaseObservable() {

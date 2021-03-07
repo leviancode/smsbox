@@ -91,6 +91,6 @@ fun Fragment.goBack(){
     findNavController().navigateUp()
 }
 
-fun Fragment.log(message: String){
+fun log(message: String){
     Log.i("APP", message)
 }

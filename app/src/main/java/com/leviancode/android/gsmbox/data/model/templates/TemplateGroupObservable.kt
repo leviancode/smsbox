@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.data.model
+package com.leviancode.android.gsmbox.data.model.templates
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable

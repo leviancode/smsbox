@@ -9,20 +9,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateListAdapter
-import com.leviancode.android.gsmbox.data.model.Template
+import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateListBinding
+import com.leviancode.android.gsmbox.helpers.ItemDragHelperCallback
+import com.leviancode.android.gsmbox.helpers.ItemDragListener
 import com.leviancode.android.gsmbox.ui.extra.DeleteConfirmationDialog
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
 import com.leviancode.android.gsmbox.utils.*
 import kotlinx.coroutines.launch
 
-class TemplateListFragment : Fragment() {
+class TemplateListFragment : Fragment(), ItemDragListener {
     private lateinit var binding: FragmentTemplateListBinding
     private val viewModel: TemplateListViewModel by viewModels()
     private val args: TemplateListFragmentArgs by navArgs()
+    private lateinit var itemTouchHelper: ItemTouchHelper
+    private lateinit var listAdapter: TemplateListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,10 +42,14 @@ class TemplateListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        binding.adapter = TemplateListAdapter(viewModel)
+        listAdapter = TemplateListAdapter(viewModel)
+        binding.adapter = listAdapter
         binding.toolbarTemplateList.apply {
             title = args.groupName
             setNavigationOnClickListener { goBack() }
+        }
+        itemTouchHelper = ItemTouchHelper(ItemDragHelperCallback(this)).apply {
+            attachToRecyclerView(binding.templatesRecyclerView)
         }
 
         observeUI()
@@ -94,4 +103,11 @@ class TemplateListFragment : Fragment() {
         }
     }
 
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        listAdapter.moveItems(fromPosition, toPosition)
+    }
+
+    override fun onMoveFinished() {
+        viewModel.updateAll(listAdapter.currentList)
+    }
 }

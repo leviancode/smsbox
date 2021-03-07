@@ -7,10 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.Template
-import com.leviancode.android.gsmbox.data.model.TemplateObservable
+import com.leviancode.android.gsmbox.data.model.templates.Template
+import com.leviancode.android.gsmbox.data.model.templates.TemplateObservable
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateBinding
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
+import java.util.*
 
 class TemplateListAdapter(val viewModel: TemplateListViewModel) :
     ListAdapter<Template, TemplateListAdapter.TemplateHolder>(TemplateDiffCallback()) {
@@ -26,18 +27,23 @@ class TemplateListAdapter(val viewModel: TemplateListViewModel) :
         holder.bind(getItem(position))
     }
 
+    fun moveItems(fromPosition: Int, toPosition: Int) {
+        val newList = currentList.toMutableList()
+        Collections.swap(newList, fromPosition, toPosition)
+        submitList(newList)
+    }
+
     class TemplateHolder(
         val binding: ListItemTemplateBinding,
         val viewModel: TemplateListViewModel
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.template = TemplateObservable()
             binding.viewModel = viewModel
         }
 
         fun bind(item: Template) {
-            binding.template?.model = item
+            binding.template = TemplateObservable(item)
             binding.executePendingBindings()
         }
     }

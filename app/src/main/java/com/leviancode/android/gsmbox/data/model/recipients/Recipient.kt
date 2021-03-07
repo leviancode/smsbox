@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.data.model
+package com.leviancode.android.gsmbox.data.model.recipients
 
 import androidx.room.Entity
 import androidx.room.Ignore

@@ -6,9 +6,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.google.android.material.button.MaterialButton
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.Recipient
 
 @BindingAdapter(value = ["loadImage"])
 fun ImageView.loadImage(uri: String?) {

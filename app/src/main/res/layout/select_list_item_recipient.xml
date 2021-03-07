@@ -7,7 +7,7 @@
     <data>
         <variable
             name="recipient"
-            type="com.leviancode.android.gsmbox.data.model.RecipientObservable" />
+            type="com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable" />
 
         <variable
             name="viewModel"

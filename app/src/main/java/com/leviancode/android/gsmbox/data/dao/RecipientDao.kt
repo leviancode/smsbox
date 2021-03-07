@@ -2,11 +2,11 @@ package com.leviancode.android.gsmbox.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.leviancode.android.gsmbox.data.model.Recipient
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 
 @Dao
 interface RecipientDao {
-    @Insert
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg item: Recipient)
     @Update suspend fun update(vararg item: Recipient)
     @Delete suspend fun delete(vararg item: Recipient)

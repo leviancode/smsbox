@@ -76,7 +76,7 @@
 
         <argument
             android:name="group"
-            app:argType="com.leviancode.android.gsmbox.data.model.TemplateGroup" />
+            app:argType="com.leviancode.android.gsmbox.data.model.templates.TemplateGroup" />
 
     </dialog>
 
@@ -88,7 +88,7 @@
 
         <argument
             android:name="template"
-            app:argType="com.leviancode.android.gsmbox.data.model.Template" />
+            app:argType="com.leviancode.android.gsmbox.data.model.templates.Template" />
 
         <action
             android:id="@+id/action_open_editable_recipient"
@@ -111,7 +111,7 @@
 
         <argument
             android:name="recipient"
-            app:argType="com.leviancode.android.gsmbox.data.model.Recipient" />
+            app:argType="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
         <action
             android:id="@+id/action_open_recipient_group_list"
             app:destination="@id/nav_select_recipient_group" />
@@ -126,7 +126,7 @@
 
         <argument
             android:name="group"
-            app:argType="com.leviancode.android.gsmbox.data.model.RecipientGroup" />
+            app:argType="com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup" />
 
     </dialog>
 

@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.leviancode.android.gsmbox.data.model.Recipient
-import com.leviancode.android.gsmbox.data.model.RecipientObservable
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 
 class RecipientSelectListViewModel : ViewModel() {

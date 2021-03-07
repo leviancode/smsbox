@@ -9,7 +9,7 @@
 
         <variable
             name="group"
-            type="com.leviancode.android.gsmbox.data.model.RecipientGroupObservable" />
+            type="com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupObservable" />
 
         <variable
             name="viewModel"

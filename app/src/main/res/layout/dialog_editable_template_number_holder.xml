@@ -13,7 +13,7 @@
             type="com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateViewModel" />
         <variable
             name="recipient"
-            type="com.leviancode.android.gsmbox.data.model.RecipientObservable" />
+            type="com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable" />
 
     </data>
 

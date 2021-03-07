@@ -1,9 +1,10 @@
-package com.leviancode.android.gsmbox.data.model
+package com.leviancode.android.gsmbox.data.model.templates
 
 import android.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import java.io.Serializable
 import java.util.*
 

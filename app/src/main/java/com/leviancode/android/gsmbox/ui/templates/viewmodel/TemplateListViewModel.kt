@@ -4,8 +4,8 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leviancode.android.gsmbox.data.model.Template
-import com.leviancode.android.gsmbox.data.model.TemplateObservable
+import com.leviancode.android.gsmbox.data.model.templates.Template
+import com.leviancode.android.gsmbox.data.model.templates.TemplateObservable
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
@@ -41,6 +41,12 @@ class TemplateListViewModel : ViewModel() {
         template.setFavorite(!template.isFavorite())
         viewModelScope.launch {
             repository.updateTemplate(template.model)
+        }
+    }
+
+    fun updateAll(list: List<Template>) {
+        viewModelScope.launch {
+            repository.updateAllTemplates(list)
         }
     }
 }

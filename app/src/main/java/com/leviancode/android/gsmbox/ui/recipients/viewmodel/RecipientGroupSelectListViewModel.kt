@@ -3,7 +3,7 @@ package com.leviancode.android.gsmbox.ui.recipients.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.leviancode.android.gsmbox.data.model.RecipientGroupObservable
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupObservable
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 
 class RecipientGroupSelectListViewModel : ViewModel() {

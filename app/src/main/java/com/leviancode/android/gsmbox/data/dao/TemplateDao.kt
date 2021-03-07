@@ -2,11 +2,12 @@ package com.leviancode.android.gsmbox.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.leviancode.android.gsmbox.data.model.Template
+import com.leviancode.android.gsmbox.data.model.templates.Template
 
 @Dao
 interface TemplateDao {
-    @Insert suspend fun insert(vararg item: Template)
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(vararg item: Template)
     @Update suspend fun update(vararg item: Template)
     @Delete suspend fun delete(vararg item: Template)
 

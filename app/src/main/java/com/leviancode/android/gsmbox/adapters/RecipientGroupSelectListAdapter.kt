@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientGroupSelectListAdapter.*
-import com.leviancode.android.gsmbox.data.model.RecipientGroupObservable
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupObservable
 import com.leviancode.android.gsmbox.databinding.SelectListItemRecipientGroupBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientGroupSelectListViewModel
 

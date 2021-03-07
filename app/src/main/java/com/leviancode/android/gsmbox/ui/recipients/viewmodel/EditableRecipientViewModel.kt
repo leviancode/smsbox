@@ -1,9 +1,9 @@
 package com.leviancode.android.gsmbox.ui.recipients.viewmodel
 
 import androidx.lifecycle.*
-import com.leviancode.android.gsmbox.data.model.Recipient
-import com.leviancode.android.gsmbox.data.model.RecipientGroup
-import com.leviancode.android.gsmbox.data.model.RecipientObservable
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import kotlinx.coroutines.*

@@ -14,4 +14,6 @@
     <dimen name="peek_height">300dp</dimen>
     <dimen name="bottom_sheet_handler_width">45dp</dimen>
     <dimen name="bottom_sheet_handler_height">4dp</dimen>
+    <dimen name="popup_btn_margin_end">16dp</dimen>
+    <dimen name="recipient_holder_height">70dp</dimen>
 </resources>

@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.data.model
+package com.leviancode.android.gsmbox.data.model.templates
 
 import android.graphics.Color
 import androidx.room.ColumnInfo
@@ -12,10 +12,9 @@ data class  TemplateGroup (
     @PrimaryKey
     @ColumnInfo(name = "group_id")
     var groupId: String = UUID.randomUUID().toString(),
-
-    @ColumnInfo(name = "name") var name: String = "",
-    @ColumnInfo(name = "description") var description: String = "",
+    var name: String = "",
+    var description: String = "",
     @ColumnInfo(name = "image_uri") var imageUri: String = "",
     @ColumnInfo(name = "icon_color") var iconColor: Int = Color.parseColor("#78909C"),
-    @ColumnInfo(name = "size") var size: Int = 0
+    var size: Int = 0
 ) : Serializable

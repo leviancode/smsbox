@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import androidx.databinding.DataBindingUtil
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.*
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupObservable
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupWithRecipients
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientBinding
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientGroupBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel

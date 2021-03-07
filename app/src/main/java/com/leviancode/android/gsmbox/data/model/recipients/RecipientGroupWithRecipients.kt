@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.data.model
+package com.leviancode.android.gsmbox.data.model.recipients
 
 import androidx.room.Embedded
 import androidx.room.Relation

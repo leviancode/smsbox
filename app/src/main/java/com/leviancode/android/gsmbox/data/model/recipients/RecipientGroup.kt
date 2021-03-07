@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.data.model
+package com.leviancode.android.gsmbox.data.model.recipients
 
 import android.graphics.Color
 import androidx.room.ColumnInfo

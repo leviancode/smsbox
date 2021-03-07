@@ -2,12 +2,12 @@ package com.leviancode.android.gsmbox.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.leviancode.android.gsmbox.data.model.Template
-import com.leviancode.android.gsmbox.data.model.TemplateGroup
+import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 
 @Dao
 interface TemplateGroupDao {
-    @Insert suspend fun insert(vararg item: TemplateGroup)
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(vararg item: TemplateGroup)
     @Update suspend fun update(vararg item: TemplateGroup)
     @Delete suspend fun delete(vararg item: TemplateGroup)
 
@@ -16,4 +16,7 @@ interface TemplateGroupDao {
 
     @Query("SELECT * FROM template_groups")
     fun getAll(): LiveData<List<TemplateGroup>>
+
+    @Query("DELETE FROM template_groups")
+    suspend fun deleteAll()
 }

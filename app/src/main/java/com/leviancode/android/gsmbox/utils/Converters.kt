@@ -1,7 +1,7 @@
 package com.leviancode.android.gsmbox.utils
 
 import androidx.room.TypeConverter
-import com.leviancode.android.gsmbox.data.model.Recipient
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 
 class Converters {
 

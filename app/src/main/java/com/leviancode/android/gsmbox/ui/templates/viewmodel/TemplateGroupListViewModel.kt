@@ -2,7 +2,8 @@ package com.leviancode.android.gsmbox.ui.templates.viewmodel
 
 import android.view.View
 import androidx.lifecycle.*
-import com.leviancode.android.gsmbox.data.model.TemplateGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
@@ -10,25 +11,36 @@ import kotlinx.coroutines.launch
 class TemplateGroupListViewModel : ViewModel() {
     private val repository = TemplatesRepository
     val groups: LiveData<List<TemplateGroup>> = repository.groups
-    val addGroupLiveEvent = SingleLiveEvent<TemplateGroup>()
-    val selectedGroupLiveEvent = SingleLiveEvent<TemplateGroup>()
-    val popupMenuLiveEvent = SingleLiveEvent<Pair<View, TemplateGroup>>()
+    val startDragEvent = SingleLiveEvent<RecyclerView.ViewHolder>()
+    val addGroupEvent = SingleLiveEvent<TemplateGroup>()
+    val selectedGroupEvent = SingleLiveEvent<TemplateGroup>()
+    val popupMenuEvent = SingleLiveEvent<Pair<View, TemplateGroup>>()
 
     fun onAddGroupClick(){
-        addGroupLiveEvent.value = TemplateGroup()
+        addGroupEvent.value = TemplateGroup()
     }
 
     fun onItemClick(item: TemplateGroup){
-        selectedGroupLiveEvent.value = item
+        selectedGroupEvent.value = item
     }
 
     fun onPopupMenuClick(view: View, item: TemplateGroup){
-        popupMenuLiveEvent.value = view to item
+        popupMenuEvent.value = view to item
     }
 
     fun deleteGroup(item: TemplateGroup) {
         viewModelScope.launch {
             repository.deleteGroup(item)
+        }
+    }
+
+    fun startDrag(viewHolder: RecyclerView.ViewHolder) {
+        startDragEvent.value = viewHolder
+    }
+
+    fun updateAll(list: List<TemplateGroup>) {
+        viewModelScope.launch {
+            repository.updateAllGroups(list)
         }
     }
 }

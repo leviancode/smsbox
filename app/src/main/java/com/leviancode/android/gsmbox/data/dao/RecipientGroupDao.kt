@@ -2,12 +2,12 @@ package com.leviancode.android.gsmbox.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.leviancode.android.gsmbox.data.model.RecipientGroup
-import com.leviancode.android.gsmbox.data.model.RecipientGroupWithRecipients
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupWithRecipients
 
 @Dao
 interface RecipientGroupDao {
-    @Insert
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg item: RecipientGroup)
     @Update
     suspend fun update(vararg item: RecipientGroup)

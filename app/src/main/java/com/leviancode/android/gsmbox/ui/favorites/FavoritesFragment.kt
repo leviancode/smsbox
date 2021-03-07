@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateListAdapter
-import com.leviancode.android.gsmbox.data.model.Template
+import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.databinding.FragmentFavoritesBinding
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
 import com.leviancode.android.gsmbox.utils.SmsManager

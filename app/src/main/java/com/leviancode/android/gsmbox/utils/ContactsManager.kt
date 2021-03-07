@@ -11,7 +11,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.single.BasePermissionListener
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.Recipient
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 
 object ContactsManager {
     fun openContactsApp(context: Context, launcher: ActivityResultLauncher<Void>) {
