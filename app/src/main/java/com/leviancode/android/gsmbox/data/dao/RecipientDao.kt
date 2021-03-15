@@ -15,7 +15,10 @@ interface RecipientDao {
     suspend fun get(id: String): Recipient?
 
     @Query("SELECT * FROM recipients")
-    fun getAll(): LiveData<List<Recipient>>
+    fun getAllLiveData(): LiveData<List<Recipient>>
+
+    @Query("SELECT * FROM recipients")
+    fun getAll(): List<Recipient>
 
     @Query("DELETE FROM recipients WHERE groupName = :name")
     suspend fun deleteByGroupName(name: String)

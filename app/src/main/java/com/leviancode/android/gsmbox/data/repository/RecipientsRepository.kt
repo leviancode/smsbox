@@ -2,17 +2,16 @@ package com.leviancode.android.gsmbox.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.leviancode.android.gsmbox.data.dao.AppDatabase
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
 object RecipientsRepository {
-    private val recipientDao = AppDatabase.INSTANCE!!.recipientDao()
-    private val groupDao = AppDatabase.INSTANCE!!.recipientGroupDao()
-    var groups: LiveData<List<RecipientGroup>> = groupDao.getAll()
-    var recipients: LiveData<List<Recipient>> = recipientDao.getAll()
+    private val recipientDao = AppDatabase.INSTANCE.recipientDao()
+    private val groupDao = AppDatabase.INSTANCE.recipientGroupDao()
+    var groups: LiveData<List<RecipientGroup>> = groupDao.getAllLiveData()
+    var recipients: LiveData<List<Recipient>> = recipientDao.getAllLiveData()
     var groupedRecipients = groupDao.getGroupsWithRecipients().map { list ->
         list.onEach { it.group.size = it.recipients.size }
     }
@@ -66,5 +65,9 @@ object RecipientsRepository {
 
     suspend fun getRecipientsByGroupName(groupName: String) = withContext(IO) {
         recipientDao.getByGroupName(groupName)
+    }
+
+    suspend fun updateAllRecipients(list: List<Recipient>) = withContext(IO) {
+        recipientDao.insert(*list.toTypedArray())
     }
 }

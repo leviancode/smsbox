@@ -23,6 +23,8 @@ class RecipientsViewModel : ViewModel() {
     val recipientPopupMenuLiveEvent = SingleLiveEvent<Pair<View, Recipient>>()
     val groupPopupMenuLiveEvent = SingleLiveEvent<Pair<View, RecipientGroup>>()
 
+    var recentlyChangedRecipients = listOf<Recipient>()
+
     fun onRecipientPopupMenuClick(view: View, item: Recipient){
         recipientPopupMenuLiveEvent.value = view to item
     }
@@ -61,9 +63,20 @@ class RecipientsViewModel : ViewModel() {
 
     fun clearGroup(group: RecipientGroup) {
         viewModelScope.launch {
+            recentlyChangedRecipients = RecipientsRepository.getRecipientsByGroupName(group.groupName)
             repository.removeGroupFromAllRecipients(group)
         }
     }
 
+    fun restoreRecipients(){
+        viewModelScope.launch {
+            repository.updateAllRecipients(recentlyChangedRecipients)
+        }
+    }
 
+    fun updateAllRecipients(list: List<Recipient>) {
+        viewModelScope.launch {
+            repository.updateAllRecipients(list)
+        }
+    }
 }

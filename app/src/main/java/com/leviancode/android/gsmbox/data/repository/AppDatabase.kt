@@ -1,10 +1,14 @@
-package com.leviancode.android.gsmbox.data.dao
+package com.leviancode.android.gsmbox.data.repository
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.leviancode.android.gsmbox.data.dao.RecipientDao
+import com.leviancode.android.gsmbox.data.dao.RecipientGroupDao
+import com.leviancode.android.gsmbox.data.dao.TemplateDao
+import com.leviancode.android.gsmbox.data.dao.TemplateGroupDao
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.data.model.templates.Template
@@ -21,7 +25,7 @@ abstract class AppDatabase : RoomDatabase(){
     abstract fun recipientGroupDao(): RecipientGroupDao
 
     companion object{
-        var INSTANCE: AppDatabase? = null
+        lateinit var INSTANCE: AppDatabase
 
         fun init(context: Context){
             INSTANCE = Room.databaseBuilder(

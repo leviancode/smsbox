@@ -41,8 +41,8 @@ class TemplateListFragment : Fragment(), ItemDragListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = viewModel
         listAdapter = TemplateListAdapter(viewModel)
+        binding.viewModel = viewModel
         binding.adapter = listAdapter
         binding.toolbarTemplateList.apply {
             title = args.groupName

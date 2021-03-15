@@ -13,6 +13,7 @@ import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
+import java.util.*
 
 class RecipientListAdapter(val viewModel: RecipientsViewModel) :
     ListAdapter<Recipient, RecipientHolder>(RecipientsDiffCallback()) {
@@ -26,6 +27,12 @@ class RecipientListAdapter(val viewModel: RecipientsViewModel) :
 
     override fun onBindViewHolder(holder: RecipientHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    fun moveItems(fromPosition: Int, toPosition: Int) {
+        val newList = currentList.toMutableList()
+        Collections.swap(newList, fromPosition, toPosition)
+        submitList(newList)
     }
 
     class RecipientHolder(

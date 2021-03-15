@@ -21,7 +21,10 @@ interface RecipientGroupDao {
     suspend fun getByName(name: String): RecipientGroup?
 
     @Query("SELECT * FROM recipient_groups")
-    fun getAll(): LiveData<List<RecipientGroup>>
+    fun getAllLiveData(): LiveData<List<RecipientGroup>>
+
+    @Query("SELECT * FROM recipient_groups")
+    fun getAll(): List<RecipientGroup>
 
     @Transaction
     @Query("SELECT * FROM recipient_groups")

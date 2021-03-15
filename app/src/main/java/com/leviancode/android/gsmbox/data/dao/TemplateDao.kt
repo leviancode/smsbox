@@ -15,7 +15,10 @@ interface TemplateDao {
     suspend fun get(id: String): Template?
 
     @Query("SELECT * FROM templates")
-    fun getAll(): LiveData<List<Template>>
+    fun getAllLiveData(): LiveData<List<Template>>
+
+    @Query("SELECT * FROM templates")
+    fun getAll(): List<Template>
 
     @Query("SELECT * FROM templates WHERE group_id = :id")
     fun getByGroupId(id: String): LiveData<List<Template>>

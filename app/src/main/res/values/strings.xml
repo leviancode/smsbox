@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GsmBox</string>
+    <string name="app_name">SMS BOX</string>
 
     <string name="title_favorites">Favorites</string>
     <string name="title_templates">Templates</string>
@@ -83,4 +83,13 @@
     <string name="select_recipient">Select Recipient</string>
     <string name="no_recipients">No saved recipients</string>
     <string name="toast_add_to_group">Added to %1$s</string>
+    <string name="save_to_file">Save to file</string>
+    <string name="restore_from_file">Restore from file</string>
+    <string name="backup">Backup</string>
+    <string name="permission_denied">Permission denied. Backup is not possible.</string>
+    <string name="undo">Undo</string>
+    <string name="group_cleared">Group cleared</string>
+    <string name="open">Open</string>
+    <string name="saved_to_downloads">Saved to Downloads</string>
+    <string name="backup_failed">Backup failed</string>
 </resources>

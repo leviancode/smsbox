@@ -5,6 +5,7 @@
     <color name="primary">@color/purple_500</color>
     <color name="primaryVariant">@color/purple_700</color>
     <color name="onPrimary">@color/white</color>
+    <color name="ic_launcher_background">#FEFEFE</color>
     <!-- Secondary-light brand color. -->
     <color name="secondary">@color/green_400</color>
     <color name="secondaryVariant">@color/teal_700</color>

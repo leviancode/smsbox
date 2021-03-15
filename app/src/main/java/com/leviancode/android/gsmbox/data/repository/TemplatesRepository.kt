@@ -1,18 +1,17 @@
 package com.leviancode.android.gsmbox.data.repository
 
 import androidx.lifecycle.LiveData
-import com.leviancode.android.gsmbox.data.dao.AppDatabase
 import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
 object TemplatesRepository {
-    private val templatesDao = AppDatabase.INSTANCE!!.templateDao()
-    private val groupsDao = AppDatabase.INSTANCE!!.templateGroupDao()
+    private val templatesDao = AppDatabase.INSTANCE.templateDao()
+    private val groupsDao = AppDatabase.INSTANCE.templateGroupDao()
 
-    val groups: LiveData<List<TemplateGroup>> = groupsDao.getAll()
-    val templates: LiveData<List<Template>> = templatesDao.getAll()
+    val groups: LiveData<List<TemplateGroup>> = groupsDao.getAllLiveData()
+    val templates: LiveData<List<Template>> = templatesDao.getAllLiveData()
 
 
     suspend fun saveGroup(item: TemplateGroup) = withContext(IO){

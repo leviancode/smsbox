@@ -9,6 +9,7 @@ import java.io.Serializable
 import java.util.*
 
 @Entity(tableName = "recipient_groups")
+@kotlinx.serialization.Serializable
 data class RecipientGroup(
     @PrimaryKey
     var groupId: String = UUID.randomUUID().toString(),

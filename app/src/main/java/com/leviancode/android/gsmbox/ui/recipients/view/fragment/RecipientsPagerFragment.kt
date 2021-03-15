@@ -23,11 +23,12 @@ class RecipientsPagerFragment : Fragment() {
     private val viewModel: RecipientsViewModel by activityViewModels()
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipients_pager, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_recipients_pager, container, false)
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -41,7 +42,10 @@ class RecipientsPagerFragment : Fragment() {
 
     private fun setupViewPager() {
         binding.recipientsViewPager.adapter = RecipientsViewPagerAdapter(requireActivity())
-        TabLayoutMediator(binding.tabLayoutRecipient, binding.recipientsViewPager){ tab, position ->
+        TabLayoutMediator(
+            binding.tabLayoutRecipient,
+            binding.recipientsViewPager
+        ) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.all)
                 else -> getString(R.string.groups)
@@ -50,25 +54,25 @@ class RecipientsPagerFragment : Fragment() {
     }
 
     private fun observeUI() {
-        viewModel.addGroupLiveEvent.observe(viewLifecycleOwner){
+        viewModel.addGroupLiveEvent.observe(viewLifecycleOwner) {
             showEditableRecipientGroupDialog(it)
         }
 
-        viewModel.addRecipientLiveEvent.observe(viewLifecycleOwner){
+        viewModel.addRecipientLiveEvent.observe(viewLifecycleOwner) {
             showEditableRecipientDialog(it)
         }
 
-        viewModel.recipientPopupMenuLiveEvent.observe(viewLifecycleOwner){
+        viewModel.recipientPopupMenuLiveEvent.observe(viewLifecycleOwner) {
             showRecipientPopupMenu(it.first, it.second)
         }
 
-        viewModel.groupPopupMenuLiveEvent.observe(viewLifecycleOwner){
+        viewModel.groupPopupMenuLiveEvent.observe(viewLifecycleOwner) {
             showGroupPopupMenu(it.first, it.second)
         }
     }
 
     private fun showRecipientPopupMenu(view: View, recipient: Recipient) {
-        ItemPopupMenu(requireContext(),view).showSimple { result ->
+        ItemPopupMenu(requireContext(), view).showSimple { result ->
             when (result) {
                 EDIT -> showEditableRecipientDialog(recipient)
                 DELETE -> deleteRecipient(recipient)
@@ -77,7 +81,7 @@ class RecipientsPagerFragment : Fragment() {
     }
 
     private fun showGroupPopupMenu(view: View, group: RecipientGroup) {
-        ItemPopupMenu(requireContext(),view).showForRecipientGroup { result ->
+        ItemPopupMenu(requireContext(), view).showForRecipientGroup { result ->
             when (result) {
                 ADD -> showSelectRecipientDialog(group)
                 EDIT -> showEditableRecipientGroupDialog(group)
@@ -103,6 +107,9 @@ class RecipientsPagerFragment : Fragment() {
 
     private fun clearGroup(group: RecipientGroup) {
         viewModel.clearGroup(group)
+        showUndoSnackbar(requireView(), getString(R.string.group_cleared)){
+            viewModel.restoreRecipients()
+        }
     }
 
     private fun deleteRecipient(item: Recipient) {

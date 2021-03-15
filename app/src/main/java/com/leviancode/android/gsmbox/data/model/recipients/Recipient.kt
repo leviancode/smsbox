@@ -7,6 +7,7 @@ import java.io.Serializable
 import java.util.*
 
 @Entity(tableName = "recipients")
+@kotlinx.serialization.Serializable
 data class Recipient(
     @PrimaryKey
     var recipientId: String = UUID.randomUUID().toString(),

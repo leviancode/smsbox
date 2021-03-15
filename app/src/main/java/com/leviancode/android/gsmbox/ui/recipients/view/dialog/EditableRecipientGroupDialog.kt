@@ -15,8 +15,9 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientGroupBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.EditableRecipientGroupViewModel
 import com.leviancode.android.gsmbox.ui.templates.view.dialog.ColorPickerDialog
-import com.leviancode.android.gsmbox.utils.KeyboardUtil
 import com.leviancode.android.gsmbox.utils.goBack
+import com.leviancode.android.gsmbox.utils.hideKeyboard
+import com.leviancode.android.gsmbox.utils.showKeyboard
 
 class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
     private lateinit var binding: DialogEditableRecipientGroupBinding
@@ -78,14 +79,6 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
         ).show {
             viewModel.setIconColor(it)
         }
-    }
-
-    private fun showKeyboard(view: View) {
-        KeyboardUtil.showKeyboard(view)
-    }
-
-    private fun hideKeyboard() {
-        KeyboardUtil.hideKeyboard(requireView())
     }
 
     private fun closeDialog(){

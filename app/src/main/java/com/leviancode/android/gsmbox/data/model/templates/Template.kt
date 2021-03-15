@@ -8,7 +8,9 @@ import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import java.io.Serializable
 import java.util.*
 
+
 @Entity(tableName = "templates")
+@kotlinx.serialization.Serializable
 data class Template(
     @PrimaryKey
     @ColumnInfo(name = "template_id")

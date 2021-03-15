@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -15,8 +16,6 @@
             android:nestedScrollingEnabled="true"
             android:divider="@android:color/transparent"
             android:childDivider="@android:color/transparent"
-            app:setExpandableAdapter="@{adapter}"/>
-
-
-
+            app:setExpandableAdapter="@{adapter}"
+            tools:listitem="@layout/list_item_recipient_group"/>
 </layout>

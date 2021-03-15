@@ -8,6 +8,7 @@ import java.io.Serializable
 import java.util.*
 
 @Entity(tableName = "template_groups")
+@kotlinx.serialization.Serializable
 data class  TemplateGroup (
     @PrimaryKey
     @ColumnInfo(name = "group_id")

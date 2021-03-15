@@ -12,6 +12,8 @@ import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateGroupBind
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateGroupViewModel
 import com.leviancode.android.gsmbox.utils.RESULT_CANCEL
 import com.leviancode.android.gsmbox.utils.RESULT_OK
+import com.leviancode.android.gsmbox.utils.hideKeyboard
+import com.leviancode.android.gsmbox.utils.showKeyboard
 
 class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
     private lateinit var binding: DialogEditableTemplateGroupBinding
