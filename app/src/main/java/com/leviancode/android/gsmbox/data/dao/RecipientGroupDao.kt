@@ -3,7 +3,7 @@ package com.leviancode.android.gsmbox.data.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupWithRecipients
+import com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients
 
 @Dao
 interface RecipientGroupDao {
@@ -14,10 +14,10 @@ interface RecipientGroupDao {
     @Delete
     suspend fun delete(vararg item: RecipientGroup)
 
-    @Query("SELECT * from recipient_groups WHERE groupId = :id")
+    @Query("SELECT * from recipient_groups WHERE recipientGroupId = :id")
     suspend fun getById(id: String): RecipientGroup?
 
-    @Query("SELECT * from recipient_groups WHERE groupName = :name")
+    @Query("SELECT * from recipient_groups WHERE recipientGroupName = :name")
     suspend fun getByName(name: String): RecipientGroup?
 
     @Query("SELECT * FROM recipient_groups")
@@ -25,8 +25,4 @@ interface RecipientGroupDao {
 
     @Query("SELECT * FROM recipient_groups")
     fun getAll(): List<RecipientGroup>
-
-    @Transaction
-    @Query("SELECT * FROM recipient_groups")
-    fun getGroupsWithRecipients(): LiveData<List<RecipientGroupWithRecipients>>
 }

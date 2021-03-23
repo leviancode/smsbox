@@ -3,9 +3,9 @@ package com.leviancode.android.gsmbox.ui.templates.viewmodel
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.templates.Template
-import com.leviancode.android.gsmbox.data.model.templates.TemplateObservable
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
@@ -23,7 +23,12 @@ class TemplateListViewModel : ViewModel() {
         }
     }
 
-    fun getGroupTemplates (groupId: String) = repository.getTemplatesByGroupId(groupId)
+    fun getTemplatesByGroupId(groupId: String) = repository.getTemplatesByGroupId(groupId)
+
+    /*fun getGroupWithTemplates(groupId: String) = repository.groupsWithTemplates.map { list ->
+        list.first { it.group.groupId == groupId }
+    }*/
+    fun getGroupWithTemplates(groupId: String) = repository.getGroupWithTemplates(groupId)
 
     fun onCreateTemplateClick(){
         createTemplateLiveEvent.value = Template()
@@ -37,10 +42,10 @@ class TemplateListViewModel : ViewModel() {
         popupMenuLiveEvent.value = Pair(view, item)
     }
 
-    fun onFavoriteClick(template: TemplateObservable){
+    fun onFavoriteClick(template: Template){
         template.setFavorite(!template.isFavorite())
         viewModelScope.launch {
-            repository.updateTemplate(template.model)
+            repository.updateTemplate(template)
         }
     }
 

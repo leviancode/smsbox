@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientListAdapter
@@ -17,7 +17,7 @@ import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
 
 class RecipientListFragment : Fragment(), ItemDragListener {
     private lateinit var binding: FragmentRecipientListBinding
-    private val viewModel: RecipientsViewModel by activityViewModels()
+    private val viewModel: RecipientsViewModel by viewModels({requireParentFragment()})
     private lateinit var listAdapter: RecipientListAdapter
     private lateinit var itemTouchHelper: ItemTouchHelper
 
@@ -53,6 +53,6 @@ class RecipientListFragment : Fragment(), ItemDragListener {
     }
 
     override fun onMoveFinished() {
-        viewModel.updateAllRecipients(listAdapter.currentList)
+        viewModel.updateRecipientsOrder(listAdapter.currentList)
     }
 }

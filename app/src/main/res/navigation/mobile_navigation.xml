@@ -32,9 +32,7 @@
         <argument
             android:name="groupId"
             app:argType="string" />
-        <argument
-            android:name="groupName"
-            app:argType="string" />
+
         <action
             android:id="@+id/action_open_editable_template"
             app:destination="@id/nav_editable_template" />
@@ -55,11 +53,14 @@
             android:id="@+id/action_open_editable_recipient"
             app:destination="@id/nav_editable_recipient" />
         <action
+            android:id="@+id/action_select_recipient"
+            app:destination="@id/nav_select_recipient" />
+        <action
+            android:id="@+id/action_multi_select_recipient_group"
+            app:destination="@id/nav_multi_select_recipient_group" />
+        <action
             android:id="@+id/action_open_editable_recipient_group"
             app:destination="@id/nav_editable_recipient_group" />
-        <action
-            android:id="@+id/action_open_select_recipient"
-            app:destination="@id/nav_select_recipient" />
     </fragment>
 
     <fragment
@@ -105,7 +106,7 @@
 
     <dialog
         android:id="@+id/nav_editable_recipient"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.EditableRecipientDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.editable.EditableRecipientDialog"
         android:label="New Recipient"
         tools:layout="@layout/dialog_editable_recipient">
 
@@ -114,43 +115,53 @@
             app:argType="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
         <action
             android:id="@+id/action_open_recipient_group_list"
-            app:destination="@id/nav_select_recipient_group" />
+            app:destination="@id/nav_multi_select_recipient_group" />
 
     </dialog>
 
     <dialog
         android:id="@+id/nav_editable_recipient_group"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.EditableRecipientGroupDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.editable.EditableRecipientGroupDialog"
         android:label="New Group"
         tools:layout="@layout/dialog_editable_recipient_group">
 
         <argument
             android:name="group"
+            app:nullable="true"
             app:argType="com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup" />
 
     </dialog>
 
     <dialog
         android:id="@+id/nav_select_recipient_group"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.RecipientGroupSelectListDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.bottomsheets.RecipientGroupSelectListDialog"
         android:label="Select Group"
-        tools:layout="@layout/dialog_select_list_recipient_group">
+        tools:layout="@layout/dialog_select_list">
 
         <argument
-            android:name="groupName"
+            android:name="groupId"
             app:nullable="true"
             app:argType="string"/>
+    </dialog>
+
+    <dialog
+        android:id="@+id/nav_multi_select_recipient_group"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.bottomsheets.RecipientGroupMultiSelectListDialog"
+        android:label="Select Groups"
+        tools:layout="@layout/dialog_select_list">
+        <action
+            android:id="@+id/action_open_editable_recipient_group"
+            app:destination="@id/nav_editable_recipient_group" />
         <argument
-            android:name="showEmpty"
-            app:argType="boolean"
-            android:defaultValue="true"/>
+            android:name="recipientId"
+            app:argType="string"/>
     </dialog>
 
     <dialog
         android:id="@+id/nav_select_recipient"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.RecipientSelectListDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.bottomsheets.RecipientSelectListDialog"
         android:label="Select Recipient"
-        tools:layout="@layout/dialog_select_list_recipient">
+        tools:layout="@layout/dialog_select_list">
 
         <argument
             android:name="recipientId"

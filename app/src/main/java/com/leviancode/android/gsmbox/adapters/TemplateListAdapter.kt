@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.templates.Template
-import com.leviancode.android.gsmbox.data.model.templates.TemplateObservable
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateBinding
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
 import java.util.*
@@ -43,7 +42,7 @@ class TemplateListAdapter(val viewModel: TemplateListViewModel) :
         }
 
         fun bind(item: Template) {
-            binding.template = TemplateObservable(item)
+            binding.model = item
             binding.executePendingBindings()
         }
     }
@@ -54,10 +53,10 @@ class TemplateListAdapter(val viewModel: TemplateListViewModel) :
         }
 
         override fun areContentsTheSame(oldItem: Template, newItem: Template): Boolean {
-            return oldItem.name == newItem.name
-                    && oldItem.message == newItem.message
-                    && oldItem.iconColor == newItem.iconColor
-                    && oldItem.recipients == newItem.recipients
+            return oldItem.getName() == newItem.getName()
+                    && oldItem.getMessage() == newItem.getMessage()
+                    && oldItem.getIconColor() == newItem.getIconColor()
+                    && oldItem.getRecipientsAsString() == newItem.getRecipientsAsString()
         }
     }
 }

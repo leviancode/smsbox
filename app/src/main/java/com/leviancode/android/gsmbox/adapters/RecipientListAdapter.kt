@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientListAdapter.*
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
 import java.util.*
@@ -39,16 +38,15 @@ class RecipientListAdapter(val viewModel: RecipientsViewModel) :
         val binding: ListItemRecipientBinding,
         val viewModel: RecipientsViewModel
     ) : RecyclerView.ViewHolder(binding.root) {
-        private val recipient = RecipientObservable()
+
 
         init {
-            binding.recipient = recipient
             binding.viewModel = viewModel
             binding.space.visibility = View.GONE
         }
 
         fun bind(item: Recipient) {
-            recipient.model = item
+            binding.recipient = item
             binding.executePendingBindings()
         }
     }

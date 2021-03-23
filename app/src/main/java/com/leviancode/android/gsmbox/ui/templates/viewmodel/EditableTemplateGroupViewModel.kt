@@ -3,7 +3,6 @@ package com.leviancode.android.gsmbox.ui.templates.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
-import com.leviancode.android.gsmbox.data.model.templates.TemplateGroupObservable
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
@@ -11,19 +10,19 @@ import kotlinx.coroutines.launch
 class EditableTemplateGroupViewModel : ViewModel() {
     private val repository = TemplatesRepository
     private var original: TemplateGroup? = null
-    var data = TemplateGroupObservable()
+    var data = TemplateGroup()
 
     val chooseColorLiveEvent = SingleLiveEvent<Int>()
     val savedLiveEvent = SingleLiveEvent<Unit>()
 
     fun setGroup(value: TemplateGroup){
-        data.model = value
+        data = value
         original = value.copy()
     }
 
     fun onSaveClick(){
         viewModelScope.launch {
-            repository.saveGroup(data.model)
+            repository.saveGroup(data)
         }
         savedLiveEvent.call()
     }
@@ -36,5 +35,5 @@ class EditableTemplateGroupViewModel : ViewModel() {
         data.setIconColor(color)
     }
 
-    fun isGroupEdited() = original != data.model
+    fun isGroupEdited() = original != data
 }

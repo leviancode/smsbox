@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.recipients.view.dialog
+package com.leviancode.android.gsmbox.ui.recipients.view.dialog.bottomsheets
 
 import android.app.Dialog
 import android.os.Bundle
@@ -16,17 +16,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientSelectListAdapter
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
-import com.leviancode.android.gsmbox.databinding.ContactsButtonBinding
-import com.leviancode.android.gsmbox.databinding.DialogSelectListRecipientBinding
+import com.leviancode.android.gsmbox.databinding.ButtonContactsBinding
+import com.leviancode.android.gsmbox.databinding.DialogSelectListBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientSelectListViewModel
-import com.leviancode.android.gsmbox.utils.ContactsManager
-import com.leviancode.android.gsmbox.utils.REQUEST_SELECT_RECIPIENT
-import com.leviancode.android.gsmbox.utils.goBack
-import com.leviancode.android.gsmbox.utils.setNavigationResult
-
+import com.leviancode.android.gsmbox.utils.REQ_SELECT_RECIPIENT
+import com.leviancode.android.gsmbox.utils.extensions.goBack
+import com.leviancode.android.gsmbox.utils.extensions.setNavigationResult
+import com.leviancode.android.gsmbox.utils.managers.ContactsManager
 
 class RecipientSelectListDialog : BottomSheetDialogFragment() {
-    private lateinit var binding: DialogSelectListRecipientBinding
+    private lateinit var binding: DialogSelectListBinding
     private val viewModel: RecipientSelectListViewModel by viewModels()
     private val args: RecipientSelectListDialogArgs by navArgs()
     private lateinit var listAdapter: RecipientSelectListAdapter
@@ -38,7 +37,7 @@ class RecipientSelectListDialog : BottomSheetDialogFragment() {
         if (dialog is BottomSheetDialog) {
             dialog.setOnShowListener {
                 val container = dialog.findViewById<FrameLayout>(R.id.container)
-                val bind = ContactsButtonBinding.inflate(dialog.layoutInflater)
+                val bind = ButtonContactsBinding.inflate(dialog.layoutInflater)
                 container?.addView(bind.root)
                 bind.btnContacts.setOnClickListener {
                     selectContact()
@@ -55,7 +54,7 @@ class RecipientSelectListDialog : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.dialog_select_list_recipient, container, false
+            inflater, R.layout.dialog_select_list, container, false
         )
         return binding.root
     }
@@ -63,40 +62,37 @@ class RecipientSelectListDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         contactsLauncher =
-            registerForActivityResult(ActivityResultContracts.PickContact()) { result ->
-                result?.let {
-                    selectedRecipient = ContactsManager.parseUri(requireContext(), result)
-                    setSelectedAndExit()
-                }
+            registerForActivityResult(ActivityResultContracts.PickContact()) { uri ->
+                selectedRecipient = viewModel.contactUriToRecipient(requireContext(), uri)
+                setSelectedAndQuit()
             }
-
+        binding.toolbar.title = getString(R.string.select_recipient)
         listAdapter = RecipientSelectListAdapter(viewModel)
-        binding.bottomSheetRecipientList.adapter = listAdapter
+        binding.bottomSheetRecyclerView.adapter = listAdapter
 
         observeUI()
     }
 
     private fun observeUI() {
         viewModel.recipients.observe(viewLifecycleOwner) { list ->
-            list.find { it.getRecipientId() == args.recipientId }?.let {
-                viewModel.onItemClick(it)
-            }
             if (list.isEmpty()) {
-                binding.tvNoRecipients.visibility = View.VISIBLE
-                binding.btnOkRecipient.isEnabled = true
+                binding.tvListEmpty.visibility = View.VISIBLE
+                binding.btnOk.isEnabled = true
             } else {
-                binding.tvNoRecipients.visibility = View.GONE
+                binding.tvListEmpty.visibility = View.GONE
+                list.find { it.recipientId == args.recipientId }?.let {
+                    viewModel.onItemClick(it)
+                }
+                listAdapter.recipients = list
             }
-
-            listAdapter.recipients = list
         }
         viewModel.selectedItem.observe(viewLifecycleOwner) {
-            binding.btnOkRecipient.isEnabled = true
+            binding.btnOk.isEnabled = true
             selectedRecipient = it
         }
 
-        binding.btnOkRecipient.setOnClickListener {
-            setSelectedAndExit()
+        binding.btnOk.setOnClickListener {
+            setSelectedAndQuit()
         }
     }
 
@@ -104,8 +100,12 @@ class RecipientSelectListDialog : BottomSheetDialogFragment() {
         ContactsManager.openContactsApp(requireContext(), contactsLauncher)
     }
 
-    private fun setSelectedAndExit() {
-        setNavigationResult(selectedRecipient, REQUEST_SELECT_RECIPIENT)
+    private fun setSelectedAndQuit() {
+        setNavigationResult(selectedRecipient, REQ_SELECT_RECIPIENT)
         goBack()
     }
 }
+
+
+
+

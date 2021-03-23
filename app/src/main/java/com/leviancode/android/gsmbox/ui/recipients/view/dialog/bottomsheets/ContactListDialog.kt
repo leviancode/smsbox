@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.recipients.view.dialog
+package com.leviancode.android.gsmbox.ui.recipients.view.dialog.bottomsheets
 
 import android.app.Dialog
 import android.os.Bundle
@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
 import com.github.tamir7.contacts.Contact
 import com.github.tamir7.contacts.Contacts
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -14,11 +13,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.ContactListAdapter
-import com.leviancode.android.gsmbox.adapters.ListItemClickListener
+import com.leviancode.android.gsmbox.helpers.ListItemClickListener
 import com.leviancode.android.gsmbox.databinding.DialogSelectListContactsBinding
-import com.leviancode.android.gsmbox.utils.REQUEST_SELECTED
-import com.leviancode.android.gsmbox.utils.goBack
-import com.leviancode.android.gsmbox.utils.setNavigationResult
+import com.leviancode.android.gsmbox.utils.REQ_SELECTED
+import com.leviancode.android.gsmbox.utils.extensions.goBack
+import com.leviancode.android.gsmbox.utils.extensions.setNavigationResult
 
 
 class ContactListDialog : BottomSheetDialogFragment() {
@@ -47,7 +46,7 @@ class ContactListDialog : BottomSheetDialogFragment() {
     }
 
     private fun selectContact(contact: Contact) {
-        setNavigationResult(contact.phoneNumbers[0].number, REQUEST_SELECTED)
+        setNavigationResult(contact.phoneNumbers[0].number, REQ_SELECTED)
         goBack()
     }
 

@@ -1,10 +1,10 @@
-package com.leviancode.android.gsmbox.ui.extra
+package com.leviancode.android.gsmbox.ui.extra.alertdialogs
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import com.leviancode.android.gsmbox.R
 
-class DeleteConfirmationDialog(val context: Context) {
+class DeleteConfirmationAlertDialog(val context: Context) {
     var title = context.getString(R.string.delete_item)
     var message = ""
 

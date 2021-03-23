@@ -16,10 +16,14 @@ import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateListBinding
 import com.leviancode.android.gsmbox.helpers.ItemDragHelperCallback
 import com.leviancode.android.gsmbox.helpers.ItemDragListener
-import com.leviancode.android.gsmbox.ui.extra.DeleteConfirmationDialog
+import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DeleteConfirmationAlertDialog
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
+import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.DELETE
+import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.EDIT
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
-import com.leviancode.android.gsmbox.utils.*
+import com.leviancode.android.gsmbox.utils.extensions.goBack
+import com.leviancode.android.gsmbox.utils.extensions.navigate
+import com.leviancode.android.gsmbox.utils.managers.SmsManager
 import kotlinx.coroutines.launch
 
 class TemplateListFragment : Fragment(), ItemDragListener {
@@ -44,21 +48,27 @@ class TemplateListFragment : Fragment(), ItemDragListener {
         listAdapter = TemplateListAdapter(viewModel)
         binding.viewModel = viewModel
         binding.adapter = listAdapter
-        binding.toolbarTemplateList.apply {
-            title = args.groupName
-            setNavigationOnClickListener { goBack() }
-        }
-        itemTouchHelper = ItemTouchHelper(ItemDragHelperCallback(this)).apply {
-            attachToRecyclerView(binding.templatesRecyclerView)
-        }
 
         observeUI()
     }
 
     private fun observeUI() {
-        viewModel.getGroupTemplates(args.groupId).observe(viewLifecycleOwner){ list ->
-            binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
-            binding.adapter?.submitList(list)
+        /* viewModel.getGroupTemplates(args.groupId).observe(viewLifecycleOwner){ list ->
+             binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+             listAdapter.submitList(list)
+         }*/
+        binding.toolbar.setNavigationOnClickListener { goBack() }
+        itemTouchHelper = ItemTouchHelper(ItemDragHelperCallback(this)).apply {
+            attachToRecyclerView(binding.templatesRecyclerView)
+        }
+        
+        viewModel.getGroupWithTemplates(args.groupId).observe(viewLifecycleOwner) { group ->
+
+            binding.toolbar.title = group.group.getName()
+            binding.tvListEmpty.visibility =
+                if (group.templates.isEmpty()) View.VISIBLE
+                else View.GONE
+            listAdapter.submitList(group.templates)
         }
 
         viewModel.createTemplateLiveEvent.observe(viewLifecycleOwner) {
@@ -71,7 +81,7 @@ class TemplateListFragment : Fragment(), ItemDragListener {
     }
 
     private fun showPopup(pair: Pair<View, Template>) {
-        ItemPopupMenu(requireContext(), pair.first).showSimple { result ->
+        ItemPopupMenu(requireContext(), pair.first).showEditDelete { result ->
             when (result) {
                 EDIT -> showEditableTemplateDialog(pair.second)
                 DELETE -> deleteTemplate(pair.second)
@@ -80,7 +90,7 @@ class TemplateListFragment : Fragment(), ItemDragListener {
     }
 
     private fun deleteTemplate(item: Template) {
-        DeleteConfirmationDialog(requireContext()).apply {
+        DeleteConfirmationAlertDialog(requireContext()).apply {
             title = getString(R.string.delete_template)
             message = getString(R.string.delete_template_confirmation)
             show { result ->
@@ -98,7 +108,7 @@ class TemplateListFragment : Fragment(), ItemDragListener {
     private fun showEditableTemplateDialog(template: Template) {
         navigate {
             TemplateListFragmentDirections.actionOpenEditableTemplate(
-                template.apply { groupId = args.groupId }
+                template.apply { templateGroupId = args.groupId }
             )
         }
     }

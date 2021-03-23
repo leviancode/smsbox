@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.utils
+package com.leviancode.android.gsmbox.utils.managers
 
 import android.Manifest
 import android.content.Context
@@ -11,7 +11,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.single.BasePermissionListener
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.recipients.Recipient
+import com.leviancode.android.gsmbox.data.model.recipients.Contact
 
 object ContactsManager {
     fun openContactsApp(context: Context, launcher: ActivityResultLauncher<Void>) {
@@ -29,9 +29,9 @@ object ContactsManager {
             }).check()
     }
 
-    fun parseUri(context: Context, uri: Uri?): Recipient? {
+    fun parseUri(context: Context, uri: Uri?): Contact? {
         if (uri == null) return null
-        val recipient = Recipient()
+        var contact: Contact? = null
         val contentResolver = context.contentResolver
 
         contentResolver.query(
@@ -39,7 +39,7 @@ object ContactsManager {
         )?.also { cur ->
             cur.moveToFirst()
             val id: String = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID))
-            recipient.recipientName = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+            val contactName = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
 
             contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -53,13 +53,13 @@ object ContactsManager {
                         it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
                     )
                     if (!phone.isNullOrBlank()) {
-                        recipient.phoneNumber = phone
+                        contact = Contact(contactName, phone)
                         break
                     }
                 }
             }?.close()
         }?.close()
 
-        return recipient
+        return contact
     }
 }

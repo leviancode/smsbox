@@ -6,17 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.fragment.app.viewModels
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientGroupExpandableListAdapter
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientGroupListBinding
-import com.leviancode.android.gsmbox.helpers.ItemDragHelperCallback
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
 
 class RecipientGroupListFragment : Fragment() {
     private lateinit var binding: FragmentRecipientGroupListBinding
-    private val viewModel: RecipientsViewModel by activityViewModels()
+    private val viewModel: RecipientsViewModel by viewModels({requireParentFragment()})
     private lateinit var listAdapter: RecipientGroupExpandableListAdapter
 
     override fun onCreateView(
@@ -44,7 +42,7 @@ class RecipientGroupListFragment : Fragment() {
     }
 
     private fun observeUI() {
-        viewModel.groupedRecipients.observe(viewLifecycleOwner){ list ->
+        viewModel.groupWithRecipients.observe(viewLifecycleOwner){ list ->
             binding.adapter?.data = list
         }
     }

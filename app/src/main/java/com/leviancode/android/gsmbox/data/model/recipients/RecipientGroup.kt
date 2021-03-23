@@ -1,10 +1,13 @@
 package com.leviancode.android.gsmbox.data.model.recipients
 
 import android.graphics.Color
-import androidx.room.ColumnInfo
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.leviancode.android.gsmbox.BR
+import com.leviancode.android.gsmbox.utils.isNotEmpty
 import java.io.Serializable
 import java.util.*
 
@@ -12,8 +15,39 @@ import java.util.*
 @kotlinx.serialization.Serializable
 data class RecipientGroup(
     @PrimaryKey
-    var groupId: String = UUID.randomUUID().toString(),
-    var groupName: String = "",
-    var groupIconColor: Int = Color.parseColor("#78909C"),
-    @Ignore var size: Int = 0
-) : Serializable
+    var recipientGroupId: String = UUID.randomUUID().toString(),
+    private var recipientGroupName: String = "",
+    private var recipientGroupIconColor: Int = Color.parseColor("#78909C"),
+) : BaseObservable(), Serializable {
+
+    @Ignore
+    @get:Bindable
+    var selected = false
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.selected)
+        }
+
+    @Bindable
+    fun getRecipientGroupName() = recipientGroupName
+    fun setRecipientGroupName(value: String){
+        if (recipientGroupName != value){
+            recipientGroupName = value
+            notifyPropertyChanged(BR.name)
+            notifyPropertyChanged(BR.fieldsFilled)
+        }
+    }
+
+    @Bindable
+    fun getRecipientGroupIconColor() = recipientGroupIconColor
+    fun setRecipientGroupIconColor(value: Int){
+        if (recipientGroupIconColor != value){
+            recipientGroupIconColor = value
+            notifyPropertyChanged(BR.iconColor)
+        }
+    }
+
+    @Bindable
+    fun isFieldsFilled() = isNotEmpty(getRecipientGroupName())
+
+}

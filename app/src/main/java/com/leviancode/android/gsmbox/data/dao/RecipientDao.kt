@@ -2,7 +2,9 @@ package com.leviancode.android.gsmbox.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientWithGroups
 
 @Dao
 interface RecipientDao {
@@ -19,13 +21,4 @@ interface RecipientDao {
 
     @Query("SELECT * FROM recipients")
     fun getAll(): List<Recipient>
-
-    @Query("DELETE FROM recipients WHERE groupName = :name")
-    suspend fun deleteByGroupName(name: String)
-
-    @Query("SELECT * FROM recipients WHERE groupName =:groupName")
-    suspend fun getByGroupName(groupName: String): List<Recipient>
-
-    @Query("UPDATE recipients SET groupName = null WHERE groupName =:groupName")
-    suspend fun deleteGroupFromAll(groupName: String)
 }

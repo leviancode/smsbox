@@ -6,13 +6,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientSelectListAdapter.*
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.databinding.SelectListItemRecipientBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientSelectListViewModel
 
 class RecipientSelectListAdapter(val viewModel: RecipientSelectListViewModel) :
     RecyclerView.Adapter<RecipientHolder>() {
-    var recipients: List<RecipientObservable> = listOf()
+    var recipients: List<Recipient> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -45,8 +45,8 @@ class RecipientSelectListAdapter(val viewModel: RecipientSelectListViewModel) :
             binding.viewModel = viewModel
         }
 
-        fun bind(item: RecipientObservable) {
-            binding.recipient = item
+        fun bind(item: Recipient) {
+            binding.model = item
             binding.executePendingBindings()
         }
     }

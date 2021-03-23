@@ -51,10 +51,9 @@ fun View.setVisibility(text: String?) {
 }
 
 @BindingAdapter(value = ["visibleIfTextNotEmpty", "visibleIfNumberNotSaved"], requireAll = true)
-fun View.setVisibility(text: String?, numberList: List<String>) {
-    this.run {
-        visibility = if (text.isNullOrBlank() || numberList.contains(text)) View.GONE else View.VISIBLE
-    }
+fun View.setVisibility(text: String?, numberList: List<String>?) {
+    if (numberList == null) return
+    visibility = if (text.isNullOrBlank() || numberList.contains(text)) View.GONE else View.VISIBLE
 }
 
 @BindingAdapter(value = ["setAutoCompleteList"])

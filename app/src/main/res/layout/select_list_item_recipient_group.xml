@@ -8,8 +8,8 @@
         <import type="android.view.View"/>
 
         <variable
-            name="group"
-            type="com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupObservable" />
+            name="model"
+            type="com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup" />
 
         <variable
             name="viewModel"
@@ -25,7 +25,7 @@
         android:paddingTop="4dp"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="@{() -> viewModel.onItemClick(group)}"
+        android:onClick="@{() -> viewModel.onItemClick(model)}"
         android:paddingBottom="4dp"
         android:paddingEnd="16dp">
 
@@ -38,7 +38,7 @@
             android:padding="4dp"
             android:scaleType="center"
             android:src="@drawable/ic_baseline_library_books_24"
-            android:tint="@{group.iconColor}" />
+            android:tint="@{model.recipientGroupIconColor}" />
 
         <CheckedTextView
             android:id="@+id/tv_recipient_group_name"
@@ -49,10 +49,10 @@
             android:paddingStart="8dp"
             android:paddingEnd="16dp"
             android:clickable="false"
-            android:checked="@{group.selected}"
+            android:checked="@{model.selected}"
             android:checkMark="?android:attr/listChoiceIndicatorSingle"
             android:gravity="center_vertical"
-            android:text="@{group.name}"
+            android:text="@{model.recipientGroupName}"
             android:textColor="@color/text_title"
             android:textSize="18sp"
             tools:text="Title" />

@@ -4,25 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateBinding
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateNumberHolderBinding
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateViewModel
 import com.leviancode.android.gsmbox.utils.*
+import com.leviancode.android.gsmbox.utils.extensions.getNavigationResult
+import com.leviancode.android.gsmbox.utils.extensions.ifNotEmpty
+import com.leviancode.android.gsmbox.utils.extensions.navigate
+import com.leviancode.android.gsmbox.utils.extensions.removeNavigationResult
 
 
 class EditableTemplateDialog : AbstractFullScreenDialog() {
     private lateinit var binding: DialogEditableTemplateBinding
     private val viewModel: EditableTemplateViewModel by viewModels()
     private val args: EditableTemplateDialogArgs by navArgs()
-    private var phoneNumberList = listOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,61 +40,59 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-
         setupViews()
         observeUI()
     }
 
     private fun setupViews(){
         binding.toolbar.apply {
-            args.template.name.let {
+            args.template.getName().let {
                 if (it.isNotBlank()) title = it
             }
             setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
         }
 
-        args.template.recipients.ifNotEmpty { list ->
-            list.forEach { addNumberField(RecipientObservable(it)) }
+        args.template.getRecipients().ifNotEmpty { list ->
+            list.forEach { addRecipientView(it) }
         }
         viewModel.setTemplate(args.template)
         showKeyboard(binding.editTextTemplateName)
     }
 
     private fun observeUI() {
-        viewModel.recipients.observe(viewLifecycleOwner){ list ->
-            phoneNumberList = list.map { it.phoneNumber }
-            updateAutoCompleteList(phoneNumberList)
+        viewModel.recipientNameList.observe(viewLifecycleOwner){ list ->
+            updateAutoCompleteList(list)
         }
 
-        viewModel.saveRecipientLiveEvent.observe(viewLifecycleOwner) { recipient ->
+        viewModel.saveRecipientEvent.observe(viewLifecycleOwner) { recipient ->
             showEditableRecipientDialog(recipient)
         }
 
-        viewModel.addNumberFieldLiveEvent.observe(viewLifecycleOwner) { recipient ->
-            addNumberField(recipient)
+        viewModel.addRecipientViewEvent.observe(viewLifecycleOwner) { recipient ->
+            addRecipientView(recipient)
         }
 
-        viewModel.removeRecipientLiveEvent.observe(viewLifecycleOwner) { view ->
-            removeRecipientLayout(view)
+        viewModel.removeRecipientViewEvent.observe(viewLifecycleOwner) { view ->
+            removeRecipientView(view)
         }
 
-        viewModel.removeAllRecipientLiveEvent.observe(viewLifecycleOwner) {
-            removeAllRecipientLayouts()
+        viewModel.removeAllRecipientViewsEvent.observe(viewLifecycleOwner) {
+            removeAllRecipientViews()
         }
 
-        viewModel.selectColorLiveEvent.observe(viewLifecycleOwner) { color ->
+        viewModel.selectColorEvent.observe(viewLifecycleOwner) { color ->
             selectColor(color)
         }
 
-        viewModel.savedLiveEvent.observe(viewLifecycleOwner) {
+        viewModel.savedEvent.observe(viewLifecycleOwner) {
             closeDialog(RESULT_OK)
         }
 
-        viewModel.selectRecipientLiveEvent.observe(viewLifecycleOwner){
-            showSelectRecipientDialog(it.getRecipientId())
+        viewModel.selectRecipientEvent.observe(viewLifecycleOwner){
+            showSelectRecipientDialog(it)
         }
 
-        viewModel.selectRecipientGroupLiveEvent.observe(viewLifecycleOwner){
+        viewModel.selectRecipientGroupEvent.observe(viewLifecycleOwner){
             showSelectRecipientGroupDialog(it)
         }
 
@@ -109,33 +108,34 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         }
     }
 
-    private fun showSelectRecipientGroupDialog(groupName: String) {
+    private fun showSelectRecipientGroupDialog(groupId: String) {
         hideKeyboard()
 
-        getNavigationResult<String>(REQUEST_SELECTED)?.observe(viewLifecycleOwner) { result ->
-            if (result != null) {
+        getNavigationResult<String>(REQ_SELECT_RECIPIENT_GROUP)?.observe(viewLifecycleOwner) { result ->
+            if (!result.isNullOrEmpty() && result != groupId) {
                 viewModel.setRecipientGroup(result)
-                removeNavigationResult<String>(REQUEST_SELECTED)
             }
+            log("result: $result")
+            removeNavigationResult<String>(REQ_SELECT_RECIPIENT_GROUP)
         }
 
         navigate {
-            EditableTemplateDialogDirections.actionSelectRecipientGroup(groupName, false)
+            EditableTemplateDialogDirections.actionSelectRecipientGroup(groupId)
         }
     }
 
-    private fun showSelectRecipientDialog(recipientId: String) {
+    private fun showSelectRecipientDialog(recipient: Recipient) {
         hideKeyboard()
 
-        getNavigationResult<Recipient>(REQUEST_SELECT_RECIPIENT)?.observe(viewLifecycleOwner) { result ->
+        getNavigationResult<Recipient>(REQ_SELECT_RECIPIENT)?.observe(viewLifecycleOwner) { result ->
             if (result != null) {
-                viewModel.addRecipient(result)
-                removeNavigationResult<Recipient>(REQUEST_SELECT_RECIPIENT)
+                viewModel.updateRecipient(recipient, result)
             }
+            removeNavigationResult<Recipient>(REQ_SELECT_RECIPIENT)
         }
 
-        navigate{
-            EditableTemplateDialogDirections.actionSelectRecipient(recipientId)
+        navigate {
+            EditableTemplateDialogDirections.actionSelectRecipient(recipient.recipientId)
         }
     }
 
@@ -184,7 +184,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         }
     }
 
-    private fun addNumberField(recipient: RecipientObservable) {
+    private fun addRecipientView(recipient: Recipient) {
         val inflater = LayoutInflater.from(requireContext())
         val recipientBinding = DataBindingUtil.inflate<DialogEditableTemplateNumberHolderBinding>(
             inflater,
@@ -194,7 +194,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         )
 
         recipientBinding.recipient = recipient
-        recipientBinding.autoCompleteList = phoneNumberList
+        recipientBinding.autoCompleteList = viewModel.recipientNameList.value ?: listOf()
         recipientBinding.viewModel = viewModel
 
         if (binding.recipientsLayout.childCount > 1) {
@@ -206,16 +206,18 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         recipientBinding.executePendingBindings()
     }
 
-    private fun removeRecipientLayout(view: View) {
+    private fun removeRecipientView(view: View) {
         val parent = view.parent as ViewGroup
         val index = binding.recipientsLayout.indexOfChild(parent)
-        val child = binding.recipientsLayout.getChildAt(index - 1)
-            .findViewById<View>(R.id.edit_text_recipient_number)
-        showKeyboard(child)
+        if (index > 0){
+            val child = binding.recipientsLayout.getChildAt(index - 1)
+                .findViewById<View>(R.id.edit_text_recipient_number)
+            showKeyboard(child)
+        }
         binding.recipientsLayout.removeView(parent)
     }
 
-    private fun removeAllRecipientLayouts() {
+    private fun removeAllRecipientViews() {
         binding.recipientsLayout.removeAllViews()
     }
 
@@ -223,7 +225,4 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         return viewModel.isTemplateEdited()
     }
 
-    companion object {
-        private val TAG = EditableTemplateDialog::class.java.simpleName
-    }
 }

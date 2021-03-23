@@ -1,10 +1,11 @@
-package com.leviancode.android.gsmbox.ui.recipients.view.dialog
+package com.leviancode.android.gsmbox.ui.recipients.view.dialog.bottomsheets
 
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.setPadding
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -13,18 +14,19 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientGroupSelectListAdapter
-import com.leviancode.android.gsmbox.databinding.DialogSelectListRecipientGroupBinding
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
+import com.leviancode.android.gsmbox.databinding.DialogSelectListBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientGroupSelectListViewModel
-import com.leviancode.android.gsmbox.utils.REQUEST_SELECTED
-import com.leviancode.android.gsmbox.utils.goBack
-import com.leviancode.android.gsmbox.utils.setNavigationResult
+import com.leviancode.android.gsmbox.utils.REQ_SELECT_RECIPIENT_GROUP
+import com.leviancode.android.gsmbox.utils.extensions.goBack
+import com.leviancode.android.gsmbox.utils.extensions.setNavigationResult
 
 class RecipientGroupSelectListDialog : BottomSheetDialogFragment() {
-    private lateinit var binding: DialogSelectListRecipientGroupBinding
+    private lateinit var binding: DialogSelectListBinding
     private val viewModel: RecipientGroupSelectListViewModel by viewModels()
     private val args: RecipientGroupSelectListDialogArgs by navArgs()
     private lateinit var listAdapter: RecipientGroupSelectListAdapter
-    private var selectedGroupName: String? = null
+    private var selectedGroupId: String = ""
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -41,7 +43,7 @@ class RecipientGroupSelectListDialog : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.dialog_select_list_recipient_group, container, false
+            inflater, R.layout.dialog_select_list, container, false
         )
         return binding.root
     }
@@ -49,32 +51,35 @@ class RecipientGroupSelectListDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listAdapter = RecipientGroupSelectListAdapter(viewModel)
-        binding.bottomSheetRecipientGroupList.adapter = listAdapter
+        binding.bootomSheetLayout.setPadding(0,0,0,8)
+        binding.bottomSheetRecyclerView.adapter = listAdapter
+        binding.toolbar.title = getString(R.string.select_group)
 
-        viewModel.groups.observe(viewLifecycleOwner){ list ->
-            list.find { it.getName() == args.groupName }?.let {
-                viewModel.onItemClick(it)
-            }
+        viewModel.notEmptyGroups.observe(viewLifecycleOwner){ list ->
             if (list.isEmpty()){
-                binding.tvNoGroups.visibility = View.VISIBLE
-                binding.btnOkRecipientGroup.isEnabled = true
+                binding.tvListEmpty.visibility = View.VISIBLE
+                binding.btnOk.isEnabled = true
             } else {
-                binding.tvNoGroups.visibility = View.GONE
+                binding.tvListEmpty.visibility = View.GONE
+                list.find { it.group.recipientGroupId == args.groupId }?.let {
+                    viewModel.onItemClick(it.group)
+                }
             }
-            listAdapter.groups = if (args.showEmpty) list else list.filter { it.getSize() > 0 }
-        }
-        viewModel.selectedItem.observe(viewLifecycleOwner){
-            binding.btnOkRecipientGroup.isEnabled = true
-            selectedGroupName = it
+            listAdapter.groups = list
         }
 
-        binding.btnOkRecipientGroup.setOnClickListener {
+        viewModel.selectedItem.observe(viewLifecycleOwner){
+            binding.btnOk.isEnabled = true
+            selectedGroupId = it
+        }
+
+        binding.btnOk.setOnClickListener {
             setSelectedAndExit()
         }
     }
 
     private fun setSelectedAndExit(){
-        setNavigationResult(selectedGroupName, REQUEST_SELECTED)
+        setNavigationResult(selectedGroupId, REQ_SELECT_RECIPIENT_GROUP)
         goBack()
     }
 }

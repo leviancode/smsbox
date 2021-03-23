@@ -13,7 +13,7 @@
             type="com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateViewModel" />
         <variable
             name="recipient"
-            type="com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable" />
+            type="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
 
     </data>
 
@@ -31,7 +31,7 @@
             android:background="?android:selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{(view) -> viewModel.onRemoveRecipientClick(view, recipient.model)}"
+            android:onClick="@{(view) -> viewModel.onRemoveRecipientClick(view, recipient)}"
             android:padding="3dp"
             android:src="@drawable/ic_baseline_close_24"
             android:tint="@color/red_600"
@@ -73,7 +73,7 @@
                 android:layout_width="@dimen/number_holder_save_btn_width"
                 android:layout_height="@dimen/edit_text_layout_height"
                 android:layout_alignParentEnd="true"
-                android:onClick="@{() -> viewModel.onSaveRecipientClick(recipient.model)}"
+                android:onClick="@{() -> viewModel.onSaveRecipientClick(recipient)}"
                 android:text="@string/save"
                 android:textColor="@color/secondary"
                 app:visibleIfTextNotEmpty="@{recipient.phoneNumber}"

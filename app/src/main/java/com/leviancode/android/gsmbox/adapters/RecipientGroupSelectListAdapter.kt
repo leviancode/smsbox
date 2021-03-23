@@ -6,13 +6,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientGroupSelectListAdapter.*
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupObservable
+import com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.SelectListItemRecipientGroupBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientGroupSelectListViewModel
 
 class RecipientGroupSelectListAdapter(val viewModel: RecipientGroupSelectListViewModel) :
     RecyclerView.Adapter<RecipientGroupHolder>() {
-    var groups: List<RecipientGroupObservable> = listOf()
+    var groups: List<GroupWithRecipients> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -45,8 +46,8 @@ class RecipientGroupSelectListAdapter(val viewModel: RecipientGroupSelectListVie
             binding.viewModel = viewModel
         }
 
-        fun bind(item: RecipientGroupObservable) {
-            binding.group = item
+        fun bind(item: GroupWithRecipients) {
+            binding.model = item.group
             binding.executePendingBindings()
         }
     }

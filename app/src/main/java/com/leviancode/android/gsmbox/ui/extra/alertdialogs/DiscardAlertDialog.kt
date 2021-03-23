@@ -1,10 +1,10 @@
-package com.leviancode.android.gsmbox.ui.extra
+package com.leviancode.android.gsmbox.ui.extra.alertdialogs
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import com.leviancode.android.gsmbox.R
 
-class DiscardDialog(val context: Context) {
+class DiscardAlertDialog(val context: Context) {
     fun show(callback: (Boolean) -> Unit){
         AlertDialog.Builder(context)
             .setMessage(context.getString(R.string.discard_draft))

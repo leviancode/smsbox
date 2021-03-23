@@ -24,7 +24,7 @@
             android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar_template_list"
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 tools:title="@string/title_templates"
                 android:paddingStart="4dp"
@@ -43,11 +43,9 @@
             android:layout_gravity="center"
             android:visibility="gone"
             android:layout_marginTop="30dp"
-            android:fontFamily="serif-monospace"
             android:text="@string/template_group_empty"
             android:textAlignment="center"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textSize="16sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/templates_recycler_view"

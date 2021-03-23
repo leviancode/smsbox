@@ -4,14 +4,14 @@ import android.view.View
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable
 import com.leviancode.android.gsmbox.data.model.templates.Template
-import com.leviancode.android.gsmbox.data.model.templates.TemplateObservable
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
+import com.leviancode.android.gsmbox.utils.log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -19,75 +19,72 @@ import kotlinx.coroutines.launch
 
 class EditableTemplateViewModel : ViewModel() {
     private val repository = TemplatesRepository
-    val recipients = RecipientsRepository.recipients
+    val recipientNameList = RecipientsRepository.recipients.map { list ->
+        list.map { it.getPhoneNumber() }
+    }
     var original: Template? = null
-    val data = TemplateObservable()
+    var data = repository.getNewTemplate()
     var recipientGroupMode = false
 
-    val addNumberFieldLiveEvent = SingleLiveEvent<RecipientObservable>()
-    val removeRecipientLiveEvent = SingleLiveEvent<View>()
-    val removeAllRecipientLiveEvent = SingleLiveEvent<Unit>()
-    val saveRecipientLiveEvent = SingleLiveEvent<Recipient>()
+    val addRecipientViewEvent = SingleLiveEvent<Recipient>()
+    val removeRecipientViewEvent = SingleLiveEvent<View>()
+    val removeAllRecipientViewsEvent = SingleLiveEvent<Unit>()
+    val saveRecipientEvent = SingleLiveEvent<Recipient>()
 
-    val selectRecipientGroupLiveEvent = SingleLiveEvent<String>()
-    val selectRecipientLiveEvent = MutableLiveData<RecipientObservable>()
-    val selectContactLiveEvent = MutableLiveData<RecipientObservable>()
-    val selectColorLiveEvent = SingleLiveEvent<Int>()
-    val savedLiveEvent = SingleLiveEvent<Unit>()
+    val selectRecipientGroupEvent = SingleLiveEvent<String>()
+    val selectRecipientEvent = SingleLiveEvent<Recipient>()
+    val selectColorEvent = SingleLiveEvent<Int>()
+    val savedEvent = SingleLiveEvent<Unit>()
 
     init {
         fieldsChecker()
     }
 
     fun setTemplate(template: Template){
-        data.model = template
+        data = template
         original = template.copy()
-        if (template.recipients.isEmpty()) {
+        if (template.getRecipients().isEmpty()) {
             onAddRecipientClick()
         }
     }
 
-    private fun addNumberField(recipient: Recipient) {
-        addNumberFieldLiveEvent.value = RecipientObservable(recipient)
+    private fun addRecipientView(recipient: Recipient) {
+        addRecipientViewEvent.value = recipient
     }
 
     fun onAddRecipientClick(){
-        Recipient().let {
+        RecipientsRepository.getNewRecipient().also {
             data.addRecipient(it)
-            addNumberField(it)
+            addRecipientView(it)
         }
     }
 
     fun onSelectRecipientGroupsClick(){
-        selectRecipientGroupLiveEvent.value = data.getRecipientGroupName()
+        selectRecipientGroupEvent.value = data.getRecipientGroupId()
     }
 
-    fun onSelectRecipientClick(recipient: RecipientObservable){
-        selectRecipientLiveEvent.value = recipient
-    }
-
-    fun onContactsClick(recipient: RecipientObservable) {
-        selectContactLiveEvent.value = recipient
+    fun onSelectRecipientClick(recipient: Recipient){
+        selectRecipientEvent.value = recipient
     }
 
     fun onSaveClick(){
         viewModelScope.launch {
-            repository.saveTemplate(data.model)
+            repository.saveTemplate(data)
         }
-        savedLiveEvent.call()
+        savedEvent.call()
     }
     
     fun onSaveRecipientClick(recipient: Recipient) {
-        saveRecipientLiveEvent.value = recipient
+        saveRecipientEvent.value = recipient
     }
 
     fun onIconColorClick() {
-        selectColorLiveEvent.value = data.getIconColor()
+        selectColorEvent.value = data.getIconColor()
     }
 
     fun onRemoveRecipientClick(view: View, recipient: Recipient) {
         data.removeRecipient(recipient)
-        removeRecipientLiveEvent.value = view
+        removeRecipientViewEvent.value = view
     }
 
     fun setIconColor(color: Int) {
@@ -95,14 +92,7 @@ class EditableTemplateViewModel : ViewModel() {
     }
 
     fun isTemplateEdited(): Boolean {
-        return original != data.model
-    }
-
-    fun addRecipient(recipient: Recipient?) {
-        recipient?.let {
-            data.addRecipient(it)
-            selectRecipientLiveEvent.value?.model = it
-        }
+        return original != data
     }
 
     private fun fieldsChecker(){
@@ -114,12 +104,22 @@ class EditableTemplateViewModel : ViewModel() {
         }
     }
 
-    fun setRecipientGroup(groupName: String) {
-        data.setRecipientGroupName(groupName)
+    fun setRecipientGroup(groupId: String) {
+        removeAllRecipientViewsEvent.call()
         viewModelScope.launch {
-            removeAllRecipientLiveEvent.call()
-            data.setRecipients(RecipientsRepository.getRecipientsByGroupName(groupName))
-            data.getRecipients().forEach(::addNumberField)
+            RecipientsRepository.getGroupWithRecipients(groupId)?.let {
+                data.setRecipientGroup(it.group)
+                data.setRecipients(it.recipients)
+                data.getRecipients().forEach(::addRecipientView)
+            }
+        }
+    }
+
+    fun updateRecipient(old: Recipient, new: Recipient) {
+        old.apply {
+            recipientId = new.recipientId
+            setRecipientName(new.getRecipientName())
+            setPhoneNumber(new.getPhoneNumber())
         }
     }
 }

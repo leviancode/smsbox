@@ -6,8 +6,8 @@
 
     <data>
         <variable
-            name="group"
-            type="com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupObservable" />
+            name="model"
+            type="com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients" />
 
         <variable
             name="viewModel"
@@ -46,7 +46,7 @@
                 android:layout_marginStart="12dp"
                 android:padding="4dp"
                 android:scaleType="center"
-                android:tint="@{group.iconColor}"
+                android:tint="@{model.group.recipientGroupIconColor}"
                 android:src="@drawable/ic_baseline_library_books_24" />
 
             <TextView
@@ -56,7 +56,7 @@
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="8dp"
-                android:text="@{group.name}"
+                android:text="@{model.group.recipientGroupName}"
                 android:textColor="@color/text_title"
                 android:textSize="17sp"
                 android:textStyle="bold"
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="8dp"
-                android:text="@{group.sizeAsString}"
+                android:text="@{model.sizeAsString}"
                 android:textSize="14sp"
                 tools:text="8" />
 
@@ -79,7 +79,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/popup_btn_margin_end"
                 android:contentDescription="@string/open_option_menu"
-                android:onClick="@{(view) -> viewModel.onGroupPopupMenuClick(view, group.model)}"
+                android:onClick="@{(view) -> viewModel.onGroupPopupMenuClick(view, model.group)}"
                 android:padding="4dp"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_baseline_more_vert_24" />

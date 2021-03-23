@@ -7,7 +7,7 @@
 
         <variable
             name="recipient"
-            type="com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable" />
+            type="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
 
         <variable
             name="viewModel"
@@ -64,7 +64,7 @@
                         android:textColor="@color/text_title"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:text="@{recipient.name}"
+                        android:text="@{recipient.recipientName}"
                         tools:text="Name" />
 
                     <TextView
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/open_option_menu"
-                    android:onClick="@{(view) -> viewModel.onRecipientPopupMenuClick(view, recipient.model)}"
+                    android:onClick="@{(view) -> viewModel.onRecipientPopupMenuClick(view, recipient)}"
                     android:padding="4dp"
                     android:layout_marginEnd="@dimen/popup_btn_margin_end"
                     android:background="?android:selectableItemBackgroundBorderless"

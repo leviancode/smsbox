@@ -5,21 +5,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/bottom_view"
+        android:id="@+id/bottom_view_recipient_view"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/bottom_button_height"
         android:layout_gravity="bottom"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/bottom_sheet_recipient_list">
+        android:background="@color/white">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_contacts"
+            android:id="@+id/btn_new_group"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/contacts"
+            android:text="@string/new_group"
             android:textColor="@color/primary" />
 
     </com.google.android.material.appbar.AppBarLayout>

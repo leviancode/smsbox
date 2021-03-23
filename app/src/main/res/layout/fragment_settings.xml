@@ -75,7 +75,6 @@
                         android:drawableTint="@color/secondary"
                         android:text="@string/save_to_file"
                         android:textColor="@color/text_view_enabled_selector"
-                        android:onClick="@{viewModel.onSaveClick}"
                         app:backgroundTint="@color/white" />
 
                     <androidx.appcompat.widget.AppCompatButton

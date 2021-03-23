@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.customview.widget.ViewDragHelper
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
-import com.google.android.material.card.MaterialCardView
 
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateGroupListAdapter
@@ -17,12 +15,12 @@ import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateGroupListBinding
 import com.leviancode.android.gsmbox.helpers.ItemDragHelperCallback
 import com.leviancode.android.gsmbox.helpers.ItemDragListener
-import com.leviancode.android.gsmbox.ui.extra.DeleteConfirmationDialog
+import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DeleteConfirmationAlertDialog
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
+import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.DELETE
+import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.EDIT
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateGroupListViewModel
-import com.leviancode.android.gsmbox.utils.DELETE
-import com.leviancode.android.gsmbox.utils.EDIT
-import com.leviancode.android.gsmbox.utils.navigate
+import com.leviancode.android.gsmbox.utils.extensions.navigate
 
 class TemplateGroupListFragment : Fragment(), ItemDragListener {
     private lateinit var binding: FragmentTemplateGroupListBinding
@@ -58,8 +56,8 @@ class TemplateGroupListFragment : Fragment(), ItemDragListener {
     private fun observeUI() {
         viewModel.groups.observe(viewLifecycleOwner) { list ->
             binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
-            binding.adapter?.submitList(list)
-            binding.adapter?.notifyDataSetChanged()
+            listAdapter.submitList(list)
+          //  listAdapter.notifyDataSetChanged()
         }
 
         viewModel.addGroupEvent.observe(viewLifecycleOwner) {
@@ -78,10 +76,7 @@ class TemplateGroupListFragment : Fragment(), ItemDragListener {
 
     private fun openSelectedGroup(group: TemplateGroup) {
         navigate {
-            TemplateGroupListFragmentDirections.actionOpenGroupTemplates(
-                group.groupId,
-                group.name
-            )
+            TemplateGroupListFragmentDirections.actionOpenGroupTemplates(group.templateGroupId)
         }
     }
 
@@ -92,7 +87,7 @@ class TemplateGroupListFragment : Fragment(), ItemDragListener {
     }
 
     private fun showPopup(view: View, group: TemplateGroup) {
-        ItemPopupMenu(requireContext(), view).showSimple { result ->
+        ItemPopupMenu(requireContext(), view).showEditDelete { result ->
             when (result) {
                 EDIT -> showEditableGroupDialog(group)
                 DELETE -> deleteGroup(group)
@@ -101,7 +96,7 @@ class TemplateGroupListFragment : Fragment(), ItemDragListener {
     }
 
     private fun deleteGroup(item: TemplateGroup) {
-        DeleteConfirmationDialog(requireContext()).apply {
+        DeleteConfirmationAlertDialog(requireContext()).apply {
             title = getString(R.string.delete_group)
             message = getString(R.string.delete_group_confirmation)
             show { result ->

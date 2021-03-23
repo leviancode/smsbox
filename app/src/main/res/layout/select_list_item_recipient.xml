@@ -6,8 +6,8 @@
 
     <data>
         <variable
-            name="recipient"
-            type="com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable" />
+            name="model"
+            type="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
 
         <variable
             name="viewModel"
@@ -23,7 +23,7 @@
         android:paddingTop="4dp"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="@{() -> viewModel.onItemClick(recipient)}"
+        android:onClick="@{() -> viewModel.onItemClick(model)}"
         android:paddingBottom="4dp"
         android:paddingEnd="16dp">
 
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:textColor="@color/text_title"
-                android:text="@{recipient.name}"
+                android:text="@{model.recipientName}"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="Name" />
@@ -62,7 +62,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="4dp"
                 android:textColor="#252525"
-                android:text="@{recipient.phoneNumber}"
+                android:text="@{model.phoneNumber}"
                 tools:text="Phone Number" />
 
         </LinearLayout>
@@ -71,7 +71,7 @@
             android:id="@+id/tv_recipient_group_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="@{recipient.selected}"
+            android:checked="@{model.selected}"
             android:clickable="false" />
 
     </LinearLayout>

@@ -13,7 +13,7 @@ import com.leviancode.android.gsmbox.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.databinding.FragmentFavoritesBinding
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
-import com.leviancode.android.gsmbox.utils.SmsManager
+import com.leviancode.android.gsmbox.utils.managers.SmsManager
 import kotlinx.coroutines.launch
 
 
@@ -38,7 +38,7 @@ class FavoritesFragment : Fragment() {
 
     private fun observeUI() {
         viewModel.templates.observe(viewLifecycleOwner){ templates ->
-            binding.adapter?.submitList(templates.filter { it.favorite })
+            binding.adapter?.submitList(templates.filter { it.isFavorite() })
         }
         viewModel.sendMessageLiveEvent.observe(viewLifecycleOwner){ sendMessage(it) }
     }

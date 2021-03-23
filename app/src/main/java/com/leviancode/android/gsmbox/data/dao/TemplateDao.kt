@@ -11,7 +11,7 @@ interface TemplateDao {
     @Update suspend fun update(vararg item: Template)
     @Delete suspend fun delete(vararg item: Template)
 
-    @Query("SELECT * from templates WHERE template_id = :id")
+    @Query("SELECT * from templates WHERE templateId = :id")
     suspend fun get(id: String): Template?
 
     @Query("SELECT * FROM templates")
@@ -20,9 +20,9 @@ interface TemplateDao {
     @Query("SELECT * FROM templates")
     fun getAll(): List<Template>
 
-    @Query("SELECT * FROM templates WHERE group_id = :id")
+    @Query("SELECT * FROM templates WHERE templateGroupId = :id")
     fun getByGroupId(id: String): LiveData<List<Template>>
 
-    @Query("DELETE FROM templates WHERE template_id = :id")
+    @Query("DELETE FROM templates WHERE templateId = :id")
     suspend fun deleteById(id: String)
 }

@@ -1,25 +1,29 @@
 package com.leviancode.android.gsmbox.ui.recipients.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupObservable
+import androidx.lifecycle.map
+import com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 
 class RecipientGroupSelectListViewModel : ViewModel() {
     private val repository = RecipientsRepository
-    private var lastSelectedItem: RecipientGroupObservable? = null
-    val groups = Transformations.map(repository.groupedRecipients) { list ->
-            list.map { RecipientGroupObservable(it.group) }
-        }
-    val selectedItem = MutableLiveData<String>()
+    private var lastSelectedItem: RecipientGroup? = null
+    val notEmptyGroups: LiveData<List<GroupWithRecipients>> = repository.groupsWithRecipients.map { list ->
+        list.filter { it.recipients.isNotEmpty() }
+    }
+    private val _selectedItem = MutableLiveData<String>()
+    val selectedItem: LiveData<String> = _selectedItem
 
-    fun onItemClick(item: RecipientGroupObservable) {
-        if (lastSelectedItem?.getGroupId() == item.getGroupId()) return
+    fun onItemClick(item: RecipientGroup) {
+        if (lastSelectedItem?.recipientGroupId == item.recipientGroupId) return
 
         lastSelectedItem?.let { it.selected = false }
         item.selected = true
         lastSelectedItem = item
-        selectedItem.value = item.getName()
+        _selectedItem.value = item.recipientGroupId
     }
+
 }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.tamir7.contacts.Contact
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.ListItemContactBinding
+import com.leviancode.android.gsmbox.helpers.ListItemClickListener
 
 class ContactListAdapter(
     val contacts: List<Contact>,

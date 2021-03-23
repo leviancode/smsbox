@@ -1,21 +1,30 @@
 package com.leviancode.android.gsmbox.data.repository
 
 import androidx.lifecycle.LiveData
+import com.leviancode.android.gsmbox.data.dao.TemplateDao
+import com.leviancode.android.gsmbox.data.dao.TemplateGroupDao
+import com.leviancode.android.gsmbox.data.model.templates.GroupWithTemplates
 import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
 object TemplatesRepository {
-    private val templatesDao = AppDatabase.INSTANCE.templateDao()
-    private val groupsDao = AppDatabase.INSTANCE.templateGroupDao()
+    private val templatesDao: TemplateDao
+        get() = AppDatabase.INSTANCE.templateDao()
+    private val groupsDao: TemplateGroupDao
+        get() = AppDatabase.INSTANCE.templateGroupDao()
 
-    val groups: LiveData<List<TemplateGroup>> = groupsDao.getAllLiveData()
-    val templates: LiveData<List<Template>> = templatesDao.getAllLiveData()
+    val groups: LiveData<List<TemplateGroup>>
+        get() = groupsDao.getAllLiveData()
+    val groupsWithTemplates: LiveData<List<GroupWithTemplates>>
+        get() = groupsDao.getGroupsWithTemplates()
+    val templates: LiveData<List<Template>>
+        get() = templatesDao.getAllLiveData()
 
 
     suspend fun saveGroup(item: TemplateGroup) = withContext(IO){
-        val group = getGroupById(item.groupId)
+        val group = getGroupById(item.templateGroupId)
         if (group == null) groupsDao.insert(item)
         else groupsDao.update(item)
     }
@@ -32,7 +41,7 @@ object TemplatesRepository {
         val template = getTemplateById(item.templateId)
         if (template == null)  {
             templatesDao.insert(item)
-            increaseGroupSize(item.groupId)
+            increaseGroupSize(item.templateGroupId)
         }
         else templatesDao.update(item)
     }
@@ -43,7 +52,7 @@ object TemplatesRepository {
 
     suspend fun deleteTemplate(item: Template) = withContext(IO) {
         templatesDao.delete(item)
-        decreaseGroupSize(item.groupId)
+        decreaseGroupSize(item.templateGroupId)
     }
 
     private suspend fun increaseGroupSize(id: String){
@@ -79,4 +88,9 @@ object TemplatesRepository {
     suspend fun updateAllGroups(list: List<TemplateGroup>) = withContext(IO) {
         groupsDao.insert(*list.toTypedArray())
     }
+
+    fun getGroupWithTemplates(groupId: String) = groupsDao.getGroupWithTemplates(groupId)
+
+    fun getNewTemplate() = Template()
+    fun getNewTemplateGroup() = TemplateGroup()
 }

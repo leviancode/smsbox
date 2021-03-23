@@ -174,9 +174,7 @@
                     android:animateLayoutChanges="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp">
-
-                </LinearLayout>
+                    android:layout_marginEnd="16dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_template_add_recipient"

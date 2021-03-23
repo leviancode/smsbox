@@ -1,6 +1,7 @@
-package com.leviancode.android.gsmbox.ui.recipients.view.dialog
+package com.leviancode.android.gsmbox.ui.recipients.view.dialog.editable
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +13,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientGroupBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.EditableRecipientGroupViewModel
 import com.leviancode.android.gsmbox.ui.templates.view.dialog.ColorPickerDialog
-import com.leviancode.android.gsmbox.utils.goBack
+import com.leviancode.android.gsmbox.utils.extensions.goBack
+import com.leviancode.android.gsmbox.utils.extensions.setNavigationResult
 import com.leviancode.android.gsmbox.utils.hideKeyboard
 import com.leviancode.android.gsmbox.utils.showKeyboard
 
@@ -49,21 +52,24 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewModel = viewModel
-        viewModel.setGroup(args.group)
-        setTitle()
+        args.group?.let {
+            viewModel.setGroup(it)
+            setTitle(it.getRecipientGroupName())
+        }
+
         showKeyboard(binding.editTextRecipientGroupName)
         observeUI()
     }
 
-    private fun setTitle(){
-        if (args.group.groupName.isNotBlank()) binding.toolbar.title = args.group.groupName
+    private fun setTitle(groupName: String) {
+        if (groupName.isNotBlank()) binding.toolbar.title = groupName
     }
 
     private fun observeUI(){
-        binding.toolbar.setNavigationOnClickListener { closeDialog() }
+        binding.toolbar.setNavigationOnClickListener { closeDialog(null) }
 
         viewModel.closeDialogLiveEvent.observe(viewLifecycleOwner){
-            closeDialog()
+            closeDialog(it)
         }
 
         viewModel.chooseColorLiveEvent.observe(viewLifecycleOwner){ selectColor(it) }
@@ -81,13 +87,18 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
         }
     }
 
-    private fun closeDialog(){
+    private fun closeDialog(result: RecipientGroup?) {
         hideKeyboard()
+        setNavigationResult(result)
         goBack()
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDismiss(dialog: DialogInterface) {
         hideKeyboard()
+        super.onDismiss(dialog)
+    }
+    override fun onPause() {
+        hideKeyboard()
+        super.onPause()
     }
 }

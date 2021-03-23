@@ -10,12 +10,14 @@
         <item name="colorSecondaryVariant">@color/secondaryVariantNight</item>
         <item name="colorOnSecondary">@color/onSecondaryNight</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/ltGrey</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <!--<item name="android:navigationBarColor">@color/onPrimary</item>-->
         <!--<item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@color/grey</item>-->
+        <item name="dialogCornerRadius">8dp</item>
 
     </style>
 

@@ -37,7 +37,7 @@ class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
 
         viewModel.setGroup(args.group)
         showKeyboard(binding.editTextTemplateGroupName)
-        args.group.name.takeIf { it.isNotBlank() }?.let {
+        args.group.getName().takeIf { it.isNotBlank() }?.let {
             binding.toolbar.title = it
         }
 

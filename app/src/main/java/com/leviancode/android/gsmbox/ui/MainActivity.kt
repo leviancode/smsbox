@@ -21,15 +21,12 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.Theme_GsmBox)
-        super.onCreate(savedInstanceState)
         setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        super.onCreate(savedInstanceState)
         AppDatabase.init(applicationContext)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this,
             R.layout.activity_main
         )
-      //  showSplashScreen(binding)
-
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment)
         navView.setupWithNavController(navController)

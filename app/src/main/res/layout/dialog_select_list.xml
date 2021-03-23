@@ -14,11 +14,12 @@
                 style="?attr/bottomSheetStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/bottom_button_height"
                 android:fitsSystemWindows="true"
                 android:clipToPadding="false">
 
                 <com.google.android.material.appbar.AppBarLayout
-                    android:id="@+id/app_bar_layout_recipients"
+                    android:id="@+id/app_bar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:background="@android:color/transparent"
@@ -42,15 +43,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        app:title="@string/select_recipient">
+                        app:title="@string/select_item">
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_ok_recipient"
+                            android:id="@+id/btn_ok"
                             style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
-                            android:enabled="false"
                             android:text="@string/ok"
                             android:textColor="@drawable/save_button_text_color_selector" />
                     </com.google.android.material.appbar.MaterialToolbar>
@@ -59,33 +59,30 @@
                 </com.google.android.material.appbar.AppBarLayout>
 
                 <TextView
-                    android:id="@+id/tv_no_recipients"
+                    android:id="@+id/tv_list_empty"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:fontFamily="serif-monospace"
                     android:gravity="center|center_vertical"
-                    android:text="@string/no_recipients"
+                    android:text="@string/list_empty"
                     android:textAlignment="center"
                     android:textSize="16sp"
-                    android:textStyle="bold"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/app_bar_layout" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/bottom_sheet_recipient_list"
+                    android:id="@+id/bottom_sheet_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scrollbars="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/app_bar_layout_recipients"
+                    app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
                     tools:listitem="@layout/select_list_item_recipient" />
 
 

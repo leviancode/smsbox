@@ -6,21 +6,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientsViewPagerAdapter
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientsPagerBinding
-import com.leviancode.android.gsmbox.ui.extra.DeleteConfirmationDialog
+import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DeleteConfirmationAlertDialog
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
+import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.ADD
+import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.CLEAR
+import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.DELETE
+import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.EDIT
+import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.REMOVE
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
 import com.leviancode.android.gsmbox.utils.*
+import com.leviancode.android.gsmbox.utils.extensions.getNavigationResult
+import com.leviancode.android.gsmbox.utils.extensions.navigate
+import com.leviancode.android.gsmbox.utils.extensions.removeNavigationResult
 
 class RecipientsPagerFragment : Fragment() {
     private lateinit var binding: FragmentRecipientsPagerBinding
-    private val viewModel: RecipientsViewModel by activityViewModels()
+    private val viewModel: RecipientsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,12 +45,13 @@ class RecipientsPagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
+        binding.groupMode = false
         setupViewPager()
         observeUI()
     }
 
     private fun setupViewPager() {
-        binding.recipientsViewPager.adapter = RecipientsViewPagerAdapter(requireActivity())
+        binding.recipientsViewPager.adapter = RecipientsViewPagerAdapter(this)
         TabLayoutMediator(
             binding.tabLayoutRecipient,
             binding.recipientsViewPager
@@ -51,69 +61,114 @@ class RecipientsPagerFragment : Fragment() {
                 else -> getString(R.string.groups)
             }
         }.attach()
+
+        binding.tabLayoutRecipient.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when (tab.position){
+                    0 -> binding.groupMode = false
+                    1 -> binding.groupMode = true
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+
+        })
     }
 
     private fun observeUI() {
-        viewModel.addGroupLiveEvent.observe(viewLifecycleOwner) {
+        viewModel.addGroupEvent.observe(viewLifecycleOwner) {
             showEditableRecipientGroupDialog(it)
         }
 
-        viewModel.addRecipientLiveEvent.observe(viewLifecycleOwner) {
+        viewModel.addRecipientEvent.observe(viewLifecycleOwner) {
             showEditableRecipientDialog(it)
         }
 
-        viewModel.recipientPopupMenuLiveEvent.observe(viewLifecycleOwner) {
+        viewModel.recipientPopupMenuEvent.observe(viewLifecycleOwner) {
             showRecipientPopupMenu(it.first, it.second)
         }
+        viewModel.recipientInGroupPopupMenuEvent.observe(viewLifecycleOwner) {
+            showRecipientInGroupPopupMenu(it.first, it.second)
+        }
 
-        viewModel.groupPopupMenuLiveEvent.observe(viewLifecycleOwner) {
+        viewModel.groupPopupMenuEvent.observe(viewLifecycleOwner) {
             showGroupPopupMenu(it.first, it.second)
         }
     }
 
     private fun showRecipientPopupMenu(view: View, recipient: Recipient) {
-        ItemPopupMenu(requireContext(), view).showSimple { result ->
+        ItemPopupMenu(requireContext(), view).showEditAddToGroupDelete { result ->
             when (result) {
                 EDIT -> showEditableRecipientDialog(recipient)
+                ADD -> showSelectRecipientGroupDialog(recipient)
+                DELETE -> deleteRecipient(recipient)
+            }
+        }
+    }
+
+    private fun showRecipientInGroupPopupMenu(view: View, recipient: Recipient) {
+        ItemPopupMenu(requireContext(), view).showEditRemoveDelete { result ->
+            when (result) {
+                EDIT -> showEditableRecipientDialog(recipient)
+                REMOVE -> removeRecipientFromGroup(recipient)
                 DELETE -> deleteRecipient(recipient)
             }
         }
     }
 
     private fun showGroupPopupMenu(view: View, group: RecipientGroup) {
-        ItemPopupMenu(requireContext(), view).showForRecipientGroup { result ->
+        ItemPopupMenu(requireContext(), view).showEditAddRecipientClearDelete { result ->
             when (result) {
-                ADD -> showSelectRecipientDialog(group)
                 EDIT -> showEditableRecipientGroupDialog(group)
+                ADD -> showSelectRecipientDialog(group)
                 CLEAR -> clearGroup(group)
                 DELETE -> deleteGroup(group)
             }
         }
     }
 
-    private fun showSelectRecipientDialog(group: RecipientGroup) {
-        getNavigationResult<Recipient>(REQUEST_SELECT_RECIPIENT)?.observe(viewLifecycleOwner) { result ->
+    private fun showSelectRecipientGroupDialog(recipient: Recipient) {
+        getNavigationResult<List<RecipientGroup>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)?.observe(
+            viewLifecycleOwner
+        ) { result ->
             if (result != null) {
-                result.groupName = group.groupName
-                viewModel.updateRecipient(result)
-                showToast(requireContext(), getString(R.string.toast_add_to_group, group.groupName))
-                removeNavigationResult<Recipient>(REQUEST_SELECT_RECIPIENT)
+                viewModel.addRecipientToGroups(recipient, result)
+                removeNavigationResult<String>(REQ_MULTI_SELECT_RECIPIENT_GROUP)
+            }
+        }
+
+        navigate {
+            RecipientsPagerFragmentDirections.actionMultiSelectRecipientGroup(recipient.recipientId)
+        }
+    }
+
+    private fun showSelectRecipientDialog(group: RecipientGroup) {
+        getNavigationResult<Recipient>(REQ_SELECT_RECIPIENT)?.observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                viewModel.addRecipientToGroup(result, group)
+                showToast(requireContext(), getString(R.string.toast_add_to_group, group.getRecipientGroupName()))
+                removeNavigationResult<Recipient>(REQ_SELECT_RECIPIENT)
             }
         }
         navigate {
-            RecipientsPagerFragmentDirections.actionOpenSelectRecipient(null)
+            RecipientsPagerFragmentDirections.actionSelectRecipient(null)
         }
+    }
+
+    private fun removeRecipientFromGroup(recipient: Recipient) {
+        viewModel.removeRecipientFromGroup(recipient)
     }
 
     private fun clearGroup(group: RecipientGroup) {
         viewModel.clearGroup(group)
         showUndoSnackbar(requireView(), getString(R.string.group_cleared)){
-            viewModel.restoreRecipients()
+            viewModel.restoreGroupWithRecipients()
         }
     }
 
     private fun deleteRecipient(item: Recipient) {
-        DeleteConfirmationDialog(requireContext()).apply {
+        DeleteConfirmationAlertDialog(requireContext()).apply {
             title = getString(R.string.delete_recipient)
             message = getString(R.string.delete_recipient_confirmation)
             show { result ->
@@ -123,12 +178,11 @@ class RecipientsPagerFragment : Fragment() {
     }
 
     private fun deleteGroup(item: RecipientGroup) {
-        DeleteConfirmationDialog(requireContext()).apply {
+        DeleteConfirmationAlertDialog(requireContext()).apply {
             title = getString(R.string.delete_group)
             message = getString(R.string.delete_group_confirmation)
-            show { result ->
-                if (result) viewModel.deleteGroup(item)
-            }
+        }.show { result ->
+            if (result) viewModel.deleteGroup(item)
         }
     }
 

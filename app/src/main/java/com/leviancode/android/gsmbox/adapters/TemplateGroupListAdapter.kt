@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
-import com.leviancode.android.gsmbox.data.model.templates.TemplateGroupObservable
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateGroupBinding
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateGroupListViewModel
 import java.util.*
@@ -45,14 +44,14 @@ class TemplateGroupListAdapter(val viewModel: TemplateGroupListViewModel) :
         }
 
         fun bind(group: TemplateGroup) {
-            binding.group = TemplateGroupObservable(group)
+            binding.model = group
             binding.executePendingBindings()
         }
     }
 
     class GroupListDiffCallback : DiffUtil.ItemCallback<TemplateGroup>() {
         override fun areItemsTheSame(oldItem: TemplateGroup, newItem: TemplateGroup): Boolean {
-            return oldItem.groupId == newItem.groupId
+            return oldItem.templateGroupId == newItem.templateGroupId
         }
 
         override fun areContentsTheSame(oldItem: TemplateGroup, newItem: TemplateGroup): Boolean {

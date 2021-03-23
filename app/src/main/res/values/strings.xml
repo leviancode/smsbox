@@ -65,10 +65,10 @@
     <string name="add_to_group">Add to group</string>
     <string name="selected_item">Selected item</string>
     <string name="ok">OK</string>
-    <string name="hint_group_name">Group name (optional)</string>
+    <string name="hint_group_name">Group name</string>
     <string name="recipient">Recipient</string>
     <string name="recipient_group">Recipient group</string>
-    <string name="remove_from_group">Remove recipient from group</string>
+    <string name="remove_from_group">Remove from group</string>
     <string name="clear_group">Clear Group</string>
     <string name="saved">Saved</string>
     <string name="no_groups">No recipient groups</string>
@@ -76,7 +76,7 @@
     <string name="no_group">No group</string>
     <string name="recipients">Recipients</string>
     <string name="select">Select</string>
-    <string name="list_empty">List empty</string>
+    <string name="list_empty">The list is empty</string>
     <string name="group_list_empty">Add your first template group</string>
     <string name="template_group_empty">Template group empty</string>
     <string name="group">Group:</string>
@@ -92,4 +92,13 @@
     <string name="open">Open</string>
     <string name="saved_to_downloads">Saved to Downloads</string>
     <string name="backup_failed">Backup failed</string>
+    <string name="restore_success">Restore database successful</string>
+    <string name="restore_failed">Restore failed</string>
+    <string name="restore">Restore</string>
+    <string name="restore_database">Restore database</string>
+    <string name="reсovery">Recovery</string>
+    <string name="db_would_be_lost">Recovery will overwrite the current database, all data will be lost. Are you sure you want to restore the database?</string>
+    <string name="invalid_file">Invalid file</string>
+    <string name="select_item">Select Item</string>
+    <string name="desc_create_new_recipient">Create new recipient</string>
 </resources>

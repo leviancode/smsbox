@@ -7,19 +7,18 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import androidx.databinding.DataBindingUtil
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupObservable
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroupWithRecipients
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientObservable
+import com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientBinding
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientGroupBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
+import com.leviancode.android.gsmbox.utils.TAG_IN_GROUP
 
 
 class RecipientGroupExpandableListAdapter(
     val context: Context,
     val viewModel: RecipientsViewModel,
 ) : BaseExpandableListAdapter() {
-    var data: List<RecipientGroupWithRecipients> = listOf()
+    var data: List<GroupWithRecipients> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -55,12 +54,11 @@ class RecipientGroupExpandableListAdapter(
         if (convertView == null) {
             val inflater = LayoutInflater.from(context)
             binding = DataBindingUtil.inflate(inflater, R.layout.list_item_recipient_group, parent, false)
-            binding?.group = RecipientGroupObservable(data[groupPosition].group)
             binding?.viewModel = viewModel
         } else {
             binding = DataBindingUtil.getBinding(convertView)!!
-            binding.group?.model = data[groupPosition].group
         }
+        binding.model = data[groupPosition]
         binding.executePendingBindings()
 
        // binding.divider.visibility = if (isExpanded && data[groupPosition].recipients.isNotEmpty()) View.VISIBLE else View.INVISIBLE
@@ -78,25 +76,22 @@ class RecipientGroupExpandableListAdapter(
         convertView: View?,
         parent: ViewGroup?
     ): View {
-        var binding: ListItemRecipientBinding
-        val model = data[groupPosition].recipients[childPosition]
-
-        if (convertView == null) {
+        var binding: ListItemRecipientBinding? = if (convertView == null) {
             val inflater = LayoutInflater.from(context)
-            binding = DataBindingUtil.inflate(inflater, R.layout.list_item_recipient, parent, false)
-            binding?.let{
-                it.recipient = RecipientObservable(model)
+            DataBindingUtil.inflate<ListItemRecipientBinding>(inflater, R.layout.list_item_recipient, parent, false)?.also {
                 it.viewModel = viewModel
                 it.space.visibility = View.VISIBLE
+                it.cardRecipient.elevation = 8f
             }
         } else {
-            binding = DataBindingUtil.getBinding(convertView)!!
-            binding.recipient?.model = model
+            DataBindingUtil.getBinding(convertView)
+        }?.apply {
+            recipient = data[groupPosition].recipients[childPosition]
+            ibPopupMenu.tag = data[groupPosition].group.recipientGroupId
+            executePendingBindings()
         }
-        binding.cardRecipient.elevation = 8f
-       // binding.divider.visibility = if (isLastChild) View.VISIBLE else View.GONE
-        binding.executePendingBindings()
-        return binding.root
+
+        return binding!!.root
     }
 
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {

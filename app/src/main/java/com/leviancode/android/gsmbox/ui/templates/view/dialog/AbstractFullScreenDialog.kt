@@ -1,19 +1,16 @@
 package com.leviancode.android.gsmbox.ui.templates.view.dialog
 
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.transition.MaterialContainerTransform
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.ui.extra.DiscardDialog
+import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DiscardAlertDialog
 import com.leviancode.android.gsmbox.utils.*
+import com.leviancode.android.gsmbox.utils.extensions.goBack
 
 abstract class AbstractFullScreenDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -50,7 +47,7 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
     }
 
     fun showDiscardDialog() {
-        DiscardDialog(requireContext()).show { response ->
+        DiscardAlertDialog(requireContext()).show { response ->
             if (response) {
                 goBack()
             }
