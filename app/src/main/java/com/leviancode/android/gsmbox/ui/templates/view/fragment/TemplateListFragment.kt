@@ -78,7 +78,6 @@ class TemplateListFragment : Fragment(), ItemDragListener {
         }
         
         viewModel.getGroupWithTemplates(args.groupId).observe(viewLifecycleOwner) { group ->
-
             binding.toolbar.title = group.group.getName()
             binding.tvListEmpty.visibility =
                 if (group.templates.isEmpty()) View.VISIBLE

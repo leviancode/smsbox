@@ -12,7 +12,11 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.databinding.FragmentFavoritesBinding
+import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
+import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DeleteConfirmationAlertDialog
+import com.leviancode.android.gsmbox.ui.templates.view.fragment.TemplateListFragmentDirections
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
+import com.leviancode.android.gsmbox.utils.extensions.navigate
 import com.leviancode.android.gsmbox.utils.managers.SmsManager
 import kotlinx.coroutines.launch
 
@@ -44,6 +48,33 @@ class FavoritesFragment : Fragment() {
             listAdapter.submitList(list)
         }
         viewModel.sendMessageLiveEvent.observe(viewLifecycleOwner){ sendMessage(it) }
+
+        viewModel.popupMenuLiveEvent.observe(viewLifecycleOwner){ showPopup(it) }
+    }
+
+    private fun showPopup(pair: Pair<View, Template>) {
+        ItemPopupMenu(requireContext(), pair.first).showEditDelete { result ->
+            when (result) {
+                ItemPopupMenu.EDIT -> showEditableTemplateDialog(pair.second)
+                ItemPopupMenu.DELETE -> deleteTemplate(pair.second)
+            }
+        }
+    }
+
+    private fun deleteTemplate(item: Template) {
+        DeleteConfirmationAlertDialog(requireContext()).apply {
+            title = getString(R.string.delete_template)
+            message = getString(R.string.delete_template_confirmation)
+            show { result ->
+                if (result) viewModel.deleteTemplate(item)
+            }
+        }
+    }
+
+    private fun showEditableTemplateDialog(template: Template) {
+        navigate {
+            FavoritesFragmentDirections.actionOpenEditableTemplate(template)
+        }
     }
 
     private fun sendMessage(template: Template){

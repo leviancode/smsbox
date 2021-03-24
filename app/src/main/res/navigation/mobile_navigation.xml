@@ -42,7 +42,11 @@
         android:id="@+id/nav_favorites"
         android:name="com.leviancode.android.gsmbox.ui.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_open_editable_template"
+            app:destination="@id/nav_editable_template" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_recipients"
