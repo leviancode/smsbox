@@ -121,7 +121,7 @@ class RecipientsPagerFragment : Fragment() {
         ItemPopupMenu(requireContext(), view).showEditAddRecipientClearDelete { result ->
             when (result) {
                 EDIT -> showEditableRecipientGroupDialog(group)
-                ADD -> showSelectRecipientDialog(group)
+                ADD -> showSelectRecipientsDialog(group)
                 CLEAR -> clearGroup(group)
                 DELETE -> deleteGroup(group)
             }
@@ -143,16 +143,16 @@ class RecipientsPagerFragment : Fragment() {
         }
     }
 
-    private fun showSelectRecipientDialog(group: RecipientGroup) {
-        getNavigationResult<Recipient>(REQ_SELECT_RECIPIENT)?.observe(viewLifecycleOwner) { result ->
+    private fun showSelectRecipientsDialog(group: RecipientGroup) {
+        getNavigationResult<List<Recipient>>(REQ_MULTI_SELECT_RECIPIENT)?.observe(viewLifecycleOwner) { result ->
             if (result != null) {
-                viewModel.addRecipientToGroup(result, group)
+                viewModel.addRecipientsToGroup(result, group)
                 showToast(requireContext(), getString(R.string.toast_add_to_group, group.getRecipientGroupName()))
-                removeNavigationResult<Recipient>(REQ_SELECT_RECIPIENT)
+                removeNavigationResult<List<Recipient>>(REQ_MULTI_SELECT_RECIPIENT)
             }
         }
         navigate {
-            RecipientsPagerFragmentDirections.actionSelectRecipient(null)
+            RecipientsPagerFragmentDirections.actionMultiSelectRecipient(group.recipientGroupId)
         }
     }
 

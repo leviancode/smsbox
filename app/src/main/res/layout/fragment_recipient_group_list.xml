@@ -15,6 +15,7 @@
             android:layout_height="match_parent"
             android:nestedScrollingEnabled="true"
             android:divider="@android:color/transparent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:childDivider="@android:color/transparent"
             app:setExpandableAdapter="@{adapter}"
             tools:listitem="@layout/list_item_recipient_group"/>

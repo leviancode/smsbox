@@ -8,6 +8,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientListAdapter
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientListBinding
@@ -46,6 +48,25 @@ class RecipientListFragment : Fragment(), ItemDragListener {
             listAdapter.submitList(it)
             listAdapter.notifyDataSetChanged()
         }
+        val fab = requireParentFragment().requireView()
+            .findViewById<FloatingActionButton>(R.id.fab_recipients)
+        binding.recipientsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy >0) {
+                    // Scroll Down
+                    if (fab.isShown) {
+                        fab.hide()
+                    }
+                }
+                else if (dy <0) {
+                    // Scroll Up
+                    if (!fab.isShown) {
+                        fab.show()
+                    }
+                }
+            }
+        })
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {

@@ -12,8 +12,8 @@ class EditableRecipientGroupViewModel : ViewModel() {
     private var original: RecipientGroup? = null
     var data = RecipientGroup()
 
-    val chooseColorLiveEvent = SingleLiveEvent<Int>()
-    val closeDialogLiveEvent = SingleLiveEvent<RecipientGroup>()
+    val selectColorEvent = SingleLiveEvent<Int>()
+    val closeDialogEvent = SingleLiveEvent<RecipientGroup>()
 
     fun setGroup(value: RecipientGroup){
         data = value
@@ -24,11 +24,11 @@ class EditableRecipientGroupViewModel : ViewModel() {
         viewModelScope.launch {
             repository.saveGroup(data)
         }
-        closeDialogLiveEvent.value = data
+        closeDialogEvent.value = data
     }
 
     fun onIconColorClick() {
-        chooseColorLiveEvent.value = data.getRecipientGroupIconColor()
+        selectColorEvent.value = data.getRecipientGroupIconColor()
     }
 
     fun setIconColor(color: Int) {

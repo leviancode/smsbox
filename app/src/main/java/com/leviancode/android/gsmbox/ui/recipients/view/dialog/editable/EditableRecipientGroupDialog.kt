@@ -17,6 +17,7 @@ import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientGroupBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.EditableRecipientGroupViewModel
 import com.leviancode.android.gsmbox.ui.templates.view.dialog.ColorPickerDialog
+import com.leviancode.android.gsmbox.utils.REQ_SELECT_RECIPIENT_GROUP
 import com.leviancode.android.gsmbox.utils.extensions.goBack
 import com.leviancode.android.gsmbox.utils.extensions.setNavigationResult
 import com.leviancode.android.gsmbox.utils.hideKeyboard
@@ -68,11 +69,11 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
     private fun observeUI(){
         binding.toolbar.setNavigationOnClickListener { closeDialog(null) }
 
-        viewModel.closeDialogLiveEvent.observe(viewLifecycleOwner){
+        viewModel.closeDialogEvent.observe(viewLifecycleOwner){
             closeDialog(it)
         }
 
-        viewModel.chooseColorLiveEvent.observe(viewLifecycleOwner){ selectColor(it) }
+        viewModel.selectColorEvent.observe(viewLifecycleOwner){ selectColor(it) }
     }
 
     private fun selectColor(color: Int){
@@ -89,7 +90,7 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
 
     private fun closeDialog(result: RecipientGroup?) {
         hideKeyboard()
-        setNavigationResult(result)
+        setNavigationResult(result, REQ_SELECT_RECIPIENT_GROUP)
         goBack()
     }
 

@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateGroupListAdapter
@@ -54,10 +55,27 @@ class TemplateGroupListFragment : Fragment(), ItemDragListener {
     }
 
     private fun observeUI() {
+        binding.templateGroupsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            private val fab = binding.fabAddGroup
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy >0) {
+                    // Scroll Down
+                    if (fab.isShown) {
+                        fab.hide()
+                    }
+                }
+                else if (dy <0) {
+                    // Scroll Up
+                    if (!fab.isShown) {
+                        fab.show()
+                    }
+                }
+            }
+        })
         viewModel.groups.observe(viewLifecycleOwner) { list ->
             binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
             listAdapter.submitList(list)
-          //  listAdapter.notifyDataSetChanged()
         }
 
         viewModel.addGroupEvent.observe(viewLifecycleOwner) {

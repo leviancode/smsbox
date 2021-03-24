@@ -5,6 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
+        <variable
+            name="multiSelectMode"
+            type="java.lang.Boolean" />
         <variable
             name="model"
             type="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
@@ -67,12 +71,20 @@
 
         </LinearLayout>
 
-        <RadioButton
-            android:id="@+id/tv_recipient_group_name"
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="@{model.selected}"
-            android:clickable="false" />
+            android:clickable="false"
+            android:visibility="@{multiSelectMode ? View.VISIBLE : View.GONE}"
+            android:checked="@{model.selected}"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:visibility="@{multiSelectMode ? View.GONE : View.VISIBLE}"
+            tools:visibility="gone"
+            android:checked="@{model.selected}"/>
 
     </LinearLayout>
 

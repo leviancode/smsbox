@@ -13,6 +13,9 @@ import kotlinx.coroutines.launch
 class TemplateListViewModel : ViewModel() {
     private val repository = TemplatesRepository
     val templates: LiveData<List<Template>> = repository.templates
+    val favoriteTemplates: LiveData<List<Template>> = templates.map { list ->
+        list.filter { it.isFavorite() }
+    }
     val createTemplateLiveEvent = SingleLiveEvent<Template>()
     val sendMessageLiveEvent = SingleLiveEvent<Template>()
     val popupMenuLiveEvent = SingleLiveEvent<Pair<View, Template>>()

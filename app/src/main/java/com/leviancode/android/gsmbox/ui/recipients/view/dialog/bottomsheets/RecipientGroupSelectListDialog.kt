@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.setPadding
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -14,7 +13,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.RecipientGroupSelectListAdapter
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.DialogSelectListBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientGroupSelectListViewModel
 import com.leviancode.android.gsmbox.utils.REQ_SELECT_RECIPIENT_GROUP
@@ -26,7 +24,6 @@ class RecipientGroupSelectListDialog : BottomSheetDialogFragment() {
     private val viewModel: RecipientGroupSelectListViewModel by viewModels()
     private val args: RecipientGroupSelectListDialogArgs by navArgs()
     private lateinit var listAdapter: RecipientGroupSelectListAdapter
-    private var selectedGroupId: String = ""
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -55,30 +52,17 @@ class RecipientGroupSelectListDialog : BottomSheetDialogFragment() {
         binding.bottomSheetRecyclerView.adapter = listAdapter
         binding.toolbar.title = getString(R.string.select_group)
 
-        viewModel.notEmptyGroups.observe(viewLifecycleOwner){ list ->
-            if (list.isEmpty()){
-                binding.tvListEmpty.visibility = View.VISIBLE
-                binding.btnOk.isEnabled = true
-            } else {
-                binding.tvListEmpty.visibility = View.GONE
-                list.find { it.group.recipientGroupId == args.groupId }?.let {
-                    viewModel.onItemClick(it.group)
-                }
-            }
+        viewModel.loadNotEmptyGroupsAndSelectByGroupId(args.groupId).observe(viewLifecycleOwner){ list ->
+            binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
             listAdapter.groups = list
         }
 
-        viewModel.selectedItem.observe(viewLifecycleOwner){
-            binding.btnOk.isEnabled = true
-            selectedGroupId = it
-        }
-
         binding.btnOk.setOnClickListener {
-            setSelectedAndExit()
+            setSelectedAndExit(viewModel.getSingleSelectedGroupId())
         }
     }
 
-    private fun setSelectedAndExit(){
+    private fun setSelectedAndExit(selectedGroupId: String) {
         setNavigationResult(selectedGroupId, REQ_SELECT_RECIPIENT_GROUP)
         goBack()
     }

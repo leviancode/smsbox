@@ -6,6 +6,9 @@
 
     <data>
         <import type="android.view.View"/>
+        <variable
+            name="multiSelectMode"
+            type="java.lang.Boolean" />
 
         <variable
             name="model"
@@ -18,7 +21,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:orientation="horizontal"
         android:paddingStart="16dp"
         android:layout_marginTop="4dp"
@@ -40,7 +43,7 @@
             android:src="@drawable/ic_baseline_library_books_24"
             android:tint="@{model.recipientGroupIconColor}" />
 
-        <CheckedTextView
+        <TextView
             android:id="@+id/tv_recipient_group_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -49,13 +52,25 @@
             android:paddingStart="8dp"
             android:paddingEnd="16dp"
             android:clickable="false"
-            android:checked="@{model.selected}"
-            android:checkMark="?android:attr/listChoiceIndicatorSingle"
             android:gravity="center_vertical"
             android:text="@{model.recipientGroupName}"
             android:textColor="@color/text_title"
             android:textSize="18sp"
             tools:text="Title" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:visibility="@{multiSelectMode ? View.VISIBLE : View.GONE}"
+            android:checked="@{model.selected}"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:visibility="@{multiSelectMode ? View.GONE : View.VISIBLE}"
+            android:checked="@{model.selected}"/>
 
     </LinearLayout>
 

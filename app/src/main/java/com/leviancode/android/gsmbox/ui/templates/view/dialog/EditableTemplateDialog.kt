@@ -115,7 +115,6 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
             if (!result.isNullOrEmpty() && result != groupId) {
                 viewModel.setRecipientGroup(result)
             }
-            log("result: $result")
             removeNavigationResult<String>(REQ_SELECT_RECIPIENT_GROUP)
         }
 
@@ -135,7 +134,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         }
 
         navigate {
-            EditableTemplateDialogDirections.actionSelectRecipient(recipient.recipientId)
+            EditableTemplateDialogDirections.actionSelectRecipient(recipient.getPhoneNumber())
         }
     }
 

@@ -101,4 +101,7 @@
     <string name="invalid_file">Invalid file</string>
     <string name="select_item">Select Item</string>
     <string name="desc_create_new_recipient">Create new recipient</string>
+    <string name="select_recipients">Select Recipients</string>
+    <string name="select_groups">Select Groups</string>
+    <string name="favorite_list_is_empty">Favorite list is empty</string>
 </resources>

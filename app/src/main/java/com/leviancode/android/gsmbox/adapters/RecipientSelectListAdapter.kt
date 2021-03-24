@@ -43,6 +43,7 @@ class RecipientSelectListAdapter(val viewModel: RecipientSelectListViewModel) :
 
         init {
             binding.viewModel = viewModel
+            binding.multiSelectMode = viewModel.multiSelectMode
         }
 
         fun bind(item: Recipient) {

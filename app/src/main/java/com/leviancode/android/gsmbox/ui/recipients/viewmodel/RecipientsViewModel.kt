@@ -108,4 +108,12 @@ class RecipientsViewModel : ViewModel() {
             repository.saveRecipientWithGroups(RecipientWithGroups(recipient, groups.toMutableList()))
         }
     }
+
+    fun addRecipientsToGroup(recipients: List<Recipient>, group: RecipientGroup) {
+        viewModelScope.launch {
+            repository.saveGroupWithRecipients(
+                GroupWithRecipients(group, recipients)
+            )
+        }
+    }
 }

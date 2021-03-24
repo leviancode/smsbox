@@ -2,38 +2,52 @@ package com.leviancode.android.gsmbox.ui.recipients.viewmodel
 
 import android.content.Context
 import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.leviancode.android.gsmbox.data.model.recipients.Contact
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.managers.ContactsManager
 
 class RecipientSelectListViewModel : ViewModel() {
     private val repository = RecipientsRepository
-    private var lastSelectedItem: Recipient? = null
     val recipients: LiveData<List<Recipient>> = repository.recipients
-    private val _selectedItem = MutableLiveData<Recipient>()
-    val selectedItem: LiveData<Recipient> = _selectedItem
+    var selectedItems = mutableListOf<Recipient>()
+    var multiSelectMode = false
 
-    fun onItemClick(item: Recipient) {
-        if (lastSelectedItem?.recipientId == item.recipientId) return
-
-        lastSelectedItem?.let { it.selected = false }
-        item.selected = true
-        lastSelectedItem = item
-        _selectedItem.value = item
+    fun loadRecipientsAndSelectByPhoneNumber(phoneNumber: String?) = repository.recipients.map { list ->
+        list.onEach { if (it.getPhoneNumber() == phoneNumber) onItemClick(it) }
     }
 
-    fun contactUriToRecipient(context: Context, uri: Uri): Recipient? {
-        return ContactsManager.parseUri(context, uri)?.let { contact ->
-            contactToRecipient(contact)
+    fun loadRecipientsAndSelectByGroupId(groupId: String?) = repository.recipientsWithGroups.map { list ->
+        list.onEach { recipientsWithGroups ->
+            recipientsWithGroups.groups.find { it.recipientGroupId == groupId }?.let {
+                onItemClick(recipientsWithGroups.recipient)
+            }
+        }.map { it.recipient }
+    }
+
+    fun onItemClick(item: Recipient) {
+        if (multiSelectMode){
+            item.selected = !item.selected
+            if (item.selected) selectedItems.add(item)
+            else selectedItems.remove(item)
+        } else {
+            if (selectedItems.isNotEmpty()){
+                val lastSelectedItem = selectedItems[0]
+                if (lastSelectedItem.recipientId == item.recipientId) return
+                lastSelectedItem.selected = false
+            }
+            item.selected = true
+            selectedItems.add(0, item)
         }
     }
 
-    private fun contactToRecipient(contact: Contact): Recipient{
-        return Recipient(recipientName = contact.name, phoneNumber = contact.phoneNumber)
+    fun selectRecipientByContactUri(context: Context, uri: Uri?): Recipient? {
+        return ContactsManager.parseUri(context, uri)?.let { contact ->
+            repository.contactToRecipient(contact).also { onItemClick(it) }
+        }
     }
+
+    fun getSingleSelectedRecipient() = selectedItems[0]
 }

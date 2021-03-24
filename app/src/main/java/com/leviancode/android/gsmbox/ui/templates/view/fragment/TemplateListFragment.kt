@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.data.model.templates.Template
@@ -53,10 +54,24 @@ class TemplateListFragment : Fragment(), ItemDragListener {
     }
 
     private fun observeUI() {
-        /* viewModel.getGroupTemplates(args.groupId).observe(viewLifecycleOwner){ list ->
-             binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
-             listAdapter.submitList(list)
-         }*/
+        binding.templatesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            private val fab = binding.fabAddTemplate
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy >0) {
+                    // Scroll Down
+                    if (fab.isShown) {
+                        fab.hide()
+                    }
+                }
+                else if (dy <0) {
+                    // Scroll Up
+                    if (!fab.isShown) {
+                        fab.show()
+                    }
+                }
+            }
+        })
         binding.toolbar.setNavigationOnClickListener { goBack() }
         itemTouchHelper = ItemTouchHelper(ItemDragHelperCallback(this)).apply {
             attachToRecyclerView(binding.templatesRecyclerView)

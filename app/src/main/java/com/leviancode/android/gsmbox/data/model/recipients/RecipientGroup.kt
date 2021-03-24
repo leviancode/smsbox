@@ -25,7 +25,7 @@ data class RecipientGroup(
     var selected = false
         set(value) {
             field = value
-            notifyPropertyChanged(BR.selected)
+            notifyChange()
         }
 
     @Bindable
@@ -33,8 +33,7 @@ data class RecipientGroup(
     fun setRecipientGroupName(value: String){
         if (recipientGroupName != value){
             recipientGroupName = value
-            notifyPropertyChanged(BR.name)
-            notifyPropertyChanged(BR.fieldsFilled)
+            notifyChange()
         }
     }
 
@@ -43,7 +42,7 @@ data class RecipientGroup(
     fun setRecipientGroupIconColor(value: Int){
         if (recipientGroupIconColor != value){
             recipientGroupIconColor = value
-            notifyPropertyChanged(BR.iconColor)
+            notifyChange()
         }
     }
 

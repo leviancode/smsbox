@@ -13,7 +13,7 @@ import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientGroupSelec
 
 class RecipientGroupSelectListAdapter(val viewModel: RecipientGroupSelectListViewModel) :
     RecyclerView.Adapter<RecipientGroupHolder>() {
-    var groups: List<GroupWithRecipients> = listOf()
+    var groups: List<RecipientGroup> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -44,13 +44,12 @@ class RecipientGroupSelectListAdapter(val viewModel: RecipientGroupSelectListVie
 
         init {
             binding.viewModel = viewModel
+            binding.multiSelectMode = viewModel.multiSelectMode
         }
 
-        fun bind(item: GroupWithRecipients) {
-            binding.model = item.group
+        fun bind(item: RecipientGroup) {
+            binding.model = item
             binding.executePendingBindings()
         }
     }
-
-
 }

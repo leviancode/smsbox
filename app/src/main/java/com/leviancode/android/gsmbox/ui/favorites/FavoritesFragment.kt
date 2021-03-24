@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 class FavoritesFragment : Fragment() {
     private val viewModel: TemplateListViewModel by viewModels()
     private lateinit var binding: FragmentFavoritesBinding
+    private lateinit var listAdapter: TemplateListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,13 +33,15 @@ class FavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.adapter = TemplateListAdapter(viewModel)
+        listAdapter = TemplateListAdapter(viewModel)
+        binding.adapter = listAdapter
         observeUI()
     }
 
     private fun observeUI() {
-        viewModel.templates.observe(viewLifecycleOwner){ templates ->
-            binding.adapter?.submitList(templates.filter { it.isFavorite() })
+        viewModel.favoriteTemplates.observe(viewLifecycleOwner){ list ->
+            binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+            listAdapter.submitList(list)
         }
         viewModel.sendMessageLiveEvent.observe(viewLifecycleOwner){ sendMessage(it) }
     }

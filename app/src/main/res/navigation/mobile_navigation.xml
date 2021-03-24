@@ -52,15 +52,16 @@
         <action
             android:id="@+id/action_open_editable_recipient"
             app:destination="@id/nav_editable_recipient" />
-        <action
-            android:id="@+id/action_select_recipient"
-            app:destination="@id/nav_select_recipient" />
+
         <action
             android:id="@+id/action_multi_select_recipient_group"
             app:destination="@id/nav_multi_select_recipient_group" />
         <action
             android:id="@+id/action_open_editable_recipient_group"
             app:destination="@id/nav_editable_recipient_group" />
+        <action
+            android:id="@+id/action_multi_select_recipient"
+            app:destination="@id/nav_multi_select_recipient" />
     </fragment>
 
     <fragment
@@ -164,7 +165,19 @@
         tools:layout="@layout/dialog_select_list">
 
         <argument
-            android:name="recipientId"
+            android:name="phoneNumber"
+            app:nullable="true"
+            app:argType="string"/>
+    </dialog>
+
+    <dialog
+        android:id="@+id/nav_multi_select_recipient"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.bottomsheets.RecipientMultiSelectListDialog"
+        android:label="Select Recipients"
+        tools:layout="@layout/dialog_select_list">
+
+        <argument
+            android:name="groupId"
             app:nullable="true"
             app:argType="string"/>
     </dialog>

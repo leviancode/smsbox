@@ -33,7 +33,6 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
         hideKeyboard()
         when (result) {
             RESULT_OK -> {
-                showToast(requireContext(), getString(R.string.saved))
                 goBack()
             }
             RESULT_CANCEL -> {

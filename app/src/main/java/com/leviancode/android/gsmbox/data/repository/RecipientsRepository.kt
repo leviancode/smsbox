@@ -23,6 +23,8 @@ object RecipientsRepository {
 
     val groupsWithRecipients: LiveData<List<GroupWithRecipients>>
         get() = recipientsAndGroupsDao.getGroupsWithRecipients()
+    val recipientsWithGroups: LiveData<List<RecipientWithGroups>>
+        get() = recipientsAndGroupsDao.getRecipientsWithGroups()
 
     suspend fun saveRecipient(item: Recipient) = withContext(IO) {
         val recipient = getRecipientById(item.recipientId)
@@ -39,9 +41,9 @@ object RecipientsRepository {
     }
 
     suspend fun saveGroupWithRecipients(item: GroupWithRecipients) {
+        deleteGroupFromAllRecipients(item.group)
         item.recipients.forEach { recipient ->
-            val crossRef = RecipientsAndGroupsCrossRef(item.group.recipientGroupId, recipient.recipientId)
-            recipientsAndGroupsDao.insert(crossRef)
+            saveGroupAndRecipientCrossRef(item.group.recipientGroupId, recipient.recipientId)
         }
     }
 
@@ -52,6 +54,10 @@ object RecipientsRepository {
 
     suspend fun deleteRecipientFromAllGroups(item: Recipient) = withContext(IO){
         recipientsAndGroupsDao.deleteByRecipientId(item.recipientId)
+    }
+
+    suspend fun deleteGroupFromAllRecipients(item: RecipientGroup) = withContext(IO){
+        recipientsAndGroupsDao.deleteByGroupId(item.recipientGroupId)
     }
 
     suspend fun saveGroup(item: RecipientGroup) = withContext(IO) {
@@ -109,4 +115,7 @@ object RecipientsRepository {
 
     fun getNewRecipient() = Recipient()
     fun getNewRecipientGroup() = RecipientGroup()
+    fun contactToRecipient(contact: Contact): Recipient {
+        return Recipient(recipientName = contact.name, phoneNumber = contact.phoneNumber)
+    }
 }

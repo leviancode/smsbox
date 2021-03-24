@@ -10,6 +10,7 @@ const val RESULT_CANCEL = "result_cancel"
 const val REQ_SAVED = "request_saved"
 const val REQ_SELECTED = "request_selected"
 const val REQ_SELECT_RECIPIENT = "request_select_recipient"
+const val REQ_MULTI_SELECT_RECIPIENT = "request_multi_select_recipient"
 const val REQ_SELECT_RECIPIENT_GROUP = "request_select_recipient_group"
 const val REQ_MULTI_SELECT_RECIPIENT_GROUP = "request_select_recipient_group"
 const val REQ_GROUP_SELECTED = "request_group_selected"
@@ -28,7 +29,7 @@ const val RECIPIENT_GROUPS_FILE_NAME = "recipient_groups.json"
 const val RECIPIENTS_FILE_NAME = "recipients.json"
 const val ZIP_DB_FILE_NAME = "gsmbox_backup_%s.zip"
 val BACKUP_FILE_NAME
-    get() = "smsbox_backup_${getFormatDate()}.sdb"
+    get() = "smsbox_backup_${getFormatDate()}.db"
 val BACKUP_DIR
     get() = "backup_${getFormatDate()}"
 
