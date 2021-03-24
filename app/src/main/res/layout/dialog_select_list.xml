@@ -6,7 +6,7 @@
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,8 +78,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/bottom_sheet_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="wrap_content"
                     android:scrollbars="vertical"
+                    app:layout_constraintHeight_max="360dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

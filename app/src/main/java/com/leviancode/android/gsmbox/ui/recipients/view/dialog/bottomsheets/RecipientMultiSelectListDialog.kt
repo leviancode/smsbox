@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
@@ -34,14 +35,8 @@ class RecipientMultiSelectListDialog : BottomSheetDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         if (dialog is BottomSheetDialog) {
-            dialog.setOnShowListener {
-                val container = dialog.findViewById<FrameLayout>(R.id.container)
-                val bind = ButtonContactsBinding.inflate(dialog.layoutInflater)
-                container?.addView(bind.root)
-                bind.btnContacts.setOnClickListener {
-                    selectContact()
-                }
-            }
+            dialog.behavior.skipCollapsed = true
+            dialog.behavior.state = BottomSheetBehavior.STATE_DRAGGING
         }
         return dialog
     }
@@ -59,6 +54,7 @@ class RecipientMultiSelectListDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.bootomSheetLayout.setPadding(0,0,0,8)
         contactsLauncher =
             registerForActivityResult(PickContact()) { uri ->
                 viewModel.selectRecipientByContactUri(requireContext(), uri)

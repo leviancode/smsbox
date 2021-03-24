@@ -118,7 +118,10 @@ class TemplateGroupListFragment : Fragment(), ItemDragListener {
             title = getString(R.string.delete_group)
             message = getString(R.string.delete_group_confirmation)
             show { result ->
-                if (result) viewModel.deleteGroup(item)
+                if (result) {
+                    viewModel.deleteGroup(item)
+                    if (!binding.fabAddGroup.isShown) binding.fabAddGroup.show()
+                }
             }
         }
     }
