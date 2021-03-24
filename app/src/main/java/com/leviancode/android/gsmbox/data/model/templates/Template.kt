@@ -1,12 +1,14 @@
 package com.leviancode.android.gsmbox.data.model.templates
 
 import android.graphics.Color
+import android.view.View
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.leviancode.android.gsmbox.BR
+import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.utils.isNotEmpty
@@ -84,7 +86,7 @@ data class Template(
     fun getRecipientGroupId() = recipientGroup?.recipientGroupId ?: ""
 
     fun getRecipientGroup() = recipientGroup
-    fun setRecipientGroup(value: RecipientGroup) {
+    fun setRecipientGroup(value: RecipientGroup?) {
         recipientGroup = value
         notifyChange()
     }

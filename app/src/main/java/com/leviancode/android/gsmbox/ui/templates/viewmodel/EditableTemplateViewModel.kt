@@ -2,7 +2,6 @@ package com.leviancode.android.gsmbox.ui.templates.viewmodel
 
 import android.view.View
 import androidx.databinding.library.baseAdapters.BR
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -11,7 +10,6 @@ import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
-import com.leviancode.android.gsmbox.utils.log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -19,11 +17,12 @@ import kotlinx.coroutines.launch
 
 class EditableTemplateViewModel : ViewModel() {
     private val repository = TemplatesRepository
+    private var original: Template? = null
     val recipientNameList = RecipientsRepository.recipients.map { list ->
         list.map { it.getPhoneNumber() }
     }
-    var original: Template? = null
-    var data = repository.getNewTemplate()
+    private var groupRecipients = listOf<Recipient>()
+    var data: Template = repository.getNewTemplate()
     var recipientGroupMode = false
 
     val addRecipientViewEvent = SingleLiveEvent<Recipient>()
@@ -68,6 +67,9 @@ class EditableTemplateViewModel : ViewModel() {
     }
 
     fun onSaveClick(){
+        if (groupRecipients != data.getRecipients()){
+            data.setRecipientGroup(null)
+        }
         viewModelScope.launch {
             repository.saveTemplate(data)
         }
@@ -108,11 +110,18 @@ class EditableTemplateViewModel : ViewModel() {
         removeAllRecipientViewsEvent.call()
         viewModelScope.launch {
             RecipientsRepository.getGroupWithRecipients(groupId)?.let {
+                groupRecipients = getListClone(it.recipients)
                 data.setRecipientGroup(it.group)
                 data.setRecipients(it.recipients)
                 data.getRecipients().forEach(::addRecipientView)
             }
         }
+    }
+
+    private fun getListClone(list: List<Recipient>): List<Recipient> {
+        val result = mutableListOf<Recipient>()
+        list.forEach { result.add(it.copy()) }
+        return result
     }
 
     fun updateRecipient(old: Recipient, new: Recipient) {

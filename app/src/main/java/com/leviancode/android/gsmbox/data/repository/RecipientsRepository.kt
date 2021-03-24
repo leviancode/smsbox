@@ -38,6 +38,7 @@ object RecipientsRepository {
         item.groups.forEach { group ->
             saveGroupAndRecipientCrossRef(group.recipientGroupId, item.recipient.recipientId)
         }
+        TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
     suspend fun saveGroupWithRecipients(item: GroupWithRecipients) {
@@ -45,11 +46,13 @@ object RecipientsRepository {
         item.recipients.forEach { recipient ->
             saveGroupAndRecipientCrossRef(item.group.recipientGroupId, recipient.recipientId)
         }
+        TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
     suspend fun deleteRecipient(item: Recipient) = withContext(IO) {
-        recipientsAndGroupsDao.deleteByRecipientId(item.recipientId)
+        deleteRecipientFromAllGroups(item)
         recipientDao.delete(item)
+        TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
     suspend fun deleteRecipientFromAllGroups(item: Recipient) = withContext(IO){
@@ -67,36 +70,36 @@ object RecipientsRepository {
     }
 
     suspend fun deleteGroup(item: RecipientGroup) = withContext(IO) {
-        recipientsAndGroupsDao.deleteByGroupId(item.recipientGroupId)
+        deleteGroupFromAllRecipients(item)
         groupDao.delete(item)
+        TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
-    suspend fun deleteGroupAndRecipientCrossRef(groupId: String, recipientId: String){
+    suspend fun deleteGroupAndRecipientCrossRef(groupId: String, recipientId: String) = withContext(IO){
         recipientsAndGroupsDao.delete(
             RecipientsAndGroupsCrossRef(groupId, recipientId)
         )
+        TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
-    suspend fun saveGroupAndRecipientCrossRef(groupId: String, recipientId: String){
+    suspend fun saveGroupAndRecipientCrossRef(groupId: String, recipientId: String) = withContext(IO){
         recipientsAndGroupsDao.insert(
             RecipientsAndGroupsCrossRef(groupId, recipientId)
         )
+        TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
-    suspend fun getRecipientById(id: String) = withContext(IO) {
-        recipientDao.get(id)
+    suspend fun getRecipientById(recipientId: String) = withContext(IO) {
+        recipientDao.get(recipientId)
     }
 
-    suspend fun getGroupById(id: String) = withContext(IO) {
-        groupDao.getById(id)
-    }
-
-    suspend fun getGroupByName(name: String) = withContext(IO) {
-        groupDao.getByName(name)
+    suspend fun getGroupById(groupId: String) = withContext(IO) {
+        groupDao.getById(groupId)
     }
 
     suspend fun clearGroup(item: RecipientGroup) = withContext(IO) {
         recipientsAndGroupsDao.deleteByGroupId(item.recipientGroupId)
+        TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
     suspend fun getGroupWithRecipients(groupId: String) = withContext(IO) {

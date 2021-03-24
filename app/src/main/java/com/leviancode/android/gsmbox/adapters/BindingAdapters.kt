@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
+import com.leviancode.android.gsmbox.data.model.templates.Template
 
 @BindingAdapter(value = ["loadImage"])
 fun ImageView.loadImage(uri: String?) {
@@ -29,6 +31,15 @@ fun ImageView.bindFoldIcon(isFold: Boolean) {
         load(R.drawable.ic_baseline_arrow_down_24)
     }
 }*/
+
+@BindingAdapter(value = ["setRecipientsAsText"])
+fun TextView.setRecipientsAsText(template: Template) {
+    text = if (template.getRecipientGroup() != null) {
+        context.getString(R.string.recipient_group) + ": " + template.getRecipientGroupName()
+    } else {
+       template.getRecipientsAsString()
+    }
+}
 
 @BindingAdapter(value = ["setAdapter"])
 fun RecyclerView.bindRecyclerViewAdapter(adapter: ListAdapter<*, *>) {

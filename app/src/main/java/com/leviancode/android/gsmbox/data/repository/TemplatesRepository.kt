@@ -1,6 +1,7 @@
 package com.leviancode.android.gsmbox.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.leviancode.android.gsmbox.data.dao.TemplateDao
 import com.leviancode.android.gsmbox.data.dao.TemplateGroupDao
 import com.leviancode.android.gsmbox.data.model.templates.GroupWithTemplates
@@ -89,8 +90,21 @@ object TemplatesRepository {
         groupsDao.insert(*list.toTypedArray())
     }
 
+    suspend fun updateRecipientGroupsInAllTemplates() = withContext(IO) {
+        templatesDao.getAll().filter { it.getRecipientGroup() != null }
+            .forEach { template ->
+                RecipientsRepository.getGroupWithRecipients(template.getRecipientGroupId())?.let {
+                    template.setRecipients(it.recipients)
+                }
+                updateTemplate(template)
+        }
+    }
+
     fun getGroupWithTemplates(groupId: String) = groupsDao.getGroupWithTemplates(groupId)
 
     fun getNewTemplate() = Template()
     fun getNewTemplateGroup() = TemplateGroup()
+    suspend fun getTemplatesByRecipientGroupId(recipientGroupId: String): List<Template> {
+        return templatesDao.getByRecipientGroupId(recipientGroupId)
+    }
 }

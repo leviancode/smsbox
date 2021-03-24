@@ -72,7 +72,7 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="4dp"
                     android:fontFamily="sans-serif-light"
-                    android:text="@{model.getRecipientsAsString}"
+                    app:setRecipientsAsText="@{model}"
                     android:textColor="@color/text_description"
                     tools:text="+3801234567" />
 

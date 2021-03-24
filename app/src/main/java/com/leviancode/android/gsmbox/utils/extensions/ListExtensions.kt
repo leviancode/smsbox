@@ -8,3 +8,4 @@ inline fun <T>List<T>.ifNotEmpty(defaultValue: (List<T>) -> Unit){
 }
 
 inline fun <reified T>List<T>.toJson() = Json.encodeToString(this)
+
