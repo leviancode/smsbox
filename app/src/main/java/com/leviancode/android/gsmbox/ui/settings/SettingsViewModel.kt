@@ -23,4 +23,5 @@ class SettingsViewModel : ViewModel() {
             BackupManager.restoreDB(context, uri)
         }
     }
+
 }

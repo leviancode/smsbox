@@ -6,7 +6,7 @@
     <data>
         <variable
             name="adapter"
-            type="com.leviancode.android.gsmbox.adapters.RecipientListAdapter" />
+            type="com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientListAdapter" />
     </data>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipients_recycler_view"

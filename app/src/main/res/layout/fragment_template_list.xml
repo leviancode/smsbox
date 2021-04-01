@@ -6,7 +6,7 @@
     <data>
         <variable
             name="adapter"
-            type="com.leviancode.android.gsmbox.adapters.TemplateListAdapter" />
+            type="com.leviancode.android.gsmbox.ui.templates.adapters.TemplateListAdapter" />
         <variable
             name="viewModel"
             type="com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel" />

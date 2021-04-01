@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.adapters
+package com.leviancode.android.gsmbox.ui.templates.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

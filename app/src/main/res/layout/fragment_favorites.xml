@@ -7,7 +7,7 @@
     <data>
         <variable
             name="adapter"
-            type="com.leviancode.android.gsmbox.adapters.TemplateListAdapter" />
+            type="com.leviancode.android.gsmbox.ui.templates.adapters.TemplateListAdapter" />
     </data>
 
     <FrameLayout
@@ -48,9 +48,7 @@
             android:layout_marginTop="?attr/actionBarSize"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:setAdapter="@{adapter}"
-            tools:listitem="@layout/list_item_template" >
-
-        </androidx.recyclerview.widget.RecyclerView>
+            tools:listitem="@layout/list_item_template"/>
 
     </FrameLayout>
 </layout>

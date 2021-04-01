@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.adapters.RecipientListAdapter
+import com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientListAdapter
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientListBinding
 import com.leviancode.android.gsmbox.helpers.ItemDragHelperCallback
 import com.leviancode.android.gsmbox.helpers.ItemDragListener
@@ -53,18 +53,8 @@ class RecipientListFragment : Fragment(), ItemDragListener {
         binding.recipientsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy >0) {
-                    // Scroll Down
-                    if (fab.isShown) {
-                        fab.hide()
-                    }
-                }
-                else if (dy <0) {
-                    // Scroll Up
-                    if (!fab.isShown) {
-                        fab.show()
-                    }
-                }
+                if (dy >0 && fab.isShown) fab.hide()
+                else if (dy <0 && !fab.isShown) fab.show()
             }
         })
     }

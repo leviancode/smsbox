@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="model"
+            type="com.leviancode.android.gsmbox.data.model.placeholders.Placeholder" />
+        <variable
+            name="viewModel"
+            type="com.leviancode.android.gsmbox.ui.settings.placeholders.PlaceholdersViewModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_recipient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/recipient_holder_height"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/recipient_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_contact_icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center_vertical"
+                    android:padding="4dp"
+                    android:tint="@color/main_style_green"
+                    app:srcCompat="@drawable/ic_baseline_alias_24" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/edit_text_placeholder_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:textColor="@color/main_style_dark_blue"
+                        android:textSize="16sp"
+                        android:textStyle="bold|italic"
+                        android:text="@{model.keyword}"
+                        tools:text="Key" />
+
+                    <TextView
+                        android:id="@+id/edit_text_placeholder_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:textSize="13sp"
+                        android:text="@{model.value}"
+                        android:textColor="#252525"
+                        tools:text="Value" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/ib_popup_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/open_option_menu"
+                    android:onClick="@{(view) -> viewModel.onPopupMenuClick(view, model)}"
+                    android:padding="4dp"
+                    android:layout_marginEnd="@dimen/popup_btn_margin_end"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_baseline_more_vert_24" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

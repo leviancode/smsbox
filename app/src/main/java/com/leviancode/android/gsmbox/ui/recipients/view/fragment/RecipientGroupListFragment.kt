@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.adapters.RecipientGroupExpandableListAdapter
+import com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientGroupExpandableListAdapter
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientGroupListBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
 
@@ -61,16 +61,12 @@ class RecipientGroupListFragment : Fragment() {
                 totalItemCount: Int
             ) {
                 // Scroll Down
-                if(lastFirstVisibleItem < firstVisibleItem){
-                    if (fab.isShown) {
-                        fab.hide()
-                    }
+                if(lastFirstVisibleItem < firstVisibleItem && fab.isShown){
+                    fab.hide()
                 }
                 // Scroll Up
-                if(lastFirstVisibleItem > firstVisibleItem){
-                    if (!fab.isShown) {
-                        fab.show()
-                    }
+                if(lastFirstVisibleItem > firstVisibleItem && !fab.isShown){
+                    fab.show()
                 }
                 lastFirstVisibleItem = firstVisibleItem;
             }

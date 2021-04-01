@@ -6,7 +6,7 @@
     <data>
         <variable
             name="adapter"
-            type="com.leviancode.android.gsmbox.adapters.RecipientGroupExpandableListAdapter" />
+            type="com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientGroupExpandableListAdapter" />
     </data>
 
         <ExpandableListView

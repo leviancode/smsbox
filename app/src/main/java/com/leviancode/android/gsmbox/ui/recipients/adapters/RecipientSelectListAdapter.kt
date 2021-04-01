@@ -1,11 +1,11 @@
-package com.leviancode.android.gsmbox.adapters
+package com.leviancode.android.gsmbox.ui.recipients.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.adapters.RecipientSelectListAdapter.*
+import com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientSelectListAdapter.*
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.databinding.SelectListItemRecipientBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientSelectListViewModel

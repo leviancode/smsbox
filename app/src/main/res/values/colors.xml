@@ -60,5 +60,11 @@
 
     <color name="default_group_icon_color">@color/blue_grey_400</color>
     <color name="default_send_icon_color">@color/secondary</color>
+    <color name="main_style_brown">#e0af74</color>
+    <color name="main_style_yellow">#ffcc01</color>
+    <color name="main_style_green">#94c120</color>
+    <color name="main_style_blue">#55c1dd</color>
+    <color name="main_style_red">#e7302c</color>
+    <color name="main_style_dark_blue">#012255</color>
 
 </resources>

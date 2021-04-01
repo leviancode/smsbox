@@ -46,7 +46,7 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
     }
 
     fun showDiscardDialog() {
-        DiscardAlertDialog(requireContext()).show { response ->
+        DiscardAlertDialog.show(requireContext()) { response ->
             if (response) {
                 goBack()
             }

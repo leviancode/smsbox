@@ -6,8 +6,8 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.google.android.material.textfield.TextInputEditText
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.templates.Template
 
 @BindingAdapter(value = ["loadImage"])
@@ -23,14 +23,10 @@ fun ImageView.loadImage(uri: String?) {
     }
 }
 
-/*@BindingAdapter(value = ["setIcon"])
-fun ImageView.bindFoldIcon(isFold: Boolean) {
-    if (isFold) {
-        load(R.drawable.ic_baseline_arrow_up_24)
-    } else {
-        load(R.drawable.ic_baseline_arrow_down_24)
-    }
-}*/
+@BindingAdapter(value = ["setError"])
+fun TextInputEditText.showError(isUnique: Boolean) {
+    error = if (isUnique) null else context.getString(R.string.err_unique_key)
+}
 
 @BindingAdapter(value = ["setRecipientsAsText"])
 fun TextView.setRecipientsAsText(template: Template) {

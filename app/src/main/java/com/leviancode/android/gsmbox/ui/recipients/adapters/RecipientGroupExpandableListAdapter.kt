@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.adapters
+package com.leviancode.android.gsmbox.ui.recipients.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientBinding
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientGroupBinding
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
-import com.leviancode.android.gsmbox.utils.TAG_IN_GROUP
 
 
 class RecipientGroupExpandableListAdapter(

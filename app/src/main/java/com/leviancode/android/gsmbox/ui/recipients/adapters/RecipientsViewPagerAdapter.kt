@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.adapters
+package com.leviancode.android.gsmbox.ui.recipients.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

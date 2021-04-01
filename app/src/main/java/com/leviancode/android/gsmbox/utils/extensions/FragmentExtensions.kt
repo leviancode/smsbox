@@ -3,6 +3,7 @@ package com.leviancode.android.gsmbox.utils.extensions
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import com.leviancode.android.gsmbox.utils.hideKeyboard
 
 
 fun <T> Fragment.getNavigationResult(key: String = "result") =
@@ -20,5 +21,6 @@ inline fun Fragment.navigate(action: () -> NavDirections){
 }
 
 fun Fragment.goBack(){
+    hideKeyboard()
     findNavController().navigateUp()
 }

@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.adapters.RecipientsViewPagerAdapter
+import com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientsViewPagerAdapter
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientsPagerBinding
@@ -62,9 +62,10 @@ class RecipientsPagerFragment : Fragment() {
             }
         }.attach()
 
-        binding.tabLayoutRecipient.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.tabLayoutRecipient.addOnTabSelectedListener(object :
+            TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                when (tab.position){
+                when (tab.position) {
                     0 -> binding.groupMode = false
                     1 -> binding.groupMode = true
                 }
@@ -147,7 +148,10 @@ class RecipientsPagerFragment : Fragment() {
         getNavigationResult<List<Recipient>>(REQ_MULTI_SELECT_RECIPIENT)?.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 viewModel.addRecipientsToGroup(result, group)
-                showToast(requireContext(), getString(R.string.toast_add_to_group, group.getRecipientGroupName()))
+                showToast(
+                    requireContext(),
+                    getString(R.string.toast_add_to_group, group.getRecipientGroupName())
+                )
                 removeNavigationResult<List<Recipient>>(REQ_MULTI_SELECT_RECIPIENT)
             }
         }
@@ -162,27 +166,28 @@ class RecipientsPagerFragment : Fragment() {
 
     private fun clearGroup(group: RecipientGroup) {
         viewModel.clearGroup(group)
-        showUndoSnackbar(requireView(), getString(R.string.group_cleared)){
+        showUndoSnackbar(requireView(), getString(R.string.group_cleared)) {
             viewModel.restoreGroupWithRecipients()
         }
     }
 
     private fun deleteRecipient(item: Recipient) {
-        DeleteConfirmationAlertDialog(requireContext()).apply {
-            title = getString(R.string.delete_recipient)
-            message = getString(R.string.delete_recipient_confirmation)
-            show { result ->
-                if (result) viewModel.deleteRecipient(item)
-            }
+        DeleteConfirmationAlertDialog.show(
+            requireContext(),
+            getString(R.string.delete_recipient),
+            getString(R.string.delete_recipient_confirmation)
+        ) { confirmed ->
+            if (confirmed) viewModel.deleteRecipient(item)
         }
     }
 
     private fun deleteGroup(item: RecipientGroup) {
-        DeleteConfirmationAlertDialog(requireContext()).apply {
-            title = getString(R.string.delete_group)
-            message = getString(R.string.delete_group_confirmation)
-        }.show { result ->
-            if (result) viewModel.deleteGroup(item)
+        DeleteConfirmationAlertDialog.show(
+            requireContext(),
+            getString(R.string.delete_group),
+            getString(R.string.delete_group_confirmation)
+        ) { confirmed ->
+            if (confirmed) viewModel.deleteGroup(item)
         }
     }
 

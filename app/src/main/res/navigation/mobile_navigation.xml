@@ -72,7 +72,33 @@
         android:id="@+id/nav_settings"
         android:name="com.leviancode.android.gsmbox.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_open_placeholders"
+            app:destination="@id/nav_placeholders" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_placeholders"
+        android:name="com.leviancode.android.gsmbox.ui.settings.placeholders.PlaceholdersFragment"
+        android:label="@string/title_placeholders"
+        tools:layout="@layout/fragment_placeholders" >
+        <action
+            android:id="@+id/action_open_editable_placeholder"
+            app:destination="@id/nav_editable_placeholder" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/nav_editable_placeholder"
+        android:name="com.leviancode.android.gsmbox.ui.settings.placeholders.EditablePlaceholderDialog"
+        android:label="@string/new_placeholder"
+        tools:layout="@layout/dialog_editable_recipient_group">
+
+        <argument
+            android:name="placeholder"
+            app:argType="com.leviancode.android.gsmbox.data.model.placeholders.Placeholder" />
+
+    </dialog>
 
     <dialog
         android:id="@+id/nav_editable_group"

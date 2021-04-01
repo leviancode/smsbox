@@ -12,7 +12,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.adapters.TemplateListAdapter
+import com.leviancode.android.gsmbox.ui.templates.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateListBinding
 import com.leviancode.android.gsmbox.helpers.ItemDragHelperCallback
@@ -54,29 +54,19 @@ class TemplateListFragment : Fragment(), ItemDragListener {
     }
 
     private fun observeUI() {
-        binding.templatesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding.templatesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             private val fab = binding.fabAddTemplate
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy >0) {
-                    // Scroll Down
-                    if (fab.isShown) {
-                        fab.hide()
-                    }
-                }
-                else if (dy <0) {
-                    // Scroll Up
-                    if (!fab.isShown) {
-                        fab.show()
-                    }
-                }
+                if (dy > 0 && fab.isShown) fab.hide()
+                else if (dy < 0 && !fab.isShown) fab.show()
             }
         })
         binding.toolbar.setNavigationOnClickListener { goBack() }
         itemTouchHelper = ItemTouchHelper(ItemDragHelperCallback(this)).apply {
             attachToRecyclerView(binding.templatesRecyclerView)
         }
-        
+
         viewModel.getGroupWithTemplates(args.groupId).observe(viewLifecycleOwner) { group ->
             binding.toolbar.title = group.group.getName()
             binding.tvListEmpty.visibility =
@@ -104,12 +94,12 @@ class TemplateListFragment : Fragment(), ItemDragListener {
     }
 
     private fun deleteTemplate(item: Template) {
-        DeleteConfirmationAlertDialog(requireContext()).apply {
-            title = getString(R.string.delete_template)
-            message = getString(R.string.delete_template_confirmation)
-            show { result ->
-                if (result) viewModel.deleteTemplate(item)
-            }
+        DeleteConfirmationAlertDialog.show(
+            requireContext(),
+            getString(R.string.delete_template),
+            getString(R.string.delete_template_confirmation)
+        ) { confirmed ->
+            if (confirmed) viewModel.deleteTemplate(item)
         }
     }
 

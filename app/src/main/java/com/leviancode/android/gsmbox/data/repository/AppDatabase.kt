@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.leviancode.android.gsmbox.data.dao.*
+import com.leviancode.android.gsmbox.data.model.placeholders.Placeholder
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientsAndGroupsCrossRef
@@ -14,11 +15,13 @@ import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import com.leviancode.android.gsmbox.utils.Converters
 import com.leviancode.android.gsmbox.utils.DATABASE_NAME
 
-@Database(entities = [Template::class,
+@Database(entities = [
+    Template::class,
     TemplateGroup::class,
     RecipientGroup::class,
     Recipient::class,
-    RecipientsAndGroupsCrossRef::class], version = 2, exportSchema = false)
+    RecipientsAndGroupsCrossRef::class,
+    Placeholder::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase(){
     abstract fun templateDao(): TemplateDao
@@ -26,6 +29,7 @@ abstract class AppDatabase : RoomDatabase(){
     abstract fun recipientDao(): RecipientDao
     abstract fun recipientGroupDao(): RecipientGroupDao
     abstract fun recipientsAndGroupsDao(): RecipientsAndGroupsCrossRefDao
+    abstract fun placeholderDao(): PlaceholderDao
 
     companion object{
         lateinit var INSTANCE: AppDatabase

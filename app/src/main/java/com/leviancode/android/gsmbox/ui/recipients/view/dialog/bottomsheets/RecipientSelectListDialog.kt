@@ -14,7 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.adapters.RecipientSelectListAdapter
+import com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientSelectListAdapter
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.databinding.ButtonContactsBinding
 import com.leviancode.android.gsmbox.databinding.DialogSelectListBinding

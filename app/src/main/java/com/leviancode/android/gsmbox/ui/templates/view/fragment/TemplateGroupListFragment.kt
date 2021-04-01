@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.adapters.TemplateGroupListAdapter
+import com.leviancode.android.gsmbox.ui.templates.adapters.TemplateGroupListAdapter
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateGroupListBinding
 import com.leviancode.android.gsmbox.helpers.ItemDragHelperCallback
@@ -55,22 +55,13 @@ class TemplateGroupListFragment : Fragment(), ItemDragListener {
     }
 
     private fun observeUI() {
-        binding.templateGroupsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding.templateGroupsRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
             private val fab = binding.fabAddGroup
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy >0) {
-                    // Scroll Down
-                    if (fab.isShown) {
-                        fab.hide()
-                    }
-                }
-                else if (dy <0) {
-                    // Scroll Up
-                    if (!fab.isShown) {
-                        fab.show()
-                    }
-                }
+                if (dy > 0 && fab.isShown) fab.hide()
+                else if (dy < 0 && !fab.isShown) fab.show()
             }
         })
         viewModel.groups.observe(viewLifecycleOwner) { list ->
@@ -87,7 +78,7 @@ class TemplateGroupListFragment : Fragment(), ItemDragListener {
         viewModel.popupMenuEvent.observe(viewLifecycleOwner) {
             showPopup(it.first, it.second)
         }
-        viewModel.startDragEvent.observe(viewLifecycleOwner){
+        viewModel.startDragEvent.observe(viewLifecycleOwner) {
             itemTouchHelper.startDrag(it)
         }
     }
@@ -114,14 +105,14 @@ class TemplateGroupListFragment : Fragment(), ItemDragListener {
     }
 
     private fun deleteGroup(item: TemplateGroup) {
-        DeleteConfirmationAlertDialog(requireContext()).apply {
-            title = getString(R.string.delete_group)
-            message = getString(R.string.delete_group_confirmation)
-            show { result ->
-                if (result) {
-                    viewModel.deleteGroup(item)
-                    if (!binding.fabAddGroup.isShown) binding.fabAddGroup.show()
-                }
+        DeleteConfirmationAlertDialog.show(
+            requireContext(),
+            getString(R.string.delete_group),
+            getString(R.string.delete_group_confirmation)
+        ) { confirmed ->
+            if (confirmed) {
+                viewModel.deleteGroup(item)
+                if (!binding.fabAddGroup.isShown) binding.fabAddGroup.show()
             }
         }
     }

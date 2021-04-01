@@ -24,6 +24,7 @@ import com.leviancode.android.gsmbox.helpers.BackupResult.*
 import com.leviancode.android.gsmbox.ui.extra.alertdialogs.RecoveryAlertDialog
 import com.leviancode.android.gsmbox.utils.*
 import com.leviancode.android.gsmbox.utils.extensions.isValidSQLite
+import com.leviancode.android.gsmbox.utils.extensions.navigate
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
@@ -100,6 +101,16 @@ class SettingsFragment : Fragment() {
 
         binding.btnBackup.setOnClickListener {
             backupDB()
+        }
+
+        binding.btnPlaceholders.setOnClickListener {
+            openPlaceholdersFragment()
+        }
+    }
+
+    private fun openPlaceholdersFragment() {
+        navigate {
+            SettingsFragmentDirections.actionOpenPlaceholders()
         }
     }
 

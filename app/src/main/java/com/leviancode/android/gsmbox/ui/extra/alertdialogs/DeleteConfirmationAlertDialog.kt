@@ -4,17 +4,20 @@ import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import com.leviancode.android.gsmbox.R
 
-class DeleteConfirmationAlertDialog(val context: Context) {
-    var title = context.getString(R.string.delete_item)
-    var message = ""
+object DeleteConfirmationAlertDialog {
 
-    fun show(callback: (Boolean) -> Unit){
+    fun show(
+        context: Context,
+        title: String = context.getString(R.string.delete_item),
+        msg: String = "",
+        callback: (Boolean) -> Unit
+    ) {
         AlertDialog.Builder(context)
             .setTitle(title)
-            .setMessage(message)
-            .setNegativeButton(context.getString(R.string.cancel)){ dialog, _ ->
+            .setMessage(msg)
+            .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
-            }.setPositiveButton(context.getString(R.string.delete)){ _, _ ->
+            }.setPositiveButton(context.getString(R.string.delete)) { _, _ ->
                 callback(true)
             }.show()
     }
