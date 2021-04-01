@@ -59,6 +59,7 @@
                     android:layout_height="wrap_content"
                     android:focusable="true"
                     android:hint="@string/hint_name"
+                    app:setError="@{viewModel.data.recipient.recipientNameUnique}"
                     android:selectAllOnFocus="true"
                     android:inputType="text"
                     android:padding="8dp"

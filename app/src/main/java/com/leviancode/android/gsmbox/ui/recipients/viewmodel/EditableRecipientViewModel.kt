@@ -64,4 +64,8 @@ class EditableRecipientViewModel : ViewModel() {
         data.groups.clear()
         data.groups.addAll(groups)
     }
+
+    fun namesWithoutCurrent(id: String) = repository.recipients.map { list ->
+        list.filter { it.recipientId != id }.map { it.getRecipientName() }
+    }
 }

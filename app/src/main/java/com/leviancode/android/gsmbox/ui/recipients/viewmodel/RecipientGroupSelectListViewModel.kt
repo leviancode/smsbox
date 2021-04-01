@@ -60,4 +60,6 @@ class RecipientGroupSelectListViewModel : ViewModel() {
     }
 
     fun getSingleSelectedGroupId() = selectedItems[0].recipientGroupId
+
+    fun getNewGroup(): RecipientGroup = repository.getNewRecipientGroup()
 }

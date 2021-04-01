@@ -6,17 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.*
-import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientWithGroups
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientBinding
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientGroupHolderBinding
-import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateNumberHolderBinding
+import com.leviancode.android.gsmbox.utils.helpers.TextUniqueWatcher
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.EditableRecipientViewModel
 import com.leviancode.android.gsmbox.ui.templates.view.dialog.AbstractFullScreenDialog
 import com.leviancode.android.gsmbox.utils.*
@@ -47,9 +44,8 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
         binding.viewModel = viewModel
         args.recipient.let { recipient ->
             viewModel.setRecipient(recipient)
-
+            setTitle(recipient.getRecipientName())
             if (recipient.getRecipientName().isNotBlank()) {
-                binding.toolbar.title = recipient.getRecipientName()
                 loadRecipientGroupViews(recipient.recipientId)
             } else if (recipient.getPhoneNumber().isNotBlank()) {
                 binding.btnRecipientContacts.visibility = View.GONE
@@ -60,6 +56,10 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
         setupContactPickerLauncher()
         showKeyboard(binding.editTextRecipientName)
         observeUI()
+    }
+
+    private fun setTitle(name: String) {
+        if (name.isNotBlank()) binding.toolbar.title = getString(R.string.edit_recipient)
     }
 
     private fun loadRecipientGroupViews(recipientId: String) {
@@ -79,6 +79,8 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
     }
 
     private fun observeUI() {
+        setTextUniqueWatcher()
+
         binding.toolbar.setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
 
         viewModel.savedEvent.observe(viewLifecycleOwner) { closeDialog(RESULT_OK) }
@@ -89,6 +91,17 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
 
         viewModel.removeGroupEvent.observe(viewLifecycleOwner) { removeRecipientGroupView(it) }
 
+    }
+
+    private fun setTextUniqueWatcher() {
+        val textWatcher = TextUniqueWatcher { isUnique ->
+            viewModel.data.recipient.isRecipientNameUnique = isUnique
+        }
+        binding.editTextRecipientName.addTextChangedListener(textWatcher)
+        viewModel.namesWithoutCurrent(args.recipient.recipientId)
+            .observe(viewLifecycleOwner) {
+                textWatcher.wordList = it
+            }
     }
 
     private fun selectGroups(recipientId: String) {

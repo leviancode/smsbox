@@ -20,7 +20,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.single.BasePermissionListener
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.FragmentSettingsBinding
-import com.leviancode.android.gsmbox.helpers.BackupResult.*
+import com.leviancode.android.gsmbox.utils.helpers.BackupResult.*
 import com.leviancode.android.gsmbox.ui.extra.alertdialogs.RecoveryAlertDialog
 import com.leviancode.android.gsmbox.utils.*
 import com.leviancode.android.gsmbox.utils.extensions.isValidSQLite

@@ -13,7 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.adapters.ContactListAdapter
-import com.leviancode.android.gsmbox.helpers.ListItemClickListener
+import com.leviancode.android.gsmbox.utils.helpers.ListItemClickListener
 import com.leviancode.android.gsmbox.databinding.DialogSelectListContactsBinding
 import com.leviancode.android.gsmbox.utils.REQ_SELECTED
 import com.leviancode.android.gsmbox.utils.extensions.goBack

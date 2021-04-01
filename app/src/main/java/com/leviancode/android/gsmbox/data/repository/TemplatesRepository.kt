@@ -25,9 +25,20 @@ object TemplatesRepository {
 
 
     suspend fun saveGroup(item: TemplateGroup) = withContext(IO){
+        item.setName(item.getName().trim())
         val group = getGroupById(item.templateGroupId)
         if (group == null) groupsDao.insert(item)
         else groupsDao.update(item)
+    }
+
+    suspend fun saveTemplate(item: Template) = withContext(IO){
+        item.setName(item.getName().trim())
+        val template = getTemplateById(item.templateId)
+        if (template == null)  {
+            templatesDao.insert(item)
+            increaseGroupSize(item.templateGroupId)
+        }
+        else templatesDao.update(item)
     }
 
     suspend fun updateGroup(item: TemplateGroup) = withContext(IO){
@@ -36,15 +47,6 @@ object TemplatesRepository {
 
     suspend fun deleteGroup(item: TemplateGroup) = withContext(IO){
         groupsDao.delete(item)
-    }
-
-    suspend fun saveTemplate(item: Template) = withContext(IO){
-        val template = getTemplateById(item.templateId)
-        if (template == null)  {
-            templatesDao.insert(item)
-            increaseGroupSize(item.templateGroupId)
-        }
-        else templatesDao.update(item)
     }
 
     suspend fun updateTemplate(item: Template) = withContext(IO) {
@@ -103,7 +105,9 @@ object TemplatesRepository {
     fun getGroupWithTemplates(groupId: String) = groupsDao.getGroupWithTemplates(groupId)
 
     fun getNewTemplate() = Template()
+
     fun getNewTemplateGroup() = TemplateGroup()
+
     suspend fun getTemplatesByRecipientGroupId(recipientGroupId: String): List<Template> {
         return templatesDao.getByRecipientGroupId(recipientGroupId)
     }

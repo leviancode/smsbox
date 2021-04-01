@@ -25,7 +25,7 @@ fun ImageView.loadImage(uri: String?) {
 
 @BindingAdapter(value = ["setError"])
 fun TextInputEditText.showError(isUnique: Boolean) {
-    error = if (isUnique) null else context.getString(R.string.err_unique_key)
+    error = if (isUnique) null else context.getString(R.string.err_unique_name)
 }
 
 @BindingAdapter(value = ["setRecipientsAsText"])

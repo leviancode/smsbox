@@ -6,6 +6,7 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.leviancode.android.gsmbox.BR
 import com.leviancode.android.gsmbox.R
@@ -103,8 +104,16 @@ data class Template(
         notifyChange()
     }
 
+    @Ignore
+    @get:Bindable
+    var isTemplateNameUnique = true
+        set(value) {
+            field = value
+            notifyChange()
+        }
+
     @Bindable
-    fun isFieldsFilled() = isNotEmpty(
+    fun isFieldsCorrect() = isTemplateNameUnique && isNotEmpty(
         getName(),
         getMessage(),
         getRecipientsAsString() + getRecipientGroupName()

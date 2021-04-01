@@ -158,7 +158,6 @@
 
         <argument
             android:name="group"
-            app:nullable="true"
             app:argType="com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup" />
 
     </dialog>

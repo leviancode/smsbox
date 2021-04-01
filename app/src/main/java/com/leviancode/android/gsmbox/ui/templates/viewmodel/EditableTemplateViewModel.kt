@@ -131,4 +131,8 @@ class EditableTemplateViewModel : ViewModel() {
             setPhoneNumber(new.getPhoneNumber())
         }
     }
+
+    fun namesWithoutCurrent(id: String) = repository.templates.map { list ->
+        list.filter { it.templateId != id }.map { it.getName() }
+    }
 }

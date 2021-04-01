@@ -54,7 +54,7 @@
                         android:textColor="@color/main_style_dark_blue"
                         android:textSize="16sp"
                         android:textStyle="bold|italic"
-                        android:text="@{model.keyword}"
+                        android:text="@{model.name}"
                         tools:text="Key" />
 
                     <TextView

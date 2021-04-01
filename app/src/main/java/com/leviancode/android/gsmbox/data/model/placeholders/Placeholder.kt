@@ -5,6 +5,7 @@ import androidx.databinding.Bindable
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.leviancode.android.gsmbox.utils.isNotEmpty
 import java.io.Serializable
 import java.util.*
 
@@ -12,20 +13,18 @@ import java.util.*
 data class Placeholder(
     @PrimaryKey
     var placeholderId: String = UUID.randomUUID().toString(),
-    private var keyword: String = "",
+    private var name: String = "",
     private var value: String = ""
 ) : BaseObservable(), Serializable {
 
     @Bindable
-    fun getKeyword() = keyword
-    fun setKeyword(value: String) {
-        if (keyword != value) {
-            keyword = value
+    fun getName() = name
+    fun setName(value: String) {
+        if (name != value) {
+            name = value
             notifyChange()
         }
     }
-
-    fun getKeyWithHashTag() = "#$keyword"
 
     @Bindable
     fun getValue() = value
@@ -38,12 +37,12 @@ data class Placeholder(
 
     @Ignore
     @get:Bindable
-    var isKeyUnique = true
+    var isNameUnique = true
         set(value) {
             field = value
             notifyChange()
         }
 
     @Bindable
-    fun isFieldsCorrect() = isKeyUnique && value.isNotBlank()
+    fun isFieldsCorrect() = isNameUnique && isNotEmpty(name, value)
 }

@@ -19,7 +19,13 @@ data class Recipient(
     private var phoneNumber: String = ""
 ) : BaseObservable(), Serializable {
 
-    @Ignore var saved: Boolean = false
+    @Ignore
+    @get:Bindable
+    var isRecipientNameUnique = true
+        set(value) {
+            field = value
+            notifyChange()
+        }
 
     @Ignore
     @get:Bindable
@@ -48,5 +54,5 @@ data class Recipient(
     }
 
     @Bindable
-    fun isFieldsFilled() = isNotEmpty(recipientName, phoneNumber)
+    fun isFieldsFilled() = isNotEmpty(recipientName, phoneNumber) && isRecipientNameUnique
 }

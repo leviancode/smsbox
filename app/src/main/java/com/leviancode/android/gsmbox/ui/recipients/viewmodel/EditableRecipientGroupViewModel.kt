@@ -1,6 +1,7 @@
 package com.leviancode.android.gsmbox.ui.recipients.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
@@ -14,6 +15,10 @@ class EditableRecipientGroupViewModel : ViewModel() {
 
     val selectColorEvent = SingleLiveEvent<Int>()
     val closeDialogEvent = SingleLiveEvent<RecipientGroup>()
+
+    fun namesWithoutCurrent(id: String) = repository.groups.map { list ->
+        list.filter { it.recipientGroupId != id }.map { it.getRecipientGroupName() }
+    }
 
     fun setGroup(value: RecipientGroup){
         data = value
@@ -34,7 +39,6 @@ class EditableRecipientGroupViewModel : ViewModel() {
     fun setIconColor(color: Int) {
         data.setRecipientGroupIconColor(color)
     }
-
     fun isGroupEdited() = original != data
 
 }

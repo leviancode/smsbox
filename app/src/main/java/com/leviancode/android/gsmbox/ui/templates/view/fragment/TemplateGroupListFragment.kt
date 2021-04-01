@@ -14,8 +14,8 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.ui.templates.adapters.TemplateGroupListAdapter
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateGroupListBinding
-import com.leviancode.android.gsmbox.helpers.ItemDragHelperCallback
-import com.leviancode.android.gsmbox.helpers.ItemDragListener
+import com.leviancode.android.gsmbox.utils.helpers.ItemDragHelperCallback
+import com.leviancode.android.gsmbox.utils.helpers.ItemDragListener
 import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DeleteConfirmationAlertDialog
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.DELETE

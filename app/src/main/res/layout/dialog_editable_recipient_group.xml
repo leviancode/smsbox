@@ -57,6 +57,7 @@
                 android:focusable="true"
                 android:hint="@string/hint_name"
                 android:selectAllOnFocus="true"
+                app:setError="@{viewModel.data.recipientGroupNameUnique}"
                 android:inputType="text"
                 android:padding="8dp"
                 android:text="@={viewModel.data.recipientGroupName}"

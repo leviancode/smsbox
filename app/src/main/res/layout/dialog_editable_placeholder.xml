@@ -72,11 +72,11 @@
                     android:id="@+id/edit_text_placeholders_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/key"
+                    android:hint="@string/name"
                     android:inputType="text"
-                    app:setError="@{model.keyUnique}"
+                    app:setError="@{model.nameUnique}"
                     android:padding="8dp"
-                    android:text="@={model.keyword}"
+                    android:text="@={model.name}"
                     android:textSize="@dimen/form_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>

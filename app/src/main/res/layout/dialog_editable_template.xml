@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:enabled="@{viewModel.data.fieldsFilled}"
+                    android:enabled="@{viewModel.data.fieldsCorrect}"
                     android:text="@string/save"
                     android:textColor="@drawable/save_button_text_color_selector"
                     android:onClick="@{() -> viewModel.onSaveClick()}"/>
@@ -69,6 +69,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/hint_name"
                         android:inputType="text"
+                        app:setError="@{viewModel.data.templateNameUnique}"
                         android:padding="8dp"
                         android:text="@={viewModel.data.name}"
                         android:textSize="@dimen/form_text_size" />

@@ -12,6 +12,7 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateBinding
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateNumberHolderBinding
+import com.leviancode.android.gsmbox.utils.helpers.TextUniqueWatcher
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateViewModel
 import com.leviancode.android.gsmbox.utils.*
 import com.leviancode.android.gsmbox.utils.extensions.getNavigationResult
@@ -45,12 +46,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
     }
 
     private fun setupViews(){
-        binding.toolbar.apply {
-            args.template.getName().let {
-                if (it.isNotBlank()) title = it
-            }
-            setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
-        }
+        setTitle(args.template.getName())
 
         args.template.getRecipients().ifNotEmpty { list ->
             list.forEach { addRecipientView(it) }
@@ -59,7 +55,24 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         showKeyboard(binding.editTextTemplateName)
     }
 
+    private fun setTitle(name: String) {
+        if (name.isNotBlank()) binding.toolbar.title = getString(R.string.edit_template)
+    }
+
+    private fun setTextUniqueWatcher() {
+        val textWatcher = TextUniqueWatcher { isUnique -> viewModel.data.isTemplateNameUnique = isUnique }
+        binding.editTextTemplateName.addTextChangedListener(textWatcher)
+        viewModel.namesWithoutCurrent(args.template.templateId)
+            .observe(viewLifecycleOwner) {
+                textWatcher.wordList = it
+            }
+    }
+
     private fun observeUI() {
+        setTextUniqueWatcher()
+
+        binding.toolbar.setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
+
         viewModel.recipientNameList.observe(viewLifecycleOwner){ list ->
             updateAutoCompleteList(list)
         }

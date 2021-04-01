@@ -36,7 +36,7 @@ class RecipientGroupMultiSelectListDialog : BottomSheetDialogFragment(){
                 val bind = ButtonNewGroupBinding.inflate(dialog.layoutInflater)
                 container?.addView(bind.root)
                 bind.btnNewGroup.setOnClickListener {
-                    showNewGroupDialog()
+                    openNewGroupDialog()
                 }
             }
         }
@@ -75,7 +75,7 @@ class RecipientGroupMultiSelectListDialog : BottomSheetDialogFragment(){
         }
     }
 
-    private fun showNewGroupDialog() {
+    private fun openNewGroupDialog() {
         getNavigationResult<RecipientGroup>(REQ_SELECT_RECIPIENT_GROUP)?.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 viewModel.onItemClick(result)
@@ -84,7 +84,7 @@ class RecipientGroupMultiSelectListDialog : BottomSheetDialogFragment(){
         }
 
         navigate {
-            RecipientGroupMultiSelectListDialogDirections.actionOpenEditableRecipientGroup(null)
+            RecipientGroupMultiSelectListDialogDirections.actionOpenEditableRecipientGroup(viewModel.getNewGroup())
         }
     }
 

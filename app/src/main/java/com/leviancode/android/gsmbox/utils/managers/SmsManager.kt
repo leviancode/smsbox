@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.data.repository.PlaceholdersRepository
-import com.leviancode.android.gsmbox.utils.log
 
 object SmsManager {
     suspend fun sendSms(context: Context, template: Template) {
@@ -24,7 +23,7 @@ object SmsManager {
 
     private suspend fun replacePlaceholder(message: String): String {
         val key = "#" + message.substringAfter('#').substringBefore(" ")
-        return PlaceholdersRepository.getValueByKey(key)?.let { value ->
+        return PlaceholdersRepository.getValueByName(key)?.let { value ->
             message.replace(key, value)
         } ?: message
     }

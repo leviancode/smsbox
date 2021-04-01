@@ -111,10 +111,13 @@
     <string name="key">Key</string>
     <string name="value">Value</string>
     <string name="name">Name</string>
-    <string name="placeholders_info">A placeholder is a variable whose key and value can be stored here and then used in all your templates in a text message by writing \'#key\' (e.g. #company). When sending a message, this variable will be replaced with its value that you specify here.</string>
+    <string name="placeholders_info">A placeholder is a variable whose name and value can be stored here and then used in all your templates in a text message by writing \'#name\' (e.g. #company). When sending a message, this name will be replaced with its value that you specify here.</string>
     <string name="info">Info</string>
-    <string name="err_unique_key">Key should be unique</string>
+    <string name="err_unique_name">Name should be unique</string>
     <string name="add_new_placeholder">Add new placeholder</string>
     <string name="new_placeholder">New Placeholder</string>
     <string name="edit_placeholder">Edit Placeholder</string>
+    <string name="edit_group">Edit Group</string>
+    <string name="edit_recipient">Edit Recipient</string>
+    <string name="edit_template">Edit Template</string>
 </resources>

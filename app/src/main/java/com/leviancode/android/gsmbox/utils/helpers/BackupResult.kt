@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.helpers
+package com.leviancode.android.gsmbox.utils.helpers
 
 enum class BackupResult {
     START,

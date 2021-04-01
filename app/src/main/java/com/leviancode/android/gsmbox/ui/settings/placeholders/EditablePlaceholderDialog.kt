@@ -14,7 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogEditablePlaceholderBinding
-import com.leviancode.android.gsmbox.helpers.TextUniqueChecker
+import com.leviancode.android.gsmbox.utils.helpers.TextUniqueWatcher
 import com.leviancode.android.gsmbox.utils.extensions.goBack
 import com.leviancode.android.gsmbox.utils.hideKeyboard
 import com.leviancode.android.gsmbox.utils.showKeyboard
@@ -23,7 +23,6 @@ class EditablePlaceholderDialog : BottomSheetDialogFragment() {
     private lateinit var binding: DialogEditablePlaceholderBinding
     private val viewModel: PlaceholdersViewModel by viewModels({ requireParentFragment() })
     private val args: EditablePlaceholderDialogArgs by navArgs()
-    private lateinit var textChecker: TextUniqueChecker
 
     override fun getTheme(): Int = R.style.CustomBottomSheetDialogWithKeyboard
 
@@ -55,28 +54,32 @@ class EditablePlaceholderDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.model = args.placeholder.apply {
-            setKeyword(getKeyword().removePrefix("#"))
+            setName(getName().removePrefix("#"))
         }
-        setTitle(args.placeholder.getKeyword())
+        setTitle(args.placeholder.getName())
         showKeyboard(binding.editTextPlaceholdersName)
         observeUI()
     }
 
     private fun observeUI() {
+        setTextUniqueWatcher()
         binding.toolbar.setNavigationOnClickListener { goBack() }
-        textChecker = TextUniqueChecker { isUnique ->
-            binding.model?.isKeyUnique = isUnique
-        }
-        binding.editTextPlaceholdersName.addTextChangedListener(textChecker)
-
-        viewModel.keysWithoutCurrentPlaceholder(args.placeholder.placeholderId)
-            .observe(viewLifecycleOwner) { list ->
-                textChecker.comparisonList = list
-            }
         binding.btnPlaceholderSave.setOnClickListener {
             viewModel.savePlaceholder(args.placeholder)
             goBack()
         }
+    }
+
+    private fun setTextUniqueWatcher() {
+        val textWatcher = TextUniqueWatcher { isUnique ->
+            args.placeholder.isNameUnique = isUnique
+        }
+        binding.editTextPlaceholdersName.addTextChangedListener(textWatcher)
+
+        viewModel.namesWithoutCurrent(args.placeholder.placeholderId)
+            .observe(viewLifecycleOwner) { list ->
+                textWatcher.wordList = list
+            }
     }
 
     private fun setTitle(name: String) {
@@ -91,10 +94,5 @@ class EditablePlaceholderDialog : BottomSheetDialogFragment() {
     override fun onPause() {
         hideKeyboard()
         super.onPause()
-    }
-
-    override fun onDestroy() {
-        binding.editTextPlaceholdersName.removeTextChangedListener(textChecker)
-        super.onDestroy()
     }
 }

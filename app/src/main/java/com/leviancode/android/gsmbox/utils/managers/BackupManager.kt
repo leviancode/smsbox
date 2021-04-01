@@ -9,7 +9,7 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import com.leviancode.android.gsmbox.data.repository.AppDatabase
-import com.leviancode.android.gsmbox.helpers.BackupResult
+import com.leviancode.android.gsmbox.utils.helpers.BackupResult
 import com.leviancode.android.gsmbox.utils.*
 import com.leviancode.android.gsmbox.utils.extensions.*
 import kotlinx.coroutines.delay

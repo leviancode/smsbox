@@ -13,8 +13,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientListAdapter
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientListBinding
-import com.leviancode.android.gsmbox.helpers.ItemDragHelperCallback
-import com.leviancode.android.gsmbox.helpers.ItemDragListener
+import com.leviancode.android.gsmbox.utils.helpers.ItemDragHelperCallback
+import com.leviancode.android.gsmbox.utils.helpers.ItemDragListener
 import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
 
 class RecipientListFragment : Fragment(), ItemDragListener {

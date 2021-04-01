@@ -28,6 +28,14 @@ data class RecipientGroup(
             notifyChange()
         }
 
+    @Ignore
+    @get:Bindable
+    var isRecipientGroupNameUnique = true
+        set(value) {
+            field = value
+            notifyChange()
+        }
+
     @Bindable
     fun getRecipientGroupName() = recipientGroupName
     fun setRecipientGroupName(value: String){
@@ -47,6 +55,6 @@ data class RecipientGroup(
     }
 
     @Bindable
-    fun isFieldsFilled() = isNotEmpty(getRecipientGroupName())
+    fun isFieldsFilled() = isNotEmpty(getRecipientGroupName()) && isRecipientGroupNameUnique
 
 }

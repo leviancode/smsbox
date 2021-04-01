@@ -16,9 +16,9 @@ class PlaceholdersViewModel : ViewModel() {
     val addPlaceholderEvent = SingleLiveEvent<Placeholder>()
     val onPopupMenuClickEvent = SingleLiveEvent<Pair<View, Placeholder>>()
 
-    fun keysWithoutCurrentPlaceholder(id: String) = placeholders.map { list ->
+    fun namesWithoutCurrent(id: String) = placeholders.map { list ->
         list.filter { it.placeholderId != id }
-            .map { it.getKeyword().substring(1)}
+            .map { it.getName().substring(1)}
     }
 
     fun onAddPlaceholderClick(){
@@ -30,7 +30,7 @@ class PlaceholdersViewModel : ViewModel() {
     }
 
     fun savePlaceholder(placeholder: Placeholder){
-        placeholder.setKeyword("#${placeholder.getKeyword()}")
+        placeholder.setName("#${placeholder.getName()}")
         viewModelScope.launch {
             repository.savePlaceholder(placeholder)
         }
