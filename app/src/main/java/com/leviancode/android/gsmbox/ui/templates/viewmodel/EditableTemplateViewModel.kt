@@ -1,15 +1,17 @@
 package com.leviancode.android.gsmbox.ui.templates.viewmodel
 
 import android.view.View
-import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.leviancode.android.gsmbox.BR
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
+import com.leviancode.android.gsmbox.utils.isNotEmpty
+import com.leviancode.android.gsmbox.utils.log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -32,7 +34,7 @@ class EditableTemplateViewModel : ViewModel() {
 
     val selectRecipientGroupEvent = SingleLiveEvent<String>()
     val selectRecipientEvent = SingleLiveEvent<Recipient>()
-    val selectColorEvent = SingleLiveEvent<Int>()
+    val selectColorEvent = SingleLiveEvent<String>()
     val savedEvent = SingleLiveEvent<Unit>()
 
     init {
@@ -42,13 +44,11 @@ class EditableTemplateViewModel : ViewModel() {
     fun setTemplate(template: Template){
         data = template
         original = template.copy()
-        if (template.getRecipients().isEmpty()) {
+        if (!template.isRecipientsOrGroup()) {
             onAddRecipientClick()
+        } else if (template.isRecipientGroupAttached()){
+            groupRecipients = getListClone(template.getRecipients())
         }
-    }
-
-    private fun addRecipientView(recipient: Recipient) {
-        addRecipientViewEvent.value = recipient
     }
 
     fun onAddRecipientClick(){
@@ -56,6 +56,10 @@ class EditableTemplateViewModel : ViewModel() {
             data.addRecipient(it)
             addRecipientView(it)
         }
+    }
+
+    private fun addRecipientView(recipient: Recipient) {
+        addRecipientViewEvent.value = recipient
     }
 
     fun onSelectRecipientGroupsClick(){
@@ -89,21 +93,12 @@ class EditableTemplateViewModel : ViewModel() {
         removeRecipientViewEvent.value = view
     }
 
-    fun setIconColor(color: Int) {
+    fun setIconColor(color: String) {
         data.setIconColor(color)
     }
 
     fun isTemplateEdited(): Boolean {
         return original != data
-    }
-
-    private fun fieldsChecker(){
-        viewModelScope.launch{
-            while (isActive) {
-                data.notifyPropertyChanged(BR.fieldsFilled)
-                delay(500)
-            }
-        }
     }
 
     fun setRecipientGroup(groupId: String) {
@@ -134,5 +129,14 @@ class EditableTemplateViewModel : ViewModel() {
 
     fun namesWithoutCurrent(id: String) = repository.templates.map { list ->
         list.filter { it.templateId != id }.map { it.getName() }
+    }
+
+    private fun fieldsChecker(){
+        viewModelScope.launch {
+            while (isActive) {
+                data.notifyPropertyChanged(BR.fieldsCorrect)
+                delay(500)
+            }
+        }
     }
 }

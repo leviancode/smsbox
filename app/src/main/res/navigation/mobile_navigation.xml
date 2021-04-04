@@ -50,7 +50,7 @@
 
     <fragment
         android:id="@+id/nav_recipients"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.fragment.RecipientsPagerFragment"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.RecipientsPagerFragment"
         android:label="@string/title_recipients"
         tools:layout="@layout/fragment_recipients_pager" >
         <action
@@ -85,6 +85,10 @@
         tools:layout="@layout/fragment_placeholders" >
         <action
             android:id="@+id/action_open_editable_placeholder"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/slide_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:destination="@id/nav_editable_placeholder" />
     </fragment>
 
@@ -92,7 +96,7 @@
         android:id="@+id/nav_editable_placeholder"
         android:name="com.leviancode.android.gsmbox.ui.settings.placeholders.EditablePlaceholderDialog"
         android:label="@string/new_placeholder"
-        tools:layout="@layout/dialog_editable_recipient_group">
+        tools:layout="@layout/dialog_editable_placeholder">
 
         <argument
             android:name="placeholder"
@@ -137,7 +141,7 @@
 
     <dialog
         android:id="@+id/nav_editable_recipient"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.editable.EditableRecipientDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.recipients.edit.EditableRecipientDialog"
         android:label="New Recipient"
         tools:layout="@layout/dialog_editable_recipient">
 
@@ -145,14 +149,14 @@
             android:name="recipient"
             app:argType="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
         <action
-            android:id="@+id/action_open_recipient_group_list"
+            android:id="@+id/action_open_multi_select_recipient_group"
             app:destination="@id/nav_multi_select_recipient_group" />
 
     </dialog>
 
     <dialog
         android:id="@+id/nav_editable_recipient_group"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.editable.EditableRecipientGroupDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.groups.edit.EditableRecipientGroupDialog"
         android:label="New Group"
         tools:layout="@layout/dialog_editable_recipient_group">
 
@@ -164,7 +168,7 @@
 
     <dialog
         android:id="@+id/nav_select_recipient_group"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.bottomsheets.RecipientGroupSelectListDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.groups.dialog.RecipientGroupSelectListDialog"
         android:label="Select Group"
         tools:layout="@layout/dialog_select_list">
 
@@ -176,7 +180,7 @@
 
     <dialog
         android:id="@+id/nav_multi_select_recipient_group"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.bottomsheets.RecipientGroupMultiSelectListDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.groups.dialog.RecipientGroupMultiSelectListDialog"
         android:label="Select Groups"
         tools:layout="@layout/dialog_select_list">
         <action
@@ -189,7 +193,7 @@
 
     <dialog
         android:id="@+id/nav_select_recipient"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.bottomsheets.RecipientSelectListDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.recipients.dialog.RecipientSelectListDialog"
         android:label="Select Recipient"
         tools:layout="@layout/dialog_select_list">
 
@@ -201,7 +205,7 @@
 
     <dialog
         android:id="@+id/nav_multi_select_recipient"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.dialog.bottomsheets.RecipientMultiSelectListDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.view.recipients.dialog.RecipientMultiSelectListDialog"
         android:label="Select Recipients"
         tools:layout="@layout/dialog_select_list">
 

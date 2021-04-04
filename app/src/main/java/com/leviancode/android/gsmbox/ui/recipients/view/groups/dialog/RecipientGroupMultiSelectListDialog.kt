@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.recipients.view.dialog.bottomsheets
+package com.leviancode.android.gsmbox.ui.recipients.view.groups.dialog
 
 import android.app.Dialog
 import android.os.Bundle
@@ -13,11 +13,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientGroupSelectListAdapter
-import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.ButtonNewGroupBinding
 import com.leviancode.android.gsmbox.databinding.DialogSelectListBinding
-import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientGroupSelectListViewModel
 import com.leviancode.android.gsmbox.utils.REQ_MULTI_SELECT_RECIPIENT_GROUP
 import com.leviancode.android.gsmbox.utils.REQ_SELECT_RECIPIENT_GROUP
 import com.leviancode.android.gsmbox.utils.extensions.*
@@ -79,7 +77,7 @@ class RecipientGroupMultiSelectListDialog : BottomSheetDialogFragment(){
         getNavigationResult<RecipientGroup>(REQ_SELECT_RECIPIENT_GROUP)?.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 viewModel.onItemClick(result)
-                removeNavigationResult<Recipient>(REQ_SELECT_RECIPIENT_GROUP)
+                removeNavigationResult<RecipientGroup>(REQ_SELECT_RECIPIENT_GROUP)
             }
         }
 

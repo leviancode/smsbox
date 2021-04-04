@@ -28,6 +28,7 @@
                 android:id="@+id/toolbar_placeholders"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:navigationIconTint="@color/navButtonColor"
                 app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
                 app:title="@string/title_placeholders"
                 app:menu="@menu/placeholders_menu"/>
@@ -43,7 +44,7 @@
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
-         tools:listitem="@layout/list_item_placeholderrrr"/>
+         tools:listitem="@layout/list_item_placeholder"/>
 
      <com.google.android.material.floatingactionbutton.FloatingActionButton
          android:id="@+id/fab_add_placeholder"

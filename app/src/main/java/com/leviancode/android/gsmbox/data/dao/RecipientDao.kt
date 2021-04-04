@@ -10,7 +10,9 @@ import com.leviancode.android.gsmbox.data.model.recipients.RecipientWithGroups
 interface RecipientDao {
     @Insert (onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg item: Recipient)
+
     @Update suspend fun update(vararg item: Recipient)
+
     @Delete suspend fun delete(vararg item: Recipient)
 
     @Query("SELECT * FROM recipients WHERE recipientId = :id")

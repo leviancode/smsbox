@@ -1,12 +1,10 @@
 package com.leviancode.android.gsmbox.data.model.recipients
 
-import android.graphics.Color
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.leviancode.android.gsmbox.BR
 import com.leviancode.android.gsmbox.utils.isNotEmpty
 import java.io.Serializable
 import java.util.*
@@ -17,7 +15,7 @@ data class RecipientGroup(
     @PrimaryKey
     var recipientGroupId: String = UUID.randomUUID().toString(),
     private var recipientGroupName: String = "",
-    private var recipientGroupIconColor: Int = Color.parseColor("#78909C"),
+    private var recipientGroupIconColor: String = "#d59557",
 ) : BaseObservable(), Serializable {
 
     @Ignore
@@ -47,7 +45,7 @@ data class RecipientGroup(
 
     @Bindable
     fun getRecipientGroupIconColor() = recipientGroupIconColor
-    fun setRecipientGroupIconColor(value: Int){
+    fun setRecipientGroupIconColor(value: String){
         if (recipientGroupIconColor != value){
             recipientGroupIconColor = value
             notifyChange()

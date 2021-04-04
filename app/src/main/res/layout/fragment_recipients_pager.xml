@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.recipients.view.fragment.RecipientsPagerFragment">
-
-    <data>
-        <variable
-            name="groupMode"
-            type="java.lang.Boolean" />
-        <variable
-            name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel" />
-    </data>
+    tools:context=".ui.recipients.view.RecipientsPagerFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -69,7 +59,6 @@
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:onClick="@{() -> groupMode ? viewModel.onAddGroupClick() : viewModel.onAddRecipientClick()}"
             android:contentDescription="@string/desc_create_new_recipient"
             android:src="@drawable/ic_baseline_add_24"
             app:backgroundTint="@color/white"

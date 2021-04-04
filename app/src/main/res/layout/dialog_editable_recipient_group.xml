@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.viewmodel.EditableRecipientGroupViewModel" />
+            type="com.leviancode.android.gsmbox.ui.recipients.view.groups.edit.EditableRecipientGroupViewModel" />
     </data>
 
     <LinearLayout
@@ -24,6 +24,7 @@
             android:paddingStart="6dp"
             android:paddingEnd="8dp"
             app:elevation="0dp"
+            app:navigationIconTint="@color/navButtonColor"
             app:navigationIcon="@drawable/ic_baseline_close_24"
             app:title="@string/new_group">
 
@@ -47,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_text_layout_height"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -76,8 +77,8 @@
             android:textColor="@color/grey"
             android:onClick="@{() -> viewModel.onIconColorClick()}"
             app:icon="@drawable/ic_baseline_color_lens_24"
-            app:iconTint="@{viewModel.data.recipientGroupIconColor}"
-            tools:iconTint="@color/blue_grey_300"/>
+            app:setButtonIconTintGroup="@{viewModel.data.recipientGroupIconColor}"
+            tools:iconTint="@color/default_group_icon_color"/>
 
     </LinearLayout>
 

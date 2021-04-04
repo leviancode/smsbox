@@ -4,14 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
+            type="com.leviancode.android.gsmbox.data.model.recipients.RecipientWithGroup" />
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.view.recipients.list.RecipientListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.recipients.view.groups.list.RecipientGroupListViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -64,7 +63,7 @@
                         android:textColor="@color/text_title"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:text="@{model.recipientName}"
+                        android:text="@{model.recipient.recipientName}"
                         tools:text="Name" />
 
                     <TextView
@@ -74,7 +73,7 @@
                         android:layout_marginStart="12dp"
                         android:layout_marginTop="4dp"
                         android:textSize="13sp"
-                        android:text="@{model.phoneNumber}"
+                        android:text="@{model.recipient.phoneNumber}"
                         android:textColor="#252525"
                         tools:text="Phone Number" />
 

@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel" />
+            type="com.leviancode.android.gsmbox.ui.recipients.view.groups.list.RecipientGroupListViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -44,10 +44,11 @@
                 android:layout_height="42dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="12dp"
-                android:padding="4dp"
-                android:scaleType="center"
-                android:tint="@{model.group.recipientGroupIconColor}"
-                android:src="@drawable/ic_baseline_library_books_24" />
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                app:setImageTintGroup="@{model.group.recipientGroupIconColor}"
+                tools:tint="@color/default_group_icon_color"
+                android:src="@drawable/ic_baseline_source_24" />
 
             <TextView
                 android:id="@+id/tv_recipient_group_name"
@@ -79,9 +80,10 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/popup_btn_margin_end"
                 android:contentDescription="@string/open_option_menu"
-                android:onClick="@{(view) -> viewModel.onGroupPopupMenuClick(view, model.group)}"
+                android:onClick="@{(view) -> viewModel.onGroupPopupMenuClick(view, model)}"
                 android:padding="4dp"
                 android:background="?android:selectableItemBackgroundBorderless"
+                android:tint="@color/popup_menu"
                 android:src="@drawable/ic_baseline_more_vert_24" />
 
         </LinearLayout>

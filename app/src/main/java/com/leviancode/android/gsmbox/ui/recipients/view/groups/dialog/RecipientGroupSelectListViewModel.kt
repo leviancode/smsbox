@@ -1,14 +1,9 @@
-package com.leviancode.android.gsmbox.ui.recipients.viewmodel
+package com.leviancode.android.gsmbox.ui.recipients.view.groups.dialog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
-import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
-import com.leviancode.android.gsmbox.utils.SingleLiveEvent
-import com.leviancode.android.gsmbox.utils.log
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class RecipientGroupSelectListViewModel : ViewModel() {
     private val repository = RecipientsRepository
@@ -59,7 +54,9 @@ class RecipientGroupSelectListViewModel : ViewModel() {
         }
     }
 
-    fun getSingleSelectedGroupId() = selectedItems[0].recipientGroupId
+    fun getSingleSelectedGroupId() = if (selectedItems.isNotEmpty()) {
+        selectedItems[0].recipientGroupId
+    } else ""
 
     fun getNewGroup(): RecipientGroup = repository.getNewRecipientGroup()
 }

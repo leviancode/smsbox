@@ -11,10 +11,10 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientListAdapter.*
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientBinding
-import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
+import com.leviancode.android.gsmbox.ui.recipients.view.recipients.list.RecipientListViewModel
 import java.util.*
 
-class RecipientListAdapter(val viewModel: RecipientsViewModel) :
+class RecipientListAdapter(val viewModel: RecipientListViewModel) :
     ListAdapter<Recipient, RecipientHolder>(RecipientsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipientHolder {
@@ -36,7 +36,7 @@ class RecipientListAdapter(val viewModel: RecipientsViewModel) :
 
     class RecipientHolder(
         val binding: ListItemRecipientBinding,
-        val viewModel: RecipientsViewModel
+        val viewModel: RecipientListViewModel
     ) : RecyclerView.ViewHolder(binding.root) {
 
 
@@ -46,7 +46,7 @@ class RecipientListAdapter(val viewModel: RecipientsViewModel) :
         }
 
         fun bind(item: Recipient) {
-            binding.recipient = item
+            binding.model = item
             binding.executePendingBindings()
         }
     }

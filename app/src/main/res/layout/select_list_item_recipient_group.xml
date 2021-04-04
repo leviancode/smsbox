@@ -16,7 +16,7 @@
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientGroupSelectListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.recipients.view.groups.dialog.RecipientGroupSelectListViewModel" />
     </data>
 
     <LinearLayout
@@ -38,10 +38,10 @@
             android:layout_height="42dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
-            android:padding="4dp"
-            android:scaleType="center"
-            android:src="@drawable/ic_baseline_library_books_24"
-            android:tint="@{model.recipientGroupIconColor}" />
+            android:padding="6dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_baseline_source_24"
+            app:setImageTintGroup="@{model.recipientGroupIconColor}" />
 
         <TextView
             android:id="@+id/tv_recipient_group_name"

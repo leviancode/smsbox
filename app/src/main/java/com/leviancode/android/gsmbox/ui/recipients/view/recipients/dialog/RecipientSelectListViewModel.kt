@@ -1,11 +1,9 @@
-package com.leviancode.android.gsmbox.ui.recipients.viewmodel
+package com.leviancode.android.gsmbox.ui.recipients.view.recipients.dialog
 
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.*
-import com.leviancode.android.gsmbox.data.model.recipients.Contact
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.managers.ContactsManager
 

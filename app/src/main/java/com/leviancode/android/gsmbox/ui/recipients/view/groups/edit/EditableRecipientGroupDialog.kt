@@ -1,7 +1,6 @@
-package com.leviancode.android.gsmbox.ui.recipients.view.dialog.editable
+package com.leviancode.android.gsmbox.ui.recipients.view.groups.edit
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +15,7 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientGroupBinding
 import com.leviancode.android.gsmbox.utils.helpers.TextUniqueWatcher
-import com.leviancode.android.gsmbox.ui.recipients.viewmodel.EditableRecipientGroupViewModel
-import com.leviancode.android.gsmbox.ui.templates.view.dialog.ColorPickerDialog
+import com.leviancode.android.gsmbox.ui.extra.ColorPickerDialog
 import com.leviancode.android.gsmbox.utils.REQ_SELECT_RECIPIENT_GROUP
 import com.leviancode.android.gsmbox.utils.extensions.goBack
 import com.leviancode.android.gsmbox.utils.extensions.setNavigationResult
@@ -87,7 +85,7 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
             }
     }
 
-    private fun selectColor(color: Int){
+    private fun selectColor(color: String){
         hideKeyboard()
 
         ColorPickerDialog(
@@ -100,15 +98,10 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
     }
 
     private fun closeDialog(result: RecipientGroup?) {
-        hideKeyboard()
         setNavigationResult(result, REQ_SELECT_RECIPIENT_GROUP)
         goBack()
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        hideKeyboard()
-        super.onDismiss(dialog)
-    }
     override fun onPause() {
         hideKeyboard()
         super.onPause()

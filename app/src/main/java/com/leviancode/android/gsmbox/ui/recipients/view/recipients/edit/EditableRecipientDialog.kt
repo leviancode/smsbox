@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.recipients.view.dialog.editable
+package com.leviancode.android.gsmbox.ui.recipients.view.recipients.edit
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +14,6 @@ import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientBinding
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientGroupHolderBinding
 import com.leviancode.android.gsmbox.utils.helpers.TextUniqueWatcher
-import com.leviancode.android.gsmbox.ui.recipients.viewmodel.EditableRecipientViewModel
 import com.leviancode.android.gsmbox.ui.templates.view.dialog.AbstractFullScreenDialog
 import com.leviancode.android.gsmbox.utils.*
 import com.leviancode.android.gsmbox.utils.extensions.getNavigationResult
@@ -98,7 +97,7 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
             viewModel.data.recipient.isRecipientNameUnique = isUnique
         }
         binding.editTextRecipientName.addTextChangedListener(textWatcher)
-        viewModel.namesWithoutCurrent(args.recipient.recipientId)
+        viewModel.recipientNamesWithoutCurrent(args.recipient.recipientId)
             .observe(viewLifecycleOwner) {
                 textWatcher.wordList = it
             }
@@ -106,19 +105,24 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
 
     private fun selectGroups(recipientId: String) {
         hideKeyboard()
-        getNavigationResult<List<RecipientGroup>>(REQ_SELECT_RECIPIENT_GROUP)?.observe(
+        getNavigationResult<List<RecipientGroup>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)?.observe(
             viewLifecycleOwner
         ) { result ->
             if (result != null) {
+                log("result: $result")
                 viewModel.setGroups(result)
-                removeAllRecipientGroupViews()
-                result.forEach(::addRecipientGroupView)
-                removeNavigationResult<String>(REQ_SELECT_RECIPIENT_GROUP)
+                updateAllRecipientGroupViews(result)
             }
+            removeNavigationResult<List<RecipientGroup>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)
         }
         navigate {
-            EditableRecipientDialogDirections.actionOpenRecipientGroupList(recipientId)
+            EditableRecipientDialogDirections.actionOpenMultiSelectRecipientGroup(recipientId)
         }
+    }
+
+    private fun updateAllRecipientGroupViews(result: List<RecipientGroup>) {
+        removeAllRecipientGroupViews()
+        result.forEach(::addRecipientGroupView)
     }
 
     private fun selectContact() {
@@ -152,7 +156,7 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
     override fun isDataEdited() = viewModel.isRecipientEdited()
 
     override fun onPause() {
-        super.onPause()
         hideKeyboard()
+        super.onPause()
     }
 }

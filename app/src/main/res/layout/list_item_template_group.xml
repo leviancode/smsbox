@@ -42,7 +42,8 @@
                     android:layout_marginStart="8dp"
                     android:scaleType="fitCenter"
                     android:layout_gravity="center_vertical"
-                    android:tint="@{model.iconColor}"
+                    app:setImageTintGroup="@{model.iconColor}"
+                    tools:tint="@color/default_group_icon_color"
                     app:loadImage="@{model.imageUri}"
                     app:srcCompat="@drawable/ic_baseline_source_24" />
 
@@ -97,6 +98,7 @@
                     android:contentDescription="@string/open_option_menu"
                     android:onClick="@{(view) -> viewModel.onPopupMenuClick(view, model)}"
                     android:padding="4dp"
+                    android:tint="@color/popup_menu"
                     android:background="?android:selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_baseline_more_vert_24" />
 

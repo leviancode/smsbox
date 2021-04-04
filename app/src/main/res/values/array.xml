@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="colors_400">
+        <item name="brown_400">#d59557</item>
+        <item name="grey_400">#BDBDBD</item>
+        <item name="blue_grey_400">#78909C</item>
+        <item name="light_blue_400">#29B6F6</item>
+        <item name="blue_400">#42A5F5</item>
+        <item name="indigo_400">#5C6BC0</item>
+        <item name="deep_purple_400">#7E57C2</item>
+        <item name="purple_400">#AB47BC</item>
+        <item name="pink_400">#EC407A</item>
+        <item name="red_400">#EF5350</item>
+        <item name="deep_orange_400">#FF7043</item>
+        <item name="orange_400">#FFA726</item>
+        <item name="yellow_400">#FFEE58</item>
+        <item name="lime_400">#D4E157</item>
+        <item name="green_400">#66BB6A</item>
+        <item name="teal_400">#26A69A</item>
+    </string-array>
+</resources>

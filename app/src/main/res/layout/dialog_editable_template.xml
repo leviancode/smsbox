@@ -27,18 +27,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/title_new_template"
+                app:navigationIconTint="@color/navButtonColor"
                 app:navigationIcon="@drawable/ic_baseline_close_24">
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:id="@+id/btn_template_save"
+                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:enabled="@{viewModel.data.fieldsCorrect}"
+                    android:onClick="@{() -> viewModel.onSaveClick()}"
                     android:text="@string/save"
-                    android:textColor="@drawable/save_button_text_color_selector"
-                    android:onClick="@{() -> viewModel.onSaveClick()}"/>
+                    android:textColor="@drawable/save_button_text_color_selector" />
+
             </com.google.android.material.appbar.MaterialToolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -69,6 +71,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/hint_name"
                         android:inputType="text"
+                        android:drawablePadding="6dp"
                         app:setError="@{viewModel.data.templateNameUnique}"
                         android:padding="8dp"
                         android:text="@={viewModel.data.name}"
@@ -103,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     app:switchPadding="4dp"
-                    android:checked="@{viewModel.data.recipientGroupName.length() > 0}"
+                    android:checked="@{viewModel.data.recipientGroupAttached}"
                     android:text="@string/recipient_group"
                     android:layout_marginEnd="16dp"/>
 
@@ -200,8 +203,8 @@
                     android:textColor="@color/grey"
                     android:onClick="@{() -> viewModel.onIconColorClick()}"
                     app:icon="@drawable/ic_baseline_color_lens_24"
-                    app:iconTint="@{viewModel.data.iconColor}"
-                    tools:iconTint="@color/blue_grey_400" />
+                    app:setButtonIconTint="@{viewModel.data.iconColor}"
+                    tools:iconTint="@color/secondary" />
 
             </LinearLayout>
 

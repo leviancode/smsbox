@@ -14,13 +14,7 @@ class TextUniqueWatcher(
     override fun afterTextChanged(s: Editable?) {}
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        CoroutineScope(Dispatchers.Main).launch {
-            if (isTextUnique(s.toString())) {
-                callback(true)
-            } else {
-                callback(false)
-            }
-        }
+        callback(isTextUnique(s.toString()))
     }
 
     private fun isTextUnique(text: String): Boolean {

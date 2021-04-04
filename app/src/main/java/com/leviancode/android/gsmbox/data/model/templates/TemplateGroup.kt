@@ -20,7 +20,7 @@ data class  TemplateGroup (
     private var name: String = "",
     private var description: String = "",
     private var imageUri: String = "",
-    private var iconColor: Int = Color.parseColor("#78909C"),
+    private var iconColor: String = "#d59557",
     var size: Int = 0
 ) : BaseObservable(), Serializable {
 
@@ -30,8 +30,7 @@ data class  TemplateGroup (
     fun setName(value: String){
         if (name != value){
             name = value
-            notifyPropertyChanged(BR.name)
-            notifyPropertyChanged(BR.fieldsCorrect)
+            notifyChange()
         }
     }
     @Bindable
@@ -40,16 +39,16 @@ data class  TemplateGroup (
     fun setDescription(value: String){
         if (description != value){
             description = value
-            notifyPropertyChanged(BR.description)
+            notifyChange()
         }
     }
     @Bindable
     fun getIconColor() = iconColor
 
-    fun setIconColor(value: Int){
+    fun setIconColor(value: String){
         if (iconColor != value){
             iconColor = value
-            notifyPropertyChanged(BR.iconColor)
+            notifyChange()
         }
     }
     @Bindable
@@ -58,7 +57,7 @@ data class  TemplateGroup (
     fun setImageUri(value: String){
         if (imageUri != value){
             imageUri = value
-            notifyPropertyChanged(BR.imageUri)
+            notifyChange()
         }
     }
     @Bindable

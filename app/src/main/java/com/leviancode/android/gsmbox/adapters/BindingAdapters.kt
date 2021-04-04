@@ -1,14 +1,23 @@
 package com.leviancode.android.gsmbox.adapters
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.View
 import android.widget.*
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
+import androidx.core.widget.ImageViewCompat.setImageTintList
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.templates.Template
+import com.leviancode.android.gsmbox.utils.log
 
 @BindingAdapter(value = ["loadImage"])
 fun ImageView.loadImage(uri: String?) {
@@ -23,6 +32,46 @@ fun ImageView.loadImage(uri: String?) {
     }
 }
 
+@BindingAdapter(value = ["setImageTintGroup"])
+fun ImageView.setImageTintGroup(color: String?) {
+    if (color.isNullOrBlank()) {
+        val tintColor = ContextCompat.getColor(context, R.color.default_group_icon_color)
+        setImageTintList(this, ColorStateList.valueOf(tintColor))
+    } else {
+        setImageTintList(this, ColorStateList.valueOf(Color.parseColor(color)))
+    }
+}
+
+@BindingAdapter(value = ["setButtonIconTintGroup"])
+fun MaterialButton.setButtonIconTintGroup(color: String?) {
+    iconTint = if (color.isNullOrBlank()) {
+        ContextCompat.getColorStateList(context, R.color.default_group_icon_color)
+    } else {
+        ColorStateList.valueOf(Color.parseColor(color))
+    }
+}
+
+@BindingAdapter(value = ["setButtonIconTint"])
+fun MaterialButton.setButtonIconTint(color: String?) {
+    iconTint = if (color.isNullOrBlank()) {
+        ContextCompat.getColorStateList(context, R.color.secondary)
+    } else {
+        ColorStateList.valueOf(Color.parseColor(color))
+    }
+}
+
+
+@BindingAdapter(value = ["setIconTint"])
+fun AppCompatImageButton.setIconTint(color: String?) {
+    imageTintList = if (isEnabled) {
+        if (color.isNullOrBlank()) {
+            ContextCompat.getColorStateList(context, R.color.default_send_icon_color)
+        } else {
+            ColorStateList.valueOf(Color.parseColor(color))
+        }
+    } else ContextCompat.getColorStateList(context, R.color.ltGrey)
+}
+
 @BindingAdapter(value = ["setError"])
 fun TextInputEditText.showError(isUnique: Boolean) {
     error = if (isUnique) null else context.getString(R.string.err_unique_name)
@@ -30,10 +79,10 @@ fun TextInputEditText.showError(isUnique: Boolean) {
 
 @BindingAdapter(value = ["setRecipientsAsText"])
 fun TextView.setRecipientsAsText(template: Template) {
-    text = if (template.getRecipientGroup() != null) {
-        context.getString(R.string.recipient_group) + ": " + template.getRecipientGroupName()
+    text = if (template.isRecipientGroupAttached()) {
+        "${context.getString(R.string.group)} ${template.getRecipientGroupName()} (${template.getRecipientsCount()})"
     } else {
-       template.getRecipientsAsString()
+        template.getRecipientsAsString()
     }
 }
 
@@ -46,7 +95,7 @@ fun RecyclerView.bindRecyclerViewAdapter(adapter: ListAdapter<*, *>) {
 }
 
 @BindingAdapter(value = ["setExpandableAdapter"])
-fun ExpandableListView.bindExpandableListAdapter(adapter: BaseExpandableListAdapter){
+fun ExpandableListView.bindExpandableListAdapter(adapter: BaseExpandableListAdapter) {
     setAdapter(adapter)
 }
 
@@ -64,7 +113,7 @@ fun View.setVisibility(text: String?, numberList: List<String>?) {
 }
 
 @BindingAdapter(value = ["setAutoCompleteList"])
-fun AutoCompleteTextView.bindAutoCompleteList(list: List<*>?){
+fun AutoCompleteTextView.bindAutoCompleteList(list: List<*>?) {
     list?.let {
         setAdapter(
             ArrayAdapter(

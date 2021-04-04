@@ -5,6 +5,7 @@ import com.leviancode.android.gsmbox.data.dao.RecipientDao
 import com.leviancode.android.gsmbox.data.dao.RecipientGroupDao
 import com.leviancode.android.gsmbox.data.dao.RecipientsAndGroupsCrossRefDao
 import com.leviancode.android.gsmbox.data.model.recipients.*
+import com.leviancode.android.gsmbox.utils.log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
@@ -41,15 +42,18 @@ object RecipientsRepository {
     }
 
     suspend fun saveRecipientWithGroups(item: RecipientWithGroups) = withContext(IO) {
+        log("before saving: ${item.groups}")
         saveRecipient(item.recipient)
         deleteRecipientFromAllGroups(item.recipient)
+        log("group size: ${item.groups.size}")
         item.groups.forEach { group ->
+            log("saved: $group")
             saveGroupAndRecipientCrossRef(group.recipientGroupId, item.recipient.recipientId)
         }
         TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
-    suspend fun saveGroupWithRecipients(item: GroupWithRecipients) {
+    suspend fun saveGroupWithRecipients(item: GroupWithRecipients) = withContext(IO) {
         deleteGroupFromAllRecipients(item.group)
         item.recipients.forEach { recipient ->
             saveGroupAndRecipientCrossRef(item.group.recipientGroupId, recipient.recipientId)
@@ -63,11 +67,11 @@ object RecipientsRepository {
         TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
-    suspend fun deleteRecipientFromAllGroups(item: Recipient) = withContext(IO){
+    private suspend fun deleteRecipientFromAllGroups(item: Recipient) = withContext(IO){
         recipientsAndGroupsDao.deleteByRecipientId(item.recipientId)
     }
 
-    suspend fun deleteGroupFromAllRecipients(item: RecipientGroup) = withContext(IO){
+    private suspend fun deleteGroupFromAllRecipients(item: RecipientGroup) = withContext(IO){
         recipientsAndGroupsDao.deleteByGroupId(item.recipientGroupId)
     }
 
@@ -84,11 +88,11 @@ object RecipientsRepository {
         TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
-    suspend fun saveGroupAndRecipientCrossRef(groupId: String, recipientId: String) = withContext(IO){
+    private suspend fun saveGroupAndRecipientCrossRef(groupId: String, recipientId: String) = withContext(IO){
         recipientsAndGroupsDao.insert(
             RecipientsAndGroupsCrossRef(groupId, recipientId)
         )
-        TemplatesRepository.updateRecipientGroupsInAllTemplates()
+     //  TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
     suspend fun getRecipientById(recipientId: String) = withContext(IO) {
@@ -116,7 +120,7 @@ object RecipientsRepository {
         recipientDao.insert(*list.toTypedArray())
     }
 
-    fun getEmptyRecipientWithGroups() = RecipientWithGroups(Recipient(), mutableListOf())
+    fun getNewRecipientWithGroups() = RecipientWithGroups(Recipient(), mutableListOf())
 
     fun getNewRecipient() = Recipient()
 

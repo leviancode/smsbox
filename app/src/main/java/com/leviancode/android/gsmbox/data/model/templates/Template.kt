@@ -1,15 +1,11 @@
 package com.leviancode.android.gsmbox.data.model.templates
 
-import android.graphics.Color
-import android.view.View
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.leviancode.android.gsmbox.BR
-import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.utils.isNotEmpty
@@ -25,7 +21,7 @@ data class Template(
     var templateGroupId: String = "",
     private var name: String = "",
     private var message: String = "",
-    private var iconColor: Int = Color.parseColor("#66BB6A"),
+    private var iconColor: String = "#66BB6A",
     private var favorite: Boolean = false,
     private var recipients: MutableList<Recipient> = mutableListOf(),
     @Embedded
@@ -37,7 +33,7 @@ data class Template(
     fun setName(value: String) {
         if (name != value) {
             name = value
-            notifyPropertyChanged(BR.name)
+            notifyChange()
         }
     }
 
@@ -46,7 +42,7 @@ data class Template(
     fun setMessage(value: String) {
         if (message != value) {
             message = value
-            notifyPropertyChanged(BR.message)
+            notifyChange()
         }
     }
 
@@ -55,21 +51,25 @@ data class Template(
     fun setFavorite(value: Boolean) {
         if (favorite != value) {
             favorite = value
-            notifyPropertyChanged(BR.favorite)
+            notifyChange()
         }
     }
 
     @Bindable
     fun getIconColor() = iconColor
-    fun setIconColor(value: Int) {
+    fun setIconColor(value: String) {
         if (iconColor != value) {
             iconColor = value
-            notifyPropertyChanged(BR.iconColor)
+            notifyChange()
         }
     }
 
     @Bindable
-    fun getRecipientsAsString() = recipients.joinToString("; ") { it.getPhoneNumber() }
+    fun getRecipientsAsString(): String {
+        return if (isRecipientsNotEmpty()) {
+            recipients.joinToString("; ") { it.getPhoneNumber() }
+        } else ""
+    }
 
     fun getRecipients() = recipients
     fun setRecipients(value: List<Recipient>) {
@@ -79,8 +79,14 @@ data class Template(
 
     @Bindable
     fun getRecipientGroupNameWithCount(): String {
-        return if (getRecipientGroupName().isNotEmpty()) "${getRecipientGroupName()} (${recipients.size})" else ""
+        return if (getRecipientGroupName().isNotEmpty()) {
+            "${getRecipientGroupName()} (${getRecipientsCount()})"
+        } else ""
     }
+
+    fun getRecipientsCount(): Int  = recipients.filter {
+            it.getPhoneNumber().isNotBlank()
+        }.count()
 
     @Bindable
     fun getRecipientGroupName() = recipientGroup?.getRecipientGroupName() ?: ""
@@ -113,9 +119,16 @@ data class Template(
         }
 
     @Bindable
+    fun isRecipientsNotEmpty() = getRecipientsCount() > 0
+
+    @Bindable
+    fun isRecipientGroupAttached() = recipientGroup != null
+
+    fun isRecipientsOrGroup() = isRecipientsNotEmpty() or isRecipientGroupAttached()
+
+    @Bindable
     fun isFieldsCorrect() = isTemplateNameUnique && isNotEmpty(
         getName(),
-        getMessage(),
-        getRecipientsAsString() + getRecipientGroupName()
-    )
+        getMessage()
+    ) && isRecipientsOrGroup()
 }

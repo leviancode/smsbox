@@ -10,10 +10,9 @@ const val RESULT_CANCEL = "result_cancel"
 const val REQ_SAVED = "request_saved"
 const val REQ_SELECTED = "request_selected"
 const val REQ_SELECT_RECIPIENT = "request_select_recipient"
-const val REQ_MULTI_SELECT_RECIPIENT = "request_multi_select_recipient"
 const val REQ_SELECT_RECIPIENT_GROUP = "request_select_recipient_group"
-const val REQ_MULTI_SELECT_RECIPIENT_GROUP = "request_select_recipient_group"
-const val REQ_GROUP_SELECTED = "request_group_selected"
+const val REQ_MULTI_SELECT_RECIPIENT = "request_multi_select_recipient"
+const val REQ_MULTI_SELECT_RECIPIENT_GROUP = "request_multi_select_recipient_group"
 const val REQ_PICK_CONTACT = 1
 
 const val RECIPIENT = "recipient"

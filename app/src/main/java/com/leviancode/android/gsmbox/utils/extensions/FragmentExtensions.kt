@@ -21,6 +21,6 @@ inline fun Fragment.navigate(action: () -> NavDirections){
 }
 
 fun Fragment.goBack(){
-    hideKeyboard()
+   // hideKeyboard()
     findNavController().navigateUp()
 }

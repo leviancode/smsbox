@@ -18,15 +18,11 @@
         android:layout_height="wrap_content"
         app:cardElevation="0dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/recipient_holder_height"
-            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/recipient_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/recipient_holder_height"
                 android:orientation="horizontal"
                 android:padding="12dp">
 
@@ -36,7 +32,7 @@
                     android:layout_height="36dp"
                     android:layout_gravity="center_vertical"
                     android:padding="4dp"
-                    android:tint="@color/main_style_green"
+                    android:tint="@color/default_icon_color"
                     app:srcCompat="@drawable/ic_baseline_alias_24" />
 
                 <LinearLayout
@@ -51,7 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:textColor="@color/main_style_dark_blue"
+                        android:textColor="@color/text_title"
                         android:textSize="16sp"
                         android:textStyle="bold|italic"
                         android:text="@{model.name}"
@@ -79,15 +75,12 @@
                     android:onClick="@{(view) -> viewModel.onPopupMenuClick(view, model)}"
                     android:padding="4dp"
                     android:layout_marginEnd="@dimen/popup_btn_margin_end"
+                    android:tint="@color/popup_menu"
                     android:background="?android:selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_baseline_more_vert_24" />
 
 
             </LinearLayout>
-
-
-        </LinearLayout>
-
 
     </com.google.android.material.card.MaterialCardView>
 </layout>

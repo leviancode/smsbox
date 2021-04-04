@@ -12,11 +12,7 @@ class EditableTemplateGroupViewModel : ViewModel() {
     private val repository = TemplatesRepository
     private var original: TemplateGroup? = null
     var data = repository.getNewTemplateGroup()
-    var groupNames = repository.groups.map { list ->
-        list.map { it.getName() }
-    }
-
-    val chooseColorLiveEvent = SingleLiveEvent<Int>()
+    val chooseColorLiveEvent = SingleLiveEvent<String>()
     val savedLiveEvent = SingleLiveEvent<Unit>()
 
     fun namesWithoutCurrent(id: String) = repository.groups.map { list ->
@@ -39,7 +35,7 @@ class EditableTemplateGroupViewModel : ViewModel() {
         chooseColorLiveEvent.value = data.getIconColor()
     }
 
-    fun setIconColor(color: Int) {
+    fun setIconColor(color: String) {
         data.setIconColor(color)
     }
 

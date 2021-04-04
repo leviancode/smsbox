@@ -8,7 +8,7 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientGroupSelectListAdapter.*
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.SelectListItemRecipientGroupBinding
-import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientGroupSelectListViewModel
+import com.leviancode.android.gsmbox.ui.recipients.view.groups.dialog.RecipientGroupSelectListViewModel
 
 class RecipientGroupSelectListAdapter(val viewModel: RecipientGroupSelectListViewModel) :
     RecyclerView.Adapter<RecipientGroupHolder>() {

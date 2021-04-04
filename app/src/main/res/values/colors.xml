@@ -2,12 +2,12 @@
 <resources>
 
     <!-- Primary-light brand color. -->
-    <color name="primary">@color/purple_500</color>
+    <color name="primary">@color/main_style_blue</color>
     <color name="primaryVariant">@color/purple_700</color>
     <color name="onPrimary">@color/white</color>
     <color name="ic_launcher_background">#FEFEFE</color>
     <!-- Secondary-light brand color. -->
-    <color name="secondary">@color/green_400</color>
+    <color name="secondary">@color/main_style_green</color>
     <color name="secondaryVariant">@color/teal_700</color>
     <color name="onSecondary">@color/black</color>
 
@@ -44,7 +44,7 @@
     <color name="grey">#424242</color>
     <color name="ltGrey">#ACACAC</color>
 
-    <color name="text_title">#171717</color>
+    <color name="text_title">@color/black</color>
     <color name="text_description">#424242</color>
 
     <color name="md_bottom_sheet_title_color">#404040</color>
@@ -58,13 +58,18 @@
     <color name="negativeButtonTextColor">@color/colorAccent</color>
     <color name="bottomSheetDividerColor">#F5F5F5</color>
 
-    <color name="default_group_icon_color">@color/blue_grey_400</color>
+    <color name="default_group_icon_color">@color/main_style_brown</color>
     <color name="default_send_icon_color">@color/secondary</color>
-    <color name="main_style_brown">#e0af74</color>
+    <color name="default_icon_color">@color/main_style_green</color>
+    <color name="popup_menu">@color/main_style_dark_blue</color>
+    <color name="navButtonColor">@color/main_style_dark_blue</color>
+    <color name="button_drawable_default">@color/main_style_green</color>
+
+    <color name="main_style_brown">#d59557</color>
     <color name="main_style_yellow">#ffcc01</color>
-    <color name="main_style_green">#94c120</color>
-    <color name="main_style_blue">#55c1dd</color>
-    <color name="main_style_red">#e7302c</color>
+    <color name="main_style_green">#66BB6A</color>
+    <color name="main_style_blue">#2196F3</color>
+    <color name="main_style_red">#c62c24</color>
     <color name="main_style_dark_blue">#012255</color>
 
 </resources>

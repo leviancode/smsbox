@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateGroupBinding
+import com.leviancode.android.gsmbox.ui.extra.ColorPickerDialog
 import com.leviancode.android.gsmbox.utils.helpers.TextUniqueWatcher
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateGroupViewModel
 import com.leviancode.android.gsmbox.utils.RESULT_CANCEL
@@ -64,7 +65,7 @@ class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
             }
     }
 
-    private fun selectColor(color: Int) {
+    private fun selectColor(color: String) {
         hideKeyboard()
 
         ColorPickerDialog(

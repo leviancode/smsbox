@@ -53,11 +53,6 @@ abstract class AbstractFullScreenDialog : DialogFragment() {
         }
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        hideKeyboard()
-        super.onDismiss(dialog)
-    }
-
     override fun onPause() {
         hideKeyboard()
         super.onPause()

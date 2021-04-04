@@ -27,6 +27,7 @@
             android:paddingStart="6dp"
             android:paddingEnd="8dp"
             app:elevation="0dp"
+            app:navigationIconTint="@color/navButtonColor"
             app:navigationIcon="@drawable/ic_baseline_close_24"
             app:title="@string/new_placeholder">
 

@@ -29,6 +29,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:title="@string/new_group"
+                        app:navigationIconTint="@color/navButtonColor"
                         app:navigationIcon="@drawable/ic_baseline_close_24">
 
                         <com.google.android.material.button.MaterialButton
@@ -102,7 +103,7 @@
                     android:textColor="@color/grey"
                     android:onClick="@{() -> viewModel.onIconColorClick()}"
                     app:icon="@drawable/ic_baseline_color_lens_24"
-                    app:iconTint="@{viewModel.data.iconColor}"
-                    tools:iconTint="@color/blue_grey_300"/>
+                    app:setButtonIconTintGroup="@{viewModel.data.iconColor}"
+                    tools:iconTint="@color/default_group_icon_color"/>
             </LinearLayout>
 </layout>

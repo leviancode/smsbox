@@ -43,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:padding="4dp"
+                android:tint="@color/navButtonColor"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"

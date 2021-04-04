@@ -10,6 +10,7 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateBinding
 import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
+import com.leviancode.android.gsmbox.utils.log
 import java.util.*
 
 class TemplateListAdapter(val viewModel: TemplateListViewModel) :
@@ -53,10 +54,7 @@ class TemplateListAdapter(val viewModel: TemplateListViewModel) :
         }
 
         override fun areContentsTheSame(oldItem: Template, newItem: Template): Boolean {
-            return oldItem.getName() == newItem.getName()
-                    && oldItem.getMessage() == newItem.getMessage()
-                    && oldItem.getIconColor() == newItem.getIconColor()
-                    && oldItem.getRecipientsAsString() == newItem.getRecipientsAsString()
+            return oldItem == newItem
         }
     }
 }

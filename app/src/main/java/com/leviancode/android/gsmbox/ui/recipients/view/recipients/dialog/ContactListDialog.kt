@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.recipients.view.dialog.bottomsheets
+package com.leviancode.android.gsmbox.ui.recipients.view.recipients.dialog
 
 import android.app.Dialog
 import android.os.Bundle

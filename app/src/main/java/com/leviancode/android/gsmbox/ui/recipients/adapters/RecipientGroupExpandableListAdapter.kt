@@ -8,14 +8,19 @@ import android.widget.BaseExpandableListAdapter
 import androidx.databinding.DataBindingUtil
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientWithGroup
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientBinding
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientGroupBinding
-import com.leviancode.android.gsmbox.ui.recipients.viewmodel.RecipientsViewModel
+import com.leviancode.android.gsmbox.databinding.ListItemRecipientInGroupBinding
+import com.leviancode.android.gsmbox.ui.recipients.view.groups.list.RecipientGroupListViewModel
+import com.leviancode.android.gsmbox.ui.recipients.view.recipients.list.RecipientListViewModel
 
 
 class RecipientGroupExpandableListAdapter(
     val context: Context,
-    val viewModel: RecipientsViewModel,
+    val viewModel: RecipientGroupListViewModel,
 ) : BaseExpandableListAdapter() {
     var data: List<GroupWithRecipients> = listOf()
         set(value) {
@@ -49,7 +54,7 @@ class RecipientGroupExpandableListAdapter(
         convertView: View?,
         parent: ViewGroup?
     ): View {
-        var binding: ListItemRecipientGroupBinding
+        val binding: ListItemRecipientGroupBinding
         if (convertView == null) {
             val inflater = LayoutInflater.from(context)
             binding = DataBindingUtil.inflate(inflater, R.layout.list_item_recipient_group, parent, false)
@@ -75,9 +80,9 @@ class RecipientGroupExpandableListAdapter(
         convertView: View?,
         parent: ViewGroup?
     ): View {
-        var binding: ListItemRecipientBinding? = if (convertView == null) {
+        val binding: ListItemRecipientInGroupBinding? = if (convertView == null) {
             val inflater = LayoutInflater.from(context)
-            DataBindingUtil.inflate<ListItemRecipientBinding>(inflater, R.layout.list_item_recipient, parent, false)?.also {
+            DataBindingUtil.inflate<ListItemRecipientInGroupBinding>(inflater, R.layout.list_item_recipient_in_group, parent, false)?.also {
                 it.viewModel = viewModel
                 it.space.visibility = View.VISIBLE
                 it.cardRecipient.elevation = 8f
@@ -85,8 +90,9 @@ class RecipientGroupExpandableListAdapter(
         } else {
             DataBindingUtil.getBinding(convertView)
         }?.apply {
-            recipient = data[groupPosition].recipients[childPosition]
-            ibPopupMenu.tag = data[groupPosition].group.recipientGroupId
+            val recipient = getChild(groupPosition, childPosition) as Recipient
+            val group =  getGroup(groupPosition) as RecipientGroup
+            model = RecipientWithGroup(recipient, group)
             executePendingBindings()
         }
 

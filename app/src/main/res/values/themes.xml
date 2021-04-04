@@ -29,13 +29,12 @@
     </style>
 
     <style name="snackbar_style" parent="@style/Widget.MaterialComponents.Snackbar">
-        <item name="android:layout_marginBottom">16dp</item>
         <item name="backgroundTint">@color/white</item>
     </style>
 
     <style name="snackbar_button" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
         <!--<item name="backgroundTint">@android:color/transparent</item>-->
-        <item name="android:textColor">@color/primary</item>
+        <item name="android:textColor">@color/main_style_red</item>
     </style>
 
     <style name="snackbar_text" parent="@style/Widget.MaterialComponents.Snackbar.TextView">

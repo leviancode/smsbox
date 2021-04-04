@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.recipients.viewmodel
+package com.leviancode.android.gsmbox.ui.recipients.view.recipients.edit
 
 import android.view.View
 import androidx.lifecycle.*
@@ -11,15 +11,19 @@ import kotlinx.coroutines.*
 class EditableRecipientViewModel : ViewModel() {
     private val repository = RecipientsRepository
     private var original: Recipient? = null
-    var data: RecipientWithGroups = repository.getEmptyRecipientWithGroups()
+    var data: RecipientWithGroups
 
     val savedEvent = SingleLiveEvent<Unit>()
     val selectContactEvent = SingleLiveEvent<Unit>()
     val addToGroupEvent = SingleLiveEvent<String>()
     val removeGroupEvent = SingleLiveEvent<View>()
 
+    init {
+        data = repository.getNewRecipientWithGroups()
+    }
 
     fun onSaveClick() {
+        log("to save: ${data.groups}")
         viewModelScope.launch {
             repository.saveRecipientWithGroups(data)
         }
@@ -29,8 +33,8 @@ class EditableRecipientViewModel : ViewModel() {
     fun loadRecipientWithGroupsById(recipientId: String) = liveData {
         repository.getRecipientWithGroups(recipientId)?.let {
             data = it
-            emit(data)
         }
+        emit(data)
     }
 
     fun setRecipient(recipient: Recipient) {
@@ -61,11 +65,13 @@ class EditableRecipientViewModel : ViewModel() {
     fun isRecipientEdited() = original != data.recipient
 
     fun setGroups(groups: List<RecipientGroup>) {
-        data.groups.clear()
-        data.groups.addAll(groups)
+        /*data.groups.clear()
+        data.groups.addAll(groups)*/
+        data.groups = groups.toMutableList()
+        log("add: ${data.groups}")
     }
 
-    fun namesWithoutCurrent(id: String) = repository.recipients.map { list ->
+    fun recipientNamesWithoutCurrent(id: String) = repository.recipients.map { list ->
         list.filter { it.recipientId != id }.map { it.getRecipientName() }
     }
 }

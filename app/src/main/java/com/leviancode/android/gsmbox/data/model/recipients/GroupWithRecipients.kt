@@ -14,7 +14,7 @@ data class GroupWithRecipients(
         entityColumn = "recipientId",
         associateBy = Junction(RecipientsAndGroupsCrossRef::class)
     )
-    val recipients: List<Recipient>
+    var recipients: List<Recipient>
 ) : BaseObservable() {
 
     @Bindable
