@@ -2,6 +2,7 @@ package com.leviancode.android.gsmbox.utils.helpers
 
 import android.text.Editable
 import android.text.TextWatcher
+import com.leviancode.android.gsmbox.utils.log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,6 +19,7 @@ class TextUniqueWatcher(
     }
 
     private fun isTextUnique(text: String): Boolean {
-        return wordList.find { it.equals(text, true) } == null
+        return wordList.filter { it.isNotBlank() }
+            .find { it.equals(text, true) } == null
     }
 }

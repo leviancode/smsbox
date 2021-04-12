@@ -30,17 +30,5 @@ class MainActivity : AppCompatActivity(){
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment)
         navView.setupWithNavController(navController)
-
-
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_template_group_list,
-                R.id.nav_favorites,
-                R.id.nav_recipients,
-                R.id.nav_settings
-            )
-        )
-      //  binding.toolbarMain.setupWithNavController(navController, appBarConfiguration)
-
     }
 }

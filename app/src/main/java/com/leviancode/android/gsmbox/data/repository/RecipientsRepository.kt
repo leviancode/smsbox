@@ -3,19 +3,18 @@ package com.leviancode.android.gsmbox.data.repository
 import androidx.lifecycle.LiveData
 import com.leviancode.android.gsmbox.data.dao.RecipientDao
 import com.leviancode.android.gsmbox.data.dao.RecipientGroupDao
-import com.leviancode.android.gsmbox.data.dao.RecipientsAndGroupsCrossRefDao
+import com.leviancode.android.gsmbox.data.dao.RecipientsAndGroupRelationDao
 import com.leviancode.android.gsmbox.data.model.recipients.*
-import com.leviancode.android.gsmbox.utils.log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
 object RecipientsRepository {
     private val recipientDao: RecipientDao
-        get() = AppDatabase.INSTANCE.recipientDao()
+        get() = AppDatabase.instance.recipientDao()
     private val groupDao: RecipientGroupDao
-        get() = AppDatabase.INSTANCE.recipientGroupDao()
-    private val recipientsAndGroupsDao: RecipientsAndGroupsCrossRefDao
-        get() = AppDatabase.INSTANCE.recipientsAndGroupsDao()
+        get() = AppDatabase.instance.recipientGroupDao()
+    private val recipientsAndGroupsDao: RecipientsAndGroupRelationDao
+        get() = AppDatabase.instance.recipientsAndGroupsDao()
 
     val groups: LiveData<List<RecipientGroup>>
         get() = groupDao.getAllLiveData()
@@ -28,105 +27,113 @@ object RecipientsRepository {
         get() = recipientsAndGroupsDao.getRecipientsWithGroups()
 
     suspend fun saveRecipient(item: Recipient) = withContext(IO) {
-        item.setRecipientName(item.getRecipientName().trim())
-        val recipient = getRecipientById(item.recipientId)
-        if (recipient == null) recipientDao.insert(item)
-        else recipientDao.update(item)
+        if (item.recipientId == 0L) recipientDao.insert(item)
+        else {
+            recipientDao.update(item)
+            item.recipientId
+        }
+    }
+    suspend fun saveGroup(item: RecipientGroup) = withContext(IO) {
+        if (item.recipientGroupId == 0L) groupDao.insert(item)
+        else {
+            groupDao.update(item)
+            item.recipientGroupId
+        }
     }
 
-    suspend fun saveGroup(item: RecipientGroup) = withContext(IO) {
-        item.setRecipientGroupName(item.getRecipientGroupName().trim())
-        val group = getGroupById(item.recipientGroupId)
-        if (group == null) groupDao.insert(item)
-        else groupDao.update(item)
-    }
 
     suspend fun saveRecipientWithGroups(item: RecipientWithGroups) = withContext(IO) {
-        log("before saving: ${item.groups}")
         saveRecipient(item.recipient)
         deleteRecipientFromAllGroups(item.recipient)
-        log("group size: ${item.groups.size}")
         item.groups.forEach { group ->
-            log("saved: $group")
-            saveGroupAndRecipientCrossRef(group.recipientGroupId, item.recipient.recipientId)
+            saveGroup(group)
+            saveGroupAndRecipientRelation(group.recipientGroupId, item.recipient.recipientId)
         }
-        TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
     suspend fun saveGroupWithRecipients(item: GroupWithRecipients) = withContext(IO) {
-        deleteGroupFromAllRecipients(item.group)
-        item.recipients.forEach { recipient ->
-            saveGroupAndRecipientCrossRef(item.group.recipientGroupId, recipient.recipientId)
+        deleteGroupFromAllRecipients(item.group.recipientGroupId)
+        saveGroup(item.group)
+        item.getRecipients().forEach { recipient ->
+            saveRecipient(recipient)
+            saveGroupAndRecipientRelation(item.group.recipientGroupId, recipient.recipientId)
         }
-        TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
     suspend fun deleteRecipient(item: Recipient) = withContext(IO) {
         deleteRecipientFromAllGroups(item)
         recipientDao.delete(item)
-        TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
-    private suspend fun deleteRecipientFromAllGroups(item: Recipient) = withContext(IO){
+    suspend fun deleteRecipientFromAllGroups(item: Recipient) = withContext(IO){
         recipientsAndGroupsDao.deleteByRecipientId(item.recipientId)
     }
 
-    private suspend fun deleteGroupFromAllRecipients(item: RecipientGroup) = withContext(IO){
-        recipientsAndGroupsDao.deleteByGroupId(item.recipientGroupId)
+    suspend fun deleteGroupFromAllRecipients(groupId: Long) = withContext(IO){
+        recipientsAndGroupsDao.deleteByGroupId(groupId)
     }
 
     suspend fun deleteGroup(item: RecipientGroup) = withContext(IO) {
-        deleteGroupFromAllRecipients(item)
+        deleteGroupFromAllRecipients(item.recipientGroupId)
         groupDao.delete(item)
-        TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
-    suspend fun deleteGroupAndRecipientCrossRef(groupId: String, recipientId: String) = withContext(IO){
+    suspend fun deleteGroupAndRecipientRelation(groupId: Long, recipientId: Long) = withContext(IO){
         recipientsAndGroupsDao.delete(
-            RecipientsAndGroupsCrossRef(groupId, recipientId)
+            RecipientsAndGroupRelation(groupId, recipientId)
         )
-        TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
-    private suspend fun saveGroupAndRecipientCrossRef(groupId: String, recipientId: String) = withContext(IO){
+    suspend fun saveGroupAndRecipientRelation(groupId: Long, recipientId: Long) = withContext(IO){
         recipientsAndGroupsDao.insert(
-            RecipientsAndGroupsCrossRef(groupId, recipientId)
+            RecipientsAndGroupRelation(groupId, recipientId)
         )
-     //  TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
-    suspend fun getRecipientById(recipientId: String) = withContext(IO) {
+    suspend fun getRecipientById(recipientId: Long) = withContext(IO) {
         recipientDao.get(recipientId)
     }
 
-    suspend fun getGroupById(groupId: String) = withContext(IO) {
+    suspend fun getGroupById(groupId: Long) = withContext(IO) {
         groupDao.getById(groupId)
     }
 
     suspend fun clearGroup(item: RecipientGroup) = withContext(IO) {
         recipientsAndGroupsDao.deleteByGroupId(item.recipientGroupId)
-        TemplatesRepository.updateRecipientGroupsInAllTemplates()
     }
 
-    suspend fun getGroupWithRecipients(groupId: String) = withContext(IO) {
+    suspend fun getGroupWithRecipients(groupId: Long) = withContext(IO) {
         recipientsAndGroupsDao.getGroupWithRecipients(groupId)
     }
 
-    suspend fun getRecipientWithGroups(recipientId: String) = withContext(IO) {
+    suspend fun getRecipientWithGroups(recipientId: Long) = withContext(IO) {
         recipientsAndGroupsDao.getRecipientWithGroups(recipientId)
     }
 
     suspend fun updateAllRecipients(list: List<Recipient>) = withContext(IO) {
-        recipientDao.insert(*list.toTypedArray())
+        list.forEach { recipientDao.insert(it) }
     }
 
     fun getNewRecipientWithGroups() = RecipientWithGroups(Recipient(), mutableListOf())
+
+    fun getNewGroupWithRecipients() = GroupWithRecipients()
 
     fun getNewRecipient() = Recipient()
 
     fun getNewRecipientGroup() = RecipientGroup()
 
     fun contactToRecipient(contact: Contact): Recipient {
-        return Recipient(recipientName = contact.name, phoneNumber = contact.phoneNumber)
+        return Recipient(name = contact.name, phoneNumber = contact.phoneNumber)
+    }
+
+    fun getRecipientNumbersLiveData(): LiveData<List<String>> = recipientDao.getNumbersWithNotEmptyNamesLiveData()
+    suspend fun getRecipientNumbers() = recipientDao.getNumbersWithNotEmptyNames()
+
+    suspend fun getRecipientByName(name: String): Recipient? {
+        return recipientDao.getByName(name)
+    }
+
+    suspend fun getGroupByName(name: String): RecipientGroup? {
+        return groupDao.getByName(name)
     }
 }

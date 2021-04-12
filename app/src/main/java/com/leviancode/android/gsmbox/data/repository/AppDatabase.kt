@@ -9,8 +9,9 @@ import com.leviancode.android.gsmbox.data.dao.*
 import com.leviancode.android.gsmbox.data.model.placeholders.Placeholder
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientsAndGroupsCrossRef
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientsAndGroupRelation
 import com.leviancode.android.gsmbox.data.model.templates.Template
+import com.leviancode.android.gsmbox.data.model.templates.TemplateAndRecipientRelation
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import com.leviancode.android.gsmbox.utils.Converters
 import com.leviancode.android.gsmbox.utils.DATABASE_NAME
@@ -20,29 +21,31 @@ import com.leviancode.android.gsmbox.utils.DATABASE_NAME
     TemplateGroup::class,
     RecipientGroup::class,
     Recipient::class,
-    RecipientsAndGroupsCrossRef::class,
-    Placeholder::class], version = 2, exportSchema = false)
+    RecipientsAndGroupRelation::class,
+    TemplateAndRecipientRelation::class,
+    Placeholder::class], version = 3, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase(){
     abstract fun templateDao(): TemplateDao
     abstract fun templateGroupDao(): TemplateGroupDao
+    abstract fun templateAndRecipientsDao(): TemplateAndRecipientRelationDao
     abstract fun recipientDao(): RecipientDao
     abstract fun recipientGroupDao(): RecipientGroupDao
-    abstract fun recipientsAndGroupsDao(): RecipientsAndGroupsCrossRefDao
+    abstract fun recipientsAndGroupsDao(): RecipientsAndGroupRelationDao
     abstract fun placeholderDao(): PlaceholderDao
 
     companion object{
-        lateinit var INSTANCE: AppDatabase
+        lateinit var instance: AppDatabase
 
         fun init(context: Context){
-            INSTANCE = Room.databaseBuilder(
+            instance = Room.databaseBuilder(
                 context,
                 AppDatabase::class.java, DATABASE_NAME
             ).setJournalMode(JournalMode.TRUNCATE).build()
         }
 
         fun close(){
-            if (INSTANCE.isOpen) INSTANCE.close()
+            if (instance.isOpen) instance.close()
         }
     }
 }

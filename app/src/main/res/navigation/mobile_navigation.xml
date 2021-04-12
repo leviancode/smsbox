@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_template_group_list"
-        android:name="com.leviancode.android.gsmbox.ui.templates.view.fragment.TemplateGroupListFragment"
+        android:name="com.leviancode.android.gsmbox.ui.templates.view.groups.list.TemplateGroupListFragment"
         android:label="@string/title_templates"
         tools:layout="@layout/fragment_template_group_list" >
 
@@ -26,11 +26,15 @@
 
     <fragment
         android:id="@+id/nav_template_list"
-        android:name="com.leviancode.android.gsmbox.ui.templates.view.fragment.TemplateListFragment"
+        android:name="com.leviancode.android.gsmbox.ui.templates.view.templates.list.TemplateListFragment"
         android:label="{groupName}"
         tools:layout="@layout/fragment_template_list">
         <argument
             android:name="groupId"
+            app:argType="long" />
+
+        <argument
+            android:name="groupName"
             app:argType="string" />
 
         <action
@@ -106,25 +110,31 @@
 
     <dialog
         android:id="@+id/nav_editable_group"
-        android:name="com.leviancode.android.gsmbox.ui.templates.view.dialog.EditableTemplateGroupDialog"
+        android:name="com.leviancode.android.gsmbox.ui.templates.view.groups.edit.EditableTemplateGroupDialog"
         android:label="New Group"
         tools:layout="@layout/dialog_editable_template_group">
 
         <argument
-            android:name="group"
-            app:argType="com.leviancode.android.gsmbox.data.model.templates.TemplateGroup" />
+            android:name="groupId"
+            app:argType="long"
+            android:defaultValue="0L" />
 
     </dialog>
 
     <dialog
         android:id="@+id/nav_editable_template"
-        android:name="com.leviancode.android.gsmbox.ui.templates.view.dialog.EditableTemplateDialog"
+        android:name="com.leviancode.android.gsmbox.ui.templates.view.templates.edit.EditableTemplateDialog"
         android:label="New Template"
         tools:layout="@layout/dialog_editable_template">
 
         <argument
-            android:name="template"
-            app:argType="com.leviancode.android.gsmbox.data.model.templates.Template" />
+            android:name="groupId"
+            app:argType="long" />
+
+        <argument
+            android:name="templateId"
+            app:argType="long"
+            android:defaultValue="0L" />
 
         <action
             android:id="@+id/action_open_editable_recipient"
@@ -146,8 +156,15 @@
         tools:layout="@layout/dialog_editable_recipient">
 
         <argument
-            android:name="recipient"
-            app:argType="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
+            android:name="recipientId"
+            app:argType="long"
+            android:defaultValue="0L" />
+
+        <argument
+            android:name="phoneNumber"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null" />
         <action
             android:id="@+id/action_open_multi_select_recipient_group"
             app:destination="@id/nav_multi_select_recipient_group" />
@@ -161,8 +178,9 @@
         tools:layout="@layout/dialog_editable_recipient_group">
 
         <argument
-            android:name="group"
-            app:argType="com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup" />
+            android:name="groupId"
+            app:argType="long"
+            android:defaultValue="0L" />
 
     </dialog>
 
@@ -174,8 +192,8 @@
 
         <argument
             android:name="groupId"
-            app:nullable="true"
-            app:argType="string"/>
+            app:argType="long"
+            android:defaultValue="0L" />
     </dialog>
 
     <dialog
@@ -188,7 +206,7 @@
             app:destination="@id/nav_editable_recipient_group" />
         <argument
             android:name="recipientId"
-            app:argType="string"/>
+            app:argType="long"/>
     </dialog>
 
     <dialog
@@ -198,9 +216,9 @@
         tools:layout="@layout/dialog_select_list">
 
         <argument
-            android:name="phoneNumber"
-            app:nullable="true"
-            app:argType="string"/>
+            android:name="recipientId"
+            app:argType="long"
+            android:defaultValue="0L"/>
     </dialog>
 
     <dialog
@@ -211,8 +229,8 @@
 
         <argument
             android:name="groupId"
-            app:nullable="true"
-            app:argType="string"/>
+            app:argType="long"
+            android:defaultValue="0L"/>
     </dialog>
 
 

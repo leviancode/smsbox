@@ -8,6 +8,7 @@
         android:background="@color/white">
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="120dp"
             android:layout_height="200dp"
             android:src="@drawable/start_screen_logo"

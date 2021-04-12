@@ -10,7 +10,7 @@
             type="java.util.List&lt;String>" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateViewModel" />
+            type="com.leviancode.android.gsmbox.ui.templates.view.templates.edit.EditableTemplateViewModel" />
         <variable
             name="recipient"
             type="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />

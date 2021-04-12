@@ -9,7 +9,7 @@ data class RecipientWithGroups(
     @Relation(
         parentColumn = "recipientId",
         entityColumn = "recipientGroupId",
-        associateBy = Junction(RecipientsAndGroupsCrossRef::class)
+        associateBy = Junction(RecipientsAndGroupRelation::class)
     )
     var groups: MutableList<RecipientGroup>
 ) {

@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 
 object PlaceholdersRepository {
     private val placeholderDao: PlaceholderDao
-        get() = AppDatabase.INSTANCE.placeholderDao()
+        get() = AppDatabase.instance.placeholderDao()
 
     val data: LiveData<List<Placeholder>> = placeholderDao.getAll()
 
@@ -24,11 +24,15 @@ object PlaceholdersRepository {
         else placeholderDao.update(item)
     }
 
-    suspend fun getPlaceholderById(id: String): Placeholder? = withContext(Dispatchers.IO) {
-        placeholderDao.getById(id)
+    suspend fun getPlaceholderById(id: Long): Placeholder? = withContext(Dispatchers.IO) {
+        placeholderDao.get(id)
     }
 
     suspend fun getValueByName(name: String) = withContext(Dispatchers.IO) {
         placeholderDao.getValueByName(name.trim())
+    }
+
+    suspend fun getByName(name: String): Placeholder? {
+        return placeholderDao.getByName(name)
     }
 }

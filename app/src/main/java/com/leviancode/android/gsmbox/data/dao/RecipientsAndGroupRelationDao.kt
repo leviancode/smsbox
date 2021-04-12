@@ -4,21 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientWithGroups
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientsAndGroupsCrossRef
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientsAndGroupRelation
 
 @Dao
-interface RecipientsAndGroupsCrossRefDao {
+interface RecipientsAndGroupRelationDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(item: RecipientsAndGroupsCrossRef)
+    suspend fun insert(item: RecipientsAndGroupRelation)
 
     @Delete
-    suspend fun delete(item: RecipientsAndGroupsCrossRef)
+    suspend fun delete(vararg item: RecipientsAndGroupRelation)
 
-    @Query("DELETE FROM recipients_and_groups WHERE recipientGroupId =:groupId")
-    suspend fun deleteByGroupId(groupId: String)
+    @Query("DELETE FROM recipients_and_groups WHERE recipientGroupId = :groupId")
+    suspend fun deleteByGroupId(groupId: Long)
 
-    @Query("DELETE FROM recipients_and_groups WHERE recipientId =:recipientId")
-    suspend fun deleteByRecipientId(recipientId: String)
+    @Query("DELETE FROM recipients_and_groups WHERE recipientId = :recipientId")
+    suspend fun deleteByRecipientId(recipientId: Long)
 
     @Transaction
     @Query("SELECT * FROM recipients")
@@ -30,9 +30,9 @@ interface RecipientsAndGroupsCrossRefDao {
 
     @Transaction
     @Query("SELECT * FROM recipient_groups WHERE recipientGroupId =:groupId")
-    suspend fun getGroupWithRecipients(groupId: String): GroupWithRecipients?
+    suspend fun getGroupWithRecipients(groupId: Long): GroupWithRecipients?
 
     @Transaction
     @Query("SELECT * FROM recipients WHERE recipientId = :recipientId")
-    suspend fun getRecipientWithGroups(recipientId: String): RecipientWithGroups?
+    suspend fun getRecipientWithGroups(recipientId: Long): RecipientWithGroups?
 }

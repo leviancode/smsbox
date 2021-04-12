@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.templates.view.fragment
+package com.leviancode.android.gsmbox.ui.templates.view.groups.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,7 +20,6 @@ import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DeleteConfirmationAle
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.DELETE
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.EDIT
-import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateGroupListViewModel
 import com.leviancode.android.gsmbox.utils.extensions.navigate
 
 class TemplateGroupListFragment : Fragment(), ItemDragListener {
@@ -64,7 +63,7 @@ class TemplateGroupListFragment : Fragment(), ItemDragListener {
                 else if (dy < 0 && !fab.isShown) fab.show()
             }
         })
-        viewModel.groups.observe(viewLifecycleOwner) { list ->
+        viewModel.getGroupsWithTemplates().observe(viewLifecycleOwner) { list ->
             binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
             listAdapter.submitList(list)
         }
@@ -85,20 +84,22 @@ class TemplateGroupListFragment : Fragment(), ItemDragListener {
 
     private fun openSelectedGroup(group: TemplateGroup) {
         navigate {
-            TemplateGroupListFragmentDirections.actionOpenGroupTemplates(group.templateGroupId)
+            TemplateGroupListFragmentDirections.actionOpenGroupTemplates(
+                group.templateGroupId, group.getName()
+            )
         }
     }
 
-    private fun showEditableGroupDialog(group: TemplateGroup) {
+    private fun showEditableGroupDialog(groupId: Long) {
         navigate {
-            TemplateGroupListFragmentDirections.actionOpenEditableGroup(group)
+            TemplateGroupListFragmentDirections.actionOpenEditableGroup(groupId)
         }
     }
 
     private fun showPopup(view: View, group: TemplateGroup) {
         ItemPopupMenu(requireContext(), view).showEditDelete { result ->
             when (result) {
-                EDIT -> showEditableGroupDialog(group)
+                EDIT -> showEditableGroupDialog(group.templateGroupId)
                 DELETE -> deleteGroup(group)
             }
         }
@@ -122,6 +123,6 @@ class TemplateGroupListFragment : Fragment(), ItemDragListener {
     }
 
     override fun onMoveFinished() {
-        viewModel.updateAll(listAdapter.currentList)
+        viewModel.updateGroupsOrder(listAdapter.currentList)
     }
 }

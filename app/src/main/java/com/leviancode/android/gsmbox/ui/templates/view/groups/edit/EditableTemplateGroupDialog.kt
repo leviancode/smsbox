@@ -1,17 +1,16 @@
-package com.leviancode.android.gsmbox.ui.templates.view.dialog
+package com.leviancode.android.gsmbox.ui.templates.view.groups.edit
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateGroupBinding
 import com.leviancode.android.gsmbox.ui.extra.ColorPickerDialog
+import com.leviancode.android.gsmbox.ui.templates.view.AbstractFullScreenDialog
 import com.leviancode.android.gsmbox.utils.helpers.TextUniqueWatcher
-import com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateGroupViewModel
 import com.leviancode.android.gsmbox.utils.RESULT_CANCEL
 import com.leviancode.android.gsmbox.utils.RESULT_OK
 import com.leviancode.android.gsmbox.utils.hideKeyboard
@@ -27,27 +26,25 @@ class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.dialog_editable_template_group, container, false
-        )
+        binding = DialogEditableTemplateGroupBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        viewModel.setGroup(args.group)
-        setTitle(args.group.getName())
+        viewModel.loadGroup(args.groupId)
+        setTitle(args.groupId != 0L)
         showKeyboard(binding.editTextTemplateGroupName)
         observeUI()
     }
 
-    private fun setTitle(name: String) {
-        if (name.isNotBlank()) binding.toolbar.title = getString(R.string.edit_group)
+    private fun setTitle(editMode: Boolean) {
+        if (editMode) binding.toolbar.title = getString(R.string.edit_group)
     }
 
     private fun observeUI() {
-        setTextUniqueWatcher()
+       // setTextUniqueWatcher()
 
         binding.toolbar.setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
 
@@ -56,14 +53,14 @@ class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
         viewModel.savedLiveEvent.observe(viewLifecycleOwner) { closeDialog(RESULT_OK) }
     }
 
-    private fun setTextUniqueWatcher() {
-        val textWatcher = TextUniqueWatcher { isUnique -> viewModel.data.isGroupNameUnique = isUnique }
+    /*private fun setTextUniqueWatcher() {
+        val textWatcher = TextUniqueWatcher { isUnique -> viewModel.data.isNameUnique = isUnique }
         binding.editTextTemplateGroupName.addTextChangedListener(textWatcher)
-        viewModel.namesWithoutCurrent(args.group.templateGroupId)
+        viewModel.getNamesExclusiveCurrent(args.group.getName())
             .observe(viewLifecycleOwner) {
                 textWatcher.wordList = it
             }
-    }
+    }*/
 
     private fun selectColor(color: String) {
         hideKeyboard()

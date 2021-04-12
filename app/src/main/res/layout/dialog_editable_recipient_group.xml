@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="12dp"
-        tools:context=".ui.templates.view.dialog.EditableTemplateGroupDialog">
+        tools:context=".ui.templates.view.groups.edit.EditableTemplateGroupDialog">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -36,7 +36,7 @@
                 android:layout_gravity="end"
                 android:text="@string/save"
                 tools:textColor="@color/secondary"
-                android:enabled="@{viewModel.data.fieldsFilled}"
+                android:enabled="@{viewModel.data.fieldsCorrect}"
                 android:textColor="@drawable/save_button_text_color_selector"
                 android:onClick="@{() -> viewModel.onSaveClick()}"/>
 
@@ -58,10 +58,10 @@
                 android:focusable="true"
                 android:hint="@string/hint_name"
                 android:selectAllOnFocus="true"
-                app:setError="@{viewModel.data.recipientGroupNameUnique}"
+                app:setError="@{viewModel.data.nameUnique}"
                 android:inputType="text"
                 android:padding="8dp"
-                android:text="@={viewModel.data.recipientGroupName}"
+                android:text="@={viewModel.data.name}"
                 android:textSize="@dimen/form_text_size" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -77,7 +77,7 @@
             android:textColor="@color/grey"
             android:onClick="@{() -> viewModel.onIconColorClick()}"
             app:icon="@drawable/ic_baseline_color_lens_24"
-            app:setButtonIconTintGroup="@{viewModel.data.recipientGroupIconColor}"
+            app:setButtonIconTintGroup="@{viewModel.data.iconColor}"
             tools:iconTint="@color/default_group_icon_color"/>
 
     </LinearLayout>

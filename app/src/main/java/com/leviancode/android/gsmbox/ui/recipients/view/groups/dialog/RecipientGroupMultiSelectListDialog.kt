@@ -82,7 +82,7 @@ class RecipientGroupMultiSelectListDialog : BottomSheetDialogFragment(){
         }
 
         navigate {
-            RecipientGroupMultiSelectListDialogDirections.actionOpenEditableRecipientGroup(viewModel.getNewGroup())
+            RecipientGroupMultiSelectListDialogDirections.actionOpenEditableRecipientGroup()
         }
     }
 

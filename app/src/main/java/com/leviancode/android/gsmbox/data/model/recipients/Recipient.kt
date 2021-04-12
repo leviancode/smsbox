@@ -5,23 +5,26 @@ import androidx.databinding.Bindable
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.leviancode.android.gsmbox.BR
-import com.leviancode.android.gsmbox.utils.isNotEmpty
+import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
+import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
+import com.leviancode.android.gsmbox.utils.isNotNullOrEmpty
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.Serializable
-import java.util.*
 
 @Entity(tableName = "recipients")
 @kotlinx.serialization.Serializable
 data class Recipient(
-    @PrimaryKey
-    var recipientId: String = UUID.randomUUID().toString(),
-    private var recipientName: String = "",
+    @PrimaryKey(autoGenerate = true)
+    var recipientId: Long = 0L,
+    private var name: String? = null,
     private var phoneNumber: String = ""
 ) : BaseObservable(), Serializable {
 
     @Ignore
     @get:Bindable
-    var isRecipientNameUnique = true
+    var isNameUnique = true
         set(value) {
             field = value
             notifyChange()
@@ -36,11 +39,12 @@ data class Recipient(
         }
 
     @Bindable
-    fun getRecipientName() = recipientName
-    fun setRecipientName(value: String){
-        if (recipientName != value){
-            recipientName = value
+    fun getName() = name
+    fun setName(value: String?){
+        if (name != value){
+            name = value
             notifyChange()
+            checkNameIsUnique(value)
         }
     }
 
@@ -54,5 +58,17 @@ data class Recipient(
     }
 
     @Bindable
-    fun isFieldsFilled() = isNotEmpty(recipientName, phoneNumber) && isRecipientNameUnique
+    fun isFieldsCorrect() = isNotNullOrEmpty(name, phoneNumber) && isNameUnique
+
+    private fun checkNameIsUnique(value: String?){
+        if (value == null) {
+            isNameUnique = true
+            return
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+                val found = RecipientsRepository.getRecipientByName(value)
+                isNameUnique = found == null || found.recipientId == recipientId
+            }
+        }
+    }
 }

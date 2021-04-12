@@ -16,5 +16,5 @@ data class GroupWithTemplates(
 ) : BaseObservable() {
 
     @Bindable
-    fun getSize() = templates.size
+    fun getSize() = templates.size.toString()
 }

@@ -16,10 +16,6 @@ class PlaceholdersViewModel : ViewModel() {
     val addPlaceholderEvent = SingleLiveEvent<Placeholder>()
     val onPopupMenuClickEvent = SingleLiveEvent<Pair<View, Placeholder>>()
 
-    fun namesWithoutCurrent(id: String) = placeholders.map { list ->
-        list.filter { it.placeholderId != id }
-            .map { it.getName().substring(1)}
-    }
 
     fun onAddPlaceholderClick(){
         addPlaceholderEvent.value = repository.getNewPlaceholder()

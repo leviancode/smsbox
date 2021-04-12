@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.templates.viewmodel
+package com.leviancode.android.gsmbox.ui.templates.view.groups.edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
@@ -15,13 +15,19 @@ class EditableTemplateGroupViewModel : ViewModel() {
     val chooseColorLiveEvent = SingleLiveEvent<String>()
     val savedLiveEvent = SingleLiveEvent<Unit>()
 
-    fun namesWithoutCurrent(id: String) = repository.groups.map { list ->
-        list.filter { it.templateGroupId != id }.map { it.getName() }
+    fun getNamesExclusiveCurrent(name: String) = repository.getTemplateGroupNames().map { list ->
+        list.filter { it != name }
     }
 
-    fun setGroup(value: TemplateGroup){
-        data = value
-        original = value.copy()
+    fun loadGroup(id: Long){
+        if (id != 0L) {
+            viewModelScope.launch {
+                repository.getGroupById(id)?.let { group ->
+                    data = group
+                }
+            }
+        }
+        original = data.copy()
     }
 
     fun onSaveClick(){

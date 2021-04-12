@@ -16,7 +16,7 @@ class RecipientGroupListViewModel : ViewModel() {
     private val repository = RecipientsRepository
     var groupsWithRecipients: LiveData<List<GroupWithRecipients>> = repository.groupsWithRecipients
 
-    val addGroupEvent = SingleLiveEvent<RecipientGroup>()
+    val addGroupEvent = SingleLiveEvent<Long>()
     val recipientPopupMenuEvent = SingleLiveEvent<Pair<View, RecipientWithGroup>>()
     val groupPopupMenuEvent = SingleLiveEvent<Pair<View, GroupWithRecipients>>()
 
@@ -43,7 +43,7 @@ class RecipientGroupListViewModel : ViewModel() {
     }
 
     fun onAddGroupClick() {
-        addGroupEvent.value = repository.getNewRecipientGroup()
+        addGroupEvent.value = 0
     }
 
     fun clearGroup(item: GroupWithRecipients) {
@@ -61,7 +61,7 @@ class RecipientGroupListViewModel : ViewModel() {
 
     fun removeRecipientFromGroup(item: RecipientWithGroup) {
         viewModelScope.launch {
-            repository.deleteGroupAndRecipientCrossRef(
+            repository.deleteGroupAndRecipientRelation(
                 item.group.recipientGroupId,
                 item.recipient.recipientId
             )

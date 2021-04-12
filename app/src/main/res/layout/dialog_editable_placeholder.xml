@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="12dp"
-        tools:context=".ui.templates.view.dialog.EditableTemplateGroupDialog">
+        tools:context=".ui.templates.view.groups.edit.EditableTemplateGroupDialog">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"

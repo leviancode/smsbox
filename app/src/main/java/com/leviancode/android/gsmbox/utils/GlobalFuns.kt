@@ -10,6 +10,6 @@ fun log(message: String){
 
 fun getFormatDate(): String = DateFormat.format(DATE_FORMAT, Date()).toString()
 
-fun isNotEmpty(vararg strings: String): Boolean = strings.count { it.isNotBlank() } == strings.size
+fun isNotNullOrEmpty(vararg strings: String?): Boolean = strings.count { !it.isNullOrBlank() } == strings.size
 
 fun isEmpty(vararg strings: String): Boolean = strings.count { it.isBlank() } == strings.size

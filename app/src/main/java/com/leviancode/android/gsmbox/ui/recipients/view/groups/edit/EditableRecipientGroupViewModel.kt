@@ -16,13 +16,17 @@ class EditableRecipientGroupViewModel : ViewModel() {
     val selectColorEvent = SingleLiveEvent<String>()
     val closeDialogEvent = SingleLiveEvent<RecipientGroup>()
 
-    fun namesWithoutCurrent(id: String) = repository.groups.map { list ->
-        list.filter { it.recipientGroupId != id }.map { it.getRecipientGroupName() }
+    fun getNamesWithoutCurrent(id: Long) = repository.groups.map { list ->
+        list.filter { it.recipientGroupId != id }.map { it.getName() }
     }
 
-    fun setGroup(value: RecipientGroup){
-        data = value
-        original = value.copy()
+    fun loadGroup(id: Long){
+        viewModelScope.launch {
+            repository.getGroupById(id)?.let { group ->
+                data = group
+            }
+        }
+        original = data.copy()
     }
 
     fun onSaveClick(){
@@ -33,12 +37,13 @@ class EditableRecipientGroupViewModel : ViewModel() {
     }
 
     fun onIconColorClick() {
-        selectColorEvent.value = data.getRecipientGroupIconColor()
+        selectColorEvent.value = data.getIconColor()
     }
 
     fun setIconColor(color: String) {
-        data.setRecipientGroupIconColor(color)
+        data.setIconColor(color)
     }
+
     fun isGroupEdited() = original != data
 
 }

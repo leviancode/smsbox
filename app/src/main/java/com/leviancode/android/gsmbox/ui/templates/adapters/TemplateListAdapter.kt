@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.templates.Template
+import com.leviancode.android.gsmbox.data.model.templates.TemplateWithRecipients
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateBinding
-import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
-import com.leviancode.android.gsmbox.utils.log
+import com.leviancode.android.gsmbox.ui.templates.view.templates.list.TemplateListViewModel
 import java.util.*
 
 class TemplateListAdapter(val viewModel: TemplateListViewModel) :
-    ListAdapter<Template, TemplateListAdapter.TemplateHolder>(TemplateDiffCallback()) {
+    ListAdapter<TemplateWithRecipients, TemplateListAdapter.TemplateHolder>(TemplateDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TemplateHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -42,18 +42,18 @@ class TemplateListAdapter(val viewModel: TemplateListViewModel) :
             binding.viewModel = viewModel
         }
 
-        fun bind(item: Template) {
+        fun bind(item: TemplateWithRecipients) {
             binding.model = item
             binding.executePendingBindings()
         }
     }
 
-    class TemplateDiffCallback : DiffUtil.ItemCallback<Template>() {
-        override fun areItemsTheSame(oldItem: Template, newItem: Template): Boolean {
-            return oldItem.templateId == newItem.templateId
+    class TemplateDiffCallback : DiffUtil.ItemCallback<TemplateWithRecipients>() {
+        override fun areItemsTheSame(oldItem: TemplateWithRecipients, newItem: TemplateWithRecipients): Boolean {
+            return oldItem.template.templateId == newItem.template.templateId
         }
 
-        override fun areContentsTheSame(oldItem: Template, newItem: Template): Boolean {
+        override fun areContentsTheSame(oldItem: TemplateWithRecipients, newItem: TemplateWithRecipients): Boolean {
             return oldItem == newItem
         }
     }

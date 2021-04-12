@@ -1,57 +1,65 @@
-package com.leviancode.android.gsmbox.ui.templates.viewmodel
+package com.leviancode.android.gsmbox.ui.templates.view.templates.edit
 
 import android.view.View
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.leviancode.android.gsmbox.BR
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
-import com.leviancode.android.gsmbox.data.model.templates.Template
+import com.leviancode.android.gsmbox.data.model.templates.TemplateWithRecipients
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
-import com.leviancode.android.gsmbox.utils.isNotEmpty
 import com.leviancode.android.gsmbox.utils.log
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 
 class EditableTemplateViewModel : ViewModel() {
     private val repository = TemplatesRepository
-    private var original: Template? = null
-    val recipientNameList = RecipientsRepository.recipients.map { list ->
-        list.map { it.getPhoneNumber() }
-    }
-    private var groupRecipients = listOf<Recipient>()
-    var data: Template = repository.getNewTemplate()
+    private var original: TemplateWithRecipients? = null
+    var data: TemplateWithRecipients
     var recipientGroupMode = false
 
+    private val _fieldsCorrect = MutableLiveData<Boolean>()
+    val fieldsCorrect: LiveData<Boolean> = _fieldsCorrect
+
     val addRecipientViewEvent = SingleLiveEvent<Recipient>()
+    val addAllRecipientsViewEvent = SingleLiveEvent<List<Recipient>>()
     val removeRecipientViewEvent = SingleLiveEvent<View>()
     val removeAllRecipientViewsEvent = SingleLiveEvent<Unit>()
     val saveRecipientEvent = SingleLiveEvent<Recipient>()
 
-    val selectRecipientGroupEvent = SingleLiveEvent<String>()
+    val selectRecipientGroupEvent = SingleLiveEvent<Long>()
     val selectRecipientEvent = SingleLiveEvent<Recipient>()
     val selectColorEvent = SingleLiveEvent<String>()
     val savedEvent = SingleLiveEvent<Unit>()
 
     init {
+        data = repository.getNewTemplateWithRecipients(0)
         fieldsChecker()
     }
 
-    fun setTemplate(template: Template){
-        data = template
-        original = template.copy()
-        if (!template.isRecipientsOrGroup()) {
-            onAddRecipientClick()
-        } else if (template.isRecipientGroupAttached()){
-            groupRecipients = getListClone(template.getRecipients())
+    fun getRecipientNumbersLiveData() = RecipientsRepository.getRecipientNumbersLiveData()
+
+    suspend fun getRecipientNumbers() = RecipientsRepository.getRecipientNumbers()
+
+    fun loadTemplate(id: Long, groupId: Long) = flow {
+        data.template.templateGroupId = groupId
+        repository.getTemplateWithRecipients(id)?.let {
+            data = it
+            original = it.copy()
+            if(it.recipients.getRecipients().isEmpty()){
+                it.recipients.addRecipient(RecipientsRepository.getNewRecipient())
+            }
+            addAllRecipientsViewEvent.value = it.recipients.getRecipients()
         }
+        emit(data)
     }
 
-    fun onAddRecipientClick(){
+    fun onAddRecipientClick() {
         RecipientsRepository.getNewRecipient().also {
             data.addRecipient(it)
             addRecipientView(it)
@@ -62,30 +70,28 @@ class EditableTemplateViewModel : ViewModel() {
         addRecipientViewEvent.value = recipient
     }
 
-    fun onSelectRecipientGroupsClick(){
-        selectRecipientGroupEvent.value = data.getRecipientGroupId()
+    fun onSelectRecipientGroupsClick() {
+        selectRecipientGroupEvent.value = data.recipients.group.recipientGroupId
     }
 
-    fun onSelectRecipientClick(recipient: Recipient){
+    fun onSelectRecipientClick(recipient: Recipient) {
         selectRecipientEvent.value = recipient
     }
 
-    fun onSaveClick(){
-        if (groupRecipients != data.getRecipients()){
-            data.setRecipientGroup(null)
-        }
+    fun onSaveClick() {
+        log("save: ${data.template}")
         viewModelScope.launch {
-            repository.saveTemplate(data)
+            repository.saveTemplateWithRecipients(data)
         }
         savedEvent.call()
     }
-    
+
     fun onSaveRecipientClick(recipient: Recipient) {
         saveRecipientEvent.value = recipient
     }
 
     fun onIconColorClick() {
-        selectColorEvent.value = data.getIconColor()
+        selectColorEvent.value = data.template.getIconColor()
     }
 
     fun onRemoveRecipientClick(view: View, recipient: Recipient) {
@@ -94,21 +100,19 @@ class EditableTemplateViewModel : ViewModel() {
     }
 
     fun setIconColor(color: String) {
-        data.setIconColor(color)
+        data.template.setIconColor(color)
     }
 
     fun isTemplateEdited(): Boolean {
         return original != data
     }
 
-    fun setRecipientGroup(groupId: String) {
+    fun setRecipientGroup(groupId: Long) {
         removeAllRecipientViewsEvent.call()
         viewModelScope.launch {
             RecipientsRepository.getGroupWithRecipients(groupId)?.let {
-                groupRecipients = getListClone(it.recipients)
-                data.setRecipientGroup(it.group)
-                data.setRecipients(it.recipients)
-                data.getRecipients().forEach(::addRecipientView)
+                data.recipients = it
+                addAllRecipientsViewEvent.value = it.getRecipients()
             }
         }
     }
@@ -122,21 +126,23 @@ class EditableTemplateViewModel : ViewModel() {
     fun updateRecipient(old: Recipient, new: Recipient) {
         old.apply {
             recipientId = new.recipientId
-            setRecipientName(new.getRecipientName())
+            setName(new.getName())
             setPhoneNumber(new.getPhoneNumber())
         }
     }
 
-    fun namesWithoutCurrent(id: String) = repository.templates.map { list ->
-        list.filter { it.templateId != id }.map { it.getName() }
-    }
+    fun getNamesExclusiveById(id: Long) = repository.getTemplateNamesExclusiveById(id)
 
-    private fun fieldsChecker(){
+    private fun fieldsChecker() {
         viewModelScope.launch {
             while (isActive) {
-                data.notifyPropertyChanged(BR.fieldsCorrect)
+                _fieldsCorrect.value = data.isFieldsFilledAndCorrect()
                 delay(500)
             }
         }
+    }
+
+    fun setTemplateNameUnique(unique: Boolean) {
+        data.template.isNameUnique = unique
     }
 }

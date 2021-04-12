@@ -61,7 +61,7 @@ class RecipientGroupSelectListDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun setSelectedAndExit(selectedGroupId: String) {
+    private fun setSelectedAndExit(selectedGroupId: Long) {
         setNavigationResult(selectedGroupId, REQ_SELECT_RECIPIENT_GROUP)
         goBack()
     }

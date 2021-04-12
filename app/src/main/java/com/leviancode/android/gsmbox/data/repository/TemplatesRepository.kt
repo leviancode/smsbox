@@ -1,114 +1,133 @@
 package com.leviancode.android.gsmbox.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
+import com.leviancode.android.gsmbox.data.dao.TemplateAndRecipientRelationDao
 import com.leviancode.android.gsmbox.data.dao.TemplateDao
 import com.leviancode.android.gsmbox.data.dao.TemplateGroupDao
-import com.leviancode.android.gsmbox.data.model.templates.GroupWithTemplates
 import com.leviancode.android.gsmbox.data.model.templates.Template
+import com.leviancode.android.gsmbox.data.model.templates.TemplateAndRecipientRelation
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
+import com.leviancode.android.gsmbox.data.model.templates.TemplateWithRecipients
+import com.leviancode.android.gsmbox.utils.log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
 object TemplatesRepository {
     private val templatesDao: TemplateDao
-        get() = AppDatabase.INSTANCE.templateDao()
+        get() = AppDatabase.instance.templateDao()
     private val groupsDao: TemplateGroupDao
-        get() = AppDatabase.INSTANCE.templateGroupDao()
+        get() = AppDatabase.instance.templateGroupDao()
 
-    val groups: LiveData<List<TemplateGroup>>
-        get() = groupsDao.getAllLiveData()
-    val groupsWithTemplates: LiveData<List<GroupWithTemplates>>
-        get() = groupsDao.getGroupsWithTemplates()
-    val templates: LiveData<List<Template>>
-        get() = templatesDao.getAllLiveData()
+    private val templateWithRecipientsDao: TemplateAndRecipientRelationDao
+        get() = AppDatabase.instance.templateAndRecipientsDao()
 
+    fun getTemplateGroups() = groupsDao.getAllLiveData()
+    fun getTemplateGroupNames() = groupsDao.getGroupNames()
+    fun getGroupsWithTemplates() = groupsDao.getGroupsWithTemplates()
+    fun getAllTemplates() = templatesDao.getAllLiveData()
+    fun getTemplatesWithRecipients(groupId: Long) =
+        templatesDao.getTemplatesWithRecipients(groupId)
 
-    suspend fun saveGroup(item: TemplateGroup) = withContext(IO){
-        item.setName(item.getName().trim())
-        val group = getGroupById(item.templateGroupId)
-        if (group == null) groupsDao.insert(item)
-        else groupsDao.update(item)
+    fun getFavoriteTemplates() = templatesDao.getFavoriteWithRecipients()
+
+    fun getTemplateNames() = templatesDao.getTemplateNames()
+
+    fun getTemplateNamesExclusiveById(id: Long) = templatesDao.getTemplateNamesExclusiveById(id)
+
+    fun getNewTemplateWithRecipients(groupId: Long): TemplateWithRecipients {
+        val gwr = RecipientsRepository.getNewGroupWithRecipients()
+        return TemplateWithRecipients(
+            Template(
+                templateGroupId = groupId,
+                recipientGroupId = gwr.group.recipientGroupId
+            ), gwr)
     }
 
-    suspend fun saveTemplate(item: Template) = withContext(IO){
-        item.setName(item.getName().trim())
-        val template = getTemplateById(item.templateId)
-        if (template == null)  {
-            templatesDao.insert(item)
-            increaseGroupSize(item.templateGroupId)
+    suspend fun getTemplateWithRecipients(templateId: Long) = withContext(IO) {
+        templatesDao.getTemplateWithRecipients(templateId)
+    }
+
+    fun getNewTemplateGroup() = TemplateGroup()
+
+    fun getGroupWithTemplates(groupId: Long) = groupsDao.getGroupWithTemplates(groupId)
+
+    suspend fun getTemplatesByRecipientGroupId(recipientGroupId: Long): List<Template> {
+        return templatesDao.getByRecipientGroupId(recipientGroupId)
+    }
+
+    suspend fun saveGroup(item: TemplateGroup) = withContext(IO) {
+        if (item.templateGroupId == 0L) groupsDao.insert(item)
+        else {
+            groupsDao.update(item)
+            item.templateGroupId
         }
-        else templatesDao.update(item)
     }
 
-    suspend fun updateGroup(item: TemplateGroup) = withContext(IO){
-        groupsDao.update(item)
+    suspend fun saveTemplate(item: Template) = withContext(IO) {
+        if (item.templateId == 0L) templatesDao.insert(item)
+        else {
+            templatesDao.update(item)
+            item.templateId
+        }
     }
 
-    suspend fun deleteGroup(item: TemplateGroup) = withContext(IO){
+    suspend fun deleteGroup(item: TemplateGroup) = withContext(IO) {
         groupsDao.delete(item)
-    }
-
-    suspend fun updateTemplate(item: Template) = withContext(IO) {
-        templatesDao.update(item)
     }
 
     suspend fun deleteTemplate(item: Template) = withContext(IO) {
         templatesDao.delete(item)
-        decreaseGroupSize(item.templateGroupId)
     }
 
-    private suspend fun increaseGroupSize(id: String){
-        getGroupById(id)?.let {
-                it.size++
-                groupsDao.update(it)
-        }
-    }
-
-    private suspend fun decreaseGroupSize(id: String) {
-        getGroupById(id)?.let {
-                it.size--
-                groupsDao.update(it)
-        }
-    }
-
-    fun getTemplatesByGroupId(groupId: String): LiveData<List<Template>> {
+    fun getTemplatesByGroupId(groupId: Long): LiveData<List<Template>> {
         return templatesDao.getByGroupId(groupId)
     }
 
-    suspend fun getGroupById(id: String) = withContext(IO){
+    suspend fun getGroupById(id: Long) = withContext(IO) {
         groupsDao.get(id)
     }
 
-    suspend fun getTemplateById(id: String) = withContext(IO){
-       templatesDao.get(id)
+    suspend fun getTemplateById(id: Long) = withContext(IO) {
+        templatesDao.get(id)
     }
 
     suspend fun updateAllTemplates(list: List<Template>) = withContext(IO) {
-        templatesDao.insert(*list.toTypedArray())
+        list.forEach { templatesDao.insert(it) }
     }
 
     suspend fun updateAllGroups(list: List<TemplateGroup>) = withContext(IO) {
-        groupsDao.insert(*list.toTypedArray())
+        list.forEach { groupsDao.insert(it) }
     }
 
-    suspend fun updateRecipientGroupsInAllTemplates() = withContext(IO) {
-        templatesDao.getAll().filter { it.getRecipientGroup() != null }
-            .forEach { template ->
-                RecipientsRepository.getGroupWithRecipients(template.getRecipientGroupId())?.let {
-                    template.setRecipients(it.recipients)
-                }
-                updateTemplate(template)
+    suspend fun saveTemplateAndRecipientRelation(templateId: Long, recipientId: Long) = withContext(IO) {
+        templateWithRecipientsDao.insert(
+            TemplateAndRecipientRelation(templateId, recipientId)
+        )
+    }
+
+    suspend fun deleteAllTemplateAndRecipientRelation(templateId: Long) = withContext(IO) {
+        templateWithRecipientsDao.deleteByTemplateId(templateId)
+    }
+
+    suspend fun saveTemplateWithRecipients(data: TemplateWithRecipients) = withContext(IO) {
+        log("save tmplt: $data")
+        val groupId = RecipientsRepository.saveGroup(data.recipients.group)
+        val templateId = saveTemplate(data.template.apply { recipientGroupId = groupId })
+      //  RecipientsRepository.deleteGroupFromAllRecipients(groupId)
+      //  deleteAllTemplateAndRecipientRelation(templateId)
+
+        data.recipients.getRecipients().forEach { recipient ->
+            val recipientId = RecipientsRepository.saveRecipient(recipient)
+            RecipientsRepository.saveGroupAndRecipientRelation(groupId, recipientId)
+            saveTemplateAndRecipientRelation(templateId, recipientId)
         }
     }
 
-    fun getGroupWithTemplates(groupId: String) = groupsDao.getGroupWithTemplates(groupId)
+    suspend fun getTemplateByName(name: String): Template? {
+        return templatesDao.getByName(name)
+    }
 
-    fun getNewTemplate() = Template()
-
-    fun getNewTemplateGroup() = TemplateGroup()
-
-    suspend fun getTemplatesByRecipientGroupId(recipientGroupId: String): List<Template> {
-        return templatesDao.getByRecipientGroupId(recipientGroupId)
+    suspend fun getGroupByName(name: String): TemplateGroup? {
+        return groupsDao.getByName(name)
     }
 }

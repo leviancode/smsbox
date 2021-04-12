@@ -1,27 +1,26 @@
 package com.leviancode.android.gsmbox.data.model.templates
 
-import android.graphics.Color
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import androidx.room.ColumnInfo
+import androidx.databinding.library.baseAdapters.BR
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.leviancode.android.gsmbox.BR
-import com.leviancode.android.gsmbox.utils.isNotEmpty
+import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.Serializable
-import java.util.*
 
 @Entity(tableName = "template_groups")
 @kotlinx.serialization.Serializable
 data class  TemplateGroup (
-    @PrimaryKey
-    var templateGroupId: String = UUID.randomUUID().toString(),
+    @PrimaryKey(autoGenerate = true)
+    var templateGroupId: Long = 0L,
     private var name: String = "",
     private var description: String = "",
     private var imageUri: String = "",
     private var iconColor: String = "#d59557",
-    var size: Int = 0
 ) : BaseObservable(), Serializable {
 
     @Bindable
@@ -31,6 +30,7 @@ data class  TemplateGroup (
         if (name != value){
             name = value
             notifyChange()
+            checkNameIsUnique(value)
         }
     }
     @Bindable
@@ -60,17 +60,23 @@ data class  TemplateGroup (
             notifyChange()
         }
     }
-    @Bindable
-    fun getSizeAsString() = size.toString()
 
     @Bindable
-    fun isFieldsCorrect() = isGroupNameUnique && name.isNotBlank()
+    fun isFieldsCorrect() = isNameUnique && name.isNotBlank()
 
     @Ignore
     @get:Bindable
-    var isGroupNameUnique = true
+    var isNameUnique = true
         set(value) {
             field = value
             notifyChange()
         }
+
+    private fun checkNameIsUnique(value: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            val found = TemplatesRepository.getGroupByName(value)
+            isNameUnique = found == null || found.templateGroupId == templateGroupId
+        }
+    }
+
 }

@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:textColor="@color/text_title"
-                android:text="@{model.recipientName}"
+                android:text="@{model.name}"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="Name" />

@@ -4,10 +4,8 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.View
 import android.widget.*
-import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
-import androidx.core.widget.ImageViewCompat
 import androidx.core.widget.ImageViewCompat.setImageTintList
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
@@ -16,8 +14,7 @@ import coil.load
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.templates.Template
-import com.leviancode.android.gsmbox.utils.log
+import com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients
 
 @BindingAdapter(value = ["loadImage"])
 fun ImageView.loadImage(uri: String?) {
@@ -72,17 +69,26 @@ fun AppCompatImageButton.setIconTint(color: String?) {
     } else ContextCompat.getColorStateList(context, R.color.ltGrey)
 }
 
+@BindingAdapter(value = ["setFavoriteIcon"])
+fun ImageButton.setFavoriteIcon(favorite: Boolean) {
+    if (favorite){
+        setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_baseline_star_24))
+    } else {
+        setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_baseline_star_outline_24))
+    }
+}
+
 @BindingAdapter(value = ["setError"])
 fun TextInputEditText.showError(isUnique: Boolean) {
     error = if (isUnique) null else context.getString(R.string.err_unique_name)
 }
 
 @BindingAdapter(value = ["setRecipientsAsText"])
-fun TextView.setRecipientsAsText(template: Template) {
-    text = if (template.isRecipientGroupAttached()) {
-        "${context.getString(R.string.group)} ${template.getRecipientGroupName()} (${template.getRecipientsCount()})"
+fun TextView.setRecipientsAsText(recipients: GroupWithRecipients) {
+    text = if (recipients.isGroupNameNotNull()) {
+        "${context.getString(R.string.group)} ${recipients.getRecipientGroupName()} (${recipients.getRecipientsCount()})"
     } else {
-        template.getRecipientsAsString()
+        recipients.getRecipientsAsString()
     }
 }
 

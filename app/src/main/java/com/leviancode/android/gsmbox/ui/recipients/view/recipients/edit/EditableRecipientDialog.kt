@@ -13,8 +13,7 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientBinding
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientGroupHolderBinding
-import com.leviancode.android.gsmbox.utils.helpers.TextUniqueWatcher
-import com.leviancode.android.gsmbox.ui.templates.view.dialog.AbstractFullScreenDialog
+import com.leviancode.android.gsmbox.ui.templates.view.AbstractFullScreenDialog
 import com.leviancode.android.gsmbox.utils.*
 import com.leviancode.android.gsmbox.utils.extensions.getNavigationResult
 import com.leviancode.android.gsmbox.utils.extensions.navigate
@@ -41,15 +40,11 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        args.recipient.let { recipient ->
-            viewModel.setRecipient(recipient)
-            setTitle(recipient.getRecipientName())
-            if (recipient.getRecipientName().isNotBlank()) {
-                loadRecipientGroupViews(recipient.recipientId)
-            } else if (recipient.getPhoneNumber().isNotBlank()) {
-                binding.btnRecipientContacts.visibility = View.GONE
-            }
-
+        viewModel.loadRecipient(args.recipientId)
+        setTitle(args.recipientId != 0L)
+        if (!args.phoneNumber.isNullOrBlank()) {
+            binding.btnRecipientContacts.visibility = View.GONE
+            viewModel.setPhoneNumber(args.phoneNumber!!)
         }
 
         setupContactPickerLauncher()
@@ -57,16 +52,8 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
         observeUI()
     }
 
-    private fun setTitle(name: String) {
-        if (name.isNotBlank()) binding.toolbar.title = getString(R.string.edit_recipient)
-    }
-
-    private fun loadRecipientGroupViews(recipientId: String) {
-        viewModel.loadRecipientWithGroupsById(recipientId).observe(viewLifecycleOwner) {
-            it.groups.forEach { group ->
-                addRecipientGroupView(group)
-            }
-        }
+    private fun setTitle(editMode: Boolean) {
+        if (editMode) binding.toolbar.title = getString(R.string.edit_recipient)
     }
 
     private fun setupContactPickerLauncher() {
@@ -78,7 +65,7 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
     }
 
     private fun observeUI() {
-        setTextUniqueWatcher()
+      //  setTextUniqueWatcher()
 
         binding.toolbar.setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
 
@@ -90,26 +77,28 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
 
         viewModel.removeGroupEvent.observe(viewLifecycleOwner) { removeRecipientGroupView(it) }
 
+        viewModel.addGroupViewsEvent.observe(viewLifecycleOwner) {
+            it.forEach(::addRecipientGroupView)
+        }
     }
 
-    private fun setTextUniqueWatcher() {
+   /* private fun setTextUniqueWatcher() {
         val textWatcher = TextUniqueWatcher { isUnique ->
-            viewModel.data.recipient.isRecipientNameUnique = isUnique
+            viewModel.data.recipient.isNameUnique = isUnique
         }
         binding.editTextRecipientName.addTextChangedListener(textWatcher)
         viewModel.recipientNamesWithoutCurrent(args.recipient.recipientId)
             .observe(viewLifecycleOwner) {
                 textWatcher.wordList = it
             }
-    }
+    }*/
 
-    private fun selectGroups(recipientId: String) {
+    private fun selectGroups(recipientId: Long) {
         hideKeyboard()
         getNavigationResult<List<RecipientGroup>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)?.observe(
             viewLifecycleOwner
         ) { result ->
             if (result != null) {
-                log("result: $result")
                 viewModel.setGroups(result)
                 updateAllRecipientGroupViews(result)
             }

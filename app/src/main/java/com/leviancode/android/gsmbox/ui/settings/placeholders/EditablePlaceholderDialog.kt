@@ -62,7 +62,7 @@ class EditablePlaceholderDialog : BottomSheetDialogFragment() {
     }
 
     private fun observeUI() {
-        setTextUniqueWatcher()
+     //   setTextUniqueWatcher()
         binding.toolbar.setNavigationOnClickListener { goBack() }
         binding.btnPlaceholderSave.setOnClickListener {
             viewModel.savePlaceholder(args.placeholder)
@@ -70,7 +70,7 @@ class EditablePlaceholderDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun setTextUniqueWatcher() {
+    /*private fun setTextUniqueWatcher() {
         val textWatcher = TextUniqueWatcher { isUnique ->
             args.placeholder.isNameUnique = isUnique
         }
@@ -80,7 +80,7 @@ class EditablePlaceholderDialog : BottomSheetDialogFragment() {
             .observe(viewLifecycleOwner) { list ->
                 textWatcher.wordList = list
             }
-    }
+    }*/
 
     private fun setTitle(name: String) {
         if (name.isNotBlank()) binding.toolbar.title = getString(R.string.edit_placeholder)

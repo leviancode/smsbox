@@ -63,7 +63,7 @@
                         android:textColor="@color/text_title"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:text="@{model.recipient.recipientName}"
+                        android:text="@{model.recipient.name}"
                         tools:text="Name" />
 
                     <TextView

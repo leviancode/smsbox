@@ -14,7 +14,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientGroupBinding
-import com.leviancode.android.gsmbox.utils.helpers.TextUniqueWatcher
 import com.leviancode.android.gsmbox.ui.extra.ColorPickerDialog
 import com.leviancode.android.gsmbox.utils.REQ_SELECT_RECIPIENT_GROUP
 import com.leviancode.android.gsmbox.utils.extensions.goBack
@@ -51,19 +50,18 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        viewModel.setGroup(args.group)
-        setTitle(args.group.getRecipientGroupName())
-
+        viewModel.loadGroup(args.groupId)
+        setTitle(args.groupId != 0L)
         showKeyboard(binding.editTextRecipientGroupName)
         observeUI()
     }
 
-    private fun setTitle(name: String) {
-        if (name.isNotBlank()) binding.toolbar.title = getString(R.string.edit_group)
+    private fun setTitle(editMode: Boolean) {
+        if (editMode) binding.toolbar.title = getString(R.string.edit_group)
     }
 
     private fun observeUI(){
-        setTextUniqueWatcher()
+       // setTextUniqueWatcher()
         binding.toolbar.setNavigationOnClickListener { closeDialog(null) }
 
         viewModel.closeDialogEvent.observe(viewLifecycleOwner){
@@ -73,17 +71,17 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
         viewModel.selectColorEvent.observe(viewLifecycleOwner){ selectColor(it) }
     }
 
-    private fun setTextUniqueWatcher() {
+   /* private fun setTextUniqueWatcher() {
         val textWatcher = TextUniqueWatcher { isUnique ->
-            args.group.isRecipientGroupNameUnique = isUnique
+            args.group.isNameUnique = isUnique
         }
         binding.editTextRecipientGroupName.addTextChangedListener(textWatcher)
 
-        viewModel.namesWithoutCurrent(args.group.recipientGroupId)
+        viewModel.getNamesWithoutCurrent(args.group.recipientGroupId)
             .observe(viewLifecycleOwner) { list ->
                 textWatcher.wordList = list
             }
-    }
+    }*/
 
     private fun selectColor(color: String){
         hideKeyboard()

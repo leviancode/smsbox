@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.templates.view.dialog
+package com.leviancode.android.gsmbox.ui.templates.view.templates.edit
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,19 +7,21 @@ import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateBinding
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateNumberHolderBinding
 import com.leviancode.android.gsmbox.ui.extra.ColorPickerDialog
+import com.leviancode.android.gsmbox.ui.templates.view.AbstractFullScreenDialog
 import com.leviancode.android.gsmbox.utils.helpers.TextUniqueWatcher
-import com.leviancode.android.gsmbox.ui.templates.viewmodel.EditableTemplateViewModel
 import com.leviancode.android.gsmbox.utils.*
 import com.leviancode.android.gsmbox.utils.extensions.getNavigationResult
-import com.leviancode.android.gsmbox.utils.extensions.ifNotEmpty
 import com.leviancode.android.gsmbox.utils.extensions.navigate
 import com.leviancode.android.gsmbox.utils.extensions.removeNavigationResult
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 class EditableTemplateDialog : AbstractFullScreenDialog() {
@@ -41,40 +43,48 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = viewModel
         setupViews()
         observeUI()
     }
 
     private fun setupViews(){
-        setTitle(args.template.getName())
-
-        args.template.getRecipients().ifNotEmpty { list ->
-            list.forEach { addRecipientView(it) }
+        setTitle(args.templateId != 0L)
+        binding.viewModel = viewModel
+        lifecycleScope.launch {
+            viewModel.loadTemplate(args.templateId, args.groupId).collect {
+                log("load template: "+ it.template.toString())
+                binding.template = it.template
+                binding.recipients = it.recipients
+                binding.executePendingBindings()
+            }
         }
-        viewModel.setTemplate(args.template)
         showKeyboard(binding.editTextTemplateName)
     }
 
-    private fun setTitle(name: String) {
-        if (name.isNotBlank()) binding.toolbar.title = getString(R.string.edit_template)
+    private fun setTitle(editMode: Boolean) {
+        if (editMode) binding.toolbar.title = getString(R.string.edit_template)
     }
 
     private fun setTextUniqueWatcher() {
-        val textWatcher = TextUniqueWatcher { isUnique -> viewModel.data.isTemplateNameUnique = isUnique }
-        binding.editTextTemplateName.addTextChangedListener(textWatcher)
-        viewModel.namesWithoutCurrent(args.template.templateId)
+        val textWatcher = TextUniqueWatcher { isUnique ->
+            viewModel.setTemplateNameUnique(isUnique)
+        }
+        viewModel.getNamesExclusiveById(args.templateId)
             .observe(viewLifecycleOwner) {
                 textWatcher.wordList = it
             }
+        binding.editTextTemplateName.addTextChangedListener(textWatcher)
     }
 
     private fun observeUI() {
-        setTextUniqueWatcher()
+     //   setTextUniqueWatcher()
 
         binding.toolbar.setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
 
-        viewModel.recipientNameList.observe(viewLifecycleOwner){ list ->
+        viewModel.addAllRecipientsViewEvent.observe(viewLifecycleOwner){ list ->
+            list.forEach(::addRecipientView)
+        }
+        viewModel.getRecipientNumbersLiveData().observe(viewLifecycleOwner){ list ->
             updateAutoCompleteList(list)
         }
 
@@ -122,14 +132,14 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         }
     }
 
-    private fun showSelectRecipientGroupDialog(groupId: String) {
+    private fun showSelectRecipientGroupDialog(groupId: Long) {
         hideKeyboard()
 
-        getNavigationResult<String>(REQ_SELECT_RECIPIENT_GROUP)?.observe(viewLifecycleOwner) { result ->
-            if (!result.isNullOrEmpty() && result != groupId) {
+        getNavigationResult<Long>(REQ_SELECT_RECIPIENT_GROUP)?.observe(viewLifecycleOwner) { result ->
+            if (result != 0L && result != groupId) {
                 viewModel.setRecipientGroup(result)
             }
-            removeNavigationResult<String>(REQ_SELECT_RECIPIENT_GROUP)
+            removeNavigationResult<Long>(REQ_SELECT_RECIPIENT_GROUP)
         }
 
         navigate {
@@ -148,7 +158,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         }
 
         navigate {
-            EditableTemplateDialogDirections.actionSelectRecipient(recipient.getPhoneNumber())
+            EditableTemplateDialogDirections.actionSelectRecipient(recipient.recipientId)
         }
     }
 
@@ -172,10 +182,10 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
 
     private fun updateAutoCompleteList(list: List<String>){
         binding.recipientsLayout.children.forEach {
-            val bindingView =
-                DataBindingUtil.getBinding<DialogEditableTemplateNumberHolderBinding>(it)
-            bindingView?.autoCompleteList = list
-            bindingView?.executePendingBindings()
+            DataBindingUtil.getBinding<DialogEditableTemplateNumberHolderBinding>(it)?.apply {
+                autoCompleteList = list
+                executePendingBindings()
+            }
         }
     }
 
@@ -193,7 +203,9 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
 
     private fun showEditableRecipientDialog(recipient: Recipient) {
         navigate {
-            EditableTemplateDialogDirections.actionOpenEditableRecipient(recipient)
+            EditableTemplateDialogDirections.actionOpenEditableRecipient(
+                recipient.recipientId, recipient.getPhoneNumber()
+            )
         }
     }
 
@@ -207,11 +219,13 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         )
 
         recipientBinding.recipient = recipient
-        recipientBinding.autoCompleteList = viewModel.recipientNameList.value ?: listOf()
         recipientBinding.viewModel = viewModel
+        lifecycleScope.launch {
+            recipientBinding.autoCompleteList = viewModel.getRecipientNumbers()
+        }
 
         if (binding.recipientsLayout.childCount > 1) {
-            if(!binding.switchToRecipientGroup.isChecked){
+            if(!binding.switchToRecipientGroup.isChecked && args.templateId == 0L){
                 showKeyboard(recipientBinding.editTextRecipientNumber)
             }
             recipientBinding.btnRemoveNumber.visibility = View.VISIBLE

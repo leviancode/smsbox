@@ -30,12 +30,12 @@ class RecipientGroupExpandableListAdapter(
 
     override fun getGroupCount() = data.size
 
-    override fun getChildrenCount(groupPosition: Int) = data[groupPosition].recipients.size
+    override fun getChildrenCount(groupPosition: Int) = data[groupPosition].getRecipients().size
 
     override fun getGroup(groupPosition: Int): Any = data[groupPosition].group
 
     override fun getChild(groupPosition: Int, childPosition: Int): Any {
-        return data[groupPosition].recipients[childPosition]
+        return data[groupPosition].getRecipients()[childPosition]
     }
 
     override fun getGroupId(groupPosition: Int): Long {
@@ -67,7 +67,7 @@ class RecipientGroupExpandableListAdapter(
 
        // binding.divider.visibility = if (isExpanded && data[groupPosition].recipients.isNotEmpty()) View.VISIBLE else View.INVISIBLE
         binding.cardRecipientGroup.elevation =
-            if (isExpanded && data[groupPosition].recipients.isNotEmpty()) 8f
+            if (isExpanded && data[groupPosition].getRecipients().isNotEmpty()) 8f
             else 0f
 
         return binding.root

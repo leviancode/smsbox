@@ -9,7 +9,7 @@
             type="com.leviancode.android.gsmbox.ui.templates.adapters.TemplateListAdapter" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.templates.view.templates.list.TemplateListViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

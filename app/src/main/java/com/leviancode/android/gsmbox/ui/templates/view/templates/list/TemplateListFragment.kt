@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.templates.view.fragment
+package com.leviancode.android.gsmbox.ui.templates.view.templates.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,9 +21,9 @@ import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DeleteConfirmationAle
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.DELETE
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.EDIT
-import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
 import com.leviancode.android.gsmbox.utils.extensions.goBack
 import com.leviancode.android.gsmbox.utils.extensions.navigate
+import com.leviancode.android.gsmbox.utils.log
 import com.leviancode.android.gsmbox.utils.managers.SmsManager
 import kotlinx.coroutines.launch
 
@@ -49,7 +49,7 @@ class TemplateListFragment : Fragment(), ItemDragListener {
         listAdapter = TemplateListAdapter(viewModel)
         binding.viewModel = viewModel
         binding.adapter = listAdapter
-
+        binding.toolbar.title = args.groupName
         observeUI()
     }
 
@@ -67,28 +67,30 @@ class TemplateListFragment : Fragment(), ItemDragListener {
             attachToRecyclerView(binding.templatesRecyclerView)
         }
 
-        viewModel.getGroupWithTemplates(args.groupId).observe(viewLifecycleOwner) { group ->
-            binding.toolbar.title = group.group.getName()
+        viewModel.loadTemplatesWithRecipients(args.groupId).observe(viewLifecycleOwner){ items ->
+            log("receive: ${items.size}")
+            items.forEach { log(it.template.toString())
+                log(it.recipients.toString())}
             binding.tvListEmpty.visibility =
-                if (group.templates.isEmpty()) View.VISIBLE
+                if (items.isEmpty()) View.VISIBLE
                 else View.GONE
-            listAdapter.submitList(group.templates)
+            listAdapter.submitList(items)
         }
 
         viewModel.createTemplateLiveEvent.observe(viewLifecycleOwner) {
-            showEditableTemplateDialog(it)
+            showEditableTemplateDialog(0, args.groupId)
         }
 
-        viewModel.sendMessageLiveEvent.observe(viewLifecycleOwner) { sendMessage(it) }
-
-        viewModel.popupMenuLiveEvent.observe(viewLifecycleOwner) { showPopup(it) }
+        viewModel.popupMenuLiveEvent.observe(viewLifecycleOwner) {
+            showPopup(it.first, it.second)
+        }
     }
 
-    private fun showPopup(pair: Pair<View, Template>) {
-        ItemPopupMenu(requireContext(), pair.first).showEditDelete { result ->
+    private fun showPopup(view: View, template: Template) {
+        ItemPopupMenu(requireContext(), view).showEditDelete { result ->
             when (result) {
-                EDIT -> showEditableTemplateDialog(pair.second)
-                DELETE -> deleteTemplate(pair.second)
+                EDIT -> showEditableTemplateDialog(template.templateId, args.groupId)
+                DELETE -> deleteTemplate(template)
             }
         }
     }
@@ -103,17 +105,12 @@ class TemplateListFragment : Fragment(), ItemDragListener {
         }
     }
 
-    private fun sendMessage(template: Template) {
-        lifecycleScope.launch {
-            SmsManager.sendSms(requireContext(), template)
-        }
-    }
 
-    private fun showEditableTemplateDialog(template: Template) {
+    private fun showEditableTemplateDialog(templateId: Long, groupId: Long) {
         navigate {
             TemplateListFragmentDirections.actionOpenEditableTemplate(
-                template.apply { templateGroupId = args.groupId }
-            )
+                templateId = templateId,
+                groupId = groupId)
         }
     }
 
@@ -122,6 +119,6 @@ class TemplateListFragment : Fragment(), ItemDragListener {
     }
 
     override fun onMoveFinished() {
-        viewModel.updateAll(listAdapter.currentList)
+        viewModel.updateOrder(listAdapter.currentList)
     }
 }

@@ -14,7 +14,7 @@ import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.databinding.FragmentFavoritesBinding
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
 import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DeleteConfirmationAlertDialog
-import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateListViewModel
+import com.leviancode.android.gsmbox.ui.templates.view.templates.list.TemplateListViewModel
 import com.leviancode.android.gsmbox.utils.extensions.navigate
 import com.leviancode.android.gsmbox.utils.managers.SmsManager
 import kotlinx.coroutines.launch
@@ -46,7 +46,6 @@ class FavoritesFragment : Fragment() {
             binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
             listAdapter.submitList(list)
         }
-        viewModel.sendMessageLiveEvent.observe(viewLifecycleOwner) { sendMessage(it) }
 
         viewModel.popupMenuLiveEvent.observe(viewLifecycleOwner) { showPopup(it) }
     }
@@ -72,13 +71,9 @@ class FavoritesFragment : Fragment() {
 
     private fun showEditableTemplateDialog(template: Template) {
         navigate {
-            FavoritesFragmentDirections.actionOpenEditableTemplate(template)
-        }
-    }
-
-    private fun sendMessage(template: Template) {
-        lifecycleScope.launch {
-            SmsManager.sendSms(requireContext(), template)
+            FavoritesFragmentDirections.actionOpenEditableTemplate(
+                template.templateId, template.templateGroupId
+            )
         }
     }
 }

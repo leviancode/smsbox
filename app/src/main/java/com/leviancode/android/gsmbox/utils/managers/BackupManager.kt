@@ -16,7 +16,7 @@ import kotlinx.coroutines.delay
 import java.io.File
 
 object BackupManager {
-    private val db = AppDatabase.INSTANCE
+    private val db = AppDatabase.instance
     private val _backupResult = SingleLiveEvent<BackupResult>()
     val backupResult: LiveData<BackupResult> = _backupResult
     private val _restoreResult = SingleLiveEvent<BackupResult>()

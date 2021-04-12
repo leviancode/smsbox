@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.ui.templates.viewmodel
+package com.leviancode.android.gsmbox.ui.templates.view.groups.list
 
 import android.view.View
 import androidx.lifecycle.*
@@ -11,15 +11,17 @@ import kotlinx.coroutines.launch
 
 class TemplateGroupListViewModel : ViewModel() {
     private val repository = TemplatesRepository
-    val groups: LiveData<List<TemplateGroup>> = repository.groups
-    val groupsWithTemplates: LiveData<List<GroupWithTemplates>> = repository.groupsWithTemplates
     val startDragEvent = SingleLiveEvent<RecyclerView.ViewHolder>()
-    val addGroupEvent = SingleLiveEvent<TemplateGroup>()
+    val addGroupEvent = SingleLiveEvent<Long>()
     val selectedGroupEvent = SingleLiveEvent<TemplateGroup>()
     val popupMenuEvent = SingleLiveEvent<Pair<View, TemplateGroup>>()
 
+    fun getGroups() = repository.getTemplateGroups()
+
+    fun getGroupsWithTemplates() = repository.getGroupsWithTemplates()
+
     fun onAddGroupClick(){
-        addGroupEvent.value = TemplateGroup()
+        addGroupEvent.value = 0
     }
 
     fun onItemClick(item: TemplateGroup){
@@ -36,13 +38,9 @@ class TemplateGroupListViewModel : ViewModel() {
         }
     }
 
-    fun startDrag(viewHolder: RecyclerView.ViewHolder) {
-        startDragEvent.value = viewHolder
-    }
-
-    fun updateAll(list: List<TemplateGroup>) {
+    fun updateGroupsOrder(list: List<GroupWithTemplates>) {
         viewModelScope.launch {
-            repository.updateAllGroups(list)
+            repository.updateAllGroups(list.map { it.group })
         }
     }
 }

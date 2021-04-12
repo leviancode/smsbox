@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
-import com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientWithGroups
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
@@ -16,7 +15,7 @@ class RecipientListViewModel : ViewModel() {
     private val repository = RecipientsRepository
     var recipients: LiveData<List<Recipient>> = repository.recipients
 
-    val addRecipientEvent = SingleLiveEvent<Recipient>()
+    val addRecipientEvent = SingleLiveEvent<Long>()
     val recipientPopupMenuEvent = SingleLiveEvent<Pair<View, Recipient>>()
 
     fun onRecipientPopupMenuClick(view: View, item: Recipient) {
@@ -36,7 +35,7 @@ class RecipientListViewModel : ViewModel() {
     }
 
     fun onAddRecipientClick() {
-        addRecipientEvent.value = repository.getNewRecipient()
+        addRecipientEvent.value = 0
     }
 
     fun updateRecipientsOrder(list: List<Recipient>) {

@@ -28,7 +28,7 @@ const val RECIPIENT_GROUPS_FILE_NAME = "recipient_groups.json"
 const val RECIPIENTS_FILE_NAME = "recipients.json"
 const val ZIP_DB_FILE_NAME = "gsmbox_backup_%s.zip"
 val BACKUP_FILE_NAME
-    get() = "smsbox_backup_${getFormatDate()}.db"
+    get() = "smsbox_backup_${getFormatDate()}.sqlite"
 val BACKUP_DIR
     get() = "backup_${getFormatDate()}"
 

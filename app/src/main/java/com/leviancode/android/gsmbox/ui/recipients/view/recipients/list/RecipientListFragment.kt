@@ -80,7 +80,7 @@ class RecipientListFragment : Fragment(), ItemDragListener {
     private fun showRecipientPopupMenu(view: View, recipient: Recipient) {
         ItemPopupMenu(requireContext(), view).showEditAddToGroupDelete { result ->
             when (result) {
-                ItemPopupMenu.EDIT -> showEditableRecipientDialog(recipient)
+                ItemPopupMenu.EDIT -> showEditableRecipientDialog(recipient.recipientId)
                 ItemPopupMenu.ADD -> showSelectRecipientGroupDialog(recipient)
                 ItemPopupMenu.DELETE -> deleteRecipient(recipient)
             }
@@ -112,9 +112,9 @@ class RecipientListFragment : Fragment(), ItemDragListener {
         }
     }
 
-    private fun showEditableRecipientDialog(recipient: Recipient) {
+    private fun showEditableRecipientDialog(recipientId: Long) {
         navigate {
-            RecipientsPagerFragmentDirections.actionOpenEditableRecipient(recipient)
+            RecipientsPagerFragmentDirections.actionOpenEditableRecipient(recipientId)
         }
     }
 

@@ -2,30 +2,48 @@ package com.leviancode.android.gsmbox.data.model.templates
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
-import com.leviancode.android.gsmbox.data.model.recipients.Recipient
+import androidx.databinding.library.baseAdapters.BR
+import androidx.room.*
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
-import com.leviancode.android.gsmbox.utils.isNotEmpty
+import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
+import com.leviancode.android.gsmbox.utils.isNotNullOrEmpty
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.Serializable
-import java.util.*
 
 
-@Entity(tableName = "templates")
+@Entity(
+    tableName = "templates",
+    foreignKeys = [ForeignKey(
+        entity = RecipientGroup::class,
+        parentColumns = arrayOf("recipientGroupId"),
+        childColumns = arrayOf("recipientGroupId"),
+        onDelete = ForeignKey.SET_NULL,
+        deferred = true
+    ),
+        ForeignKey(
+            entity = TemplateGroup::class,
+            parentColumns = arrayOf("templateGroupId"),
+            childColumns = arrayOf("templateGroupId"),
+            onDelete = ForeignKey.CASCADE,
+            deferred = true
+        )],
+    indices = [
+        Index(value = ["recipientGroupId"], unique = false),
+        Index(value = ["templateGroupId"], unique = false)
+    ]
+)
 @kotlinx.serialization.Serializable
 data class Template(
-    @PrimaryKey
-    var templateId: String = UUID.randomUUID().toString(),
-    var templateGroupId: String = "",
+    @PrimaryKey(autoGenerate = true)
+    var templateId: Long = 0L,
+    var templateGroupId: Long = 0L,
+    var recipientGroupId: Long = 0L,
     private var name: String = "",
     private var message: String = "",
     private var iconColor: String = "#66BB6A",
-    private var favorite: Boolean = false,
-    private var recipients: MutableList<Recipient> = mutableListOf(),
-    @Embedded
-    private var recipientGroup: RecipientGroup? = null
+    private var favorite: Boolean = false
 ) : BaseObservable(), Serializable {
 
     @Bindable
@@ -43,6 +61,7 @@ data class Template(
         if (message != value) {
             message = value
             notifyChange()
+            checkNameIsUnique(value)
         }
     }
 
@@ -64,71 +83,24 @@ data class Template(
         }
     }
 
-    @Bindable
-    fun getRecipientsAsString(): String {
-        return if (isRecipientsNotEmpty()) {
-            recipients.joinToString("; ") { it.getPhoneNumber() }
-        } else ""
-    }
-
-    fun getRecipients() = recipients
-    fun setRecipients(value: List<Recipient>) {
-        recipients = value.toMutableList()
-        notifyChange()
-    }
-
-    @Bindable
-    fun getRecipientGroupNameWithCount(): String {
-        return if (getRecipientGroupName().isNotEmpty()) {
-            "${getRecipientGroupName()} (${getRecipientsCount()})"
-        } else ""
-    }
-
-    fun getRecipientsCount(): Int  = recipients.filter {
-            it.getPhoneNumber().isNotBlank()
-        }.count()
-
-    @Bindable
-    fun getRecipientGroupName() = recipientGroup?.getRecipientGroupName() ?: ""
-    fun getRecipientGroupId() = recipientGroup?.recipientGroupId ?: ""
-
-    fun getRecipientGroup() = recipientGroup
-    fun setRecipientGroup(value: RecipientGroup?) {
-        recipientGroup = value
-        notifyChange()
-    }
-
-    fun addRecipient(recipient: Recipient) {
-        recipients.add(recipient)
-        recipientGroup = null
-        notifyChange()
-    }
-
-    fun removeRecipient(recipient: Recipient) {
-        recipients.remove(recipient)
-        recipientGroup = null
-        notifyChange()
-    }
-
     @Ignore
     @get:Bindable
-    var isTemplateNameUnique = true
+    var isNameUnique = true
         set(value) {
             field = value
             notifyChange()
         }
 
     @Bindable
-    fun isRecipientsNotEmpty() = getRecipientsCount() > 0
-
-    @Bindable
-    fun isRecipientGroupAttached() = recipientGroup != null
-
-    fun isRecipientsOrGroup() = isRecipientsNotEmpty() or isRecipientGroupAttached()
-
-    @Bindable
-    fun isFieldsCorrect() = isTemplateNameUnique && isNotEmpty(
+    fun isFieldsCorrect() = isNameUnique && isNotNullOrEmpty(
         getName(),
         getMessage()
-    ) && isRecipientsOrGroup()
+    )
+
+    private fun checkNameIsUnique(value: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            val found = TemplatesRepository.getTemplateByName(value)
+            isNameUnique = found == null || found.templateId == templateId
+        }
+    }
 }

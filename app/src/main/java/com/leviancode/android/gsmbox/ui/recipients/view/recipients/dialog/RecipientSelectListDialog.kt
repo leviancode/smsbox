@@ -72,7 +72,7 @@ class RecipientSelectListDialog : BottomSheetDialogFragment() {
     }
 
     private fun observeUI() {
-        viewModel.loadRecipientsAndSelectByPhoneNumber(args.phoneNumber).observe(viewLifecycleOwner) { list ->
+        viewModel.loadRecipientsAndSelectCurrent(args.recipientId).observe(viewLifecycleOwner) { list ->
             binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
             listAdapter.recipients = list
         }

@@ -12,19 +12,19 @@ class RecipientGroupSelectListViewModel : ViewModel() {
     var data = listOf<RecipientGroup>()
     var multiSelectMode = false
 
-    fun loadNotEmptyGroupsAndSelectByGroupId(groupId: String?) =
+    fun loadNotEmptyGroupsAndSelectByGroupId(groupId: Long) =
         repository.groupsWithRecipients.map { list ->
             list.filter {
                 if (it.group.recipientGroupId == groupId) onItemClick(it.group)
-                it.recipients.isNotEmpty()
+                it.getRecipients().isNotEmpty()
             }.map { it.group }.also { data = it }
         }
 
-    fun loadAllGroupsAndSelectByRecipientId(recipientId: String) =
+    fun loadAllGroupsAndSelectByRecipientId(recipientId: Long) =
         repository.groupsWithRecipients.map { list ->
             if (firstLoad) {
                 list.forEach { groupWithRecipients ->
-                    groupWithRecipients.recipients.find { it.recipientId == recipientId }?.let {
+                    groupWithRecipients.getRecipients().find { it.recipientId == recipientId }?.let {
                         onItemClick(groupWithRecipients.group)
                     }
                 }
@@ -56,7 +56,7 @@ class RecipientGroupSelectListViewModel : ViewModel() {
 
     fun getSingleSelectedGroupId() = if (selectedItems.isNotEmpty()) {
         selectedItems[0].recipientGroupId
-    } else ""
+    } else 0
 
     fun getNewGroup(): RecipientGroup = repository.getNewRecipientGroup()
 }

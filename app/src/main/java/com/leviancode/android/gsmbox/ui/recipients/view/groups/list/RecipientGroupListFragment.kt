@@ -101,7 +101,7 @@ class RecipientGroupListFragment : Fragment() {
     private fun showRecipientPopupMenu(view: View, item: RecipientWithGroup) {
         ItemPopupMenu(requireContext(), view).showEditRemoveDelete { result ->
             when (result) {
-                ItemPopupMenu.EDIT -> showEditableRecipientDialog(item.recipient)
+                ItemPopupMenu.EDIT -> showEditableRecipientDialog(item.recipient.recipientId)
                 ItemPopupMenu.REMOVE -> removeRecipientFromGroup(item)
                 ItemPopupMenu.DELETE -> deleteRecipient(item.recipient)
             }
@@ -111,7 +111,7 @@ class RecipientGroupListFragment : Fragment() {
     private fun showGroupPopupMenu(view: View, item: GroupWithRecipients) {
         ItemPopupMenu(requireContext(), view).showEditAddRecipientClearDelete { result ->
             when (result) {
-                ItemPopupMenu.EDIT -> showEditableRecipientGroupDialog(item.group)
+                ItemPopupMenu.EDIT -> showEditableRecipientGroupDialog(item.group.recipientGroupId)
                 ItemPopupMenu.ADD -> showSelectRecipientsDialog(item)
                 ItemPopupMenu.CLEAR -> clearGroup(item)
                 ItemPopupMenu.DELETE -> deleteGroup(item.group)
@@ -122,11 +122,11 @@ class RecipientGroupListFragment : Fragment() {
     private fun showSelectRecipientsDialog(item: GroupWithRecipients) {
         getNavigationResult<List<Recipient>>(REQ_MULTI_SELECT_RECIPIENT)?.observe(viewLifecycleOwner) { result ->
             if (result != null) {
-                item.recipients = result
+                item.setRecipients(result)
                 viewModel.updateGroupWithRecipients(item)
                 showToast(
                     requireContext(),
-                    getString(R.string.toast_add_to_group, item.group.getRecipientGroupName())
+                    getString(R.string.toast_add_to_group, item.group.getName())
                 )
                 removeNavigationResult<List<Recipient>>(REQ_MULTI_SELECT_RECIPIENT)
             }
@@ -167,15 +167,15 @@ class RecipientGroupListFragment : Fragment() {
         }
     }
 
-    private fun showEditableRecipientDialog(recipient: Recipient) {
+    private fun showEditableRecipientDialog(recipientId: Long) {
         navigate {
-            RecipientsPagerFragmentDirections.actionOpenEditableRecipient(recipient)
+            RecipientsPagerFragmentDirections.actionOpenEditableRecipient(recipientId)
         }
     }
 
-    private fun showEditableRecipientGroupDialog(group: RecipientGroup) {
+    private fun showEditableRecipientGroupDialog(groupId: Long) {
         navigate {
-            RecipientsPagerFragmentDirections.actionOpenEditableRecipientGroup(group)
+            RecipientsPagerFragmentDirections.actionOpenEditableRecipientGroup(groupId)
         }
     }
 }

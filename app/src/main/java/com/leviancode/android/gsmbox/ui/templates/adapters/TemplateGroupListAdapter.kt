@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.data.model.templates.GroupWithTemplates
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateGroupBinding
-import com.leviancode.android.gsmbox.ui.templates.viewmodel.TemplateGroupListViewModel
+import com.leviancode.android.gsmbox.ui.templates.view.groups.list.TemplateGroupListViewModel
 import java.util.*
 
 class TemplateGroupListAdapter(val viewModel: TemplateGroupListViewModel) :
-    ListAdapter<TemplateGroup, TemplateGroupListAdapter.TemplateGroupHolder>(
+    ListAdapter<GroupWithTemplates, TemplateGroupListAdapter.TemplateGroupHolder>(
         GroupListDiffCallback()
     ) {
 
@@ -43,18 +44,18 @@ class TemplateGroupListAdapter(val viewModel: TemplateGroupListViewModel) :
             binding.viewModel = viewModel
         }
 
-        fun bind(group: TemplateGroup) {
+        fun bind(group: GroupWithTemplates) {
             binding.model = group
             binding.executePendingBindings()
         }
     }
 
-    class GroupListDiffCallback : DiffUtil.ItemCallback<TemplateGroup>() {
-        override fun areItemsTheSame(oldItem: TemplateGroup, newItem: TemplateGroup): Boolean {
-            return oldItem.templateGroupId == newItem.templateGroupId
+    class GroupListDiffCallback : DiffUtil.ItemCallback<GroupWithTemplates>() {
+        override fun areItemsTheSame(oldItem: GroupWithTemplates, newItem: GroupWithTemplates): Boolean {
+            return oldItem.group.templateGroupId == newItem.group.templateGroupId
         }
 
-        override fun areContentsTheSame(oldItem: TemplateGroup, newItem: TemplateGroup): Boolean {
+        override fun areContentsTheSame(oldItem: GroupWithTemplates, newItem: GroupWithTemplates): Boolean {
             return oldItem == newItem
         }
     }
