@@ -1,117 +1,130 @@
 package com.leviancode.android.gsmbox.data.repository
 
 import androidx.lifecycle.LiveData
-import com.leviancode.android.gsmbox.data.dao.RecipientDao
-import com.leviancode.android.gsmbox.data.dao.RecipientGroupDao
-import com.leviancode.android.gsmbox.data.dao.RecipientsAndGroupRelationDao
+import com.leviancode.android.gsmbox.data.dao.recipients.RecipientAndGroupRelationDao
+import com.leviancode.android.gsmbox.data.dao.recipients.RecipientDao
+import com.leviancode.android.gsmbox.data.dao.recipients.RecipientGroupDao
 import com.leviancode.android.gsmbox.data.model.recipients.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
+import com.leviancode.android.gsmbox.utils.extensions.toIntArray
+import com.leviancode.android.gsmbox.utils.log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.withContext
 
 object RecipientsRepository {
+    private  val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val recipientDao: RecipientDao
         get() = AppDatabase.instance.recipientDao()
     private val groupDao: RecipientGroupDao
         get() = AppDatabase.instance.recipientGroupDao()
-    private val recipientsAndGroupsDao: RecipientsAndGroupRelationDao
-        get() = AppDatabase.instance.recipientsAndGroupsDao()
+    private val relationDao: RecipientAndGroupRelationDao
+        get() = AppDatabase.instance.recipientAndGroupRelationDao()
 
-    val groups: LiveData<List<RecipientGroup>>
-        get() = groupDao.getAllLiveData()
-    val recipients: LiveData<List<Recipient>>
-        get() = recipientDao.getAllLiveData()
+    val groups: LiveData<List<RecipientGroup>> = groupDao.getAllLiveData()
+    val recipients: LiveData<List<Recipient>> = recipientDao.getAllLiveData()
+    val groupsWithRecipients: LiveData<List<GroupWithRecipients>> = groupDao.getGroupsWithRecipients()
+    val recipientsWithGroups: LiveData<List<RecipientWithGroups>> = recipientDao.getRecipientsWithGroups()
 
-    val groupsWithRecipients: LiveData<List<GroupWithRecipients>>
-        get() = recipientsAndGroupsDao.getGroupsWithRecipients()
-    val recipientsWithGroups: LiveData<List<RecipientWithGroups>>
-        get() = recipientsAndGroupsDao.getRecipientsWithGroups()
-
-    suspend fun saveRecipient(item: Recipient) = withContext(IO) {
-        if (item.recipientId == 0L) recipientDao.insert(item)
-        else {
-            recipientDao.update(item)
-            item.recipientId
-        }
-    }
-    suspend fun saveGroup(item: RecipientGroup) = withContext(IO) {
-        if (item.recipientGroupId == 0L) groupDao.insert(item)
-        else {
-            groupDao.update(item)
-            item.recipientGroupId
+    suspend fun saveRecipient(item: Recipient): Int {
+        return withContext(scope.coroutineContext) {
+            recipientDao.upsert(item)
         }
     }
 
-
-    suspend fun saveRecipientWithGroups(item: RecipientWithGroups) = withContext(IO) {
-        saveRecipient(item.recipient)
-        deleteRecipientFromAllGroups(item.recipient)
-        item.groups.forEach { group ->
-            saveGroup(group)
-            saveGroupAndRecipientRelation(group.recipientGroupId, item.recipient.recipientId)
+    suspend fun saveGroup(item: RecipientGroup): Int {
+        return withContext(scope.coroutineContext) {
+            groupDao.upsert(item)
         }
     }
 
-    suspend fun saveGroupWithRecipients(item: GroupWithRecipients) = withContext(IO) {
-        deleteGroupFromAllRecipients(item.group.recipientGroupId)
-        saveGroup(item.group)
-        item.getRecipients().forEach { recipient ->
-            saveRecipient(recipient)
-            saveGroupAndRecipientRelation(item.group.recipientGroupId, recipient.recipientId)
+    suspend fun insertAllRecipients(list: List<Recipient>): IntArray {
+        return withContext(scope.coroutineContext) {
+            recipientDao.insertAll(list).toIntArray()
         }
     }
 
-    suspend fun deleteRecipient(item: Recipient) = withContext(IO) {
-        deleteRecipientFromAllGroups(item)
+    suspend fun insertAllGroups(list: List<RecipientGroup>): IntArray {
+        return withContext(scope.coroutineContext) {
+            groupDao.insertAll(list).toIntArray()
+        }
+    }
+
+    suspend fun saveRecipientWithGroups(item: RecipientWithGroups): Int {
+        return withContext(scope.coroutineContext) {
+            val recipientId = recipientDao.upsert(item.recipient)
+            relationDao.deleteByRecipientId(recipientId)
+            item.groups.forEach { group ->
+                val groupId = saveGroup(group)
+                saveRelation(groupId, recipientId)
+            }
+            recipientId
+        }
+    }
+
+    suspend fun saveRecipientWithGroups(item: Recipient, groupIds: List<Int>): Int {
+        return withContext(scope.coroutineContext) {
+            val recipientId = recipientDao.upsert(item)
+            relationDao.deleteByRecipientId(recipientId)
+            groupIds.toList().forEach { groupId ->
+                saveRelation(groupId, recipientId)
+            }
+            recipientId
+        }
+    }
+
+    suspend fun saveGroupWithRecipients(item: GroupWithRecipients): Int {
+        return withContext(scope.coroutineContext) {
+            val groupId = groupDao.upsert(item.group)
+            deleteAllRelationWithGroup(groupId)
+            item.getRecipients().forEach { recipient ->
+                val recipientId = saveRecipient(recipient)
+                saveRelation(groupId, recipientId)
+            }
+            recipientDao.deleteUnused()
+            groupId
+        }
+
+    }
+
+    suspend fun deleteRecipient(item: Recipient) = withContext(scope.coroutineContext) {
         recipientDao.delete(item)
     }
 
-    suspend fun deleteRecipientFromAllGroups(item: Recipient) = withContext(IO){
-        recipientsAndGroupsDao.deleteByRecipientId(item.recipientId)
-    }
-
-    suspend fun deleteGroupFromAllRecipients(groupId: Long) = withContext(IO){
-        recipientsAndGroupsDao.deleteByGroupId(groupId)
-    }
-
-    suspend fun deleteGroup(item: RecipientGroup) = withContext(IO) {
-        deleteGroupFromAllRecipients(item.recipientGroupId)
+    suspend fun deleteGroup(item: RecipientGroup) = withContext(scope.coroutineContext) {
         groupDao.delete(item)
     }
 
-    suspend fun deleteGroupAndRecipientRelation(groupId: Long, recipientId: Long) = withContext(IO){
-        recipientsAndGroupsDao.delete(
+    suspend fun deleteRelation(groupId: Int, recipientId: Int) = withContext(scope.coroutineContext) {
+        relationDao.delete(
             RecipientsAndGroupRelation(groupId, recipientId)
         )
     }
 
-    suspend fun saveGroupAndRecipientRelation(groupId: Long, recipientId: Long) = withContext(IO){
-        recipientsAndGroupsDao.insert(
+    suspend fun saveRelation(groupId: Int, recipientId: Int) = withContext(scope.coroutineContext) {
+        relationDao.insert(
             RecipientsAndGroupRelation(groupId, recipientId)
         )
     }
 
-    suspend fun getRecipientById(recipientId: Long) = withContext(IO) {
-        recipientDao.get(recipientId)
-    }
-
-    suspend fun getGroupById(groupId: Long) = withContext(IO) {
+    suspend fun getGroupById(groupId: Int) = withContext(scope.coroutineContext) {
         groupDao.getById(groupId)
     }
 
-    suspend fun clearGroup(item: RecipientGroup) = withContext(IO) {
-        recipientsAndGroupsDao.deleteByGroupId(item.recipientGroupId)
+    suspend fun getGroupByIds(ids: List<Int>) = withContext(scope.coroutineContext) {
+        groupDao.getByIds(*ids.toIntArray())
     }
 
-    suspend fun getGroupWithRecipients(groupId: Long) = withContext(IO) {
-        recipientsAndGroupsDao.getGroupWithRecipients(groupId)
+    suspend fun deleteAllRelationWithGroup(groupId: Int) = withContext(scope.coroutineContext) {
+        relationDao.deleteByGroupId(groupId)
     }
 
-    suspend fun getRecipientWithGroups(recipientId: Long) = withContext(IO) {
-        recipientsAndGroupsDao.getRecipientWithGroups(recipientId)
+    suspend fun getGroupWithRecipients(groupId: Int) = withContext(scope.coroutineContext) {
+        groupDao.getGroupWithRecipients(groupId)
     }
 
-    suspend fun updateAllRecipients(list: List<Recipient>) = withContext(IO) {
-        list.forEach { recipientDao.insert(it) }
+    suspend fun getRecipientWithGroups(recipientId: Int) = withContext(scope.coroutineContext) {
+        recipientDao.getRecipientWithGroups(recipientId)
     }
 
     fun getNewRecipientWithGroups() = RecipientWithGroups(Recipient(), mutableListOf())
@@ -126,14 +139,26 @@ object RecipientsRepository {
         return Recipient(name = contact.name, phoneNumber = contact.phoneNumber)
     }
 
-    fun getRecipientNumbersLiveData(): LiveData<List<String>> = recipientDao.getNumbersWithNotEmptyNamesLiveData()
-    suspend fun getRecipientNumbers() = recipientDao.getNumbersWithNotEmptyNames()
+    fun getRecipientNumbersLiveData() = recipientDao.getNumbersWithNotEmptyNamesLiveData()
 
-    suspend fun getRecipientByName(name: String): Recipient? {
-        return recipientDao.getByName(name)
+    suspend fun getRecipientNumbers() = withContext(scope.coroutineContext) {
+        recipientDao.getNumbersWithNotEmptyNames()
     }
 
-    suspend fun getGroupByName(name: String): RecipientGroup? {
-        return groupDao.getByName(name)
+    suspend fun getRecipientByName(name: String) = withContext(scope.coroutineContext) {
+        recipientDao.getByName(name)
+    }
+
+    suspend fun getGroupByName(name: String) = withContext(scope.coroutineContext) {
+        groupDao.getByName(name)
+    }
+
+    suspend fun isRelationExist(recipientGroupId: Int, recipientId: Int) = withContext(scope.coroutineContext) {
+        relationDao.get(recipientGroupId, recipientId) != null
+    }
+
+    suspend fun deleteGroupById(id: Int) = withContext(scope.coroutineContext) {
+        groupDao.deleteById(id)
+        recipientDao.deleteUnused()
     }
 }

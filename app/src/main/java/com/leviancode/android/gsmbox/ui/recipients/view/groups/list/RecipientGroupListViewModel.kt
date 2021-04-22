@@ -10,13 +10,14 @@ import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientWithGroup
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 class RecipientGroupListViewModel : ViewModel() {
     private val repository = RecipientsRepository
     var groupsWithRecipients: LiveData<List<GroupWithRecipients>> = repository.groupsWithRecipients
 
-    val addGroupEvent = SingleLiveEvent<Long>()
+    val addGroupEvent = SingleLiveEvent<Int>()
     val recipientPopupMenuEvent = SingleLiveEvent<Pair<View, RecipientWithGroup>>()
     val groupPopupMenuEvent = SingleLiveEvent<Pair<View, GroupWithRecipients>>()
 
@@ -49,7 +50,7 @@ class RecipientGroupListViewModel : ViewModel() {
     fun clearGroup(item: GroupWithRecipients) {
         viewModelScope.launch {
             recentlyChangedGroup = item
-            repository.clearGroup(item.group)
+            repository.deleteAllRelationWithGroup(item.group.recipientGroupId)
         }
     }
 
@@ -61,7 +62,7 @@ class RecipientGroupListViewModel : ViewModel() {
 
     fun removeRecipientFromGroup(item: RecipientWithGroup) {
         viewModelScope.launch {
-            repository.deleteGroupAndRecipientRelation(
+            repository.deleteRelation(
                 item.group.recipientGroupId,
                 item.recipient.recipientId
             )

@@ -34,7 +34,7 @@ class EditableTemplateGroupDialog : AbstractFullScreenDialog() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         viewModel.loadGroup(args.groupId)
-        setTitle(args.groupId != 0L)
+        setTitle(args.groupId != 0)
         showKeyboard(binding.editTextTemplateGroupName)
         observeUI()
     }

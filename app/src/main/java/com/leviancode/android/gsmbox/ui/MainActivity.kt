@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         AppDatabase.init(applicationContext)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this,

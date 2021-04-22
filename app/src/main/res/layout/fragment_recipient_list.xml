@@ -8,14 +8,31 @@
             name="adapter"
             type="com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientListAdapter" />
     </data>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recipients_recycler_view"
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:setAdapter="@{adapter}"
-        tools:listitem="@layout/list_item_recipient"/>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_list_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="30dp"
+            android:text="@string/save_your_recipients_here"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recipients_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:setAdapter="@{adapter}"
+            tools:listitem="@layout/list_item_recipient"/>
+    </FrameLayout>
 
 </layout>

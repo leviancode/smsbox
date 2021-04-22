@@ -9,6 +9,21 @@
             type="com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientGroupExpandableListAdapter" />
     </data>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_list_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="30dp"
+            android:text="@string/put_your_recipients_into_groups"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
         <ExpandableListView
             android:id="@+id/recipient_expandable_list"
             android:layout_width="match_parent"
@@ -19,4 +34,7 @@
             android:childDivider="@android:color/transparent"
             app:setExpandableAdapter="@{adapter}"
             tools:listitem="@layout/list_item_recipient_group"/>
+    </FrameLayout>
+
+
 </layout>

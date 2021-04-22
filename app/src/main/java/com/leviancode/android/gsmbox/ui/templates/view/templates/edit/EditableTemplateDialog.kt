@@ -48,15 +48,12 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
     }
 
     private fun setupViews(){
-        setTitle(args.templateId != 0L)
+        setTitle(args.templateId != 0)
         binding.viewModel = viewModel
-        lifecycleScope.launch {
-            viewModel.loadTemplate(args.templateId, args.groupId).collect {
-                log("load template: "+ it.template.toString())
-                binding.template = it.template
-                binding.recipients = it.recipients
-                binding.executePendingBindings()
-            }
+        viewModel.loadTemplate(args.templateId, args.groupId).observe(viewLifecycleOwner) {
+            binding.template = it.template
+            binding.recipients = it.recipients
+            binding.executePendingBindings()
         }
         showKeyboard(binding.editTextTemplateName)
     }
@@ -132,14 +129,14 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         }
     }
 
-    private fun showSelectRecipientGroupDialog(groupId: Long) {
+    private fun showSelectRecipientGroupDialog(groupId: Int) {
         hideKeyboard()
 
-        getNavigationResult<Long>(REQ_SELECT_RECIPIENT_GROUP)?.observe(viewLifecycleOwner) { result ->
-            if (result != 0L && result != groupId) {
+        getNavigationResult<Int>(REQ_SELECT_RECIPIENT_GROUP)?.observe(viewLifecycleOwner) { result ->
+            if (result != 0 && result != groupId) {
                 viewModel.setRecipientGroup(result)
             }
-            removeNavigationResult<Long>(REQ_SELECT_RECIPIENT_GROUP)
+            removeNavigationResult<Int>(REQ_SELECT_RECIPIENT_GROUP)
         }
 
         navigate {
@@ -225,7 +222,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         }
 
         if (binding.recipientsLayout.childCount > 1) {
-            if(!binding.switchToRecipientGroup.isChecked && args.templateId == 0L){
+            if(!binding.switchToRecipientGroup.isChecked && args.templateId == 0){
                 showKeyboard(recipientBinding.editTextRecipientNumber)
             }
             recipientBinding.btnRemoveNumber.visibility = View.VISIBLE

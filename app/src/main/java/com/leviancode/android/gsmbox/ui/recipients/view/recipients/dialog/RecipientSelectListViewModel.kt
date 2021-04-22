@@ -13,11 +13,11 @@ class RecipientSelectListViewModel : ViewModel() {
     var selectedItems = mutableListOf<Recipient>()
     var multiSelectMode = false
 
-    fun loadRecipientsAndSelectCurrent(id: Long) = repository.recipients.map { list ->
+    fun loadRecipientsAndSelectCurrent(id: Int) = repository.recipients.map { list ->
         list.onEach { if (it.recipientId == id) onItemClick(it) }
     }
 
-    fun loadRecipientsAndSelectByGroupId(groupId: Long) = repository.recipientsWithGroups.map { list ->
+    fun loadRecipientsAndSelectByGroupId(groupId: Int) = repository.recipientsWithGroups.map { list ->
         list.onEach { recipientsWithGroups ->
             recipientsWithGroups.groups.find { it.recipientGroupId == groupId }?.let {
                 onItemClick(recipientsWithGroups.recipient)

@@ -7,25 +7,21 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.ui.templates.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateListBinding
-import com.leviancode.android.gsmbox.utils.helpers.ItemDragHelperCallback
-import com.leviancode.android.gsmbox.utils.helpers.ItemDragListener
-import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DeleteConfirmationAlertDialog
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.DELETE
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.EDIT
+import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DeleteConfirmationAlertDialog
+import com.leviancode.android.gsmbox.ui.templates.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.utils.extensions.goBack
 import com.leviancode.android.gsmbox.utils.extensions.navigate
-import com.leviancode.android.gsmbox.utils.log
-import com.leviancode.android.gsmbox.utils.managers.SmsManager
-import kotlinx.coroutines.launch
+import com.leviancode.android.gsmbox.utils.helpers.ItemDragHelperCallback
+import com.leviancode.android.gsmbox.utils.helpers.ItemDragListener
 
 class TemplateListFragment : Fragment(), ItemDragListener {
     private lateinit var binding: FragmentTemplateListBinding
@@ -68,9 +64,6 @@ class TemplateListFragment : Fragment(), ItemDragListener {
         }
 
         viewModel.loadTemplatesWithRecipients(args.groupId).observe(viewLifecycleOwner){ items ->
-            log("receive: ${items.size}")
-            items.forEach { log(it.template.toString())
-                log(it.recipients.toString())}
             binding.tvListEmpty.visibility =
                 if (items.isEmpty()) View.VISIBLE
                 else View.GONE
@@ -106,7 +99,7 @@ class TemplateListFragment : Fragment(), ItemDragListener {
     }
 
 
-    private fun showEditableTemplateDialog(templateId: Long, groupId: Long) {
+    private fun showEditableTemplateDialog(templateId: Int, groupId: Int) {
         navigate {
             TemplateListFragmentDirections.actionOpenEditableTemplate(
                 templateId = templateId,

@@ -1,5 +1,7 @@
 package com.leviancode.android.gsmbox.utils
 
+const val DEFAULT_GROUP_COLOR = "#d59557"
+
 const val DATABASE_NAME = "sms_box_db"
 const val ARG_GROUP_ID = "group_id"
 const val ARG_GROUP_NAME = "group_name"
@@ -11,6 +13,7 @@ const val REQ_SAVED = "request_saved"
 const val REQ_SELECTED = "request_selected"
 const val REQ_SELECT_RECIPIENT = "request_select_recipient"
 const val REQ_SELECT_RECIPIENT_GROUP = "request_select_recipient_group"
+const val REQ_CREATE_RECIPIENT_GROUP = "request_create_recipient_group"
 const val REQ_MULTI_SELECT_RECIPIENT = "request_multi_select_recipient"
 const val REQ_MULTI_SELECT_RECIPIENT_GROUP = "request_multi_select_recipient_group"
 const val REQ_PICK_CONTACT = 1

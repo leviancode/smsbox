@@ -2,10 +2,12 @@ package com.leviancode.android.gsmbox.data.model.recipients
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
+import com.leviancode.android.gsmbox.utils.DEFAULT_GROUP_COLOR
 import com.leviancode.android.gsmbox.utils.isNotNullOrEmpty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,9 +18,9 @@ import java.io.Serializable
 @kotlinx.serialization.Serializable
 data class RecipientGroup(
     @PrimaryKey(autoGenerate = true)
-    var recipientGroupId: Long = 0L,
+    var recipientGroupId: Int = 0,
     private var name: String? = null,
-    private var iconColor: String = "#d59557",
+    private var iconColor: String = DEFAULT_GROUP_COLOR,
 ) : BaseObservable(), Serializable {
 
     @Ignore

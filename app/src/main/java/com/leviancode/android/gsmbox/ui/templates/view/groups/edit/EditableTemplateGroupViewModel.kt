@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 class EditableTemplateGroupViewModel : ViewModel() {
@@ -19,9 +20,10 @@ class EditableTemplateGroupViewModel : ViewModel() {
         list.filter { it != name }
     }
 
-    fun loadGroup(id: Long){
-        if (id != 0L) {
-            viewModelScope.launch {
+    fun loadGroup(id: Int) {
+        viewModelScope.launch {
+            if (id != 0) {
+
                 repository.getGroupById(id)?.let { group ->
                     data = group
                 }
@@ -30,7 +32,7 @@ class EditableTemplateGroupViewModel : ViewModel() {
         original = data.copy()
     }
 
-    fun onSaveClick(){
+    fun onSaveClick() {
         viewModelScope.launch {
             repository.saveGroup(data)
         }

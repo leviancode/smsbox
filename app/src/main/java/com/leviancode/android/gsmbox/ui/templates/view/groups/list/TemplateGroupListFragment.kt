@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.data.model.templates.GroupWithTemplates
 import com.leviancode.android.gsmbox.ui.templates.adapters.TemplateGroupListAdapter
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateGroupListBinding
@@ -90,22 +91,22 @@ class TemplateGroupListFragment : Fragment(), ItemDragListener {
         }
     }
 
-    private fun showEditableGroupDialog(groupId: Long) {
+    private fun showEditableGroupDialog(groupId: Int) {
         navigate {
             TemplateGroupListFragmentDirections.actionOpenEditableGroup(groupId)
         }
     }
 
-    private fun showPopup(view: View, group: TemplateGroup) {
+    private fun showPopup(view: View, group: GroupWithTemplates) {
         ItemPopupMenu(requireContext(), view).showEditDelete { result ->
             when (result) {
-                EDIT -> showEditableGroupDialog(group.templateGroupId)
+                EDIT -> showEditableGroupDialog(group.group.templateGroupId)
                 DELETE -> deleteGroup(group)
             }
         }
     }
 
-    private fun deleteGroup(item: TemplateGroup) {
+    private fun deleteGroup(item: GroupWithTemplates) {
         DeleteConfirmationAlertDialog.show(
             requireContext(),
             getString(R.string.delete_group),

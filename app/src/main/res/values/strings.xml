@@ -83,7 +83,8 @@
     <string name="template_group_empty">Template group empty</string>
     <string name="group">Group:</string>
     <string name="select_recipient">Select Recipient</string>
-    <string name="no_recipients">No saved recipients</string>
+    <string name="no_saved_recipients">No saved recipients</string>
+    <string name="no_recipients">No recipients</string>
     <string name="toast_add_to_group">Added to %1$s</string>
     <string name="save_to_file">Save to file</string>
     <string name="restore_from_file">Restore from file</string>
@@ -120,4 +121,6 @@
     <string name="edit_group">Edit Group</string>
     <string name="edit_recipient">Edit Recipient</string>
     <string name="edit_template">Edit Template</string>
+    <string name="save_your_recipients_here">Save your recipients here</string>
+    <string name="put_your_recipients_into_groups">Put your recipients into groups</string>
 </resources>

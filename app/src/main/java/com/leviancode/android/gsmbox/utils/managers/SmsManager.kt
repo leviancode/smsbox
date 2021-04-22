@@ -8,12 +8,14 @@ import com.leviancode.android.gsmbox.data.repository.PlaceholdersRepository
 
 object SmsManager {
     suspend fun sendSms(context: Context, data: TemplateWithRecipients) {
+        if (data.recipients == null) return
+
         var message = data.template.getMessage()
         if (hasPlaceholder(message)){
             message = replacePlaceholder(message)
         }
-        val addresses = data.recipients.getRecipients().map { it.getPhoneNumber() }
-            .joinToString(";", "smsto:")
+        val addresses =
+            data.recipients!!.getRecipients().joinToString(";", "smsto:") { it.getPhoneNumber() }
 
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(addresses)

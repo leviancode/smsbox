@@ -8,6 +8,7 @@ import com.leviancode.android.gsmbox.data.model.templates.TemplateWithRecipients
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import com.leviancode.android.gsmbox.utils.managers.SmsManager
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 class TemplateListViewModel : ViewModel() {
@@ -24,7 +25,7 @@ class TemplateListViewModel : ViewModel() {
         }
     }
 
-    fun loadTemplatesWithRecipients(groupId: Long) = repository.getTemplatesWithRecipients(groupId)
+    fun loadTemplatesWithRecipients(groupId: Int) = repository.getTemplatesWithRecipients(groupId)
 
     fun onCreateTemplateClick() {
         createTemplateLiveEvent.call()
@@ -49,7 +50,7 @@ class TemplateListViewModel : ViewModel() {
 
     fun updateOrder(list: List<TemplateWithRecipients>) {
         viewModelScope.launch {
-            repository.updateAllTemplates(list.map { it.template })
+            repository.insertAllTemplates(list.map { it.template })
         }
     }
 }

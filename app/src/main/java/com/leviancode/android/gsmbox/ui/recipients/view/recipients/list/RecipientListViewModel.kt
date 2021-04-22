@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientWithGroups
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
@@ -15,11 +14,15 @@ class RecipientListViewModel : ViewModel() {
     private val repository = RecipientsRepository
     var recipients: LiveData<List<Recipient>> = repository.recipients
 
-    val addRecipientEvent = SingleLiveEvent<Long>()
-    val recipientPopupMenuEvent = SingleLiveEvent<Pair<View, Recipient>>()
+    val addRecipientEvent = SingleLiveEvent<Int>()
+    val recipientPopupMenuEvent = SingleLiveEvent<Pair<View, RecipientWithGroups>>()
 
     fun onRecipientPopupMenuClick(view: View, item: Recipient) {
-        recipientPopupMenuEvent.value = view to item
+        viewModelScope.launch {
+            repository.getRecipientWithGroups(item.recipientId)?.let {
+                recipientPopupMenuEvent.value = view to it
+            }
+        }
     }
 
     fun deleteRecipient(item: Recipient) {
@@ -40,13 +43,13 @@ class RecipientListViewModel : ViewModel() {
 
     fun updateRecipientsOrder(list: List<Recipient>) {
         viewModelScope.launch {
-            repository.updateAllRecipients(list)
+            repository.insertAllRecipients(list)
         }
     }
 
-    fun addRecipientToGroups(recipient: Recipient, groups: List<RecipientGroup>) {
+    fun addRecipientToGroups(item: Recipient, ids: List<Int>) {
         viewModelScope.launch {
-            repository.saveRecipientWithGroups(RecipientWithGroups(recipient, groups.toMutableList()))
+            repository.saveRecipientWithGroups(item, ids)
         }
     }
 }

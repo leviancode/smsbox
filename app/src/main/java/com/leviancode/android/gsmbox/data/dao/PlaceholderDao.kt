@@ -21,7 +21,7 @@ interface PlaceholderDao {
     suspend fun getValueByName(name: String): String?
 
     @Query("SELECT * FROM placeholders WHERE placeholderId = :id")
-    suspend fun get(id: Long): Placeholder?
+    suspend fun get(id: Int): Placeholder?
 
     @Query("SELECT * FROM placeholders WHERE name = :name")
     suspend fun getByName(name: String): Placeholder?

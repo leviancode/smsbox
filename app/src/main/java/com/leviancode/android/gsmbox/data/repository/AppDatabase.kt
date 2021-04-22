@@ -6,12 +6,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.leviancode.android.gsmbox.data.dao.*
+import com.leviancode.android.gsmbox.data.dao.recipients.RecipientAndGroupRelationDao
+import com.leviancode.android.gsmbox.data.dao.recipients.RecipientDao
+import com.leviancode.android.gsmbox.data.dao.recipients.RecipientGroupDao
+import com.leviancode.android.gsmbox.data.dao.templates.TemplateDao
+import com.leviancode.android.gsmbox.data.dao.templates.TemplateGroupDao
 import com.leviancode.android.gsmbox.data.model.placeholders.Placeholder
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientsAndGroupRelation
 import com.leviancode.android.gsmbox.data.model.templates.Template
-import com.leviancode.android.gsmbox.data.model.templates.TemplateAndRecipientRelation
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import com.leviancode.android.gsmbox.utils.Converters
 import com.leviancode.android.gsmbox.utils.DATABASE_NAME
@@ -22,17 +26,14 @@ import com.leviancode.android.gsmbox.utils.DATABASE_NAME
     RecipientGroup::class,
     Recipient::class,
     RecipientsAndGroupRelation::class,
-    TemplateAndRecipientRelation::class,
     Placeholder::class], version = 3, exportSchema = false)
-@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase(){
     abstract fun templateDao(): TemplateDao
     abstract fun templateGroupDao(): TemplateGroupDao
-    abstract fun templateAndRecipientsDao(): TemplateAndRecipientRelationDao
     abstract fun recipientDao(): RecipientDao
     abstract fun recipientGroupDao(): RecipientGroupDao
-    abstract fun recipientsAndGroupsDao(): RecipientsAndGroupRelationDao
     abstract fun placeholderDao(): PlaceholderDao
+    abstract fun recipientAndGroupRelationDao(): RecipientAndGroupRelationDao
 
     companion object{
         lateinit var instance: AppDatabase

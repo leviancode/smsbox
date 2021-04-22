@@ -5,22 +5,19 @@ import androidx.lifecycle.*
 import com.leviancode.android.gsmbox.data.model.recipients.*
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
+import com.leviancode.android.gsmbox.utils.log
 import kotlinx.coroutines.*
 
 class EditableRecipientViewModel : ViewModel() {
     private val repository = RecipientsRepository
-    private var original: Recipient? = null
-    var data: RecipientWithGroups
+    private var original: RecipientWithGroups? = null
+    private var data: RecipientWithGroups = repository.getNewRecipientWithGroups()
 
     val savedEvent = SingleLiveEvent<Unit>()
     val selectContactEvent = SingleLiveEvent<Unit>()
-    val addToGroupEvent = SingleLiveEvent<Long>()
+    val addToGroupEvent = SingleLiveEvent<IntArray>()
     val removeGroupEvent = SingleLiveEvent<View>()
     val addGroupViewsEvent = SingleLiveEvent<List<RecipientGroup>>()
-
-    init {
-        data = repository.getNewRecipientWithGroups()
-    }
 
     fun onSaveClick() {
         viewModelScope.launch {
@@ -29,15 +26,22 @@ class EditableRecipientViewModel : ViewModel() {
         savedEvent.call()
     }
 
-    fun loadRecipient(recipientId: Long) {
-        viewModelScope.launch {
-            repository.getRecipientWithGroups(recipientId)?.let {
-                data = it
-                addGroupViewsEvent.value = it.groups
+    fun loadRecipient(recipientId: Int): LiveData<Recipient> {
+        val liveData = MutableLiveData<Recipient>()
+        if (recipientId != 0){
+            viewModelScope.launch {
+                repository.getRecipientWithGroups(recipientId)?.let {
+                    data = it
+                    original = data.copy()
+                    liveData.value = data.recipient
+                    addGroupViewsEvent.value = data.groups
+                }
             }
-            data.recipient.recipientId = recipientId
+        } else {
+            liveData.value = data.recipient
+            original = data.copy()
         }
-        original = data.recipient.copy()
+        return liveData
     }
 
     fun setPhoneNumber(phoneNumber: String){
@@ -52,7 +56,7 @@ class EditableRecipientViewModel : ViewModel() {
     }
 
     fun onAddToGroupClick() {
-        addToGroupEvent.value = data.recipient.recipientId
+        addToGroupEvent.value = data.groups.map { it.recipientGroupId }.toIntArray()
     }
 
     fun onContactsClick() {
@@ -64,13 +68,16 @@ class EditableRecipientViewModel : ViewModel() {
         removeGroupEvent.value = view
     }
 
-    fun isRecipientEdited() = original != data.recipient
+    fun isRecipientEdited() = original != data
 
-    fun setGroups(groups: List<RecipientGroup>) {
-        data.groups = groups.toMutableList()
+    fun setGroups(ids: List<Int>) {
+        viewModelScope.launch {
+            data.groups = repository.getGroupByIds(ids).toMutableList()
+            addGroupViewsEvent.value = data.groups
+        }
     }
 
-    fun recipientNamesWithoutCurrent(id: Long) = repository.recipients.map { list ->
+    fun recipientNamesWithoutCurrent(id: Int) = repository.recipients.map { list ->
         list.filter { it.recipientId != id }.map { it.getName() }
     }
 }

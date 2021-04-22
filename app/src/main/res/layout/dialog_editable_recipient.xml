@@ -7,6 +7,9 @@
         <variable
             name="viewModel"
             type="com.leviancode.android.gsmbox.ui.recipients.view.recipients.edit.EditableRecipientViewModel" />
+        <variable
+            name="model"
+            type="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
     </data>
 
     <FrameLayout
@@ -30,7 +33,7 @@
                 android:layout_gravity="end"
                 android:text="@string/save"
                 tools:textColor="@color/secondary"
-                android:enabled="@{viewModel.data.recipient.fieldsCorrect}"
+                android:enabled="@{model.fieldsCorrect}"
                 android:textColor="@drawable/save_button_text_color_selector"
                 android:onClick="@{() -> viewModel.onSaveClick()}"/>
 
@@ -60,11 +63,11 @@
                     android:layout_height="wrap_content"
                     android:focusable="true"
                     android:hint="@string/hint_name"
-                    app:setError="@{viewModel.data.recipient.nameUnique}"
+                    app:setError="@{model.nameUnique}"
                     android:selectAllOnFocus="true"
                     android:inputType="text"
                     android:padding="8dp"
-                    android:text="@={viewModel.data.recipient.name}"
+                    android:text="@={model.name}"
                     android:textSize="@dimen/form_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -88,7 +91,7 @@
                         android:hint="@string/hint_phone_number"
                         android:inputType="phone"
                         android:padding="8dp"
-                        android:text="@={viewModel.data.recipient.phoneNumber}"
+                        android:text="@={model.phoneNumber}"
                         android:textSize="@dimen/form_text_size" />
 
                 </com.google.android.material.textfield.TextInputLayout>

@@ -16,7 +16,7 @@ import java.io.Serializable
 @Entity(tableName = "placeholders")
 data class Placeholder(
     @PrimaryKey(autoGenerate = true)
-    var placeholderId: Long = 0L,
+    var placeholderId: Int = 0,
     private var name: String = "",
     private var value: String = ""
 ) : BaseObservable(), Serializable {

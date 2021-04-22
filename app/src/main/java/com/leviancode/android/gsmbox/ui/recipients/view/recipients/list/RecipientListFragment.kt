@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
+import com.leviancode.android.gsmbox.data.model.recipients.RecipientWithGroups
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientListBinding
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
 import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DeleteConfirmationAlertDialog
@@ -48,15 +48,19 @@ class RecipientListFragment : Fragment(), ItemDragListener {
             attachToRecyclerView(binding.recipientsRecyclerView)
         }
 
-        observeUI()
+        fetchData()
+        observeEvents()
     }
 
-    private fun observeUI() {
-        viewModel.recipients.observe(viewLifecycleOwner){
-            listAdapter.submitList(it)
+    private fun fetchData() {
+        viewModel.recipients.observe(viewLifecycleOwner){ list ->
+            binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+            listAdapter.submitList(list)
             listAdapter.notifyDataSetChanged()
         }
+    }
 
+    private fun observeEvents() {
         viewModel.addRecipientEvent.observe(viewLifecycleOwner) {
             showEditableRecipientDialog(it)
         }
@@ -67,38 +71,39 @@ class RecipientListFragment : Fragment(), ItemDragListener {
 
         val fab = requireParentFragment().requireView()
             .findViewById<FloatingActionButton>(R.id.fab_recipients)
-        binding.recipientsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding.recipientsRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy >0 && fab.isShown) fab.hide()
-                else if (dy <0 && !fab.isShown) fab.show()
+                if (dy > 0 && fab.isShown) fab.hide()
+                else if (dy < 0 && !fab.isShown) fab.show()
             }
         })
     }
 
 
-    private fun showRecipientPopupMenu(view: View, recipient: Recipient) {
+    private fun showRecipientPopupMenu(view: View, item: RecipientWithGroups) {
         ItemPopupMenu(requireContext(), view).showEditAddToGroupDelete { result ->
             when (result) {
-                ItemPopupMenu.EDIT -> showEditableRecipientDialog(recipient.recipientId)
-                ItemPopupMenu.ADD -> showSelectRecipientGroupDialog(recipient)
-                ItemPopupMenu.DELETE -> deleteRecipient(recipient)
+                ItemPopupMenu.EDIT -> showEditableRecipientDialog(item.recipient.recipientId)
+                ItemPopupMenu.ADD -> showSelectRecipientGroupDialog(item)
+                ItemPopupMenu.DELETE -> deleteRecipient(item.recipient)
             }
         }
     }
 
-    private fun showSelectRecipientGroupDialog(recipient: Recipient) {
-        getNavigationResult<List<RecipientGroup>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)?.observe(
+    private fun showSelectRecipientGroupDialog(item: RecipientWithGroups) {
+        getNavigationResult<List<Int>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)?.observe(
             viewLifecycleOwner
-        ) { result ->
-            if (result != null) {
-                viewModel.addRecipientToGroups(recipient, result)
-                removeNavigationResult<List<RecipientGroup>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)
+        ) { ids ->
+            if (!ids.isNullOrEmpty()) {
+                viewModel.addRecipientToGroups(item.recipient, ids)
             }
+            removeNavigationResult<List<Int>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)
         }
 
         navigate {
-            RecipientsPagerFragmentDirections.actionMultiSelectRecipientGroup(recipient.recipientId)
+            RecipientsPagerFragmentDirections.actionMultiSelectRecipientGroup(item.getGroupIds())
         }
     }
 
@@ -112,9 +117,9 @@ class RecipientListFragment : Fragment(), ItemDragListener {
         }
     }
 
-    private fun showEditableRecipientDialog(recipientId: Long) {
+    private fun showEditableRecipientDialog(recipientId: Int) {
         navigate {
-            RecipientsPagerFragmentDirections.actionOpenEditableRecipient(recipientId)
+            RecipientsPagerFragmentDirections.actionOpenEditableRecipient(recipientId, null)
         }
     }
 

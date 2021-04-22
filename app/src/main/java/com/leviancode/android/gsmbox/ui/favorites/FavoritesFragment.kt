@@ -72,7 +72,8 @@ class FavoritesFragment : Fragment() {
     private fun showEditableTemplateDialog(template: Template) {
         navigate {
             FavoritesFragmentDirections.actionOpenEditableTemplate(
-                template.templateId, template.templateGroupId
+                groupId = template.templateGroupId,
+                templateId = template.templateId
             )
         }
     }

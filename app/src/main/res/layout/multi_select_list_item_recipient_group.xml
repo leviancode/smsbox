@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.view.groups.dialog.RecipientGroupSelectListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.recipients.view.groups.dialog.RecipientGroupMultiSelectListViewModel" />
     </data>
 
     <LinearLayout
@@ -53,7 +53,7 @@
             android:textSize="18sp"
             tools:text="Title" />
 
-        <RadioButton
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="false"

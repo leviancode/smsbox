@@ -12,10 +12,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientGroupBinding
 import com.leviancode.android.gsmbox.ui.extra.ColorPickerDialog
-import com.leviancode.android.gsmbox.utils.REQ_SELECT_RECIPIENT_GROUP
+import com.leviancode.android.gsmbox.utils.REQ_CREATE_RECIPIENT_GROUP
 import com.leviancode.android.gsmbox.utils.extensions.goBack
 import com.leviancode.android.gsmbox.utils.extensions.setNavigationResult
 import com.leviancode.android.gsmbox.utils.hideKeyboard
@@ -51,7 +50,7 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         viewModel.loadGroup(args.groupId)
-        setTitle(args.groupId != 0L)
+        setTitle(args.groupId != 0)
         showKeyboard(binding.editTextRecipientGroupName)
         observeUI()
     }
@@ -62,10 +61,10 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
 
     private fun observeUI(){
        // setTextUniqueWatcher()
-        binding.toolbar.setNavigationOnClickListener { closeDialog(null) }
+        binding.toolbar.setNavigationOnClickListener { closeDialog(0) }
 
-        viewModel.closeDialogEvent.observe(viewLifecycleOwner){
-            closeDialog(it)
+        viewModel.closeDialogEvent.observe(viewLifecycleOwner){ id ->
+            closeDialog(id)
         }
 
         viewModel.selectColorEvent.observe(viewLifecycleOwner){ selectColor(it) }
@@ -95,8 +94,8 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
         }
     }
 
-    private fun closeDialog(result: RecipientGroup?) {
-        setNavigationResult(result, REQ_SELECT_RECIPIENT_GROUP)
+    private fun closeDialog(groupId: Int) {
+        setNavigationResult(groupId, REQ_CREATE_RECIPIENT_GROUP)
         goBack()
     }
 

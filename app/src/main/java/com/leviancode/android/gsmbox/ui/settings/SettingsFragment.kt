@@ -43,7 +43,6 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         activityResultLauncher = registerForActivityResult(GetContent()) { result ->
-            log(result?.toString() ?: "null")
             result?.let { restoreDB(it) }
         }
         observeUI()

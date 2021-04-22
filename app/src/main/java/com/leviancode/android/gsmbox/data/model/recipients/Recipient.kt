@@ -2,6 +2,8 @@ package com.leviancode.android.gsmbox.data.model.recipients
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.room.ColumnInfo
+import androidx.room.ColumnInfo.NOCASE
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -17,7 +19,7 @@ import java.io.Serializable
 @kotlinx.serialization.Serializable
 data class Recipient(
     @PrimaryKey(autoGenerate = true)
-    var recipientId: Long = 0L,
+    var recipientId: Int = 0,
     private var name: String? = null,
     private var phoneNumber: String = ""
 ) : BaseObservable(), Serializable {

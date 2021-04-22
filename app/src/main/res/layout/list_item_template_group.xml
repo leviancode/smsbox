@@ -96,7 +96,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="@dimen/popup_btn_margin_end"
                     android:contentDescription="@string/open_option_menu"
-                    android:onClick="@{(view) -> viewModel.onPopupMenuClick(view, model.group)}"
+                    android:onClick="@{(view) -> viewModel.onPopupMenuClick(view, model)}"
                     android:padding="4dp"
                     android:tint="@color/popup_menu"
                     android:background="?android:selectableItemBackgroundBorderless"

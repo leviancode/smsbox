@@ -31,25 +31,19 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.dialog_editable_recipient, container, false)
-        binding.lifecycleOwner = this
+        binding = DialogEditableRecipientBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        viewModel.loadRecipient(args.recipientId)
-        setTitle(args.recipientId != 0L)
-        if (!args.phoneNumber.isNullOrBlank()) {
-            binding.btnRecipientContacts.visibility = View.GONE
-            viewModel.setPhoneNumber(args.phoneNumber!!)
-        }
+        setTitle(args.recipientId != 0)
+        fetchData()
 
         setupContactPickerLauncher()
         showKeyboard(binding.editTextRecipientName)
-        observeUI()
+        observeEvents()
     }
 
     private fun setTitle(editMode: Boolean) {
@@ -64,7 +58,19 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
         }
     }
 
-    private fun observeUI() {
+    private fun fetchData() {
+        viewModel.loadRecipient(args.recipientId).observe(viewLifecycleOwner) {
+            log(it.toString())
+            binding.model = it
+            if (!args.phoneNumber.isNullOrBlank()) {
+                binding.btnRecipientContacts.visibility = View.GONE
+                it.setPhoneNumber(args.phoneNumber!!)
+            }
+            binding.executePendingBindings()
+        }
+    }
+
+    private fun observeEvents() {
       //  setTextUniqueWatcher()
 
         binding.toolbar.setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
@@ -77,8 +83,8 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
 
         viewModel.removeGroupEvent.observe(viewLifecycleOwner) { removeRecipientGroupView(it) }
 
-        viewModel.addGroupViewsEvent.observe(viewLifecycleOwner) {
-            it.forEach(::addRecipientGroupView)
+        viewModel.addGroupViewsEvent.observe(viewLifecycleOwner) { groups ->
+            updateAllRecipientGroupViews(groups)
         }
     }
 
@@ -93,25 +99,24 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
             }
     }*/
 
-    private fun selectGroups(recipientId: Long) {
+    private fun selectGroups(groupIds: IntArray) {
         hideKeyboard()
-        getNavigationResult<List<RecipientGroup>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)?.observe(
+        getNavigationResult<List<Int>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)?.observe(
             viewLifecycleOwner
-        ) { result ->
-            if (result != null) {
-                viewModel.setGroups(result)
-                updateAllRecipientGroupViews(result)
+        ) { ids ->
+            if (!ids.isNullOrEmpty()) {
+                viewModel.setGroups(ids)
             }
-            removeNavigationResult<List<RecipientGroup>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)
+            removeNavigationResult<List<Int>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)
         }
         navigate {
-            EditableRecipientDialogDirections.actionOpenMultiSelectRecipientGroup(recipientId)
+            EditableRecipientDialogDirections.actionOpenMultiSelectRecipientGroup(groupIds)
         }
     }
 
-    private fun updateAllRecipientGroupViews(result: List<RecipientGroup>) {
+    private fun updateAllRecipientGroupViews(groups: List<RecipientGroup>) {
         removeAllRecipientGroupViews()
-        result.forEach(::addRecipientGroupView)
+        groups.forEach(::addRecipientGroupView)
     }
 
     private fun selectContact() {
@@ -130,9 +135,8 @@ class EditableRecipientDialog : AbstractFullScreenDialog() {
 
     private fun addRecipientGroupView(group: RecipientGroup) {
         val inflater = LayoutInflater.from(requireContext())
-        val recipientBinding = DataBindingUtil.inflate<DialogEditableRecipientGroupHolderBinding>(
+        val recipientBinding = DialogEditableRecipientGroupHolderBinding.inflate(
             inflater,
-            R.layout.dialog_editable_recipient_group_holder,
             binding.groupsLayout,
             true
         )

@@ -13,13 +13,13 @@ import kotlinx.coroutines.launch
 import java.io.Serializable
 
 
-@Entity(
-    tableName = "templates",
+@Entity(tableName = "templates",
     foreignKeys = [ForeignKey(
         entity = RecipientGroup::class,
         parentColumns = arrayOf("recipientGroupId"),
         childColumns = arrayOf("recipientGroupId"),
         onDelete = ForeignKey.SET_NULL,
+        onUpdate = ForeignKey.CASCADE,
         deferred = true
     ),
         ForeignKey(
@@ -27,19 +27,16 @@ import java.io.Serializable
             parentColumns = arrayOf("templateGroupId"),
             childColumns = arrayOf("templateGroupId"),
             onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE,
             deferred = true
-        )],
-    indices = [
-        Index(value = ["recipientGroupId"], unique = false),
-        Index(value = ["templateGroupId"], unique = false)
-    ]
+        )]
 )
 @kotlinx.serialization.Serializable
 data class Template(
     @PrimaryKey(autoGenerate = true)
-    var templateId: Long = 0L,
-    var templateGroupId: Long = 0L,
-    var recipientGroupId: Long = 0L,
+    var templateId: Int = 0,
+    var templateGroupId: Int = 0,
+    var recipientGroupId: Int? = null,
     private var name: String = "",
     private var message: String = "",
     private var iconColor: String = "#66BB6A",

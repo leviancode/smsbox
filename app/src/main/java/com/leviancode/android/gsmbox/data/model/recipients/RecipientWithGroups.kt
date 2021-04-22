@@ -1,5 +1,6 @@
 package com.leviancode.android.gsmbox.data.model.recipients
 
+import androidx.databinding.BaseObservable
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
@@ -13,6 +14,8 @@ data class RecipientWithGroups(
     )
     var groups: MutableList<RecipientGroup>
 ) {
+    
+    fun getGroupIds() = groups.map { it.recipientGroupId }.toIntArray()
 
     fun addGroup(group: RecipientGroup) {
         groups.add(group)

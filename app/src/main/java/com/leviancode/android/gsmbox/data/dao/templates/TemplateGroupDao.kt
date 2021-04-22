@@ -1,22 +1,36 @@
-package com.leviancode.android.gsmbox.data.dao
+package com.leviancode.android.gsmbox.data.dao.templates
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.leviancode.android.gsmbox.data.model.templates.GroupWithTemplates
+import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 
 @Dao
 interface TemplateGroupDao {
-    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    @Insert (onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: TemplateGroup): Long
 
-    @Update suspend fun update(item: TemplateGroup)
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(items: List<TemplateGroup>): LongArray
+
+    @Transaction
+    suspend fun upsert(item: TemplateGroup): Int {
+        return if (item.templateGroupId == 0) insert(item).toInt()
+        else {
+            update(item)
+            item.templateGroupId
+        }
+    }
+
+    @Update suspend fun update(vararg item: TemplateGroup)
+
     @Delete suspend fun delete(vararg item: TemplateGroup)
 
     @Query("SELECT * from template_groups WHERE templateGroupId = :id")
-    suspend fun get(id: Long): TemplateGroup?
+    suspend fun get(id: Int): TemplateGroup?
 
-    @Query("SELECT * from template_groups WHERE name = :name")
+    @Query("SELECT * from template_groups WHERE name LIKE :name")
     suspend fun getByName(name: String): TemplateGroup?
 
     @Query("SELECT * FROM template_groups")
@@ -34,7 +48,7 @@ interface TemplateGroupDao {
 
     @Transaction
     @Query("SELECT * FROM template_groups WHERE templateGroupId =:groupId")
-    fun getGroupWithTemplates(groupId: Long): LiveData<GroupWithTemplates>
+    fun getGroupWithTemplates(groupId: Int): LiveData<GroupWithTemplates>
 
     @Query("DELETE FROM template_groups")
     suspend fun deleteAll()

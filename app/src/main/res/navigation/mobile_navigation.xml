@@ -31,7 +31,7 @@
         tools:layout="@layout/fragment_template_list">
         <argument
             android:name="groupId"
-            app:argType="long" />
+            app:argType="integer" />
 
         <argument
             android:name="groupName"
@@ -116,8 +116,8 @@
 
         <argument
             android:name="groupId"
-            app:argType="long"
-            android:defaultValue="0L" />
+            app:argType="integer"
+            android:defaultValue="0" />
 
     </dialog>
 
@@ -129,12 +129,12 @@
 
         <argument
             android:name="groupId"
-            app:argType="long" />
+            app:argType="integer" />
 
         <argument
             android:name="templateId"
-            app:argType="long"
-            android:defaultValue="0L" />
+            app:argType="integer"
+            android:defaultValue="0" />
 
         <action
             android:id="@+id/action_open_editable_recipient"
@@ -157,14 +157,13 @@
 
         <argument
             android:name="recipientId"
-            app:argType="long"
-            android:defaultValue="0L" />
+            app:argType="integer"
+            android:defaultValue="0" />
 
         <argument
             android:name="phoneNumber"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="null" />
+            app:nullable="true" />
         <action
             android:id="@+id/action_open_multi_select_recipient_group"
             app:destination="@id/nav_multi_select_recipient_group" />
@@ -179,8 +178,8 @@
 
         <argument
             android:name="groupId"
-            app:argType="long"
-            android:defaultValue="0L" />
+            app:argType="integer"
+            android:defaultValue="0" />
 
     </dialog>
 
@@ -192,8 +191,8 @@
 
         <argument
             android:name="groupId"
-            app:argType="long"
-            android:defaultValue="0L" />
+            app:argType="integer"
+            android:defaultValue="0" />
     </dialog>
 
     <dialog
@@ -204,9 +203,10 @@
         <action
             android:id="@+id/action_open_editable_recipient_group"
             app:destination="@id/nav_editable_recipient_group" />
+
         <argument
-            android:name="recipientId"
-            app:argType="long"/>
+            android:name="groupIds"
+            app:argType="integer[]" />
     </dialog>
 
     <dialog
@@ -217,8 +217,8 @@
 
         <argument
             android:name="recipientId"
-            app:argType="long"
-            android:defaultValue="0L"/>
+            app:argType="integer"
+            android:defaultValue="0"/>
     </dialog>
 
     <dialog
@@ -229,8 +229,8 @@
 
         <argument
             android:name="groupId"
-            app:argType="long"
-            android:defaultValue="0L"/>
+            app:argType="integer"
+            android:defaultValue="0"/>
     </dialog>
 
 

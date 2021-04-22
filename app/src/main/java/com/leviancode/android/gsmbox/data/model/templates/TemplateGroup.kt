@@ -3,10 +3,12 @@ package com.leviancode.android.gsmbox.data.model.templates
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
+import com.leviancode.android.gsmbox.utils.DEFAULT_GROUP_COLOR
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,11 +18,11 @@ import java.io.Serializable
 @kotlinx.serialization.Serializable
 data class  TemplateGroup (
     @PrimaryKey(autoGenerate = true)
-    var templateGroupId: Long = 0L,
+    var templateGroupId: Int = 0,
     private var name: String = "",
     private var description: String = "",
     private var imageUri: String = "",
-    private var iconColor: String = "#d59557",
+    private var iconColor: String = DEFAULT_GROUP_COLOR,
 ) : BaseObservable(), Serializable {
 
     @Bindable

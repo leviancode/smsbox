@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.*
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -20,7 +19,6 @@ import com.leviancode.android.gsmbox.databinding.DialogSelectListBinding
 import com.leviancode.android.gsmbox.utils.REQ_MULTI_SELECT_RECIPIENT
 import com.leviancode.android.gsmbox.utils.extensions.goBack
 import com.leviancode.android.gsmbox.utils.extensions.setNavigationResult
-import com.leviancode.android.gsmbox.utils.managers.ContactsManager
 
 class RecipientMultiSelectListDialog : BottomSheetDialogFragment() {
     private lateinit var binding: DialogSelectListBinding
@@ -43,8 +41,8 @@ class RecipientMultiSelectListDialog : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.dialog_select_list, container, false
+        binding = DialogSelectListBinding.inflate(
+            inflater, container, false
         )
         return binding.root
     }
@@ -62,17 +60,20 @@ class RecipientMultiSelectListDialog : BottomSheetDialogFragment() {
         listAdapter = RecipientSelectListAdapter(viewModel)
         binding.bottomSheetRecyclerView.adapter = listAdapter
 
-        observeUI()
+        fetchData()
+        observeEvent()
     }
 
-    private fun observeUI() {
+    private fun observeEvent() {
+        binding.btnOk.setOnClickListener {
+            setSelectedAndQuit(viewModel.selectedItems)
+        }
+    }
+
+    private fun fetchData() {
         viewModel.loadRecipientsAndSelectByGroupId(args.groupId).observe(viewLifecycleOwner) { list ->
             binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
             listAdapter.recipients = list
-        }
-
-        binding.btnOk.setOnClickListener {
-            setSelectedAndQuit(viewModel.selectedItems)
         }
     }
 

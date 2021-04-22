@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 class EditableRecipientGroupViewModel : ViewModel() {
@@ -14,13 +15,13 @@ class EditableRecipientGroupViewModel : ViewModel() {
     var data = RecipientGroup()
 
     val selectColorEvent = SingleLiveEvent<String>()
-    val closeDialogEvent = SingleLiveEvent<RecipientGroup>()
+    val closeDialogEvent = SingleLiveEvent<Int>()
 
-    fun getNamesWithoutCurrent(id: Long) = repository.groups.map { list ->
+    fun getNamesWithoutCurrent(id: Int) = repository.groups.map { list ->
         list.filter { it.recipientGroupId != id }.map { it.getName() }
     }
 
-    fun loadGroup(id: Long){
+    fun loadGroup(id: Int){
         viewModelScope.launch {
             repository.getGroupById(id)?.let { group ->
                 data = group
@@ -31,9 +32,8 @@ class EditableRecipientGroupViewModel : ViewModel() {
 
     fun onSaveClick(){
         viewModelScope.launch {
-            repository.saveGroup(data)
+            closeDialogEvent.value = repository.saveGroup(data)
         }
-        closeDialogEvent.value = data
     }
 
     fun onIconColorClick() {

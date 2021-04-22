@@ -2,10 +2,6 @@ package com.leviancode.android.gsmbox.utils.helpers
 
 import android.text.Editable
 import android.text.TextWatcher
-import com.leviancode.android.gsmbox.utils.log
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class TextUniqueWatcher(
     var wordList: List<String> = listOf(),

@@ -18,29 +18,31 @@ data class TemplateWithRecipients(
         entityColumn = "recipientGroupId"
     )
     @Bindable
-    var recipients: GroupWithRecipients
+    var recipients: GroupWithRecipients?
 ): BaseObservable() {
 
     @Bindable
-    fun isFieldsFilledAndCorrect() = template.isFieldsCorrect() && recipients.isRecipientsNotEmpty()
+    fun isFieldsFilledAndCorrect() = template.isFieldsCorrect() && recipients?.isRecipientsNotEmpty() ?: false
 
     fun addRecipient(recipient: Recipient) {
-        recipients.addRecipient(recipient)
+        recipients?.addRecipient(recipient)
         clearGroup()
         notifyChange()
     }
 
     fun removeRecipient(recipient: Recipient) {
-        recipients.removeRecipient(recipient)
+        recipients?.removeRecipient(recipient)
         clearGroup()
         notifyChange()
     }
 
     private fun clearGroup() {
-        if (recipients.group.isNameNotNullOrEmpty()){
-            recipients.group = RecipientGroup().also {
-                template.recipientGroupId = it.recipientGroupId
+        recipients?.let {
+            if (it.group.isNameNotNullOrEmpty()){
+                it.group = RecipientGroup()
+                template.recipientGroupId = null
             }
         }
+
     }
 }

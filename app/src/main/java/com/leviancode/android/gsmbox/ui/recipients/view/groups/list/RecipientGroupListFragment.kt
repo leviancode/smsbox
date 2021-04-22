@@ -57,7 +57,8 @@ class RecipientGroupListFragment : Fragment() {
 
     private fun observeUI() {
         viewModel.groupsWithRecipients.observe(viewLifecycleOwner){ list ->
-            binding.adapter?.data = list
+            binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+            listAdapter.data = list
         }
 
         viewModel.addGroupEvent.observe(viewLifecycleOwner) {
@@ -167,13 +168,13 @@ class RecipientGroupListFragment : Fragment() {
         }
     }
 
-    private fun showEditableRecipientDialog(recipientId: Long) {
+    private fun showEditableRecipientDialog(recipientId: Int) {
         navigate {
-            RecipientsPagerFragmentDirections.actionOpenEditableRecipient(recipientId)
+            RecipientsPagerFragmentDirections.actionOpenEditableRecipient(recipientId, null)
         }
     }
 
-    private fun showEditableRecipientGroupDialog(groupId: Long) {
+    private fun showEditableRecipientGroupDialog(groupId: Int) {
         navigate {
             RecipientsPagerFragmentDirections.actionOpenEditableRecipientGroup(groupId)
         }

@@ -57,11 +57,11 @@ class RecipientGroupSelectListDialog : BottomSheetDialogFragment() {
         }
 
         binding.btnOk.setOnClickListener {
-            setSelectedAndExit(viewModel.getSingleSelectedGroupId())
+            setSelectedAndExit(viewModel.getSelectedGroupId())
         }
     }
 
-    private fun setSelectedAndExit(selectedGroupId: Long) {
+    private fun setSelectedAndExit(selectedGroupId: Int) {
         setNavigationResult(selectedGroupId, REQ_SELECT_RECIPIENT_GROUP)
         goBack()
     }

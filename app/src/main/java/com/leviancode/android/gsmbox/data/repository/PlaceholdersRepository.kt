@@ -24,7 +24,7 @@ object PlaceholdersRepository {
         else placeholderDao.update(item)
     }
 
-    suspend fun getPlaceholderById(id: Long): Placeholder? = withContext(Dispatchers.IO) {
+    suspend fun getPlaceholderById(id: Int): Placeholder? = withContext(Dispatchers.IO) {
         placeholderDao.get(id)
     }
 
