@@ -51,20 +51,19 @@ class EditableTemplateViewModel : ViewModel() {
                     if (it.recipients == null){
                         it.recipients = data.recipients
                     }
-                    data = it
-                    if(data.recipients!!.getRecipients().isEmpty()){
-                        data.recipients!!.addRecipient(RecipientsRepository.getNewRecipient())
+                    if(it.recipients!!.getRecipients().isEmpty()){
+                        it.recipients!!.addRecipient(RecipientsRepository.getNewRecipient())
                     }
-                    original = it.copy()
+                    data = it
                     addAllRecipientsViewEvent.postValue(it.recipients!!.getRecipients())
                 }
                 liveData.value = data
             } else {
                 data.template.templateGroupId = groupId
-                original = data.copy()
                 onAddRecipientClick()
                 liveData.value = data
             }
+            original = data.copy()
         }
         return liveData
     }

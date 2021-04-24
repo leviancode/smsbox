@@ -20,7 +20,6 @@ import com.leviancode.android.gsmbox.utils.*
 import com.leviancode.android.gsmbox.utils.extensions.getNavigationResult
 import com.leviancode.android.gsmbox.utils.extensions.navigate
 import com.leviancode.android.gsmbox.utils.extensions.removeNavigationResult
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -44,7 +43,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
-        observeUI()
+        observeEvents()
     }
 
     private fun setupViews(){
@@ -73,7 +72,7 @@ class EditableTemplateDialog : AbstractFullScreenDialog() {
         binding.editTextTemplateName.addTextChangedListener(textWatcher)
     }
 
-    private fun observeUI() {
+    private fun observeEvents() {
      //   setTextUniqueWatcher()
 
         binding.toolbar.setNavigationOnClickListener { closeDialog(RESULT_CANCEL) }
