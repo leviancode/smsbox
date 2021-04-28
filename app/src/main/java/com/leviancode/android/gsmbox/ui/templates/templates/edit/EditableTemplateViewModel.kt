@@ -122,7 +122,6 @@ class EditableTemplateViewModel : ViewModel() {
     }
 
     fun updateRecipientPhoneNumber(recipient: Recipient, phoneNumber: String) {
-        log("update phone number: $phoneNumber")
         recipient.setPhoneNumber(phoneNumber)
     }
 

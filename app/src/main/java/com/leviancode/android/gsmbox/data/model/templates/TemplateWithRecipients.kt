@@ -22,7 +22,7 @@ data class TemplateWithRecipients(
 ): BaseObservable() {
 
     @Bindable
-    fun isFieldsFilledAndCorrect() = template.isFieldsCorrect() && recipients?.isRecipientsNotEmpty() ?: false
+    fun isFieldsFilledAndCorrect() = template.isFieldsCorrect() && recipients?.isHasRecipientsOrGroup() ?: false
 
     fun addRecipient(recipient: Recipient) {
         recipients?.addRecipient(recipient)
