@@ -7,6 +7,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.leviancode.android.gsmbox.data.repository.PlaceholdersRepository
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
+import com.leviancode.android.gsmbox.utils.getFormatDate
 import com.leviancode.android.gsmbox.utils.isNotNullOrEmpty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,8 @@ data class Placeholder(
     @PrimaryKey(autoGenerate = true)
     var placeholderId: Int = 0,
     private var name: String = "",
-    private var value: String = ""
+    private var value: String = "",
+    val date: String = getFormatDate()
 ) : BaseObservable(), Serializable {
 
     @Bindable

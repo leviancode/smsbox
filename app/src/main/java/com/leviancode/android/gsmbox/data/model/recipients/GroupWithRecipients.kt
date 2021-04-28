@@ -62,4 +62,9 @@ data class GroupWithRecipients(
     @Bindable
     fun isRecipientsNotEmpty() = getRecipientsCount() > 0
 
+    fun copy() = GroupWithRecipients(
+        group = this.group.copy(),
+        recipients = this.recipients.map { it.copy() }.toMutableList()
+    )
+
 }

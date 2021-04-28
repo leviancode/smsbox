@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_template_group_list"
-        android:name="com.leviancode.android.gsmbox.ui.templates.view.groups.list.TemplateGroupListFragment"
+        android:name="com.leviancode.android.gsmbox.ui.templates.groups.list.TemplateGroupListFragment"
         android:label="@string/title_templates"
         tools:layout="@layout/fragment_template_group_list" >
 
@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/nav_template_list"
-        android:name="com.leviancode.android.gsmbox.ui.templates.view.templates.list.TemplateListFragment"
+        android:name="com.leviancode.android.gsmbox.ui.templates.templates.list.TemplateListFragment"
         android:label="{groupName}"
         tools:layout="@layout/fragment_template_list">
         <argument
@@ -54,7 +54,7 @@
 
     <fragment
         android:id="@+id/nav_recipients"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.RecipientsPagerFragment"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.viewpager.RecipientsPagerFragment"
         android:label="@string/title_recipients"
         tools:layout="@layout/fragment_recipients_pager" >
         <action
@@ -85,7 +85,7 @@
     <fragment
         android:id="@+id/nav_placeholders"
         android:name="com.leviancode.android.gsmbox.ui.settings.placeholders.PlaceholdersFragment"
-        android:label="@string/title_placeholders"
+        android:label="@string/placeholders"
         tools:layout="@layout/fragment_placeholders" >
         <action
             android:id="@+id/action_open_editable_placeholder"
@@ -110,7 +110,7 @@
 
     <dialog
         android:id="@+id/nav_editable_group"
-        android:name="com.leviancode.android.gsmbox.ui.templates.view.groups.edit.EditableTemplateGroupDialog"
+        android:name="com.leviancode.android.gsmbox.ui.templates.groups.edit.EditableTemplateGroupDialog"
         android:label="New Group"
         tools:layout="@layout/dialog_editable_template_group">
 
@@ -123,7 +123,7 @@
 
     <dialog
         android:id="@+id/nav_editable_template"
-        android:name="com.leviancode.android.gsmbox.ui.templates.view.templates.edit.EditableTemplateDialog"
+        android:name="com.leviancode.android.gsmbox.ui.templates.templates.edit.EditableTemplateDialog"
         android:label="New Template"
         tools:layout="@layout/dialog_editable_template">
 
@@ -151,7 +151,7 @@
 
     <dialog
         android:id="@+id/nav_editable_recipient"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.recipients.edit.EditableRecipientDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.recipients.edit.EditableRecipientDialog"
         android:label="New Recipient"
         tools:layout="@layout/dialog_editable_recipient">
 
@@ -172,7 +172,7 @@
 
     <dialog
         android:id="@+id/nav_editable_recipient_group"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.groups.edit.EditableRecipientGroupDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.groups.edit.EditableRecipientGroupDialog"
         android:label="New Group"
         tools:layout="@layout/dialog_editable_recipient_group">
 
@@ -185,7 +185,7 @@
 
     <dialog
         android:id="@+id/nav_select_recipient_group"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.groups.dialog.RecipientGroupSelectListDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.groups.dialog.RecipientGroupSelectListDialog"
         android:label="Select Group"
         tools:layout="@layout/dialog_select_list">
 
@@ -197,7 +197,7 @@
 
     <dialog
         android:id="@+id/nav_multi_select_recipient_group"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.groups.dialog.RecipientGroupMultiSelectListDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.groups.dialog.RecipientGroupMultiSelectListDialog"
         android:label="Select Groups"
         tools:layout="@layout/dialog_select_list">
         <action
@@ -211,19 +211,21 @@
 
     <dialog
         android:id="@+id/nav_select_recipient"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.recipients.dialog.RecipientSelectListDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.recipients.dialog.RecipientSelectListDialog"
         android:label="Select Recipient"
         tools:layout="@layout/dialog_select_list">
 
         <argument
-            android:name="recipientId"
-            app:argType="integer"
-            android:defaultValue="0"/>
+            android:name="currentPhoneNumber"
+            app:argType="string"/>
+        <argument
+            android:name="alreadySelectedPhoneNumbers"
+            app:argType="string[]" />
     </dialog>
 
     <dialog
         android:id="@+id/nav_multi_select_recipient"
-        android:name="com.leviancode.android.gsmbox.ui.recipients.view.recipients.dialog.RecipientMultiSelectListDialog"
+        android:name="com.leviancode.android.gsmbox.ui.recipients.recipients.dialog.RecipientMultiSelectListDialog"
         android:label="Select Recipients"
         tools:layout="@layout/dialog_select_list">
 

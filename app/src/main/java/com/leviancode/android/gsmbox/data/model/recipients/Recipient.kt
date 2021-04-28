@@ -9,10 +9,11 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
+import com.leviancode.android.gsmbox.utils.getFormatDate
 import com.leviancode.android.gsmbox.utils.isNotNullOrEmpty
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import java.io.Serializable
 
 @Entity(tableName = "recipients")
@@ -21,8 +22,17 @@ data class Recipient(
     @PrimaryKey(autoGenerate = true)
     var recipientId: Int = 0,
     private var name: String? = null,
-    private var phoneNumber: String = ""
+    private var phoneNumber: String = "",
+    val date: String = getFormatDate()
 ) : BaseObservable(), Serializable {
+
+    @Ignore
+    @get:Bindable
+    var isPhoneNumberUnique: Boolean = false
+        set(value) {
+            field = value
+            notifyChange()
+        }
 
     @Ignore
     @get:Bindable
@@ -56,6 +66,7 @@ data class Recipient(
         if (phoneNumber != value){
             phoneNumber = value
             notifyChange()
+            checkPhoneNumberIsUnique(value)
         }
     }
 
@@ -67,9 +78,25 @@ data class Recipient(
             isNameUnique = true
             return
         } else {
-            CoroutineScope(Dispatchers.IO).launch {
+            CoroutineScope(IO).launch {
                 val found = RecipientsRepository.getRecipientByName(value)
-                isNameUnique = found == null || found.recipientId == recipientId
+                withContext(Main){
+                    isNameUnique = found == null || found.recipientId == recipientId
+                }
+            }
+        }
+    }
+
+    private fun checkPhoneNumberIsUnique(value: String?){
+        if (value == null) {
+            isPhoneNumberUnique = true
+            return
+        } else {
+            CoroutineScope(Main).launch {
+                val found = async {
+                    RecipientsRepository.getRecipientByPhoneNumber(value)
+                }
+                isPhoneNumberUnique = found.await() == null
             }
         }
     }

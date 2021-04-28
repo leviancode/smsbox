@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="positiveButtonTextColor">@color/primary</color>
+    <color name="negativeButtonTextColor">@color/primary</color>
+    <color name="bottomSheetDividerColor">@android:color/transparent</color>
+</resources>

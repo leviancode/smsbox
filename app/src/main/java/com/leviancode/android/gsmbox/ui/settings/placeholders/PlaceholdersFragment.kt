@@ -14,7 +14,6 @@ import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.DELETE
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu.Companion.EDIT
 import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DeleteConfirmationAlertDialog
-import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DiscardAlertDialog
 import com.leviancode.android.gsmbox.ui.extra.alertdialogs.InfoDialog
 import com.leviancode.android.gsmbox.utils.extensions.goBack
 import com.leviancode.android.gsmbox.utils.extensions.navigate
@@ -38,20 +37,17 @@ class PlaceholdersFragment : Fragment() {
         listAdapter = PlaceholderListAdapter(viewModel)
         binding.placeholdersRecyclerView.adapter = listAdapter
         binding.viewModel = viewModel
-        observeUI()
+        observeEvents()
+        fetchData()
     }
 
-    private fun observeUI() {
+    private fun observeEvents() {
         binding.toolbarPlaceholders.setNavigationOnClickListener { goBack() }
         binding.toolbarPlaceholders.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId){
                 R.id.menu_info -> openInfoDialog()
             }
             true
-        }
-
-        viewModel.placeholders.observe(viewLifecycleOwner){
-            listAdapter.submitList(it)
         }
 
         viewModel.addPlaceholderEvent.observe(viewLifecycleOwner){
@@ -70,6 +66,12 @@ class PlaceholdersFragment : Fragment() {
                 else if (dy <0 && !fab.isShown) fab.show()
             }
         })
+    }
+
+    private fun fetchData() {
+        viewModel.getPlaceholders().observe(viewLifecycleOwner) {
+            listAdapter.submitList(it)
+        }
     }
 
     private fun showPopupMenu(view: View, placeholder: Placeholder) {

@@ -3,11 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <FrameLayout
             android:id="@+id/main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.MainActivity">
+            android:visibility="gone"
+            tools:context=".ui.activities.MainActivity">
 
             <fragment
                 android:id="@+id/nav_host_fragment"
@@ -28,5 +33,14 @@
                 app:menu="@menu/bottom_nav_menu" />
 
         </FrameLayout>
+
+        <include
+            android:id="@+id/splash"
+            android:visibility="visible"
+            layout="@layout/view_splash"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 </layout>

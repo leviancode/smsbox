@@ -1,6 +1,5 @@
 package com.leviancode.android.gsmbox.data.model.recipients
 
-import androidx.databinding.BaseObservable
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
@@ -24,4 +23,9 @@ data class RecipientWithGroups(
     fun removeGroup(group: RecipientGroup) {
         groups.remove(group)
     }
+
+    fun copy() = RecipientWithGroups(
+        recipient = this.recipient.copy(),
+        groups = this.groups.map { it.copy() }.toMutableList()
+    )
 }

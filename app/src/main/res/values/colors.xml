@@ -45,6 +45,7 @@
     <color name="ltGrey">#ACACAC</color>
 
     <color name="text_title">@color/black</color>
+    <color name="hashtag">#FF0000FF</color>
     <color name="text_description">#424242</color>
 
     <color name="md_bottom_sheet_title_color">#404040</color>
@@ -55,8 +56,8 @@
 
 
     <color name="positiveButtonTextColor">@color/primary</color>
-    <color name="negativeButtonTextColor">@color/colorAccent</color>
-    <color name="bottomSheetDividerColor">#F5F5F5</color>
+    <color name="negativeButtonTextColor">@color/primary</color>
+    <color name="bottomSheetDividerColor">@android:color/transparent</color>
 
     <color name="default_group_icon_color">@color/main_style_brown</color>
     <color name="default_send_icon_color">@color/secondary</color>

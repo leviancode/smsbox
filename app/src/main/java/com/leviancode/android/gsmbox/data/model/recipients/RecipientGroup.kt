@@ -8,6 +8,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.utils.DEFAULT_GROUP_COLOR
+import com.leviancode.android.gsmbox.utils.getFormatDate
 import com.leviancode.android.gsmbox.utils.isNotNullOrEmpty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +22,7 @@ data class RecipientGroup(
     var recipientGroupId: Int = 0,
     private var name: String? = null,
     private var iconColor: String = DEFAULT_GROUP_COLOR,
+    val date: String = getFormatDate()
 ) : BaseObservable(), Serializable {
 
     @Ignore

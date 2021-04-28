@@ -3,7 +3,6 @@ package com.leviancode.android.gsmbox.ui.settings.placeholders
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.leviancode.android.gsmbox.data.model.placeholders.Placeholder
 import com.leviancode.android.gsmbox.data.repository.PlaceholdersRepository
@@ -12,9 +11,11 @@ import kotlinx.coroutines.launch
 
 class PlaceholdersViewModel : ViewModel() {
     private val repository = PlaceholdersRepository
-    val placeholders: LiveData<List<Placeholder>> = repository.data
     val addPlaceholderEvent = SingleLiveEvent<Placeholder>()
     val onPopupMenuClickEvent = SingleLiveEvent<Pair<View, Placeholder>>()
+
+
+    fun getPlaceholders(): LiveData<List<Placeholder>> = repository.getPlaceholders()
 
 
     fun onAddPlaceholderClick(){

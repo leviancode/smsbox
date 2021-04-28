@@ -43,6 +43,10 @@ data class TemplateWithRecipients(
                 template.recipientGroupId = null
             }
         }
-
     }
+
+    fun copy() = TemplateWithRecipients(
+        template = this.template.copy(),
+        recipients = this.recipients?.copy()
+    )
 }

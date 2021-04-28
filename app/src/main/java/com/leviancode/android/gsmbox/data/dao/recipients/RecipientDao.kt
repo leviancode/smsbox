@@ -59,5 +59,9 @@ interface RecipientDao {
     @Query("SELECT * FROM recipients WHERE recipientId = :recipientId")
     suspend fun getRecipientWithGroups(recipientId: Int): RecipientWithGroups?
 
+    @Query("SELECT * FROM recipients WHERE phoneNumber = :phoneNumber")
+    suspend fun getByPhoneNumber(phoneNumber: String): Recipient?
+
+
 
 }

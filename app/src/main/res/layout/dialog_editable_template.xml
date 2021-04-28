@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.templates.view.templates.edit.EditableTemplateDialog">
+    tools:context=".ui.templates.templates.edit.EditableTemplateDialog">
 
     <data>
         <variable
@@ -13,7 +13,7 @@
             type="com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.templates.view.templates.edit.EditableTemplateViewModel" />
+            type="com.leviancode.android.gsmbox.ui.templates.templates.edit.EditableTemplateViewModel" />
     </data>
 
     <FrameLayout
@@ -113,7 +113,7 @@
                     android:layout_gravity="end"
                     app:switchPadding="4dp"
                     android:checked="@{recipients.groupNameNotNull}"
-                    android:text="@string/recipient_group"
+                    android:text="@string/recipients_group"
                     android:layout_marginEnd="16dp"/>
 
 
@@ -149,7 +149,7 @@
                         android:padding="8dp"
                         android:layout_gravity="center"
                         android:textAlignment="center"
-                        android:text="@{recipients.groupNameNotNull ? viewModel.data.recipients.recipientGroupNameWithCount : @string/no_group}"
+                        android:text="@{recipients.groupNameNotNull ? recipients.recipientGroupNameWithCount : @string/no_group}"
                         tools:text="@string/no_group"
                         android:textSize="@dimen/form_text_size"/>
 

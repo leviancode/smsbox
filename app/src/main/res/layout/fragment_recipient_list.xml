@@ -6,7 +6,7 @@
     <data>
         <variable
             name="adapter"
-            type="com.leviancode.android.gsmbox.ui.recipients.adapters.RecipientListAdapter" />
+            type="com.leviancode.android.gsmbox.ui.recipients.recipients.adapters.RecipientListAdapter" />
     </data>
 
     <FrameLayout
@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:visibility="gone"
             android:layout_marginTop="30dp"
-            android:text="@string/save_your_recipients_here"
+            android:text="@string/add_first_recipient"
             android:textAlignment="center"
             android:textSize="16sp" />
 

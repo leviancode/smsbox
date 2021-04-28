@@ -19,4 +19,7 @@ interface RecipientAndGroupRelationDao {
 
     @Query("DELETE FROM recipients_and_groups WHERE recipientId = :recipientId")
     suspend fun deleteByRecipientId(recipientId: Int)
+
+    @Query("SELECT recipientGroupId FROM recipients_and_groups WHERE recipientId = :recipientId")
+    suspend fun getGroupsWithRecipientRelation(recipientId: Int): List<Int>
 }

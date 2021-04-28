@@ -6,7 +6,6 @@ import com.leviancode.android.gsmbox.data.model.templates.GroupWithTemplates
 import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.data.model.templates.TemplateGroup
 import com.leviancode.android.gsmbox.data.model.templates.TemplateWithRecipients
-import com.leviancode.android.gsmbox.utils.log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -16,10 +15,8 @@ object TemplatesRepository {
     private  val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private  val IOContext = scope.coroutineContext
 
-    private val templatesDao: TemplateDao
-        get() = AppDatabase.instance.templateDao()
-    private val groupsDao: TemplateGroupDao
-        get() = AppDatabase.instance.templateGroupDao()
+    private val templatesDao: TemplateDao = AppDatabase.instance.templateDao()
+    private val groupsDao: TemplateGroupDao = AppDatabase.instance.templateGroupDao()
 
     fun getNewTemplateGroup() = TemplateGroup()
     fun getTemplateGroups() = groupsDao.getAllLiveData()
@@ -85,6 +82,13 @@ object TemplatesRepository {
             template.recipientGroupId?.let { RecipientsRepository.deleteGroupById(it) }
         }
         deleteGroup(item.group)
+    }
+
+    suspend fun replaceGroupIds(firstId: Int, secondId: Int) = withContext(IOContext){
+        val tempId = Int.MAX_VALUE
+        groupsDao.updateId(firstId, tempId)
+        groupsDao.updateId(secondId, firstId)
+        groupsDao.updateId(tempId, secondId)
     }
 
 }

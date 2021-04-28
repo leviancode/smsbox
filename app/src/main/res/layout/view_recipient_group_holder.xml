@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.leviancode.android.gsmbox.ui.recipients.recipients.edit.EditableRecipientViewModel" />
+        <variable
+            name="model"
+            type="com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/recipient_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btn_remove_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{(view) -> viewModel.onRemoveGroupClick(view, model)}"
+            android:padding="3dp"
+            android:src="@drawable/ic_baseline_close_24"
+            android:tint="@color/red_600"
+            android:contentDescription="@string/remove_phone_number" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_group"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:text="@string/group"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_editable_recipient_group_name"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            android:text="@{model.name}"
+            tools:text="Universe"
+            android:textSize="18sp"/>
+
+        </LinearLayout>
+
+</layout>
+

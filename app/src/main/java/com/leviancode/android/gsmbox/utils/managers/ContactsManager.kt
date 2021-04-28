@@ -12,6 +12,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.single.BasePermissionListener
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.model.recipients.Contact
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 
 object ContactsManager {
     fun openContactsApp(context: Context, launcher: ActivityResultLauncher<Void>) {
@@ -29,9 +30,9 @@ object ContactsManager {
             }).check()
     }
 
-    fun parseUri(context: Context, uri: Uri?): Contact? {
+    fun parseUri(context: Context, uri: Uri?): Recipient? {
         if (uri == null) return null
-        var contact: Contact? = null
+        var recipient: Recipient? = null
         val contentResolver = context.contentResolver
 
         contentResolver.query(
@@ -53,13 +54,13 @@ object ContactsManager {
                         it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
                     )
                     if (!phone.isNullOrBlank()) {
-                        contact = Contact(contactName, phone)
+                        recipient = Recipient(name = contactName, phoneNumber = phone)
                         break
                     }
                 }
             }?.close()
         }?.close()
 
-        return contact
+        return recipient
     }
 }

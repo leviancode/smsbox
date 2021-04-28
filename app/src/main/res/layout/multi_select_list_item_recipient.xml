@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="model"
+            type="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
+
+        <variable
+            name="viewModel"
+            type="com.leviancode.android.gsmbox.ui.recipients.recipients.dialog.RecipientMultiSelectListViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:layout_marginTop="4dp"
+        android:paddingTop="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="@{() -> viewModel.onItemClick(model)}"
+        android:paddingBottom="4dp"
+        android:paddingEnd="16dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/recipient_group_image"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            android:padding="4dp"
+            android:scaleType="center"
+            android:tint="@color/default_icon_color"
+            android:src="@drawable/ic_outline_sim_card_24"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/edit_text_recipient_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textColor="@color/text_title"
+                android:text="@{model.name}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="Name" />
+
+            <TextView
+                android:id="@+id/edit_text_recipient_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="4dp"
+                android:textColor="#252525"
+                android:text="@{model.phoneNumber}"
+                tools:text="Phone Number" />
+
+        </LinearLayout>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:checked="@{model.selected}"/>
+
+    </LinearLayout>
+
+</layout>

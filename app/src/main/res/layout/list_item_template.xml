@@ -9,13 +9,13 @@
             type="com.leviancode.android.gsmbox.data.model.templates.TemplateWithRecipients" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.templates.view.templates.list.TemplateListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.templates.templates.list.TemplateListViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="1dp">
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="4dp"
-                    android:text="@{model.template.message}"
+                    app:setTextWithHashtagHighlight="@{model.template.message}"
                     android:drawablePadding="6dp"
                     android:drawableTint="@color/main_style_dark_blue"
                     android:textColor="#252525"

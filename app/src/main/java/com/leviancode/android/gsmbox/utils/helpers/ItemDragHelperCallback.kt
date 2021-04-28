@@ -4,6 +4,8 @@ import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 
 class ItemDragHelperCallback(val listener: ItemDragListener) : Callback() {
+    private var idPair: Pair<Int, Int> = 0 to 0
+
     override fun getMovementFlags(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
@@ -17,13 +19,13 @@ class ItemDragHelperCallback(val listener: ItemDragListener) : Callback() {
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        listener.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+        idPair = listener.onItemMove(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
         return true
     }
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        listener.onMoveFinished()
+        listener.onMoveFinished(idPair.first, idPair.second)
     }
 
     override fun isLongPressDragEnabled(): Boolean = true

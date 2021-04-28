@@ -7,17 +7,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.ui.templates.adapters.TemplateListAdapter
+import com.leviancode.android.gsmbox.ui.templates.templates.adapters.TemplateListAdapter
 import com.leviancode.android.gsmbox.data.model.templates.Template
 import com.leviancode.android.gsmbox.databinding.FragmentFavoritesBinding
 import com.leviancode.android.gsmbox.ui.extra.ItemPopupMenu
 import com.leviancode.android.gsmbox.ui.extra.alertdialogs.DeleteConfirmationAlertDialog
-import com.leviancode.android.gsmbox.ui.templates.view.templates.list.TemplateListViewModel
+import com.leviancode.android.gsmbox.ui.templates.templates.list.TemplateListViewModel
 import com.leviancode.android.gsmbox.utils.extensions.navigate
-import com.leviancode.android.gsmbox.utils.managers.SmsManager
-import kotlinx.coroutines.launch
 
 
 class FavoritesFragment : Fragment() {

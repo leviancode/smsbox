@@ -17,4 +17,9 @@ data class GroupWithTemplates(
 
     @Bindable
     fun getSize() = templates.size.toString()
+
+    fun copy() = GroupWithTemplates(
+        group = this.group.copy(),
+        templates = this.templates.map { it.copy() }
+    )
 }

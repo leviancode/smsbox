@@ -52,4 +52,7 @@ interface TemplateGroupDao {
 
     @Query("DELETE FROM template_groups")
     suspend fun deleteAll()
+
+    @Query("UPDATE template_groups SET templateGroupId = :newId WHERE templateGroupId = :targetId ")
+    fun updateId(targetId: Int, newId: Int)
 }

@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.view.recipients.list.RecipientListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.recipients.recipients.list.RecipientListViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

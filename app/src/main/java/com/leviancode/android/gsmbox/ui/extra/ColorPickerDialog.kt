@@ -18,6 +18,7 @@ class ColorPickerDialog(
         MaterialColorPickerDialog.Builder(context)
             .setDefaultColor(defaultColor)
             .setColors(colors)
+            .setTickColorPerCard(true)
             .setColorShape(ColorShape.CIRCLE)
             .setColorListener { _, color ->
                 callback(color)

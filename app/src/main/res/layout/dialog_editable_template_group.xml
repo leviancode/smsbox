@@ -5,8 +5,11 @@
 
     <data>
         <variable
+            name="model"
+            type="com.leviancode.android.gsmbox.data.model.templates.TemplateGroup" />
+        <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.templates.view.groups.edit.EditableTemplateGroupViewModel" />
+            type="com.leviancode.android.gsmbox.ui.templates.groups.edit.EditableTemplateGroupViewModel" />
     </data>
 
             <LinearLayout
@@ -14,7 +17,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:animateLayoutChanges="true"
-                tools:context=".ui.templates.view.groups.edit.EditableTemplateGroupDialog">
+                tools:context=".ui.templates.groups.edit.EditableTemplateGroupDialog">
 
                 <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
@@ -38,7 +41,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
-                            android:enabled="@{viewModel.data.fieldsCorrect}"
+                            android:enabled="@{model.fieldsCorrect}"
                             android:text="@string/save"
                             android:textColor="@drawable/save_button_text_color_selector"
                             android:onClick="@{() -> viewModel.onSaveClick()}"/>
@@ -63,9 +66,9 @@
                         android:hint="@string/hint_name"
                         android:inputType="text"
                         android:focusable="true"
-                        app:setError="@{viewModel.data.nameUnique}"
+                        app:setError="@{model.nameUnique}"
                         android:padding="8dp"
-                        android:text="@={viewModel.data.name}"
+                        android:text="@={model.name}"
                         android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -86,7 +89,7 @@
                         android:hint="@string/hint_description"
                         android:inputType="text"
                         android:padding="8dp"
-                        android:text="@={viewModel.data.description}"
+                        android:text="@={model.description}"
                         android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -103,7 +106,7 @@
                     android:textColor="@color/grey"
                     android:onClick="@{() -> viewModel.onIconColorClick()}"
                     app:icon="@drawable/ic_baseline_color_lens_24"
-                    app:setButtonIconTintGroup="@{viewModel.data.iconColor}"
+                    app:setButtonIconTintGroup="@{model.iconColor}"
                     tools:iconTint="@color/default_group_icon_color"/>
             </LinearLayout>
 </layout>

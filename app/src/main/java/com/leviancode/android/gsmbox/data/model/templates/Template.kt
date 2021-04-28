@@ -6,6 +6,8 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.room.*
 import com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
+import com.leviancode.android.gsmbox.utils.DEFAULT_TEMPLATE_COLOR
+import com.leviancode.android.gsmbox.utils.getFormatDate
 import com.leviancode.android.gsmbox.utils.isNotNullOrEmpty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,8 +41,9 @@ data class Template(
     var recipientGroupId: Int? = null,
     private var name: String = "",
     private var message: String = "",
-    private var iconColor: String = "#66BB6A",
-    private var favorite: Boolean = false
+    private var iconColor: String = DEFAULT_TEMPLATE_COLOR,
+    private var favorite: Boolean = false,
+    val date: String = getFormatDate()
 ) : BaseObservable(), Serializable {
 
     @Bindable

@@ -9,6 +9,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.DEFAULT_GROUP_COLOR
+import com.leviancode.android.gsmbox.utils.getFormatDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ data class  TemplateGroup (
     private var description: String = "",
     private var imageUri: String = "",
     private var iconColor: String = DEFAULT_GROUP_COLOR,
+    val date: String = getFormatDate()
 ) : BaseObservable(), Serializable {
 
     @Bindable

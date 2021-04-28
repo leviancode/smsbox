@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.view.groups.edit.EditableRecipientGroupViewModel" />
+            type="com.leviancode.android.gsmbox.ui.recipients.groups.edit.EditableRecipientGroupViewModel" />
     </data>
 
     <LinearLayout
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="12dp"
-        tools:context=".ui.templates.view.groups.edit.EditableTemplateGroupDialog">
+        tools:context=".ui.templates.groups.edit.EditableTemplateGroupDialog">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"

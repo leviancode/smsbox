@@ -47,9 +47,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:textColor="@color/text_title"
+                        android:textColor="@color/hashtag"
                         android:textSize="16sp"
-                        android:textStyle="bold|italic"
+                        android:textStyle="italic"
                         android:text="@{model.name}"
                         tools:text="Key" />
 
@@ -59,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:layout_marginTop="4dp"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         android:text="@{model.value}"
                         android:textColor="#252525"
                         tools:text="Value" />

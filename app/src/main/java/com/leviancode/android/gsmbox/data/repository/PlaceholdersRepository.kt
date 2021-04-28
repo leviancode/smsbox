@@ -10,7 +10,7 @@ object PlaceholdersRepository {
     private val placeholderDao: PlaceholderDao
         get() = AppDatabase.instance.placeholderDao()
 
-    val data: LiveData<List<Placeholder>> = placeholderDao.getAll()
+    fun getPlaceholders(): LiveData<List<Placeholder>> = placeholderDao.getAll()
 
     fun getNewPlaceholder()  = Placeholder()
 

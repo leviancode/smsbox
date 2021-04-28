@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.view.recipients.edit.EditableRecipientViewModel" />
+            type="com.leviancode.android.gsmbox.ui.recipients.recipients.edit.EditableRecipientViewModel" />
         <variable
             name="model"
             type="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
@@ -48,7 +48,7 @@
             android:paddingBottom="12dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            tools:context=".ui.templates.view.groups.edit.EditableTemplateGroupDialog">
+            tools:context=".ui.templates.groups.edit.EditableTemplateGroupDialog">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_recipient_name"
@@ -99,7 +99,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_recipient_contacts"
                     style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="@dimen/button_width_small"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="4dp"
                     android:paddingEnd="2dp"

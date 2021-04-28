@@ -6,7 +6,6 @@ import com.leviancode.android.gsmbox.data.dao.recipients.RecipientDao
 import com.leviancode.android.gsmbox.data.dao.recipients.RecipientGroupDao
 import com.leviancode.android.gsmbox.data.model.recipients.*
 import com.leviancode.android.gsmbox.utils.extensions.toIntArray
-import com.leviancode.android.gsmbox.utils.log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -21,10 +20,13 @@ object RecipientsRepository {
     private val relationDao: RecipientAndGroupRelationDao
         get() = AppDatabase.instance.recipientAndGroupRelationDao()
 
-    val groups: LiveData<List<RecipientGroup>> = groupDao.getAllLiveData()
-    val recipients: LiveData<List<Recipient>> = recipientDao.getAllLiveData()
-    val groupsWithRecipients: LiveData<List<GroupWithRecipients>> = groupDao.getGroupsWithRecipients()
-    val recipientsWithGroups: LiveData<List<RecipientWithGroups>> = recipientDao.getRecipientsWithGroups()
+    fun getGroups(): LiveData<List<RecipientGroup>> = groupDao.getAllLiveData()
+
+    fun getGroupsWithRecipients(): LiveData<List<GroupWithRecipients>> = groupDao.getGroupsWithRecipients()
+
+    fun getRecipientsWithGroups(): LiveData<List<RecipientWithGroups>> = recipientDao.getRecipientsWithGroups()
+
+    fun getRecipients(): LiveData<List<Recipient>> = recipientDao.getAllLiveData()
 
     suspend fun saveRecipient(item: Recipient): Int {
         return withContext(scope.coroutineContext) {
@@ -88,7 +90,27 @@ object RecipientsRepository {
     }
 
     suspend fun deleteRecipient(item: Recipient) = withContext(scope.coroutineContext) {
-        recipientDao.delete(item)
+        val groupIds = relationDao.getGroupsWithRecipientRelation(item.recipientId)
+        if (groupIds.isNotEmpty()){
+            var inNoNameGroup = false
+            groupIds.forEach { groupId ->
+                groupDao.getById(groupId)?.let { group ->
+                    if (group.getName().isNullOrBlank()){
+                        inNoNameGroup = true
+                    } else {
+                        deleteRelation(groupId, item.recipientId)
+                    }
+                }
+            }
+            if (inNoNameGroup){
+                item.setName(null)
+                recipientDao.update(item)
+            } else {
+                recipientDao.delete(item)
+            }
+        } else {
+            recipientDao.delete(item)
+        }
     }
 
     suspend fun deleteGroup(item: RecipientGroup) = withContext(scope.coroutineContext) {
@@ -135,10 +157,6 @@ object RecipientsRepository {
 
     fun getNewRecipientGroup() = RecipientGroup()
 
-    fun contactToRecipient(contact: Contact): Recipient {
-        return Recipient(name = contact.name, phoneNumber = contact.phoneNumber)
-    }
-
     fun getRecipientNumbersLiveData() = recipientDao.getNumbersWithNotEmptyNamesLiveData()
 
     suspend fun getRecipientNumbers() = withContext(scope.coroutineContext) {
@@ -160,5 +178,9 @@ object RecipientsRepository {
     suspend fun deleteGroupById(id: Int) = withContext(scope.coroutineContext) {
         groupDao.deleteById(id)
         recipientDao.deleteUnused()
+    }
+
+    suspend fun getRecipientByPhoneNumber(value: String) = withContext(scope.coroutineContext) {
+        recipientDao.getByPhoneNumber(value)
     }
 }

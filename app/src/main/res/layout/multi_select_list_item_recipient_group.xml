@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.view.groups.dialog.RecipientGroupMultiSelectListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.recipients.groups.dialog.RecipientGroupMultiSelectListViewModel" />
     </data>
 
     <LinearLayout
