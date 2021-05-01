@@ -76,7 +76,7 @@ fun AppCompatImageButton.setIconTint(color: String?) {
 
 @BindingAdapter(value = ["setFavoriteIcon"])
 fun ImageButton.setFavoriteIcon(favorite: Boolean) {
-    if (favorite){
+    if (favorite) {
         setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_baseline_star_24))
     } else {
         setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_baseline_star_outline_24))
@@ -87,35 +87,28 @@ fun ImageButton.setFavoriteIcon(favorite: Boolean) {
 fun TextInputEditText.showError(isUnique: Boolean) {
     error = if (isUnique) null else context.getString(R.string.err_unique_name)
 
-}@BindingAdapter(value = ["setTextWithHashtagHighlight"])
-fun TextView.setTextWithHashtagHighlight(str: String) {
-    text = if (str.contains("#")){
-        var startIndex = -1
-        var endIndex = -1
-        for (i in str.indices){
-            if (str[i] == '#'){
-                startIndex = i
-            }
-            if (str[i] == ' ' && startIndex != -1){
-                endIndex = i
-                break
-            }
-        }
-        SpannableString(str).apply {
-            setSpan(
-                ForegroundColorSpan(Color.BLUE), startIndex, endIndex,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-            setSpan(
-                StyleSpan(Typeface.ITALIC), startIndex, endIndex,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
+}
 
+@BindingAdapter(value = ["setTextWithHashtagHighlight"])
+fun TextView.setTextWithHashtagHighlight(str: String) {
+    text = if (str.contains("#")) {
+        SpannableString(str).apply {
+            str.findHashtag { tag, startIndex, endIndex ->
+                setSpan(
+                    ForegroundColorSpan(Color.BLUE), startIndex, endIndex,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                setSpan(
+                    StyleSpan(Typeface.ITALIC), startIndex, endIndex,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        }
     } else {
         str
     }
 }
+
 
 @BindingAdapter(value = ["setRecipientsAsText"])
 fun TextView.setRecipientsAsText(recipients: GroupWithRecipients?) {
@@ -131,7 +124,6 @@ fun TextView.setRecipientsAsText(recipients: GroupWithRecipients?) {
         }
     }
 }
-
 
 
 @BindingAdapter(value = ["setAdapter"])
@@ -157,7 +149,8 @@ fun View.setVisibility(text: String?) {
 @BindingAdapter(value = ["visibleIfTextNotEmpty", "visibleIfNumberNotSaved"], requireAll = true)
 fun View.setVisibility(text: String?, numberList: List<String>?) {
     if (numberList == null) return
-    visibility = if (text.isNullOrBlank() || numberList.contains(text)) View.GONE else View.VISIBLE
+    visibility =
+        if (text.isNullOrBlank() || numberList.contains(text)) View.GONE else View.VISIBLE
 }
 
 @BindingAdapter(value = ["setAutoCompleteList"])

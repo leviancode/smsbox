@@ -38,3 +38,5 @@ val BACKUP_DIR
     get() = "backup_${getFormatDate()}"
 
 const val FILE_PROVIDER_AUTH = "com.leviancode.android.gsmbox.fileprovider"
+
+const val HASHTAG_REGEX = "(#[a-zA-Z0-9]+)(\\W|$)"

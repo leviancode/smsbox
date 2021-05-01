@@ -28,9 +28,7 @@ object PlaceholdersRepository {
         placeholderDao.get(id)
     }
 
-    suspend fun getValueByName(name: String) = withContext(Dispatchers.IO) {
-        placeholderDao.getValueByName(name.trim())
-    }
+    suspend fun getValueByName(name: String) = placeholderDao.getValueByName(name.trim())
 
     suspend fun getByName(name: String): Placeholder? {
         return placeholderDao.getByName(name)
