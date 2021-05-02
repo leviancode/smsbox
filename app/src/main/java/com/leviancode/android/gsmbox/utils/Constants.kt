@@ -40,3 +40,5 @@ val BACKUP_DIR
 const val FILE_PROVIDER_AUTH = "com.leviancode.android.gsmbox.fileprovider"
 
 const val HASHTAG_REGEX = "(#[a-zA-Z0-9]+)(\\W|$)"
+
+const val PREF_KEY_DEFAULT_LANGUAGE = "com.leviancode.android.smsbox.DefaultLanguage"

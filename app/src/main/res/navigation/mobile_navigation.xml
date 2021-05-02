@@ -79,8 +79,24 @@
         tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/action_open_placeholders"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/slide_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:destination="@id/nav_placeholders" />
+        <action
+            android:id="@+id/action_open_languages"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/slide_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:destination="@id/nav_languages" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_languages"
+        android:name="com.leviancode.android.gsmbox.ui.settings.languages.LanguagesFragment"
+        tools:layout="@layout/fragment_languages"/>
 
     <fragment
         android:id="@+id/nav_placeholders"

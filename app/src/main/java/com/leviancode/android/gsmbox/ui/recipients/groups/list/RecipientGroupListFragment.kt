@@ -22,7 +22,7 @@ import com.leviancode.android.gsmbox.utils.REQ_MULTI_SELECT_RECIPIENT
 import com.leviancode.android.gsmbox.utils.extensions.getNavigationResult
 import com.leviancode.android.gsmbox.utils.extensions.navigate
 import com.leviancode.android.gsmbox.utils.extensions.removeNavigationResult
-import com.leviancode.android.gsmbox.utils.showToast
+import com.leviancode.android.gsmbox.utils.extensions.showToast
 import com.leviancode.android.gsmbox.utils.showUndoSnackbar
 
 class RecipientGroupListFragment : Fragment() {
@@ -127,10 +127,7 @@ class RecipientGroupListFragment : Fragment() {
             if (result != null) {
                 item.setRecipients(result)
                 viewModel.updateGroupWithRecipients(item)
-                showToast(
-                    requireContext(),
-                    getString(R.string.toast_add_to_group, item.group.getName())
-                )
+                showToast(getString(R.string.toast_add_to_group, item.group.getName()))
                 removeNavigationResult<List<Recipient>>(REQ_MULTI_SELECT_RECIPIENT)
             }
         }

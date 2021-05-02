@@ -1,5 +1,6 @@
 package com.leviancode.android.gsmbox.ui.recipients.recipients.edit
 
+import android.Manifest
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +14,7 @@ import com.leviancode.android.gsmbox.databinding.DialogEditableRecipientBinding
 import com.leviancode.android.gsmbox.databinding.ViewRecipientGroupHolderBinding
 import com.leviancode.android.gsmbox.ui.extra.AbstractFullScreenEditableDialog
 import com.leviancode.android.gsmbox.utils.*
-import com.leviancode.android.gsmbox.utils.extensions.getNavigationResult
-import com.leviancode.android.gsmbox.utils.extensions.navigate
-import com.leviancode.android.gsmbox.utils.extensions.removeNavigationResult
+import com.leviancode.android.gsmbox.utils.extensions.*
 import com.leviancode.android.gsmbox.utils.managers.ContactsManager
 
 class EditableRecipientDialog :
@@ -97,7 +96,10 @@ class EditableRecipientDialog :
 
     private fun selectContact() {
         hideKeyboard()
-        ContactsManager.openContactsApp(requireContext(), contactsLauncher)
+        askPermission(Manifest.permission.READ_CONTACTS){ result ->
+            if (result) contactsLauncher.launch(null)
+            else showToast(getString(R.string.permission_dined))
+        }
     }
 
     private fun removeAllRecipientGroupViews() {

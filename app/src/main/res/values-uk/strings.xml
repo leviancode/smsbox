@@ -102,4 +102,6 @@
     <string name="edit_recipient">Редагування</string>
     <string name="edit_template">Редагування</string>
     <string name="save_in_number_holder">Збер.</string>
+    <string name="title_languages">Мова</string>
+    <string name="change_language_info">Додаток перезапуститься після зміни мови</string>
 </resources>

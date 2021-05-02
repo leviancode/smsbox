@@ -1,5 +1,6 @@
 package com.leviancode.android.gsmbox.ui.recipients.recipients.dialog
 
+import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,8 +16,10 @@ import com.leviancode.android.gsmbox.databinding.DialogSelectListBinding
 import com.leviancode.android.gsmbox.databinding.ViewButtonContactsBinding
 import com.leviancode.android.gsmbox.ui.recipients.recipients.adapters.RecipientSelectListAdapter
 import com.leviancode.android.gsmbox.utils.REQ_SELECT_RECIPIENT
+import com.leviancode.android.gsmbox.utils.extensions.askPermission
 import com.leviancode.android.gsmbox.utils.extensions.goBack
 import com.leviancode.android.gsmbox.utils.extensions.setNavigationResult
+import com.leviancode.android.gsmbox.utils.extensions.showToast
 import com.leviancode.android.gsmbox.utils.log
 import com.leviancode.android.gsmbox.utils.managers.ContactsManager
 
@@ -74,14 +77,16 @@ class RecipientSelectListDialog : BottomSheetDialogFragment() {
     private fun fetchData() {
         viewModel.selectCurrentRecipientAndGetListWithoutAlreadySelected(args.currentPhoneNumber, args.alreadySelectedPhoneNumbers)
             .observe(viewLifecycleOwner) { list ->
-                log("recipient list: $list")
                 binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
                 listAdapter.recipients = list
             }
     }
 
     private fun selectContact() {
-        ContactsManager.openContactsApp(requireContext(), contactsLauncher)
+        askPermission(Manifest.permission.READ_CONTACTS){ result ->
+            if (result) contactsLauncher.launch(null)
+            else showToast(getString(R.string.permission_dined))
+        }
     }
 
     private fun setSelected(selectedRecipient: String?) {

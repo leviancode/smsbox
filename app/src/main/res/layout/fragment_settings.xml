@@ -72,7 +72,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:drawableStart="@drawable/ic_baseline_save_24"
-                        android:drawableTint="@color/button_drawable_default"
+                        android:drawableTint="@color/green_500"
                         android:text="@string/save_to_file"
                         android:textColor="@color/text_view_enabled_selector"
                         app:backgroundTint="@color/white" />
@@ -87,7 +87,7 @@
                         app:backgroundTint="@color/white"
                         android:textColor="@color/text_view_enabled_selector"
                         android:drawableStart="@drawable/ic_baseline_settings_backup_restore_24"
-                        android:drawableTint="@color/button_drawable_default"
+                        android:drawableTint="@color/red_500"
                         android:text="@string/restore_from_file"/>
 
                 </LinearLayout>
@@ -115,7 +115,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="16dp"
-                        android:tint="@color/button_drawable_default"
+                        android:tint="@color/brown_400"
                         android:src="@drawable/ic_baseline_alias_24"/>
 
                     <com.google.android.material.textview.MaterialTextView
@@ -136,10 +136,52 @@
                         android:src="@drawable/ic_baseline_arrow_right_24"/>
 
                 </LinearLayout>
-
-
-
             </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_languages"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="16dp"
+                        android:tint="@color/blue_500"
+                        android:src="@drawable/ic_baseline_language_24"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/title_languages"
+                        android:layout_marginStart="16dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_baseline_arrow_right_24"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
         </LinearLayout>
 
 </layout>

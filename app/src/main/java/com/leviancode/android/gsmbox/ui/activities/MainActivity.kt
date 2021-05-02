@@ -2,18 +2,29 @@ package com.leviancode.android.gsmbox.ui.activities
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.data.repository.AppDatabase
 import com.leviancode.android.gsmbox.databinding.ActivityMainBinding
+import com.leviancode.android.gsmbox.utils.PREF_KEY_DEFAULT_LANGUAGE
+import com.leviancode.android.gsmbox.utils.log
+import com.leviancode.android.gsmbox.utils.managers.LanguageManager
+import com.yariksoffice.lingver.Lingver
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.*
 
+val Context.dataStore by preferencesDataStore("settings")
 
 class MainActivity : AppCompatActivity(){
     private lateinit var binding: ActivityMainBinding
@@ -22,10 +33,19 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         showSplash()
-        AppDatabase.init(applicationContext)
+        setAppLanguage()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupBottomNavigationView()
+    }
+
+    private fun setAppLanguage() {
+        lifecycleScope.launchWhenStarted {
+            dataStore.data.collect { pref ->
+                val lang = pref[stringPreferencesKey(PREF_KEY_DEFAULT_LANGUAGE)]
+                LanguageManager.updateAppLanguage(this@MainActivity, lang)
+            }
+        }
     }
 
     private fun setupBottomNavigationView() {

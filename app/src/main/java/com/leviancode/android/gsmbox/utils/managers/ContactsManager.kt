@@ -15,20 +15,6 @@ import com.leviancode.android.gsmbox.data.model.recipients.Contact
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 
 object ContactsManager {
-    fun openContactsApp(context: Context, launcher: ActivityResultLauncher<Void>) {
-
-        Dexter.withContext(context)
-            .withPermission(Manifest.permission.READ_CONTACTS)
-            .withListener(object : BasePermissionListener() {
-                override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
-                    launcher.launch(null)
-                }
-
-                override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-                    Toast.makeText(context, context.getString(R.string.permission_dined), Toast.LENGTH_SHORT).show()
-                }
-            }).check()
-    }
 
     fun parseUri(context: Context, uri: Uri?): Recipient? {
         if (uri == null) return null

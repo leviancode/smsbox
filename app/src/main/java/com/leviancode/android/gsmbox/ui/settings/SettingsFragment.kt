@@ -23,8 +23,10 @@ import com.leviancode.android.gsmbox.databinding.FragmentSettingsBinding
 import com.leviancode.android.gsmbox.utils.helpers.BackupResult.*
 import com.leviancode.android.gsmbox.ui.extra.alertdialogs.RecoveryAlertDialog
 import com.leviancode.android.gsmbox.utils.*
+import com.leviancode.android.gsmbox.utils.extensions.askPermission
 import com.leviancode.android.gsmbox.utils.extensions.isValidSQLite
 import com.leviancode.android.gsmbox.utils.extensions.navigate
+import com.leviancode.android.gsmbox.utils.extensions.showToast
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
@@ -45,7 +47,7 @@ class SettingsFragment : Fragment() {
         activityResultLauncher = registerForActivityResult(GetContent()) { result ->
             result?.let { restoreDB(it) }
         }
-        observeUI()
+        observeEvents()
     }
 
     private fun restoreDB(uri: Uri) {
@@ -56,11 +58,11 @@ class SettingsFragment : Fragment() {
                 }
             }
         } else {
-            showToast(requireContext(), getString(R.string.invalid_file))
+            showToast(getString(R.string.invalid_file))
         }
     }
 
-    private fun observeUI() {
+    private fun observeEvents() {
             viewModel.backupEvent.observe(viewLifecycleOwner) { result ->
                 when(result) {
                     START -> showProgressBar()
@@ -71,7 +73,7 @@ class SettingsFragment : Fragment() {
                         hideProgressBar()
                     }
                     FAILED -> {
-                        showToast(requireContext(), getString(R.string.backup_failed))
+                        showToast( getString(R.string.backup_failed))
                         hideProgressBar()
                     }
                     else -> {}
@@ -82,12 +84,12 @@ class SettingsFragment : Fragment() {
                 when(result) {
                     START -> showProgressBar()
                     SUCCESS -> {
-                        showToast(requireContext(), getString(R.string.restore_success))
+                        showToast(getString(R.string.restore_success))
                         hideProgressBar()
 
                     }
                     FAILED -> {
-                        showToast(requireContext(), getString(R.string.restore_failed))
+                        showToast( getString(R.string.restore_failed))
                         hideProgressBar()
                     }
                     else -> {}
@@ -105,6 +107,16 @@ class SettingsFragment : Fragment() {
         binding.btnPlaceholders.setOnClickListener {
             openPlaceholdersFragment()
         }
+
+        binding.btnLanguages.setOnClickListener {
+            openLanguagesFragment()
+        }
+    }
+
+    private fun openLanguagesFragment() {
+        navigate {
+            SettingsFragmentDirections.actionOpenLanguages()
+        }
     }
 
     private fun openPlaceholdersFragment() {
@@ -115,17 +127,13 @@ class SettingsFragment : Fragment() {
 
     private fun backupDB() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            Dexter.withContext(context)
-                .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .withListener(object : BasePermissionListener() {
-                    override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
-                        viewModel.backupDB(requireContext())
-                    }
-
-                    override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-                        showToast(requireContext(), getString(R.string.permission_denied))
-                    }
-                }).check()
+            askPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE){ result ->
+                if (result){
+                    viewModel.backupDB(requireContext())
+                } else {
+                    showToast(getString(R.string.permission_denied))
+                }
+            }
         } else {
             viewModel.backupDB(requireContext())
         }

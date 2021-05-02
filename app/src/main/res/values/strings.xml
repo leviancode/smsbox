@@ -123,4 +123,6 @@
     <string name="edit_recipient">Edit Recipient</string>
     <string name="edit_template">Edit Template</string>
     <string name="save_in_number_holder">Save</string>
+    <string name="title_languages">Language</string>
+    <string name="change_language_info">The app will be restarted after changing the language</string>
 </resources>

@@ -1,8 +1,14 @@
 package com.leviancode.android.gsmbox.utils.extensions
 
+import android.view.Gravity
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.single.BasePermissionListener
 import com.leviancode.android.gsmbox.utils.hideKeyboard
 
 
@@ -23,4 +29,24 @@ inline fun Fragment.navigate(action: () -> NavDirections){
 fun Fragment.goBack(){
    // hideKeyboard()
     findNavController().navigateUp()
+}
+
+fun Fragment.askPermission(permission: String, callback: (Boolean) -> Unit){
+    Dexter.withContext(requireContext())
+        .withPermission(permission)
+        .withListener(object : BasePermissionListener() {
+            override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
+                callback(true)
+            }
+
+            override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
+                callback(false)
+            }
+        }).check()
+}
+
+fun Fragment.showToast(message: String){
+    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).apply {
+        setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 180)
+    }.show()
 }
