@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.databinding.DialogSelectListBinding
 import com.leviancode.android.gsmbox.databinding.ViewButtonContactsBinding
 import com.leviancode.android.gsmbox.ui.recipients.recipients.adapters.RecipientSelectListAdapter
@@ -20,8 +21,6 @@ import com.leviancode.android.gsmbox.utils.extensions.askPermission
 import com.leviancode.android.gsmbox.utils.extensions.goBack
 import com.leviancode.android.gsmbox.utils.extensions.setNavigationResult
 import com.leviancode.android.gsmbox.utils.extensions.showToast
-import com.leviancode.android.gsmbox.utils.log
-import com.leviancode.android.gsmbox.utils.managers.ContactsManager
 
 class RecipientSelectListDialog : BottomSheetDialogFragment() {
     private lateinit var binding: DialogSelectListBinding
@@ -46,7 +45,7 @@ class RecipientSelectListDialog : BottomSheetDialogFragment() {
         contactsLauncher =
             registerForActivityResult(ActivityResultContracts.PickContact()) { uri ->
                 viewModel.selectRecipientByContactUri(requireContext(), uri)
-                setSelected(viewModel.selectedPhoneNumber)
+                setSelected(viewModel.selectedRecipient)
             }
         binding.toolbar.title = getString(R.string.select_recipient)
         observeEvents()
@@ -69,7 +68,7 @@ class RecipientSelectListDialog : BottomSheetDialogFragment() {
             setSelected(null)
         }
         binding.btnOk.setOnClickListener {
-            setSelected(viewModel.selectedPhoneNumber)
+            setSelected(viewModel.selectedRecipient)
         }
 
     }
@@ -89,7 +88,7 @@ class RecipientSelectListDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun setSelected(selectedRecipient: String?) {
+    private fun setSelected(selectedRecipient: Recipient?) {
         setNavigationResult(selectedRecipient, REQ_SELECT_RECIPIENT)
         goBack()
     }

@@ -3,8 +3,10 @@ package com.leviancode.android.gsmbox.data.repository
 import androidx.lifecycle.LiveData
 import com.leviancode.android.gsmbox.data.dao.PlaceholderDao
 import com.leviancode.android.gsmbox.data.model.placeholders.Placeholder
+import com.leviancode.android.gsmbox.utils.HASHTAG_REGEX
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.regex.Pattern
 
 object PlaceholdersRepository {
     private val placeholderDao: PlaceholderDao
@@ -32,5 +34,18 @@ object PlaceholdersRepository {
 
     suspend fun getByName(name: String): Placeholder? {
         return placeholderDao.getByName(name)
+    }
+
+    suspend fun replaceHashtagNamesToValues(str: String): String {
+        val matcher = Pattern.compile(HASHTAG_REGEX).matcher(str)
+        if (matcher.find()) {
+            val hashTag = matcher.group(1) ?: ""
+            val value = getValueByName(hashTag) ?: return hashTag
+            if (hashTag != value) {
+                val newStr = str.replaceFirst(hashTag, value)
+                return replaceHashtagNamesToValues(newStr)
+            }
+        }
+        return str
     }
 }

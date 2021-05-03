@@ -5,32 +5,28 @@ import android.content.Intent
 import android.net.Uri
 import com.leviancode.android.gsmbox.data.model.templates.TemplateWithRecipients
 import com.leviancode.android.gsmbox.data.repository.PlaceholdersRepository
-import com.leviancode.android.gsmbox.utils.HASHTAG_REGEX
-import com.leviancode.android.gsmbox.utils.extensions.replaceHashtag
-import java.util.regex.Pattern
+import com.leviancode.android.gsmbox.utils.extensions.hasPlaceholder
+
 
 object SmsManager {
-    suspend fun sendSms(context: Context, data: TemplateWithRecipients) {
-        if (data.recipients == null) return
+    suspend fun sendSms(context: Context, template: TemplateWithRecipients) {
+        if (template.recipients == null) return
 
-        var message = data.template.getMessage()
-        if (hasPlaceholder(message)){
+        var message = template.template.getMessage()
+        if (message.hasPlaceholder()){
             message = replacePlaceholders(message)
         }
         val addresses =
-            data.recipients!!.getRecipients().joinToString(";", "smsto:") { it.getPhoneNumber() }
+            template.recipients!!.getRecipients().joinToString(";", "smsto:") { it.getPhoneNumber() }
 
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(addresses)
-        intent.putExtra(Intent.EXTRA_TEXT, message)
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            this.data = Uri.parse(addresses)
+            putExtra(Intent.EXTRA_TEXT, message)
+        }
         context.startActivity(intent)
     }
 
     private suspend fun replacePlaceholders(message: String): String {
-        return message.replaceHashtag { tag, startIndex, endIndex ->
-            PlaceholdersRepository.getValueByName(tag) ?: tag
-        }
+        return PlaceholdersRepository.replaceHashtagNamesToValues(message)
     }
-
-    private fun hasPlaceholder(message: String) = message.contains('#')
 }

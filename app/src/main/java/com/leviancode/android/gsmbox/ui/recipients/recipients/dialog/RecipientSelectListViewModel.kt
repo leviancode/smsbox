@@ -5,13 +5,12 @@ import android.net.Uri
 import androidx.lifecycle.*
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
-import com.leviancode.android.gsmbox.utils.log
 import com.leviancode.android.gsmbox.utils.managers.ContactsManager
 
 class RecipientSelectListViewModel : ViewModel() {
     private val repository = RecipientsRepository
     private var items = listOf<Recipient>()
-    var selectedPhoneNumber = ""
+    var selectedRecipient: Recipient? = null
 
     fun selectCurrentRecipientAndGetListWithoutAlreadySelected(
         phoneNumberForSelect: String,
@@ -28,7 +27,7 @@ class RecipientSelectListViewModel : ViewModel() {
     private fun selectPhoneNumber(phoneNumber: String) {
         items.forEach { recipient ->
             if (recipient.getPhoneNumber() == phoneNumber){
-                selectedPhoneNumber = phoneNumber
+                selectedRecipient = recipient
                 recipient.selected = true
             } else {
                 recipient.selected = false
@@ -37,13 +36,13 @@ class RecipientSelectListViewModel : ViewModel() {
     }
 
     fun onItemClick(item: Recipient) {
-        if (items.isNotEmpty() && selectedPhoneNumber.isNotBlank()) {
-            items.find { it.getPhoneNumber() == selectedPhoneNumber }?.let {
+        if (items.isNotEmpty() && selectedRecipient != null) {
+            items.find { it.getPhoneNumber() == selectedRecipient?.getPhoneNumber() }?.let {
                 it.selected = false
             }
         }
         item.selected = true
-        selectedPhoneNumber = item.getPhoneNumber()
+        selectedRecipient = item
     }
 
     fun selectRecipientByContactUri(context: Context, uri: Uri?): Recipient? {

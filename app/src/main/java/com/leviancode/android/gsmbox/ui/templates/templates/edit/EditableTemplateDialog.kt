@@ -3,7 +3,6 @@ package com.leviancode.android.gsmbox.ui.templates.templates.edit
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -81,7 +80,7 @@ class EditableTemplateDialog :
             selectColor(color)
         }
 
-        viewModel.savedEvent.observe(viewLifecycleOwner) {
+        viewModel.savedTemplateEvent.observe(viewLifecycleOwner) {
             closeDialog(RESULT_OK)
         }
 
@@ -132,11 +131,11 @@ class EditableTemplateDialog :
     private fun showSelectRecipientDialog(currentRecipient: Recipient, allTypedPhoneNumbers: List<String>) {
         hideKeyboard()
 
-        getNavigationResult<String?>(REQ_SELECT_RECIPIENT)?.observe(viewLifecycleOwner) { result ->
-            if (!result.isNullOrBlank()) {
-                viewModel.updateRecipientPhoneNumber(currentRecipient, result)
+        getNavigationResult<Recipient?>(REQ_SELECT_RECIPIENT)?.observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                viewModel.updateRecipient(currentRecipient, result)
             }
-            removeNavigationResult<String?>(REQ_SELECT_RECIPIENT)
+            removeNavigationResult<Recipient?>(REQ_SELECT_RECIPIENT)
         }
 
         navigate {

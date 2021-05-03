@@ -5,6 +5,7 @@ import androidx.databinding.Bindable
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
+import java.lang.StringBuilder
 
 data class GroupWithRecipients(
     @Embedded var group: RecipientGroup = RecipientGroup(),
@@ -19,11 +20,24 @@ data class GroupWithRecipients(
     @Bindable
     fun getSizeAsString() = getRecipientsCount().toString()
 
-    @Bindable
+    /*@Bindable
     fun getRecipientsAsString(): String {
         return if (isRecipientsNotEmpty()) {
             recipients.joinToString("; ") { it.getPhoneNumber() }
         } else ""
+    }*/
+
+    @Bindable
+    fun getRecipientsAsString(): String {
+        val stringBuilder = StringBuilder()
+        recipients.forEach { recipient ->
+            if (!recipient.getName().isNullOrBlank()){
+                stringBuilder.append("${recipient.getName()} (${recipient.getPhoneNumber()});\n")
+            } else {
+                stringBuilder.append(recipient.getPhoneNumber() + ";\n")
+            }
+        }
+        return stringBuilder.toString().trim()
     }
 
     fun getRecipientsCount(): Int = recipients.filter {

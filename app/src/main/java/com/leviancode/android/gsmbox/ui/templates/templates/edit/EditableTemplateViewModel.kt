@@ -8,7 +8,6 @@ import com.leviancode.android.gsmbox.data.model.templates.TemplateWithRecipients
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
-import com.leviancode.android.gsmbox.utils.log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -32,7 +31,7 @@ class EditableTemplateViewModel : ViewModel() {
     val selectRecipientGroupEvent = SingleLiveEvent<Int>()
     val selectRecipientEvent = SingleLiveEvent<Pair<Recipient, List<String>>>()
     val selectColorEvent = SingleLiveEvent<String>()
-    val savedEvent = SingleLiveEvent<Unit>()
+    val savedTemplateEvent = SingleLiveEvent<Unit>()
 
     init {
         data = repository.getNewTemplateWithRecipients(0)
@@ -92,7 +91,7 @@ class EditableTemplateViewModel : ViewModel() {
         viewModelScope.launch{
             repository.saveTemplateWithRecipients(data)
         }
-        savedEvent.call()
+        savedTemplateEvent.call()
     }
 
     fun onSaveRecipientClick(recipient: Recipient) {
@@ -121,8 +120,10 @@ class EditableTemplateViewModel : ViewModel() {
         }
     }
 
-    fun updateRecipientPhoneNumber(recipient: Recipient, phoneNumber: String) {
-        recipient.setPhoneNumber(phoneNumber)
+    fun updateRecipient(old: Recipient, new: Recipient) {
+        old.setPhoneNumber(new.getPhoneNumber())
+        old.setName(new.getName())
+        old.recipientId = new.recipientId
     }
 
     private fun fieldsChecker(data: TemplateWithRecipients) {

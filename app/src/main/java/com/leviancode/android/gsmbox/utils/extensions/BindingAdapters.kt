@@ -109,7 +109,6 @@ fun TextView.setTextWithHashtagHighlight(str: String) {
     }
 }
 
-
 @BindingAdapter(value = ["setRecipientsAsText"])
 fun TextView.setRecipientsAsText(recipients: GroupWithRecipients?) {
     text = when {
