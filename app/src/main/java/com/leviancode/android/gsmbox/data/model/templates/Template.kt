@@ -46,6 +46,7 @@ data class Template(
     val date: String = getFormatDate()
 ) : BaseObservable(), Serializable {
 
+
     @Bindable
     fun getName() = name
     fun setName(value: String) {
@@ -96,6 +97,8 @@ data class Template(
         getName(),
         getMessage()
     )
+
+
 
     private fun checkNameIsUnique(value: String){
         CoroutineScope(Dispatchers.IO).launch {

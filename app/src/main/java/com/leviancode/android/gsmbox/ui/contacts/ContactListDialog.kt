@@ -54,7 +54,7 @@ class ContactListDialog : BottomSheetDialogFragment() {
         val q = Contacts.getQuery()
         q.hasPhoneNumber()
         val contacts: List<Contact> = q.find()
-        val listAdapter = ContactListAdapter(contacts, ListItemClickListener { selectContact(it) })
+        val listAdapter = ContactListAdapter(contacts) { selectContact(it) }
         binding.bottomSheetContactList.adapter = listAdapter
     }
 }

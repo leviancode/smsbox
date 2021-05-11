@@ -3,6 +3,8 @@ package com.leviancode.android.gsmbox.ui.templates.templates.edit
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.MultiAutoCompleteTextView.CommaTokenizer
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -11,8 +13,9 @@ import com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.databinding.DialogEditableTemplateBinding
 import com.leviancode.android.gsmbox.databinding.ViewNumberHolderBinding
-import com.leviancode.android.gsmbox.ui.extra.ColorPickerDialog
 import com.leviancode.android.gsmbox.ui.extra.AbstractFullScreenEditableDialog
+import com.leviancode.android.gsmbox.ui.extra.ColorPickerDialog
+import com.leviancode.android.gsmbox.ui.templates.templates.adapters.DropdownAdapter
 import com.leviancode.android.gsmbox.utils.*
 import com.leviancode.android.gsmbox.utils.extensions.getNavigationResult
 import com.leviancode.android.gsmbox.utils.extensions.navigate
@@ -37,6 +40,16 @@ class EditableTemplateDialog :
         }
         fetchData()
         observeEvents()
+        setupPlaceholdersAutocomplete()
+    }
+
+    private fun setupPlaceholdersAutocomplete() {
+        viewModel.getPlaceholders().observe(viewLifecycleOwner){ list ->
+            val adapter = DropdownAdapter(requireContext(), list)
+            binding.editTextTemplateMessage.setAdapter(adapter)
+            binding.editTextTemplateMessage.setTokenizer(SpaceTokenizer())
+        }
+
     }
 
     private fun fetchData() {
@@ -128,7 +141,10 @@ class EditableTemplateDialog :
         binding.executePendingBindings()
     }
 
-    private fun showSelectRecipientDialog(currentRecipient: Recipient, allTypedPhoneNumbers: List<String>) {
+    private fun showSelectRecipientDialog(
+        currentRecipient: Recipient,
+        allTypedPhoneNumbers: List<String>
+    ) {
         hideKeyboard()
 
         getNavigationResult<Recipient?>(REQ_SELECT_RECIPIENT)?.observe(viewLifecycleOwner) { result ->

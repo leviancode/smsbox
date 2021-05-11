@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients
 import com.leviancode.android.gsmbox.data.model.recipients.Recipient
 import com.leviancode.android.gsmbox.data.model.templates.TemplateWithRecipients
+import com.leviancode.android.gsmbox.data.repository.PlaceholdersRepository
 import com.leviancode.android.gsmbox.data.repository.RecipientsRepository
 import com.leviancode.android.gsmbox.data.repository.TemplatesRepository
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
@@ -65,6 +66,7 @@ class EditableTemplateViewModel : ViewModel() {
         return liveData
     }
 
+    fun getPlaceholders() = PlaceholdersRepository.getPlaceholders()
     fun onAddRecipientClick() {
         RecipientsRepository.getNewRecipient().also {
             data.addRecipient(it)

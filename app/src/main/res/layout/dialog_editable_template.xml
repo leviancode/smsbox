@@ -94,10 +94,11 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <MultiAutoCompleteTextView
                         android:id="@+id/edit_text_template_message"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:completionThreshold="1"
                         android:hint="@string/hint_message"
                         android:inputType="textMultiLine|text"
                         android:padding="8dp"
