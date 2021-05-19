@@ -6,7 +6,7 @@
  <data>
   <variable
       name="viewModel"
-      type="com.leviancode.android.gsmbox.ui.settings.placeholders.PlaceholdersViewModel" />
+      type="com.leviancode.android.gsmbox.ui.fragments.settings.placeholders.PlaceholdersViewModel" />
  </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

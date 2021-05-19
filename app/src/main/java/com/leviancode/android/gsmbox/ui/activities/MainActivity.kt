@@ -3,7 +3,6 @@ package com.leviancode.android.gsmbox.ui.activities
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -13,12 +12,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.repository.AppDatabase
 import com.leviancode.android.gsmbox.databinding.ActivityMainBinding
-import com.leviancode.android.gsmbox.utils.PREF_KEY_DEFAULT_LANGUAGE
-import com.leviancode.android.gsmbox.utils.log
-import com.leviancode.android.gsmbox.utils.managers.LanguageManager
-import com.yariksoffice.lingver.Lingver
+import com.leviancode.android.gsmbox.core.utils.PREF_KEY_DEFAULT_LANGUAGE
+import com.leviancode.android.gsmbox.core.utils.managers.LanguageManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

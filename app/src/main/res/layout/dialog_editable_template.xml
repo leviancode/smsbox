@@ -2,18 +2,18 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.templates.templates.edit.EditableTemplateDialog">
+    tools:context=".ui.fragments.templates.templates.edit.EditableTemplateDialog">
 
     <data>
         <variable
             name="template"
-            type="com.leviancode.android.gsmbox.data.model.templates.Template" />
+            type="com.leviancode.android.gsmbox.core.data.model.templates.Template" />
         <variable
             name="recipients"
-            type="com.leviancode.android.gsmbox.data.model.recipients.GroupWithRecipients" />
+            type="com.leviancode.android.gsmbox.core.data.model.recipients.GroupWithRecipients" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.templates.templates.edit.EditableTemplateViewModel" />
+            type="com.leviancode.android.gsmbox.ui.fragments.templates.templates.edit.EditableTemplateViewModel" />
     </data>
 
     <FrameLayout

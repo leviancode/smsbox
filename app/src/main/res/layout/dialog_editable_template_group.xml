@@ -6,10 +6,10 @@
     <data>
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.data.model.templates.TemplateGroup" />
+            type="com.leviancode.android.gsmbox.core.data.model.templates.TemplateGroup" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.templates.groups.edit.EditableTemplateGroupViewModel" />
+            type="com.leviancode.android.gsmbox.ui.fragments.templates.groups.edit.EditableTemplateGroupViewModel" />
     </data>
 
             <LinearLayout
@@ -17,7 +17,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:animateLayoutChanges="true"
-                tools:context=".ui.templates.groups.edit.EditableTemplateGroupDialog">
+                tools:context=".ui.fragments.templates.groups.edit.EditableTemplateGroupDialog">
 
                 <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"

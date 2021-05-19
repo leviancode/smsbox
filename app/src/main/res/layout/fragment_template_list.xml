@@ -6,10 +6,10 @@
     <data>
         <variable
             name="adapter"
-            type="com.leviancode.android.gsmbox.ui.templates.templates.adapters.TemplateListAdapter" />
+            type="com.leviancode.android.gsmbox.ui.fragments.templates.templates.adapters.TemplateListAdapter" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.templates.templates.list.TemplateListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.fragments.templates.templates.list.TemplateListViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

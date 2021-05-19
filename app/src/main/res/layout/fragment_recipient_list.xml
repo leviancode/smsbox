@@ -6,7 +6,7 @@
     <data>
         <variable
             name="adapter"
-            type="com.leviancode.android.gsmbox.ui.recipients.recipients.adapters.RecipientListAdapter" />
+            type="com.leviancode.android.gsmbox.ui.fragments.recipients.recipients.adapters.RecipientListAdapter" />
     </data>
 
     <FrameLayout

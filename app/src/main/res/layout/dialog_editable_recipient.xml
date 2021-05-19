@@ -6,10 +6,10 @@
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.recipients.edit.EditableRecipientViewModel" />
+            type="com.leviancode.android.gsmbox.ui.fragments.recipients.recipients.edit.EditableRecipientViewModel" />
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
+            type="com.leviancode.android.gsmbox.core.data.model.recipients.Recipient" />
     </data>
 
     <FrameLayout
@@ -48,7 +48,7 @@
             android:paddingBottom="12dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            tools:context=".ui.templates.groups.edit.EditableTemplateGroupDialog">
+            tools:context=".ui.fragments.templates.groups.edit.EditableTemplateGroupDialog">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_recipient_name"

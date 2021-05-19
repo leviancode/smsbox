@@ -9,10 +9,10 @@
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.templates.templates.edit.EditableTemplateViewModel" />
+            type="com.leviancode.android.gsmbox.ui.fragments.templates.templates.edit.EditableTemplateViewModel" />
         <variable
             name="recipient"
-            type="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
+            type="com.leviancode.android.gsmbox.core.data.model.recipients.Recipient" />
 
     </data>
 

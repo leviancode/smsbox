@@ -2,15 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.templates.groups.list.TemplateGroupListFragment">
+    tools:context=".ui.fragments.templates.groups.list.TemplateGroupListFragment">
 
     <data>
         <variable
             name="adapter"
-            type="com.leviancode.android.gsmbox.ui.templates.groups.adapters.TemplateGroupListAdapter" />
+            type="com.leviancode.android.gsmbox.ui.fragments.templates.groups.adapters.TemplateGroupListAdapter" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.templates.groups.list.TemplateGroupListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.fragments.templates.groups.list.TemplateGroupListViewModel" />
     </data>
 
     <FrameLayout

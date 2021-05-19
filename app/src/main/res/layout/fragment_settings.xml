@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.settings.SettingsFragment">
+    tools:context=".ui.fragments.settings.SettingsFragment">
 
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.settings.SettingsViewModel" />
+            type="com.leviancode.android.gsmbox.ui.fragments.settings.SettingsViewModel" />
     </data>
 
         <LinearLayout

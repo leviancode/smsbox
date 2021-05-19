@@ -10,7 +10,7 @@
 
         <variable
             name="clickListener"
-            type="com.leviancode.android.gsmbox.utils.helpers.ListItemClickListener" />
+            type="com.leviancode.android.gsmbox.core.utils.helpers.ListItemClickListener" />
     </data>
 
     <LinearLayout

@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.favorites.FavoritesFragment">
+    tools:context=".ui.fragments.favorites.FavoritesFragment">
 
     <data>
         <variable
             name="adapter"
-            type="com.leviancode.android.gsmbox.ui.templates.templates.adapters.TemplateListAdapter" />
+            type="com.leviancode.android.gsmbox.ui.fragments.templates.templates.adapters.TemplateListAdapter" />
     </data>
 
     <FrameLayout

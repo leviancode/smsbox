@@ -7,11 +7,11 @@
 
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.data.model.recipients.Recipient" />
+            type="com.leviancode.android.gsmbox.core.data.model.recipients.Recipient" />
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.recipients.list.RecipientListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.fragments.recipients.recipients.list.RecipientListViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

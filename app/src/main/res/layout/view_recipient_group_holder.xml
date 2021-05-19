@@ -6,10 +6,10 @@
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.recipients.recipients.edit.EditableRecipientViewModel" />
+            type="com.leviancode.android.gsmbox.ui.fragments.recipients.recipients.edit.EditableRecipientViewModel" />
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.data.model.recipients.RecipientGroup" />
+            type="com.leviancode.android.gsmbox.core.data.model.recipients.RecipientGroup" />
     </data>
 
     <LinearLayout
