@@ -62,8 +62,6 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="4dp"
                     app:setTextWithHashtagHighlight="@{model.template.message}"
-                    android:drawablePadding="6dp"
-                    android:drawableTint="@color/main_style_dark_blue"
                     android:textColor="#252525"
                     tools:text="Message" />
 
@@ -74,7 +72,6 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="4dp"
                     android:fontFamily="sans-serif-light"
-                    android:drawablePadding="6dp"
                     app:setRecipientsAsText="@{model.recipients}"
                     android:textColor="@color/text_description"
                     tools:text="+3801234567" />

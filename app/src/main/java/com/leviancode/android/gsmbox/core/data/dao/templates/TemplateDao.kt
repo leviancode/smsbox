@@ -38,7 +38,11 @@ interface TemplateDao {
 
     @Transaction
     @Query("SELECT * from templates WHERE favorite = 1")
-    fun getFavoriteWithRecipients(): LiveData<List<TemplateWithRecipients>>
+    fun getFavoriteWithRecipientsLiveData(): LiveData<List<TemplateWithRecipients>>
+
+    @Transaction
+    @Query("SELECT * from templates WHERE favorite = 1")
+    suspend fun getFavoriteWithRecipients(): List<TemplateWithRecipients>
 
     @Query("SELECT * from templates WHERE recipientGroupId = :id")
     suspend fun getByRecipientGroupId(id: Int): List<Template>

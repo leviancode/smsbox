@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:orientation="horizontal"
+    android:padding="4dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/widget_template_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textColor="@color/text_title"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Title" />
+
+        <TextView
+            android:id="@+id/widget_template_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
+            android:textSize="13sp"
+            android:textColor="#252525"
+            tools:text="Message" />
+
+        <TextView
+            android:id="@+id/widget_template_recipient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
+            android:textSize="13sp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/text_description"
+            tools:text="+3801234567" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/widget_template_send"
+        android:layout_width="@dimen/send_button_widget_size"
+        android:layout_height="@dimen/send_button_widget_size"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="8dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:padding="6dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_baseline_send_24"
+        tools:tint="@color/secondary" />
+
+</LinearLayout>

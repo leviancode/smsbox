@@ -1,10 +1,12 @@
 package com.leviancode.android.gsmbox.core.data.model.recipients
 
+import android.content.Context
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
+import com.leviancode.android.gsmbox.R
 import java.lang.StringBuilder
 
 data class GroupWithRecipients(
@@ -38,6 +40,20 @@ data class GroupWithRecipients(
             }
         }
         return stringBuilder.toString().trim()
+    }
+
+    fun getFormatRecipients(context: Context): String {
+       return when {
+           recipients.isEmpty() -> {
+               context.getString(R.string.no_recipients)
+           }
+           isGroupNameNotNull() -> {
+               "${context.getString(R.string.group)} ${getRecipientGroupName()} (${getRecipientsCount()})"
+           }
+           else -> {
+               getRecipientsAsString()
+           }
+       }
     }
 
     fun getRecipientsCount(): Int = recipients.filter {

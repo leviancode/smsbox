@@ -16,7 +16,7 @@ class TemplateListViewModel : ViewModel() {
     val popupMenuLiveEvent = SingleLiveEvent<Pair<View, Template>>()
 
     val templates = repository.getAllTemplates()
-    val favoriteTemplates = repository.getFavoriteTemplates()
+    val favoriteTemplates = repository.getFavoriteTemplatesLiveData()
 
     fun deleteTemplate(template: Template) {
         viewModelScope.launch {

@@ -33,7 +33,9 @@ object TemplatesRepository {
     fun getTemplatesWithRecipients(groupId: Int) =
         templatesDao.getTemplatesWithRecipients(groupId)
 
-    fun getFavoriteTemplates() = templatesDao.getFavoriteWithRecipients()
+    fun getFavoriteTemplatesLiveData() = templatesDao.getFavoriteWithRecipientsLiveData()
+
+    suspend fun getFavoriteTemplates() = templatesDao.getFavoriteWithRecipients()
 
     fun getTemplateNamesExclusiveById(id: Int) = templatesDao.getTemplateNamesExclusiveById(id)
 

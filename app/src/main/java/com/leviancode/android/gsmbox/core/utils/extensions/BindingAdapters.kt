@@ -111,16 +111,9 @@ fun TextView.setTextWithHashtagHighlight(str: String) {
 
 @BindingAdapter(value = ["setRecipientsAsText"])
 fun TextView.setRecipientsAsText(recipients: GroupWithRecipients?) {
-    text = when {
-        recipients == null -> {
-            context.getString(R.string.no_recipients)
-        }
-        recipients.isGroupNameNotNull() -> {
-            "${context.getString(R.string.group)} ${recipients.getRecipientGroupName()} (${recipients.getRecipientsCount()})"
-        }
-        else -> {
-            recipients.getRecipientsAsString()
-        }
+    text = when (recipients) {
+        null -> context.getString(R.string.no_recipients)
+        else -> recipients.getFormatRecipients(context)
     }
 }
 
