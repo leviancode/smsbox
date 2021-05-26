@@ -33,10 +33,8 @@ class FavoritesWidget : AppWidgetProvider() {
         appWidgetId: Int
     ) {
         val views = RemoteViews(context.packageName, R.layout.widget_favorites)
-        //  setUpdateTV(views, context, appWidgetId);
 
         setList(views, context, appWidgetId);
-
         setListClick(views, context, appWidgetId);
 
         appWidgetManager.updateAppWidget(appWidgetId, views)
@@ -83,17 +81,4 @@ class FavoritesWidget : AppWidgetProvider() {
         const val ITEM_ID = "item_id"
     }
 }
-
-/*fun setUpdateTV(rv: RemoteViews, context: Context?, appWidgetId: Int) {
-    val updIntent = Intent(context, FavoritesWidget::class.java).apply {
-        action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-        putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
-    }
-
-    val updPIntent = PendingIntent.getBroadcast(
-        context,
-        appWidgetId, updIntent, 0
-    )
-    rv.setOnClickPendingIntent(R.id.tvUpdate, updPIntent)
-}*/
 
