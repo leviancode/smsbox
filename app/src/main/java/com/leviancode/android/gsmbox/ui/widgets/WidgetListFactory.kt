@@ -33,14 +33,6 @@ class WidgetListFactory(val context: Context, intent: Intent) : RemoteViewsServi
     override fun onDataSetChanged() {
         log("service data set changed")
         initData()
-        //observer.onChanged(data)
-       /* CoroutineScope(Dispatchers.IO).launch {
-            val items = TemplatesRepository.getFavoriteTemplates()
-            withContext(Dispatchers.Main){
-                data.clear()
-                data.addAll(items)
-            }
-        }*/
     }
 
     override fun onDestroy() {
