@@ -104,4 +104,6 @@
     <string name="save_in_number_holder">Збер.</string>
     <string name="title_languages">Мова</string>
     <string name="change_language_info">Додаток перезапуститься після зміни мови</string>
+    <string name="update_widget">Update widget</string>
+    <string name="add_favorite_templates">Додайте шаблони в обране</string>
 </resources>

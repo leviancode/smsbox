@@ -125,4 +125,6 @@
     <string name="save_in_number_holder">Save</string>
     <string name="title_languages">Language</string>
     <string name="change_language_info">The app will be restarted after changing the language</string>
+    <string name="update_widget">Update widget</string>
+    <string name="add_favorite_templates">Add favorite templates</string>
 </resources>

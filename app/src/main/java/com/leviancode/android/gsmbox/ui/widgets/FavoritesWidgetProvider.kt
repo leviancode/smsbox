@@ -7,21 +7,19 @@ import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.core.data.repository.AppDatabase
 import com.leviancode.android.gsmbox.core.utils.log
 import com.leviancode.android.gsmbox.core.utils.managers.SmsManager
 
 
-/**
- * Implementation of App Widget functionality.
- */
-class FavoritesWidget : AppWidgetProvider() {
+class FavoritesWidgetProvider : AppWidgetProvider() {
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-
+        log("widget update")
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
@@ -34,19 +32,22 @@ class FavoritesWidget : AppWidgetProvider() {
     ) {
         val views = RemoteViews(context.packageName, R.layout.widget_favorites)
 
-        setList(views, context, appWidgetId);
-        setListClick(views, context, appWidgetId);
+        setList(views, context, appWidgetId)
+        setListClick(views, context, appWidgetId)
+        setUpdateClick(views, context, appWidgetId)
 
         appWidgetManager.updateAppWidget(appWidgetId, views)
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_list_view);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_list_view)
     }
 
     override fun onEnabled(context: Context) {
         super.onEnabled(context)
+        AppDatabase.init(context)
     }
 
     override fun onDisabled(context: Context) {
         super.onDisabled(context)
+        log("widget disabled")
     }
 
     private fun setList(rv: RemoteViews, context: Context?, appWidgetId: Int) {
@@ -56,13 +57,24 @@ class FavoritesWidget : AppWidgetProvider() {
     }
 
     private fun setListClick(rv: RemoteViews, context: Context?, appWidgetId: Int) {
-        val listClickIntent = Intent(context, FavoritesWidget::class.java)
+        val listClickIntent = Intent(context, FavoritesWidgetProvider::class.java)
         listClickIntent.action = ACTION_ON_CLICK
         val listClickPIntent = PendingIntent.getBroadcast(
             context, 0,
             listClickIntent, 0
         )
         rv.setPendingIntentTemplate(R.id.widget_list_view, listClickPIntent)
+    }
+
+    private fun setUpdateClick(rv: RemoteViews, context: Context?, appWidgetId: Int) {
+        val updIntent = Intent(context, FavoritesWidgetProvider::class.java)
+        updIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+        updIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
+        val updPIntent = PendingIntent.getBroadcast(
+            context,
+            appWidgetId, updIntent, 0
+        )
+        rv.setOnClickPendingIntent(R.id.widget_button_update, updPIntent)
     }
 
     override fun onReceive(context: Context, intent: Intent) {

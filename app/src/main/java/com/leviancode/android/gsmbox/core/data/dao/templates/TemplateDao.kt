@@ -44,6 +44,10 @@ interface TemplateDao {
     @Query("SELECT * from templates WHERE favorite = 1")
     suspend fun getFavoriteWithRecipients(): List<TemplateWithRecipients>
 
+    @Transaction
+    @Query("SELECT * from templates WHERE favorite = 1")
+    fun getFavoriteWithRecipientsSync(): List<TemplateWithRecipients>
+
     @Query("SELECT * from templates WHERE recipientGroupId = :id")
     suspend fun getByRecipientGroupId(id: Int): List<Template>
 

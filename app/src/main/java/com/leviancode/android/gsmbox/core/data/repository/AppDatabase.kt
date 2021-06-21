@@ -40,7 +40,9 @@ abstract class AppDatabase : RoomDatabase(){
             instance = Room.databaseBuilder(
                 context,
                 AppDatabase::class.java, DATABASE_NAME
-            ).setJournalMode(JournalMode.TRUNCATE).build()
+            ).setJournalMode(JournalMode.TRUNCATE)
+                .allowMainThreadQueries()
+                .build()
         }
 
         fun close(){

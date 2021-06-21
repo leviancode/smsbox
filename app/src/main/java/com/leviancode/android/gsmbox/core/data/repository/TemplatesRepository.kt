@@ -37,6 +37,8 @@ object TemplatesRepository {
 
     suspend fun getFavoriteTemplates() = templatesDao.getFavoriteWithRecipients()
 
+    fun getFavoriteTemplatesSync() = templatesDao.getFavoriteWithRecipientsSync()
+
     fun getTemplateNamesExclusiveById(id: Int) = templatesDao.getTemplateNamesExclusiveById(id)
 
     fun getNewTemplateWithRecipients(groupId: Int): TemplateWithRecipients {
@@ -44,6 +46,7 @@ object TemplatesRepository {
         return TemplateWithRecipients(
             Template(templateGroupId = groupId), gwr)
     }
+
 
     suspend fun getTemplateWithRecipients(templateId: Int) = withContext(IOContext){
         templatesDao.getTemplateWithRecipients(templateId)
