@@ -29,7 +29,7 @@ class EditableRecipientDialog :
         binding.viewModel = viewModel
         setTitle(args.recipientId != 0)
         setupContactPickerLauncher()
-        showKeyboard(binding.editTextRecipientName)
+        showKeyboard()
         fetchData()
         observeEvents()
     }

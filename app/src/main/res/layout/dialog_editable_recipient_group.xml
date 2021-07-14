@@ -62,7 +62,9 @@
                 android:inputType="text"
                 android:padding="8dp"
                 android:text="@={viewModel.data.name}"
-                android:textSize="@dimen/form_text_size" />
+                android:textSize="@dimen/form_text_size" >
+                <requestFocus/>
+            </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 

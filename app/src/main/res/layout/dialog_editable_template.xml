@@ -81,7 +81,9 @@
                         app:setError="@{template.nameUnique}"
                         android:padding="8dp"
                         android:text="@={template.name}"
-                        android:textSize="@dimen/form_text_size" />
+                        android:textSize="@dimen/form_text_size">
+                        <requestFocus/>
+                    </com.google.android.material.textfield.TextInputEditText>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

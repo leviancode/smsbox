@@ -56,7 +56,7 @@ class EditablePlaceholderDialog : BottomSheetDialogFragment() {
             setName(getName().removePrefix("#"))
         }
         setTitle(args.placeholder.getName())
-        showKeyboard(binding.editTextPlaceholdersName)
+        showKeyboard()
         observeUI()
     }
 

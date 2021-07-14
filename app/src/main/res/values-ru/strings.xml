@@ -104,6 +104,8 @@
     <string name="save_in_number_holder">Сохр.</string>
     <string name="title_languages">Язык</string>
     <string name="change_language_info">Приложение будет перезапущено после изменения языка</string>
-    <string name="update_widget">Update widget</string>
+    <string name="update_widget">Обновить виджет</string>
     <string name="add_favorite_templates">Добавьте шаблоны в избранное</string>
+    <string name="material_dialog_positive_button">OK</string>
+    <string name="ok">OK</string>
 </resources>

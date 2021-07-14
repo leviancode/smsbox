@@ -38,7 +38,7 @@ class EditableRecipientGroupDialog : BottomSheetDialogFragment()  {
         binding.viewModel = viewModel
         viewModel.loadGroup(args.groupId)
         setTitle(args.groupId != 0)
-        showKeyboard(binding.editTextRecipientGroupName)
+        showKeyboard()
         observeUI()
     }
 

@@ -11,7 +11,8 @@ import com.leviancode.android.gsmbox.core.utils.RESULT_OK
 import com.leviancode.android.gsmbox.core.utils.hideKeyboard
 import com.leviancode.android.gsmbox.core.utils.showKeyboard
 
-class EditableTemplateGroupDialog : AbstractFullScreenEditableDialog<DialogEditableTemplateGroupBinding>(R.layout.dialog_editable_template_group) {
+class EditableTemplateGroupDialog :
+    AbstractFullScreenEditableDialog<DialogEditableTemplateGroupBinding>(R.layout.dialog_editable_template_group) {
     private lateinit var binding: DialogEditableTemplateGroupBinding
     private val viewModel: EditableTemplateGroupViewModel by viewModels()
     private val args: EditableTemplateGroupDialogArgs by navArgs()
@@ -20,13 +21,13 @@ class EditableTemplateGroupDialog : AbstractFullScreenEditableDialog<DialogEdita
         this.binding = binding
         binding.viewModel = viewModel
         setTitle(args.groupId != 0)
-        showKeyboard(binding.editTextTemplateGroupName)
+        showKeyboard()
         fetchData()
         observeEvents()
     }
 
     private fun fetchData() {
-        viewModel.loadGroup(args.groupId).observe(viewLifecycleOwner){
+        viewModel.loadGroup(args.groupId).observe(viewLifecycleOwner) {
             binding.model = it
             binding.executePendingBindings()
         }

@@ -34,7 +34,7 @@ class EditableTemplateDialog :
         if (args.templateId != 0){
             changeTitle()
         } else {
-            showKeyboard(binding.editTextTemplateName)
+            showKeyboard()
         }
         fetchData()
         observeEvents()
@@ -217,7 +217,7 @@ class EditableTemplateDialog :
 
         if (binding.recipientsLayout.childCount > 1) {
             if (!binding.switchToRecipientGroup.isChecked && !firstLoad) {
-                showKeyboard(recipientBinding.editTextRecipientNumber)
+                recipientBinding.editTextRecipientNumber.showKeyboard()
             }
             recipientBinding.btnRemoveNumber.visibility = View.VISIBLE
         }
@@ -230,7 +230,7 @@ class EditableTemplateDialog :
         if (index > 0) {
             val child = binding.recipientsLayout.getChildAt(index - 1)
                 .findViewById<View>(R.id.edit_text_recipient_number)
-            showKeyboard(child)
+            child.showKeyboard()
         }
         binding.recipientsLayout.removeView(parent)
     }

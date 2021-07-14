@@ -59,6 +59,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp">
 
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_text_template_group_name"
                         android:layout_width="match_parent"
@@ -69,7 +70,9 @@
                         app:setError="@{model.nameUnique}"
                         android:padding="8dp"
                         android:text="@={model.name}"
-                        android:textSize="18sp" />
+                        android:textSize="18sp">
+                        <requestFocus/>
+                    </com.google.android.material.textfield.TextInputEditText>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
