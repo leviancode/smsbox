@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_template_group_list"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.templates.groups.list.TemplateGroupListFragment"
+        android:name="com.leviancode.android.gsmbox.ui.screens.templates.groups.list.TemplateGroupListFragment"
         android:label="@string/title_templates"
         tools:layout="@layout/fragment_template_group_list" >
 
@@ -21,12 +21,12 @@
 
         <action
             android:id="@+id/action_open_editable_group"
-            app:destination="@id/nav_editable_group"/>
+            app:destination="@id/nav_template_group_edit"/>
     </fragment>
 
     <fragment
         android:id="@+id/nav_template_list"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.templates.templates.list.TemplateListFragment"
+        android:name="com.leviancode.android.gsmbox.ui.screens.templates.templates.list.TemplateListFragment"
         android:label="{groupName}"
         tools:layout="@layout/fragment_template_list">
         <argument
@@ -39,42 +39,39 @@
 
         <action
             android:id="@+id/action_open_editable_template"
-            app:destination="@id/nav_editable_template" />
+            app:destination="@id/nav_template_edit" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_favorites"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.favorites.FavoritesFragment"
+        android:name="com.leviancode.android.gsmbox.ui.screens.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" >
         <action
             android:id="@+id/action_open_editable_template"
-            app:destination="@id/nav_editable_template" />
+            app:destination="@id/nav_template_edit" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_recipients"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.recipients.viewpager.RecipientsPagerFragment"
+        android:name="com.leviancode.android.gsmbox.ui.screens.recipients.viewpager.RecipientsPagerFragment"
         android:label="@string/title_recipients"
         tools:layout="@layout/fragment_recipients_pager" >
         <action
             android:id="@+id/action_open_editable_recipient"
-            app:destination="@id/nav_editable_recipient" />
+            app:destination="@id/nav_recipient_edit" />
 
         <action
             android:id="@+id/action_multi_select_recipient_group"
             app:destination="@id/nav_multi_select_recipient_group" />
         <action
             android:id="@+id/action_open_editable_recipient_group"
-            app:destination="@id/nav_editable_recipient_group" />
-        <action
-            android:id="@+id/action_multi_select_recipient"
-            app:destination="@id/nav_multi_select_recipient" />
+            app:destination="@id/nav_recipient_group_edit" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.settings.SettingsFragment"
+        android:name="com.leviancode.android.gsmbox.ui.screens.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" >
         <action
@@ -95,12 +92,12 @@
 
     <fragment
         android:id="@+id/nav_languages"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.settings.languages.LanguagesFragment"
+        android:name="com.leviancode.android.gsmbox.ui.screens.settings.languages.LanguagesFragment"
         tools:layout="@layout/fragment_languages"/>
 
     <fragment
         android:id="@+id/nav_placeholders"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.settings.placeholders.PlaceholdersFragment"
+        android:name="com.leviancode.android.gsmbox.ui.screens.settings.placeholders.list.PlaceholdersFragment"
         android:label="@string/placeholders"
         tools:layout="@layout/fragment_placeholders" >
         <action
@@ -109,39 +106,39 @@
             app:exitAnim="@anim/slide_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
-            app:destination="@id/nav_editable_placeholder" />
+            app:destination="@id/nav_placeholder_edit" />
     </fragment>
 
     <dialog
-        android:id="@+id/nav_editable_placeholder"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.settings.placeholders.EditablePlaceholderDialog"
+        android:id="@+id/nav_placeholder_edit"
+        android:name="com.leviancode.android.gsmbox.ui.screens.settings.placeholders.edit.PlaceholderEditFragment"
         android:label="@string/new_placeholder"
-        tools:layout="@layout/dialog_editable_placeholder">
+        tools:layout="@layout/fragment_placeholder_edit">
 
         <argument
-            android:name="placeholder"
-            app:argType="com.leviancode.android.gsmbox.core.data.model.placeholders.Placeholder" />
+            android:name="id"
+            app:argType="integer" />
 
     </dialog>
 
-    <dialog
-        android:id="@+id/nav_editable_group"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.templates.groups.edit.EditableTemplateGroupDialog"
+    <fragment
+        android:id="@+id/nav_template_group_edit"
+        android:name="com.leviancode.android.gsmbox.ui.screens.templates.groups.edit.TemplateGroupEditFragment"
         android:label="New Group"
-        tools:layout="@layout/dialog_editable_template_group">
+        tools:layout="@layout/fragment_template_group_edit">
 
         <argument
             android:name="groupId"
             app:argType="integer"
             android:defaultValue="0" />
 
-    </dialog>
+    </fragment>
 
-    <dialog
-        android:id="@+id/nav_editable_template"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.templates.templates.edit.EditableTemplateDialog"
+    <fragment
+        android:id="@+id/nav_template_edit"
+        android:name="com.leviancode.android.gsmbox.ui.screens.templates.templates.edit.TemplateEditFragment"
         android:label="New Template"
-        tools:layout="@layout/dialog_editable_template">
+        tools:layout="@layout/fragment_template_edit">
 
         <argument
             android:name="groupId"
@@ -154,22 +151,19 @@
 
         <action
             android:id="@+id/action_open_editable_recipient"
-            app:destination="@id/nav_editable_recipient" />
+            app:destination="@id/nav_recipient_edit" />
 
-        <action
-            android:id="@+id/action_select_recipient_group"
-            app:destination="@id/nav_select_recipient_group" />
         <action
             android:id="@+id/action_select_recipient"
             app:destination="@id/nav_select_recipient" />
 
-    </dialog>
+    </fragment>
 
-    <dialog
-        android:id="@+id/nav_editable_recipient"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.recipients.recipients.edit.EditableRecipientDialog"
+    <fragment
+        android:id="@+id/nav_recipient_edit"
+        android:name="com.leviancode.android.gsmbox.ui.screens.recipients.recipients.edit.RecipientEditFragment"
         android:label="New Recipient"
-        tools:layout="@layout/dialog_editable_recipient">
+        tools:layout="@layout/fragment_recipient_edit">
 
         <argument
             android:name="recipientId"
@@ -184,41 +178,29 @@
             android:id="@+id/action_open_multi_select_recipient_group"
             app:destination="@id/nav_multi_select_recipient_group" />
 
-    </dialog>
+    </fragment>
 
-    <dialog
-        android:id="@+id/nav_editable_recipient_group"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.recipients.groups.edit.EditableRecipientGroupDialog"
+    <fragment
+        android:id="@+id/nav_recipient_group_edit"
+        android:name="com.leviancode.android.gsmbox.ui.screens.recipients.groups.edit.RecipientGroupEditFragment"
         android:label="New Group"
-        tools:layout="@layout/dialog_editable_recipient_group">
+        tools:layout="@layout/fragment_recipient_group_edit">
 
         <argument
             android:name="groupId"
             app:argType="integer"
             android:defaultValue="0" />
 
-    </dialog>
-
-    <dialog
-        android:id="@+id/nav_select_recipient_group"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.recipients.groups.dialog.RecipientGroupSelectListDialog"
-        android:label="Select Group"
-        tools:layout="@layout/dialog_select_list">
-
-        <argument
-            android:name="groupId"
-            app:argType="integer"
-            android:defaultValue="0" />
-    </dialog>
+    </fragment>
 
     <dialog
         android:id="@+id/nav_multi_select_recipient_group"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.recipients.groups.dialog.RecipientGroupMultiSelectListDialog"
+        android:name="com.leviancode.android.gsmbox.ui.screens.recipients.groups.select.RecipientGroupMultiSelectListDialog"
         android:label="Select Groups"
         tools:layout="@layout/dialog_select_list">
         <action
             android:id="@+id/action_open_editable_recipient_group"
-            app:destination="@id/nav_editable_recipient_group" />
+            app:destination="@id/nav_recipient_group_edit" />
 
         <argument
             android:name="groupIds"
@@ -227,7 +209,7 @@
 
     <dialog
         android:id="@+id/nav_select_recipient"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.recipients.recipients.dialog.RecipientSelectListDialog"
+        android:name="com.leviancode.android.gsmbox.ui.screens.recipients.recipients.dialog.RecipientSelectListDialog"
         android:label="Select Recipient"
         tools:layout="@layout/dialog_select_list">
 
@@ -237,18 +219,6 @@
         <argument
             android:name="alreadySelectedPhoneNumbers"
             app:argType="string[]" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/nav_multi_select_recipient"
-        android:name="com.leviancode.android.gsmbox.ui.fragments.recipients.recipients.dialog.RecipientMultiSelectListDialog"
-        android:label="Select Recipients"
-        tools:layout="@layout/dialog_select_list">
-
-        <argument
-            android:name="groupId"
-            app:argType="integer"
-            android:defaultValue="0"/>
     </dialog>
 
 

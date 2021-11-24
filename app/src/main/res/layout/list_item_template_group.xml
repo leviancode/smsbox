@@ -7,11 +7,11 @@
     <data>
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.core.data.model.templates.GroupWithTemplates" />
+            type="com.leviancode.android.gsmbox.ui.entities.templates.TemplateGroupUI" />
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.fragments.templates.groups.list.TemplateGroupListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.screens.templates.groups.list.TemplateGroupListViewModel" />
     </data>
 
 
@@ -23,7 +23,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp"
-            android:onClick="@{() -> viewModel.onItemClick(model.group)}"
+            android:onClick="@{() -> viewModel.onItemClick(model)}"
             app:cardCornerRadius="6dp"
             android:contentDescription="@string/open_group"
             android:clickable="true"
@@ -43,7 +43,7 @@
                     android:scaleType="fitCenter"
                     android:layout_gravity="center_vertical"
                     app:srcCompat="@drawable/ic_baseline_source_24"
-                    app:setImageTintGroup="@{model.group.iconColor}"
+                    app:setImageTintGroup="@{model.iconColor}"
                     tools:tint="@color/default_group_icon_color" />
 
                 <LinearLayout
@@ -53,32 +53,32 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tv_template_group_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="@{model.group.name}"
+                        android:text="@{model.name}"
                         android:textColor="@color/text_title"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         tools:text="Title" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tv_template_group_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:layout_marginTop="6dp"
                         android:visibility="visible"
-                        app:visibilityDependingOnText="@{model.group.description}"
-                        android:text="@{model.group.description}"
+                        app:visibilityDependingOnText="@{model.description}"
+                        android:text="@{model.description}"
                         android:textColor="@color/text_description"
                         tools:text="Description" />
 
                 </LinearLayout>
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_templates_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

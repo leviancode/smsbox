@@ -75,7 +75,7 @@
     <string name="list_empty">A lista está vazia</string>
     <string name="template_group_empty">Grupo de modelo vazio</string>
     <string name="group">Grupo:</string>
-    <string name="toast_add_to_group">Adicionado a%1$s</string>
+    <string name="toast_add_to_group">Adicionado a %1$s</string>
     <string name="undo">Desfazer</string>
     <string name="open">Abrir</string>
     <string name="save_to_file">Salvar em arquivo</string>

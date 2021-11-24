@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="model"
+            type="com.leviancode.android.gsmbox.ui.entities.placeholder.PlaceholderUI" />
+       <variable
+            name="viewModel"
+            type="com.leviancode.android.gsmbox.ui.screens.settings.placeholders.edit.PlaceholderEditViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/layout_recipient_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="12dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="6dp"
+            android:paddingEnd="8dp"
+            app:elevation="0dp"
+            app:navigationIconTint="@color/navButtonColor"
+            app:navigationIcon="@drawable/ic_baseline_close_24"
+            app:title="@string/new_placeholder">
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:id="@+id/btn_placeholder_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/save"
+                android:onClick="@{() -> viewModel.savePlaceholder()}"
+                tools:textColor="@color/main_style_green"
+                android:enabled="@{model.fieldsValid}"
+                android:textColor="@drawable/save_button_text_color_selector"/>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="#"
+                android:textSize="22sp"
+                android:textColor="@color/grey"
+                android:layout_marginStart="12dp"
+                android:layout_gravity="center_vertical"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/edit_text_layout_height"
+                android:layout_marginStart="8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_placeholders_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/name"
+                    android:inputType="text"
+                    android:padding="8dp"
+                    app:showError="@{viewModel.keyValidationError}"
+                    android:text="@={model.name}"
+                    android:maxLines="1"
+                    android:maxLength="10"
+                    android:textSize="@dimen/form_text_size">
+                    <requestFocus/>
+                </com.google.android.material.textfield.TextInputEditText>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="—"
+                android:textSize="22sp"
+                android:layout_margin="4dp"
+                android:layout_gravity="center_vertical"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_placeholders_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/value"
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:maxLines="1"
+                    android:maxLength="20"
+                    android:text="@={model.value}"
+                    android:textSize="@dimen/form_text_size" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

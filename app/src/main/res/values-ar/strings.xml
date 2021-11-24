@@ -75,7 +75,7 @@
     <string name="list_empty">القائمة فارغة</string>
     <string name="template_group_empty">مجموعة قالب فارغة</string>
     <string name="group">مجموعة:</string>
-    <string name="toast_add_to_group">إضافة إلى٪ 1 $ S</string>
+    <string name="toast_add_to_group">إضافة إلى %1$s</string>
     <string name="undo">الغاء التحميل</string>
     <string name="open">فتح</string>
     <string name="save_to_file">احفظ الملف</string>

@@ -58,6 +58,7 @@
         android:padding="6dp"
         android:scaleType="fitXY"
         android:src="@drawable/ic_baseline_send_24"
-        tools:tint="@color/secondary" />
+        tools:tint="@color/secondary"
+        tools:ignore="ContentDescription" />
 
 </LinearLayout>

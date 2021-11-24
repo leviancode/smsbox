@@ -75,7 +75,7 @@
     <string name="list_empty">सूची खाली है</string>
     <string name="template_group_empty">टेम्पलेट समूह खाली</string>
     <string name="group">समूह:</string>
-    <string name="toast_add_to_group">% 1 $ s में जोड़ा गया</string>
+    <string name="toast_add_to_group">%1$s में जोड़ा गया</string>
     <string name="undo">पूर्ववत</string>
     <string name="open">खुला हुआ</string>
     <string name="save_to_file">फाइल में बचाएं</string>

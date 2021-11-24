@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../../../layout/custom_preview.xml" value="0.28888888888888886" />
+        <entry key="app/src/main/res/drawable/ic_baseline_horizontal_rule_24.xml" value="0.19478827361563517" />
+        <entry key="app/src/main/res/drawable/ic_rounded_dialog_corner.xml" value="0.19478827361563517" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/dialog_editable_placeholder.xml" value="0.19572368421052633" />
+        <entry key="app/src/main/res/layout/dialog_editable_recipient.xml" value="0.19572368421052633" />
+        <entry key="app/src/main/res/layout/dialog_editable_recipient_group.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/dialog_editable_template.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/dialog_editable_template_group.xml" value="0.19381107491856678" />
+        <entry key="app/src/main/res/layout/dialog_select_list.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/dialog_select_list_contacts.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/fragment_favorites.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/fragment_languages.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/fragment_placeholder_edit.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/fragment_placeholders.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/fragment_recipient_edit.xml" value="0.19572368421052633" />
+        <entry key="app/src/main/res/layout/fragment_recipient_group_edit.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/fragment_recipient_group_list.xml" value="0.19572368421052633" />
+        <entry key="app/src/main/res/layout/fragment_recipient_list.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/fragment_recipients_pager.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/fragment_template_edit.xml" value="0.19572368421052633" />
+        <entry key="app/src/main/res/layout/fragment_template_group_edit.xml" value="0.19572368421052633" />
+        <entry key="app/src/main/res/layout/fragment_template_group_list.xml" value="0.19381107491856678" />
+        <entry key="app/src/main/res/layout/fragment_template_list.xml" value="0.19572368421052633" />
+        <entry key="app/src/main/res/layout/list_item_placeholder.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/list_item_recipient.xml" value="0.19572368421052633" />
+        <entry key="app/src/main/res/layout/list_item_recipient_group.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/list_item_recipient_in_group.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/list_item_template.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/list_item_template_group.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/multi_select_list_item_recipient.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/multi_select_list_item_recipient_group.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/select_list_item_recipient.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/select_list_item_recipient_group.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/view_autocomplete_placeholder_dropdown.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/view_button_contacts.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/view_button_new_group.xml" value="0.18651315789473685" />
+        <entry key="app/src/main/res/layout/view_number_holder.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/view_recipient_group_holder.xml" value="0.19572368421052633" />
+        <entry key="app/src/main/res/layout/view_splash.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/widget_favorites.xml" value="0.18469055374592833" />
+        <entry key="app/src/main/res/layout/widget_item.xml" value="0.18469055374592833" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

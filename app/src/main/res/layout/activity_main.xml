@@ -7,19 +7,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
-            tools:context=".ui.activities.MainActivity">
+            tools:visibility="visible"
+            tools:context=".ui.base.MainActivity">
 
             <fragment
                 android:id="@+id/nav_host_fragment"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="?attr/actionBarSize"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/nav_view"
                 app:defaultNavHost="true"
                 app:navGraph="@navigation/mobile_navigation" />
 
@@ -30,13 +32,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 app:labelVisibilityMode="labeled"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:menu="@menu/bottom_nav_menu" />
 
-        </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
             android:id="@+id/splash"
             android:visibility="visible"
+            tools:visibility="gone"
             layout="@layout/view_splash"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

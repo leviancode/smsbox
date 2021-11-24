@@ -13,17 +13,18 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.ActivityMainBinding
-import com.leviancode.android.gsmbox.core.utils.PREF_KEY_DEFAULT_LANGUAGE
-import com.leviancode.android.gsmbox.core.utils.managers.LanguageManager
+import com.leviancode.android.gsmbox.utils.PREF_KEY_DEFAULT_LANGUAGE
+import com.leviancode.android.gsmbox.utils.managers.LanguageManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.*
+import org.koin.android.ext.android.inject
 
 val Context.dataStore by preferencesDataStore("settings")
 
 class MainActivity : AppCompatActivity(){
     private lateinit var binding: ActivityMainBinding
+    private val languageManager: LanguageManager by inject()
     private var shortAnimationDuration: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,9 +40,13 @@ class MainActivity : AppCompatActivity(){
         lifecycleScope.launchWhenStarted {
             dataStore.data.collect { pref ->
                 val lang = pref[stringPreferencesKey(PREF_KEY_DEFAULT_LANGUAGE)]
-                LanguageManager.updateAppLanguage(this@MainActivity, lang)
+                languageManager.updateAppLanguage(lang)
             }
         }
+    }
+
+    fun setBottomNavVisibility(visibility: Int) {
+        binding.navView.visibility = visibility
     }
 
     private fun setupBottomNavigationView() {

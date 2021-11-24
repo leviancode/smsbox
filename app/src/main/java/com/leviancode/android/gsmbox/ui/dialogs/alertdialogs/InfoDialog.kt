@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import com.leviancode.android.gsmbox.R
 
-object InfoDialog {
-    fun show(context: Context, msg: String){
+class InfoDialog(private val context: Context) {
+    fun show(msg: String){
         AlertDialog.Builder(context)
             .setTitle(context.getString(R.string.info))
             .setMessage(msg)

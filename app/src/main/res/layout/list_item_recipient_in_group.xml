@@ -6,11 +6,11 @@
     <data>
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.core.data.model.recipients.RecipientWithGroup" />
+            type="com.leviancode.android.gsmbox.ui.entities.recipients.RecipientWithGroupUI" />
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.fragments.recipients.groups.list.RecipientGroupListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.screens.recipients.groups.list.RecipientGroupListViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -55,7 +55,7 @@
                     android:orientation="vertical"
                     android:layout_gravity="center_vertical">
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/edit_text_contact_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                         android:text="@{model.recipient.name}"
                         tools:text="Name" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/edit_text_contact_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

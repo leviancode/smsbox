@@ -6,7 +6,7 @@
  <data>
   <variable
       name="viewModel"
-      type="com.leviancode.android.gsmbox.ui.fragments.settings.placeholders.PlaceholdersViewModel" />
+      type="com.leviancode.android.gsmbox.ui.screens.settings.placeholders.list.PlaceholdersViewModel" />
  </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,7 +35,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
      <androidx.recyclerview.widget.RecyclerView
-         android:id="@+id/placeholders_recycler_view"
+         android:id="@+id/recycler_view"
          android:layout_width="match_parent"
          android:layout_height="0dp"
          android:scrollbars="vertical"

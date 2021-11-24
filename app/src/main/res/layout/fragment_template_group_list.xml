@@ -2,15 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.fragments.templates.groups.list.TemplateGroupListFragment">
+    tools:context=".ui.screens.templates.groups.list.TemplateGroupListFragment">
 
     <data>
-        <variable
-            name="adapter"
-            type="com.leviancode.android.gsmbox.ui.fragments.templates.groups.adapters.TemplateGroupListAdapter" />
-        <variable
+       <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.fragments.templates.groups.list.TemplateGroupListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.screens.templates.groups.list.TemplateGroupListViewModel" />
     </data>
 
     <FrameLayout
@@ -34,7 +31,7 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_list_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,13 +43,12 @@
             android:textSize="16sp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/template_groups_recycler_view"
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
             android:layout_marginTop="?attr/actionBarSize"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:setAdapter="@{adapter}"
             tools:listitem="@layout/list_item_template_group"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

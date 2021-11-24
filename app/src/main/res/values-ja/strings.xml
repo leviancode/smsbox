@@ -75,7 +75,7 @@
     <string name="list_empty">リストは空です</string>
     <string name="template_group_empty">テンプレートグループの空</string>
     <string name="group">グループ：</string>
-    <string name="toast_add_to_group">％1 $ Sに追加されました</string>
+    <string name="toast_add_to_group">%1$s に追加されました</string>
     <string name="undo">元に戻す</string>
     <string name="open">開いた</string>
     <string name="save_to_file">ファイルに保存します</string>
