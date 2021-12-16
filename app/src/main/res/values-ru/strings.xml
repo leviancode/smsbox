@@ -28,7 +28,7 @@
     <string name="desc_create_new_template">Создать новый шаблон</string>
     <string name="title_new_template">Новый шаблон</string>
     <string name="title_new_recipient">Новый получатель</string>
-    <string name="new_placeholder">Новый плейсхолдер</string>
+    <string name="new_placeholder">Новая переменная</string>
     <string name="new_group">Новая группа</string>
     <string name="remove_phone_number">Удалить номер телефона</string>
     <string name="permission_dined">В доступе отказано</string>
@@ -44,7 +44,7 @@
     <string name="delete_group">Удалить группу?</string>
     <string name="delete_template">Удалить шаблон?</string>
     <string name="delete_recipient">Удалить получателя?</string>
-    <string name="delete_placeholder">Удалить плейсхолдер?</string>
+    <string name="delete_placeholder">Удалить переменную?</string>
     <string name="groups">Группы</string>
     <string name="recipients_group">Группа получателей</string>
     <string name="add_group">Добавить группу</string>
@@ -90,11 +90,11 @@
     <string name="db_would_be_lost">Восстановление перезапишет текущую базу данных, все данные будут потеряны. Вы уверены, что хотите восстановить базу данных?</string>
     <string name="invalid_file">Неверный файл</string>
     <string name="favorite_list_is_empty">Список избранного пуст</string>
-    <string name="placeholders">Плейсхолдеры</string>
+    <string name="placeholders">Переменные</string>
     <string name="key">Ключ</string>
     <string name="value">Значение</string>
     <string name="name">Имя</string>
-    <string name="placeholders_info">Заполнитель - это переменная, имя и значение которой можно сохранить здесь, а затем использовать во всех ваших шаблонах в текстовом сообщении, написав \'#name\' (например, #company). При отправке сообщения это имя будет заменено его значением, которое вы укажете здесь.</string>
+    <string name="placeholders_info">Здесь можно сохранить имя и значение переменной, а затем использовать во всех ваших шаблонах в текстовом сообщении, написав \'#name\' (например, #company). При отправке сообщения это имя будет заменено его значением, которое вы укажете здесь.</string>
     <string name="info">Инфо</string>
     <string name="err_unique_name">Имя должно быть уникальным</string>
     <string name="edit_placeholder">Редактирование</string>
