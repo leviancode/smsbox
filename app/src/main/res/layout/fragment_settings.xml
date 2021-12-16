@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.fragments.settings.SettingsFragment">
+    tools:context=".ui.screens.settings.SettingsFragment">
 
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.fragments.settings.SettingsViewModel" />
+            type="com.leviancode.android.gsmbox.ui.screens.settings.SettingsViewModel" />
     </data>
 
         <LinearLayout
@@ -48,7 +48,7 @@
                         android:layout_marginBottom="8dp"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <com.google.android.material.textview.MaterialTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"

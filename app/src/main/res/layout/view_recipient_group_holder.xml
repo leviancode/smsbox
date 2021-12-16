@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.fragments.recipients.recipients.edit.EditableRecipientViewModel" />
+            type="com.leviancode.android.gsmbox.ui.screens.recipients.recipients.edit.RecipientEditViewModel" />
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.core.data.model.recipients.RecipientGroup" />
+            type="com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI" />
     </data>
 
     <LinearLayout
@@ -18,7 +19,7 @@
         android:layout_height="44dp"
         android:orientation="horizontal">
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_remove_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,7 +30,7 @@
             android:onClick="@{(view) -> viewModel.onRemoveGroupClick(view, model)}"
             android:padding="3dp"
             android:src="@drawable/ic_baseline_close_24"
-            android:tint="@color/red_600"
+            app:tint="@color/red_600"
             android:contentDescription="@string/remove_phone_number" />
 
         <com.google.android.material.textview.MaterialTextView

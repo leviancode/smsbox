@@ -2,13 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.fragments.favorites.FavoritesFragment">
-
-    <data>
-        <variable
-            name="adapter"
-            type="com.leviancode.android.gsmbox.ui.fragments.templates.templates.adapters.TemplateListAdapter" />
-    </data>
+    tools:context=".ui.screens.favorites.FavoritesFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -29,7 +23,7 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_list_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,13 +35,12 @@
             android:textSize="16sp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recipients_recycler_view"
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
             android:layout_marginTop="?attr/actionBarSize"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:setAdapter="@{adapter}"
             tools:listitem="@layout/list_item_template"/>
 
     </FrameLayout>

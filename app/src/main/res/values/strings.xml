@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">SMS BOX</string>
+    <string name="transition_edit_template_group" translatable="false">transition_edit_template_group</string>
+    <string name="transition_open_template_group" translatable="false">transition_open_template_group</string>
 
     <string name="title_favorites">Favorites</string>
     <string name="title_templates">Templates</string>
@@ -24,7 +26,7 @@
 
     <string name="material_dialog_title">Choose Color</string>
     <string name="material_dialog_negative_button">Cancel</string>
-    <string name="material_dialog_positive_button" translatable="false">OK</string>
+    <string name="material_dialog_positive_button">OK</string>
 
     <string name="add_new_item">Add new item</string>
     <string name="add_recipient">Add Recipient</string>
@@ -67,8 +69,6 @@
     <string name="no_group">No group</string>
     <string name="group_cleared">Group cleared</string>
 
-    <string name="transition_edit_template_group" translatable="false">transition_edit_template_group</string>
-    <string name="transition_open_template_group" translatable="false">transition_open_template_group</string>
     <string name="all">All</string>
 
     <string name="select">Select</string>
@@ -79,7 +79,7 @@
     <string name="select_contact">Select Contact</string>
 
     <string name="saved">Saved</string>
-    <string name="ok" translatable="false">OK</string>
+    <string name="ok">OK</string>
 
     <string name="recipient">Recipient</string>
     <string name="recipients">Recipients</string>
@@ -117,6 +117,7 @@
     <string name="placeholders_info">A placeholder is a variable whose name and value can be stored here and then used in all your templates in a text message by writing \'#name\' (e.g. #company). When sending a message, this name will be replaced with its value that you specify here.</string>
     <string name="info">Info</string>
     <string name="err_unique_name">Name should be unique</string>
+    <string name="err_unique_phone">Phone number should be unique</string>
 
     <string name="edit_placeholder">Edit Placeholder</string>
     <string name="edit_group">Edit Group</string>

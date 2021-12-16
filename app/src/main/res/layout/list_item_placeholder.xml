@@ -6,10 +6,10 @@
     <data>
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.core.data.model.placeholders.Placeholder" />
+            type="com.leviancode.android.gsmbox.ui.entities.placeholder.PlaceholderUI" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.fragments.settings.placeholders.PlaceholdersViewModel" />
+            type="com.leviancode.android.gsmbox.ui.screens.settings.placeholders.list.PlaceholdersViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="0dp">
-
 
             <LinearLayout
                 android:id="@+id/recipient_layout"
@@ -42,7 +41,7 @@
                     android:orientation="vertical"
                     android:layout_gravity="center_vertical">
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/edit_text_placeholder_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -50,10 +49,10 @@
                         android:textColor="@color/hashtag"
                         android:textSize="16sp"
                         android:textStyle="italic"
-                        android:text="@{model.name}"
+                        android:text="@{model.nameWithHashTag}"
                         tools:text="Key" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/edit_text_placeholder_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

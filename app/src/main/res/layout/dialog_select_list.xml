@@ -58,7 +58,7 @@
 
                 </com.google.android.material.appbar.AppBarLayout>
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_list_empty"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -76,7 +76,7 @@
 
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/bottom_sheet_recycler_view"
+                    android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scrollbars="vertical"

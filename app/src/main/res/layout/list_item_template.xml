@@ -6,10 +6,10 @@
     <data>
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.core.data.model.templates.TemplateWithRecipients" />
+            type="com.leviancode.android.gsmbox.ui.entities.templates.TemplateUI" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.fragments.templates.templates.list.TemplateListViewModel" />
+            type="com.leviancode.android.gsmbox.ui.screens.templates.templates.list.TemplateListViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -34,7 +34,7 @@
                 android:background="@android:color/transparent"
                 android:onClick="@{() -> viewModel.onFavoriteClick(model)}"
                 tools:src="@drawable/ic_baseline_star_outline_24"
-                app:setFavoriteIcon="@{model.template.favorite}"
+                app:setFavoriteIcon="@{model.favorite}"
                 android:contentDescription="@string/add_to_favorites" />
 
             <LinearLayout
@@ -49,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:text="@{model.template.name}"
+                    android:text="@{model.name}"
                     android:textColor="@color/text_title"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="4dp"
-                    app:setTextWithHashtagHighlight="@{model.template.message}"
+                    app:setTextWithHashtagHighlight="@{model.message}"
                     android:textColor="#252525"
                     tools:text="Message" />
 
@@ -72,7 +72,7 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="4dp"
                     android:fontFamily="sans-serif-light"
-                    app:setRecipientsAsText="@{model.recipients}"
+                    app:setRecipientsAsText="@{model.recipientGroup}"
                     android:textColor="@color/text_description"
                     tools:text="+3801234567" />
 
@@ -86,11 +86,11 @@
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:padding="6dp"
                 android:scaleType="fitXY"
-                android:enabled="@{model.recipients.recipientsNotEmpty}"
+                android:enabled="@{model.recipientGroup.recipientsNotEmpty}"
                 android:layout_gravity="center_vertical"
                 android:onClick="@{(view) -> viewModel.onSendMessage(view, model)}"
                 android:src="@drawable/ic_baseline_send_24"
-                app:setIconTint="@{model.template.iconColor}"
+                app:setIconTint="@{model.iconColor}"
                 tools:tint="@color/secondary"/>
 
             <androidx.appcompat.widget.AppCompatImageButton

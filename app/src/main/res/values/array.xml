@@ -23,5 +23,13 @@
         <item name="en">en|English</item>
         <item name="ru">ru|Русский</item>
         <item name="uk">uk|Українська</item>
+        <item name="es">es|Español</item>
+        <item name="pt">pt|Português</item>
+        <item name="de">de|Deutsche</item>
+        <item name="fr">fr|Français</item>
+        <item name="ja">ja|日本語</item>
+        <item name="zh">zh|中国人</item>
+        <item name="ar">ar|عرب</item>
+        <item name="hi">hi|भारतीय</item>
     </string-array>
 </resources>

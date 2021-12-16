@@ -1,25 +1,32 @@
 package com.leviancode.android.gsmbox.ui.widgets
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_MUTABLE
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.core.data.repository.AppDatabase
-import com.leviancode.android.gsmbox.core.utils.log
-import com.leviancode.android.gsmbox.core.utils.managers.SmsManager
+import com.leviancode.android.gsmbox.SmsBoxApp
+import com.leviancode.android.gsmbox.utils.logI
+import com.leviancode.android.gsmbox.utils.managers.SmsManager
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+import org.koin.java.KoinJavaComponent.inject
 
 
 class FavoritesWidgetProvider : AppWidgetProvider() {
+    private val smsManager: SmsManager by inject(SmsManager::class.java)
+
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        log("widget update")
+        logI("widget update")
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
@@ -40,14 +47,9 @@ class FavoritesWidgetProvider : AppWidgetProvider() {
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_list_view)
     }
 
-    override fun onEnabled(context: Context) {
-        super.onEnabled(context)
-        AppDatabase.init(context)
-    }
-
     override fun onDisabled(context: Context) {
         super.onDisabled(context)
-        log("widget disabled")
+        logI("widget disabled")
     }
 
     private fun setList(rv: RemoteViews, context: Context?, appWidgetId: Int) {
@@ -61,18 +63,20 @@ class FavoritesWidgetProvider : AppWidgetProvider() {
         listClickIntent.action = ACTION_ON_CLICK
         val listClickPIntent = PendingIntent.getBroadcast(
             context, 0,
-            listClickIntent, 0
+            listClickIntent, FLAG_MUTABLE
         )
         rv.setPendingIntentTemplate(R.id.widget_list_view, listClickPIntent)
     }
 
     private fun setUpdateClick(rv: RemoteViews, context: Context?, appWidgetId: Int) {
-        val updIntent = Intent(context, FavoritesWidgetProvider::class.java)
-        updIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-        updIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
+        val updIntent = Intent(context, FavoritesWidgetProvider::class.java).apply {
+            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
+        }
+
         val updPIntent = PendingIntent.getBroadcast(
             context,
-            appWidgetId, updIntent, 0
+            appWidgetId, updIntent, FLAG_MUTABLE
         )
         rv.setOnClickPendingIntent(R.id.widget_button_update, updPIntent)
     }
@@ -82,8 +86,7 @@ class FavoritesWidgetProvider : AppWidgetProvider() {
         if (intent.action.equals(ACTION_ON_CLICK, ignoreCase = true)) {
             val itemId = intent.getIntExtra(ITEM_ID, -1)
             if (itemId != -1) {
-                log("widget item click: $itemId")
-                SmsManager.sendSms(context, itemId)
+                smsManager.sendSms(context, itemId)
             }
         }
     }

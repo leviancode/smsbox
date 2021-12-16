@@ -47,9 +47,10 @@
     </style>
 
 
-    <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.Light.BottomSheetDialog">
+    <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
         <item name="android:windowIsFloating">false</item>
+        <item name="android:colorSecondary" tools:ignore="NewApi">@color/secondary</item>
         <item name="android:navigationBarColor">@color/onPrimary</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>

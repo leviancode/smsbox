@@ -9,13 +9,18 @@ import android.widget.RemoteViewsService
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.core.data.model.templates.TemplateWithRecipients
-import com.leviancode.android.gsmbox.core.data.repository.TemplatesRepository
-import com.leviancode.android.gsmbox.core.utils.log
+import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.FetchTemplatesUseCase
+import com.leviancode.android.gsmbox.ui.entities.templates.TemplateUI
+import com.leviancode.android.gsmbox.ui.entities.templates.toUITemplates
+import com.leviancode.android.gsmbox.utils.logI
 
 
-class WidgetListFactory(val context: Context, intent: Intent) : RemoteViewsService.RemoteViewsFactory {
-    private var data = mutableListOf<TemplateWithRecipients>()
+class WidgetListFactory(
+    val context: Context,
+    intent: Intent,
+    private val fetchTemplatesUseCase: FetchTemplatesUseCase
+) : RemoteViewsService.RemoteViewsFactory {
+    private var data = mutableListOf<TemplateUI>()
     private var widgetID = 0
 
     init {
@@ -26,47 +31,47 @@ class WidgetListFactory(val context: Context, intent: Intent) : RemoteViewsServi
     }
 
     override fun onCreate() {
-        log("service create")
+        logI("service create")
         initData()
     }
 
     override fun onDataSetChanged() {
-        log("service data set changed")
+        logI("service data set changed")
         initData()
     }
 
-    override fun onDestroy() {
-
-    }
+    override fun onDestroy() {}
 
     private fun initData() {
+        val favorites = fetchTemplatesUseCase.getFavoritesSync().toUITemplates()
         data.clear()
-        data.addAll(TemplatesRepository.getFavoriteTemplatesSync())
+        data.addAll(favorites)
     }
 
     override fun getCount(): Int = data.size
 
     override fun getViewAt(position: Int): RemoteViews {
+        val item = data[position]
+
         val rView = RemoteViews(
             context.packageName,
             R.layout.widget_item
-        )
-        val item = data[position]
-        rView.setTextViewText(R.id.widget_template_name, item.template.getName())
-        rView.setTextViewText(R.id.widget_template_message, item.template.getMessage())
-        rView.setTextViewText(
-            R.id.widget_template_recipient, item.recipients?.getFormatRecipients(
-                context
+        ).apply {
+            setTextViewText(R.id.widget_template_name, item.getName())
+            setTextViewText(R.id.widget_template_message, item.getMessage())
+            setTextViewText(
+                R.id.widget_template_recipient, item.recipientGroup.getFormatRecipients(context)
             )
-        )
+        }
+
         ContextCompat.getDrawable(context, R.drawable.ic_baseline_send_24)?.let { icon ->
-            icon.setTint(Color.parseColor(item.template.getIconColor()))
+            icon.setTint(Color.parseColor(item.getIconColor()))
             rView.setImageViewBitmap(R.id.widget_template_send, icon.toBitmap())
         }
 
-        val clickIntent = Intent()
-        clickIntent.flags
-        clickIntent.putExtra(FavoritesWidgetProvider.ITEM_ID, getItemId(position).toInt())
+        val clickIntent = Intent().apply {
+            putExtra(FavoritesWidgetProvider.ITEM_ID, getItemId(position).toInt())
+        }
         rView.setOnClickFillInIntent(R.id.widget_template_send, clickIntent)
 
         return rView
@@ -76,7 +81,7 @@ class WidgetListFactory(val context: Context, intent: Intent) : RemoteViewsServi
 
     override fun getViewTypeCount(): Int = 1
 
-    override fun getItemId(position: Int): Long = data[position].template.templateId.toLong()
+    override fun getItemId(position: Int): Long = data[position].id.toLong()
 
     override fun hasStableIds(): Boolean = true
 }

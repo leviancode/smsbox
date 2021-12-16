@@ -9,10 +9,10 @@
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.fragments.templates.templates.edit.EditableTemplateViewModel" />
+            type="com.leviancode.android.gsmbox.ui.screens.templates.templates.edit.TemplateEditViewModel" />
         <variable
             name="recipient"
-            type="com.leviancode.android.gsmbox.core.data.model.recipients.Recipient" />
+            type="com.leviancode.android.gsmbox.ui.entities.recipients.RecipientUI" />
 
     </data>
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_remove_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,12 +30,12 @@
             android:background="?android:selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{(view) -> viewModel.onRemoveRecipientClick(view, recipient)}"
             android:padding="3dp"
             android:src="@drawable/ic_baseline_close_24"
-            android:tint="@color/red_600"
             android:visibility="gone"
-            android:contentDescription="@string/remove_phone_number" />
+            tools:visibility="visible"
+            android:contentDescription="@string/remove_phone_number"
+            app:tint="@color/red_600" />
 
         <RelativeLayout
             android:layout_width="0dp"
