@@ -4,7 +4,7 @@ import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.FragmentPlaceholderEditBinding
 import com.leviancode.android.gsmbox.ui.base.BaseBottomSheet
-import com.leviancode.android.gsmbox.utils.extensions.collect
+import com.leviancode.android.gsmbox.utils.extensions.observe
 import com.leviancode.android.gsmbox.utils.extensions.navigateBack
 import com.leviancode.android.gsmbox.utils.showKeyboard
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,7 +24,7 @@ class PlaceholderEditFragment : BaseBottomSheet<FragmentPlaceholderEditBinding>(
     }
 
     private fun loadData() {
-        viewModel.load(args.id).collect(this) { placeholder ->
+        viewModel.load(args.id).observe(this) { placeholder ->
             binding.model = placeholder
             binding.executePendingBindings()
         }

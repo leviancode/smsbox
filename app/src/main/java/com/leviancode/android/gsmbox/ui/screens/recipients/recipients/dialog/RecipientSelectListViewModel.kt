@@ -8,6 +8,7 @@ import com.leviancode.android.gsmbox.domain.usecases.recipients.recipients.Fetch
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientUI
 import com.leviancode.android.gsmbox.ui.entities.recipients.toRecipientsUI
 import com.leviancode.android.gsmbox.utils.managers.ContactsManager
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class RecipientSelectListViewModel(
@@ -19,8 +20,8 @@ class RecipientSelectListViewModel(
 
     fun selectCurrentRecipientAndGetListWithoutAlreadySelected(
         phoneNumberForSelect: String,
-        alreadySelectedPhoneNumbers: Array<String>
-    ): LiveData<List<RecipientUI>> =
+        alreadySelectedPhoneNumbers: List<String>
+    ): Flow<List<RecipientUI>> =
         fetchRecipientsUseCase.getRecipientsObservable().map { list ->
             list.toRecipientsUI()
                 .filter { recipient ->
@@ -29,7 +30,7 @@ class RecipientSelectListViewModel(
                     items = it
                     selectPhoneNumber(phoneNumberForSelect)
                 }
-        }.asLiveData()
+        }
 
     private fun selectPhoneNumber(phoneNumber: String) {
         items.forEach { recipient ->

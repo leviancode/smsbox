@@ -34,6 +34,24 @@ class RecipientsRepositoryImpl(
          recipientDao.getRecipientWithGroupsById(recipientId)?.toDomainRecipient()
     }
 
+    override fun getPhoneNumbersObservable() = recipientDao.getNumbersWithNotEmptyNamesObservable()
+
+    override suspend fun getPhoneNumbers() = withContext(IO) {
+        recipientDao.getNumbersWithNotEmptyNames()
+    }
+
+    override suspend fun getRecipientByName(name: String) = withContext(IO) {
+        recipientDao.getRecipientWithGroupsByName(name)?.toDomainRecipient()
+    }
+
+    override suspend fun getRecipientByPhoneNumber(phoneNumber: String) = withContext(IO) {
+        recipientDao.getRecipientWithGroupsByPhoneNumber(phoneNumber)?.toDomainRecipient()
+    }
+
+    override suspend fun getRecipientWithGroupsById(recipientId: Int) = withContext(IO)  {
+        recipientDao.getRecipientWithGroupsById(recipientId)?.toDomainRecipientWithGroups()
+    }
+
     override suspend fun save(item: Recipient): Int = withContext(IO){
         val recipientData = item.toRecipientData()
         recipientDao.upsert(recipientData)
@@ -81,23 +99,6 @@ class RecipientsRepositoryImpl(
         relationDao.insert(
             RecipientsAndGroupRelation(groupId, recipientId)
         )
-    }
-    override fun getPhoneNumbersObservable() = recipientDao.getNumbersWithNotEmptyNamesObservable()
-
-    override suspend fun getPhoneNumbers() = withContext(IO) {
-        recipientDao.getNumbersWithNotEmptyNames()
-    }
-
-    override suspend fun getRecipientByName(name: String) = withContext(IO) {
-        recipientDao.getRecipientWithGroupsByName(name)?.toDomainRecipient()
-    }
-
-    override suspend fun getRecipientByPhoneNumber(phoneNumber: String) = withContext(IO) {
-        recipientDao.getRecipientWithGroupsByPhoneNumber(phoneNumber)?.toDomainRecipient()
-    }
-
-    override suspend fun getRecipientWithGroupsById(recipientId: Int) = withContext(IO)  {
-        recipientDao.getRecipientWithGroupsById(recipientId)?.toDomainRecipientWithGroups()
     }
 
     override suspend fun isBind(recipientGroupId: Int, recipientId: Int) = withContext(IO) {

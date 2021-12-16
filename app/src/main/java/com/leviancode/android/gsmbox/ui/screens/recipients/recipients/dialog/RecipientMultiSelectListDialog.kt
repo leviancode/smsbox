@@ -5,20 +5,18 @@ import androidx.fragment.app.FragmentManager
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogSelectListBinding
 import com.leviancode.android.gsmbox.databinding.MultiSelectListItemRecipientBinding
-import com.leviancode.android.gsmbox.ui.base.GenericListAdapter
+import com.leviancode.android.gsmbox.ui.base.BaseListAdapter
 import com.leviancode.android.gsmbox.ui.base.BaseBottomSheet
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientUI
-import com.leviancode.android.gsmbox.utils.extensions.navigateBack
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RecipientMultiSelectListDialog(
     private val groupId: Int,
     private val callback: (List<RecipientUI>) -> Unit
-) :
-    BaseBottomSheet<DialogSelectListBinding>(R.layout.dialog_select_list) {
+) : BaseBottomSheet<DialogSelectListBinding>(R.layout.dialog_select_list) {
     private val viewModel: RecipientMultiSelectListViewModel by viewModel()
     private val listAdapter =
-        GenericListAdapter<RecipientUI, MultiSelectListItemRecipientBinding>(R.layout.multi_select_list_item_recipient) { item, binding ->
+        BaseListAdapter<RecipientUI, MultiSelectListItemRecipientBinding>(R.layout.multi_select_list_item_recipient) { binding, item, position ->
             binding.viewModel = viewModel
             binding.model = item
         }
@@ -50,7 +48,7 @@ class RecipientMultiSelectListDialog(
 
     private fun setSelectedAndQuit(selectedRecipients: List<RecipientUI>) {
         callback(selectedRecipients)
-        navigateBack()
+        close()
     }
 
     companion object {

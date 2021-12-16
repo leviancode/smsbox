@@ -17,7 +17,7 @@ class FetchTemplatesUseCaseImpl(private val repository: TemplatesRepository) :
     }
 
     override fun getTemplatesByGroupIdObservable(groupId: Int): Flow<List<Template>> {
-        return repository.getGroupedObservable(groupId)
+        return repository.getTemplatesByGroupIdObservable(groupId)
     }
 
     override suspend fun get(id: Int): Template? {

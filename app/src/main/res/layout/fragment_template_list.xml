@@ -62,6 +62,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             app:fabSize="auto"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:src="@drawable/ic_baseline_add_24"
             android:onClick="@{() -> viewModel.onCreateTemplateClick()}"
             app:backgroundTint="@color/white"

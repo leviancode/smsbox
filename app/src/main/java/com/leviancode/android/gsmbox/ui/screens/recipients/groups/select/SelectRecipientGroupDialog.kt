@@ -6,8 +6,9 @@ import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogSelectListBinding
 import com.leviancode.android.gsmbox.databinding.SelectListItemRecipientGroupBinding
 import com.leviancode.android.gsmbox.ui.base.BaseBottomSheet
-import com.leviancode.android.gsmbox.ui.base.GenericListAdapter
+import com.leviancode.android.gsmbox.ui.base.BaseListAdapter
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI
+import com.leviancode.android.gsmbox.utils.extensions.observe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SelectRecipientGroupDialog private constructor(
@@ -17,7 +18,7 @@ class SelectRecipientGroupDialog private constructor(
     BaseBottomSheet<DialogSelectListBinding>(R.layout.dialog_select_list) {
     private val viewModel: RecipientGroupSelectListViewModel by viewModel()
     private val listAdapter =
-        GenericListAdapter<RecipientGroupUI, SelectListItemRecipientGroupBinding>(R.layout.select_list_item_recipient_group) { item, binding ->
+        BaseListAdapter<RecipientGroupUI, SelectListItemRecipientGroupBinding>(R.layout.select_list_item_recipient_group) { binding, item, position ->
             binding.viewModel = viewModel
             binding.model = item
         }

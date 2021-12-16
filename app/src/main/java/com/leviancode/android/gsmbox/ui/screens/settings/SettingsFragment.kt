@@ -83,7 +83,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(R.layout.fragment
                     showProgressBar()
                 }
                 is Result.Success -> {
-                    requireView().showOpenSnackbar(getString(R.string.saved_to_downloads)) {
+                    showSnackbarWithAction(R.string.saved_to_downloads, R.string.open) {
                         openDownloadsFolder()
                     }
                     hideProgressBar()

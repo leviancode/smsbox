@@ -4,31 +4,40 @@ import android.net.Uri
 import android.view.View
 import androidx.lifecycle.*
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.domain.usecases.recipients.groups.FetchRecipientGroupsUseCase
 import com.leviancode.android.gsmbox.domain.usecases.recipients.recipients.FetchRecipientsUseCase
 import com.leviancode.android.gsmbox.domain.usecases.recipients.recipients.SaveRecipientsUseCase
 import com.leviancode.android.gsmbox.ui.entities.recipients.*
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
+import com.leviancode.android.gsmbox.utils.VALIDATION_DELAY
 import com.leviancode.android.gsmbox.utils.managers.ContactsManager
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class RecipientEditViewModel(
     private val fetchRecipientsUseCase: FetchRecipientsUseCase,
-    private val fetchRecipientGroupsUseCase: FetchRecipientGroupsUseCase,
     private val saveRecipientsUseCase: SaveRecipientsUseCase,
     private val contactsManager: ContactsManager
 ) : ViewModel() {
-    private var original: RecipientWithGroupsUI? = null
     private var data: RecipientWithGroupsUI = RecipientWithGroupsUI()
+    private var original: RecipientWithGroupsUI? = null
 
-    val recipient: RecipientUI
+    private val recipient: RecipientUI
         get() = data.recipient
 
-    val nameValidation = MutableLiveData<Int>()
+    init {
+        validator()
+    }
 
-    val quitEvent = SingleLiveEvent<Unit>()
+    val nameValidation = MutableLiveData<Int>()
+    val phoneNumberValidation = MutableLiveData<Int>()
+
+    private val _recipientSavedEvent = SingleLiveEvent<Int>()
+    val recipientSavedEvent: LiveData<Int> = _recipientSavedEvent
+
     val selectContactEvent = SingleLiveEvent<Unit>()
-    val addToGroupEvent = SingleLiveEvent<IntArray>()
+    val addToGroupEvent = SingleLiveEvent<List<Int>>()
     val removeGroupEvent = SingleLiveEvent<View>()
     val addGroupViewsEvent = SingleLiveEvent<List<RecipientGroupUI>>()
 
@@ -37,27 +46,22 @@ class RecipientEditViewModel(
 
     private var saved = false
 
-    val isSaveFromTemplateMode: Boolean
+    val isSaveFromTemplate: Boolean
         get() = saveFromTemplateMode.value ?: false
-
-    fun setSaveFromTemplateMode(value: Boolean){
-        _saveFromTemplateMode.value = value
-    }
 
     fun onSaveClick() {
         viewModelScope.launch {
-            if (validate()){
+            if (nameValidate()){
                 data.toDomainRecipientWithGroups().let {
-                    saveRecipientsUseCase.save(it)
+                    val id = saveRecipientsUseCase.save(it)
                     saved = true
-                    quitEvent.call()
+                    _recipientSavedEvent.value = id
                 }
             }
         }
-
     }
 
-    fun loadRecipient(recipientId: Int, phoneNumber: String? = "") = liveData {
+    fun loadRecipient(recipientId: Int, phoneNumber: String?, recipientName: String?) = flow {
         if (recipientId != 0) {
             fetchRecipientsUseCase.getRecipientWithGroupsById(recipientId)
                 ?.toUIRecipientWithGroups()?.let {
@@ -65,7 +69,9 @@ class RecipientEditViewModel(
                 addGroupViewsEvent.value = it.groups
             }
         } else if (!phoneNumber.isNullOrBlank()){
+            _saveFromTemplateMode.value = true
             data.recipient.setPhoneNumber(phoneNumber)
+            data.recipient.setName(recipientName)
         }
         original = data.copy()
         emit(data.recipient)
@@ -83,7 +89,7 @@ class RecipientEditViewModel(
     }
 
     fun onAddToGroupClick() {
-        addToGroupEvent.value = data.getGroupsIds().toIntArray()
+        addToGroupEvent.value = data.getGroupsIds()
     }
 
     fun onContactsClick() {
@@ -97,12 +103,9 @@ class RecipientEditViewModel(
 
     fun isDataSavedOrNotChanged() = saved || original == data
 
-    fun setGroups(ids: List<Int>) {
-        viewModelScope.launch {
-            data.groups =
-                fetchRecipientGroupsUseCase.getByIds(ids).toRecipientGroupsUI().toMutableList()
-            addGroupViewsEvent.value = data.groups
-        }
+    fun setGroups(groups: List<RecipientGroupUI>) {
+        data.groups = groups.toMutableList()
+        addGroupViewsEvent.value = data.groups
     }
 
     fun addContact(uri: Uri){
@@ -111,11 +114,31 @@ class RecipientEditViewModel(
         }
     }
 
-    private suspend fun validate(): Boolean {
+    private fun validator(){
+        viewModelScope.launch {
+            while (isActive){
+                recipient.nameUnique = nameValidate()
+                recipient.phoneNumberUnique = phoneNumberValidate()
+                delay(VALIDATION_DELAY)
+            }
+        }
+    }
+
+    private suspend fun nameValidate(): Boolean {
         val name = data.recipient.getName() ?: return false
         val found = fetchRecipientsUseCase.getByName(name)
         if (found != null && found.id != data.recipient.id){
             nameValidation.value = R.string.err_unique_name
+            return false
+        }
+        return true
+    }
+
+    private suspend fun phoneNumberValidate(): Boolean {
+        val phone = data.recipient.getPhoneNumber()
+        val found = fetchRecipientsUseCase.getByPhoneNumber(phone)
+        if (found != null && found.id != data.recipient.id && found.name != null){
+            phoneNumberValidation.value = R.string.err_unique_phone
             return false
         }
         return true

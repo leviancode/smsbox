@@ -18,6 +18,7 @@ data class RecipientUI(
         if (value != name){
             name = value
             notifyPropertyChanged(BR.name)
+            notifyPropertyChanged(BR.fieldsValid)
         }
     }
 
@@ -27,6 +28,7 @@ data class RecipientUI(
         if (value != phoneNumber){
             phoneNumber = value
             notifyPropertyChanged(BR.phoneNumber)
+            notifyPropertyChanged(BR.fieldsValid)
         }
     }
 
@@ -35,9 +37,22 @@ data class RecipientUI(
         set(value) {
             if (value != field){
                 field = value
+                notifyPropertyChanged(BR.fieldsValid)
                 notifyPropertyChanged(BR.phoneNumberUnique)
             }
         }
+
+    var nameUnique: Boolean = true
+        set(value) {
+            if (value != field){
+                field = value
+                notifyPropertyChanged(BR.fieldsValid)
+            }
+        }
+
+    @get:Bindable
+    val fieldsValid: Boolean
+        get() = !name.isNullOrBlank() && phoneNumber.isNotBlank() && phoneNumberUnique && nameUnique
 
     val selected = ObservableBoolean(false)
 }

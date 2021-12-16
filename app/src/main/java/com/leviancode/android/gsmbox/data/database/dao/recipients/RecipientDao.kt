@@ -7,29 +7,28 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RecipientDao {
-    @Insert (onConflict = OnConflictStrategy.IGNORE)
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: RecipientData): Long
 
     @Insert (onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(items: List<RecipientData>): LongArray
 
     suspend fun upsert(item: RecipientData): Int {
-        return if (item.recipientId == 0) insert(item).toInt()
+        return if (item.recipientId == 0) {
+            val foundByNumber = getByPhoneNumber(item.phoneNumber)
+            if (foundByNumber != null){
+                item.recipientId = foundByNumber.recipientId
+                item.name = foundByNumber.name ?: item.name
+                update(item)
+                item.recipientId
+            } else {
+                insert(item).toInt()
+            }
+        }
         else {
             update(item)
             item.recipientId
         }
-    }
-
-    suspend fun upsert(items: List<RecipientData>) {
-        items.forEach { item ->
-            if (item.recipientId == 0) insert(item)
-            else {
-                update(item)
-                item.recipientId
-            }
-        }
-
     }
 
     @Update
@@ -44,7 +43,7 @@ interface RecipientDao {
     @Query("SELECT * FROM recipients WHERE recipientId = :id")
     suspend fun get(id: Int): RecipientData?
 
-    @Query("SELECT * FROM recipients WHERE name is not null AND name LIKE :name")
+    @Query("SELECT * FROM recipients WHERE name = :name")
     suspend fun getByName(name: String): RecipientData?
 
     @Query("SELECT * FROM recipients WHERE name is not null")

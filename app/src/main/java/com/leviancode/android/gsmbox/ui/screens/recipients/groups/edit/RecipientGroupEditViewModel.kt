@@ -10,6 +10,7 @@ import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI
 import com.leviancode.android.gsmbox.ui.entities.recipients.toDomainRecipientGroup
 import com.leviancode.android.gsmbox.ui.entities.recipients.toRecipientGroupUI
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -18,20 +19,29 @@ class RecipientGroupEditViewModel(
     private val saveRecipientGroupsUseCase: SaveRecipientGroupsUseCase
 ) : ViewModel() {
     val selectColorEvent = SingleLiveEvent<RecipientGroupUI>()
-    val closeDialogEvent = SingleLiveEvent<RecipientGroupUI>()
+    val closeDialogEvent = SingleLiveEvent<Int>()
     val nameValidation = SingleLiveEvent<Int>()
+
+    private var data = RecipientGroupUI()
 
     fun getNamesWithoutCurrent(id: Int) = fetchRecipientGroupsUseCase.getAll().map { list ->
         list.filter { it.id != id }.map { it.name }
     }.asLiveData()
 
-    suspend fun loadGroup(id: Int) = fetchRecipientGroupsUseCase.getById(id)?.toRecipientGroupUI()
+    fun loadGroup(id: Int) = flow {
+        if (id != 0){
+            fetchRecipientGroupsUseCase.getById(id)?.toRecipientGroupUI()?.let {
+                data = it
+            }
+        }
+        emit(data)
+    }
 
     fun onSaveClick(item: RecipientGroupUI) {
         viewModelScope.launch {
             if (checkNameForUnique(item.getName())) {
                 val savedId = saveRecipientGroupsUseCase.save(item.toDomainRecipientGroup())
-                closeDialogEvent.value = item.apply { id = savedId }
+                closeDialogEvent.value = savedId
             } else {
                 nameValidation.value = R.string.err_unique_name
             }

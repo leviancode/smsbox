@@ -108,4 +108,5 @@
     <string name="change_language_info">भाषा को बदलने के बाद ऐप को फिर से शुरू किया जाएगा</string>
     <string name="update_widget">विजेट अपडेट करें</string>
     <string name="add_favorite_templates">पसंदीदा टेम्पलेट जोड़ें</string>
+    <string name="err_unique_phone">फ़ोन नंबर अद्वितीय होना चाहिए</string>
 </resources>

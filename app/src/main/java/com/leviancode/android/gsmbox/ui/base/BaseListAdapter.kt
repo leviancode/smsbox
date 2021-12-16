@@ -10,10 +10,26 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.leviancode.android.gsmbox.utils.extensions.layoutInflater
 
-open class GenericListAdapter<T : BaseEntity, B : ViewDataBinding>(
+open class BaseListAdapter<T : BaseEntity, B : ViewDataBinding>(
     @LayoutRes private val layRes: Int,
-    inline val bind: (item: T, binding: B) -> Unit
-) : ListAdapter<T, GenericListAdapter.GenericViewHolder<B>>(BaseDiffUtil()) {
+    open inline val bind: (binding: B, item: T, position: Int) -> Unit
+) : ListAdapter<T, BaseListAdapter.GenericViewHolder<B>>(BaseDiffUtil()) {
+
+    open var onSubmitComplete: () -> Unit = {}
+
+    open fun addItem(item: T){
+        val newList = currentList.toMutableList().apply { add(item) }
+        submitList(newList, onSubmitComplete)
+    }
+
+    open fun addItems(items: List<T>){
+        val newList = currentList.toMutableList().apply { addAll(items) }
+        submitList(newList, onSubmitComplete)
+    }
+
+    open fun updateAll(items: List<T>){
+        submitList(items, onSubmitComplete)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder<B> {
         val binding = DataBindingUtil.inflate<B>(parent.layoutInflater, layRes, parent, false)
@@ -21,7 +37,7 @@ open class GenericListAdapter<T : BaseEntity, B : ViewDataBinding>(
     }
 
     override fun onBindViewHolder(holder: GenericViewHolder<B>, position: Int) {
-        bind(getItem(position), holder.binding)
+        bind(holder.binding, getItem(position), position)
     }
 
     class GenericViewHolder<B: ViewDataBinding>(val binding: B) : RecyclerView.ViewHolder(binding.root)

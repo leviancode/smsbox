@@ -9,6 +9,7 @@ import com.leviancode.android.gsmbox.ui.entities.templates.TemplateGroupUI
 import com.leviancode.android.gsmbox.ui.entities.templates.toDomainTemplateGroup
 import com.leviancode.android.gsmbox.ui.entities.templates.toTemplateGroupsUI
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -20,8 +21,8 @@ class TemplateGroupListViewModel(
     val selectedGroupEvent = SingleLiveEvent<TemplateGroupUI>()
     val popupMenuEvent = SingleLiveEvent<Pair<View, TemplateGroupUI>>()
 
-    val data: LiveData<List<TemplateGroupUI>>
-        get() = fetchUseCase.getGroupsObservable().map { it.toTemplateGroupsUI() }.asLiveData()
+    val data: Flow<List<TemplateGroupUI>>
+        get() = fetchUseCase.getGroupsObservable().map { it.toTemplateGroupsUI() }
 
     fun onAddGroupClick() {
         addGroupEvent.value = 0

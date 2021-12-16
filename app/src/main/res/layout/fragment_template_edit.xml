@@ -5,6 +5,7 @@
     tools:context=".ui.screens.templates.templates.edit.TemplateEditFragment">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="template"
             type="com.leviancode.android.gsmbox.ui.entities.templates.TemplateUI" />
@@ -39,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:enabled="@{template.nameAndMessageNotEmpty}"
+                    android:enabled="@{template.fieldsValid}"
                     android:onClick="@{() -> viewModel.onSaveClick()}"
                     android:text="@string/save"
                     android:textColor="@drawable/save_button_text_color_selector" />
@@ -112,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     app:switchPadding="4dp"
-                    android:checked="@{template.recipientGroup.groupNameNotNull}"
+                    android:checked="@={viewModel.groupMode}"
                     android:text="@string/recipients_group"
                     android:layout_marginEnd="16dp"/>
 
@@ -124,7 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:visibility="gone"
+                    android:visibility="@{viewModel.groupMode ? View.VISIBLE : View.GONE}"
                     tools:visibility="visible"
                     android:animateLayoutChanges="true"
                     android:layout_marginStart="16dp"
@@ -176,15 +177,14 @@
 
                 <!--____________RECIPIENTS LAYOUT_______________-->
 
-                <LinearLayout
+                <com.leviancode.android.gsmbox.ui.customviews.RecipientNumbersLayout
                     android:id="@+id/recipients_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:animateLayoutChanges="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"/>
+                    android:layout_marginEnd="16dp"
+                    android:visibility="@{viewModel.groupMode ? View.GONE : View.VISIBLE}"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_template_add_recipient"
@@ -194,6 +194,7 @@
                     android:layout_marginStart="4dp"
                     android:onClick="@{() -> viewModel.onAddRecipientClick()}"
                     android:text="@string/recipient"
+                    android:enabled="@{!viewModel.groupMode}"
                     android:textColor="@drawable/add_recipient_button_color_selector"
                     app:icon="@drawable/ic_baseline_add_24"
                     app:iconTint="@drawable/add_recipient_button_color_selector"/>

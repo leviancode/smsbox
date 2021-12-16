@@ -7,6 +7,7 @@ import com.leviancode.android.gsmbox.domain.usecases.recipients.groups.FetchReci
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI
 import com.leviancode.android.gsmbox.ui.entities.recipients.toRecipientGroupsUI
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class RecipientGroupSelectListViewModel(
@@ -15,10 +16,10 @@ class RecipientGroupSelectListViewModel(
     private val _selectedGroup = SingleLiveEvent<Int>()
     val selectedGroup: LiveData<Int> = _selectedGroup
 
-    fun getGroups(groupId: Int): LiveData<List<RecipientGroupUI>>
+    fun getGroups(groupId: Int): Flow<List<RecipientGroupUI>>
        = fetchRecipientGroupsUseCase.getAll().map { list ->
            list.filter { it.id != groupId }.toRecipientGroupsUI()
-        }.asLiveData()
+        }
 
     fun onItemClick(item: RecipientGroupUI) {
         _selectedGroup.value = item.id

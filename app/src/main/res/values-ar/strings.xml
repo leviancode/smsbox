@@ -108,4 +108,5 @@
     <string name="change_language_info">سيتم إعادة تشغيل التطبيق بعد تغيير اللغة</string>
     <string name="add_favorite_templates">أضف القوالب المفضلة</string>
     <string name="update_widget">أداة التحديث</string>
+    <string name="err_unique_phone">يجب أن يكون رقم الهاتف فريدًا</string>
 </resources>

@@ -30,7 +30,6 @@
             android:background="?android:selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{(view) -> viewModel.onRemoveRecipientClick(view, recipient)}"
             android:padding="3dp"
             android:src="@drawable/ic_baseline_close_24"
             android:visibility="gone"

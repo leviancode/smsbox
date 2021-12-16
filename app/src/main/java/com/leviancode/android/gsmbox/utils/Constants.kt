@@ -4,21 +4,8 @@ const val DEFAULT_GROUP_COLOR = "#d59557"
 const val DEFAULT_TEMPLATE_COLOR = "#66BB6A"
 
 const val DATABASE_NAME = "sms_box_db"
-const val ARG_GROUP_ID = "group_id"
-const val ARG_GROUP_NAME = "group_name"
-
-const val RESULT_OK = "result_ok"
-const val RESULT_CANCEL = "result_cancel"
-
-const val REQ_SAVED = "request_saved"
-const val REQ_SELECTED = "request_selected"
-const val REQ_SELECT_RECIPIENT = "request_select_recipient"
-const val REQ_SAVE_RECIPIENT = "request_save_recipient"
-const val REQ_SELECT_RECIPIENT_GROUP = "request_select_recipient_group"
-const val REQ_CREATE_RECIPIENT_GROUP = "request_create_recipient_group"
-const val REQ_MULTI_SELECT_RECIPIENT = "request_multi_select_recipient"
-const val REQ_MULTI_SELECT_RECIPIENT_GROUP = "request_multi_select_recipient_group"
-const val REQ_PICK_CONTACT = 1
+const val REQ_SAVE_RECIPIENT_ID = "request_save_recipient"
+const val REQ_CREATE_RECIPIENT_GROUP_ID = "request_create_recipient_group"
 
 const val RECIPIENT = "recipient"
 const val RECIPIENT_GROUP = "recipient_group"
@@ -39,4 +26,4 @@ const val HASHTAG_REGEX = "(#\\w+)(\\W|#|$)"
 
 const val PREF_KEY_DEFAULT_LANGUAGE = "com.leviancode.android.smsbox.DefaultLanguage"
 
-const val VALIDATOR_DELAY = 500L
+const val VALIDATION_DELAY = 500L

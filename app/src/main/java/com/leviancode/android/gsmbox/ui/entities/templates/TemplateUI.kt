@@ -7,7 +7,7 @@ import com.leviancode.android.gsmbox.ui.base.BaseEntity
 import com.leviancode.android.gsmbox.utils.DEFAULT_TEMPLATE_COLOR
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI
 
-class TemplateUI(
+data class TemplateUI(
     override var id: Int = 0,
     var groupId: Int = 0,
     private var name: String = "",
@@ -23,7 +23,7 @@ class TemplateUI(
         if (value != name){
             name = value
             notifyPropertyChanged(BR.name)
-            notifyPropertyChanged(BR.nameAndMessageNotEmpty)
+            notifyPropertyChanged(BR.fieldsValid)
         }
     }
 
@@ -33,7 +33,7 @@ class TemplateUI(
         if (value != message){
             message = value
             notifyPropertyChanged(BR.message)
-            notifyPropertyChanged(BR.nameAndMessageNotEmpty)
+            notifyPropertyChanged(BR.fieldsValid)
         }
     }
 
@@ -55,17 +55,19 @@ class TemplateUI(
         }
     }
 
-    @get:Bindable
-    val isNameAndMessageNotEmpty: Boolean
-        get() = name.isNotEmpty() && message.isNotEmpty()
+    var nameUnique: Boolean = true
+        set(value) {
+            if (field != value){
+                field = value
+                notifyPropertyChanged(BR.fieldsValid)
+            }
+        }
 
-    fun copy() = TemplateUI(
-        id,
-        groupId,
-        name,
-        message,
-        iconColor,
-        favorite,
-        recipientGroup.copy()
+    @get:Bindable
+    val fieldsValid: Boolean
+        get() = name.isNotBlank() && message.isNotBlank() && nameUnique
+
+    fun copy() = this.copy(
+        recipientGroup = recipientGroup.copy()
     )
 }

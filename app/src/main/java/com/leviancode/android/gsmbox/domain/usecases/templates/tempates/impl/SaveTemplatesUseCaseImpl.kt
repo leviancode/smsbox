@@ -7,10 +7,19 @@ import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.SaveTemp
 class SaveTemplatesUseCaseImpl(private val repository: TemplatesRepository) :
     SaveTemplatesUseCase {
     override suspend fun save(item: Template) {
-        repository.save(item)
+        val templateWithFilteredRecipients = removeBlankRecipients(item)
+        repository.save(templateWithFilteredRecipients)
     }
 
     override suspend fun save(items: List<Template>) {
-        repository.save(items)
+        items.forEach{ save(it) }
+    }
+
+    private fun removeBlankRecipients(item: Template): Template {
+        val recipients = item.recipientGroup.recipients.toMutableList()
+        recipients.removeAll { it.phoneNumber.isBlank() }
+        return item.apply {
+            recipientGroup.recipients = recipients
+        }
     }
 }

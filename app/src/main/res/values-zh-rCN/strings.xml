@@ -108,4 +108,5 @@
     <string name="change_language_info">更改语言后，该应用程序将重新启动</string>
     <string name="update_widget">更新小部件</string>
     <string name="add_favorite_templates">添加喜歡的模板</string>
+    <string name="err_unique_phone">電話號碼應該是唯一的</string>
 </resources>

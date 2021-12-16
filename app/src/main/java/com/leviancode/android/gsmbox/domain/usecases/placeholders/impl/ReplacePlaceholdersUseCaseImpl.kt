@@ -12,11 +12,10 @@ class ReplacePlaceholdersUseCaseImpl(private val repository: PlaceholdersReposit
         val matcher = Pattern.compile(HASHTAG_REGEX).matcher(str)
         if (matcher.find()) {
             val hashTag = matcher.group(1) ?: ""
-            val value = repository.getValue(hashTag) ?: return hashTag
-            if (hashTag != value) {
-                val newStr = str.replaceFirst(hashTag, value)
-                return replace(newStr)
-            }
+            val name = hashTag.removePrefix("#")
+            val value = repository.getValue(name) ?: return str
+            val newStr = str.replaceFirst(hashTag, value)
+            return replace(newStr)
         }
         return str
     }

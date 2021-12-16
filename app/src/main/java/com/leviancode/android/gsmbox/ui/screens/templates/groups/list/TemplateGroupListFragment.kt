@@ -1,27 +1,26 @@
 package com.leviancode.android.gsmbox.ui.screens.templates.groups.list
 
 import android.view.View
-
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateGroupListBinding
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateGroupBinding
-import com.leviancode.android.gsmbox.domain.entities.template.TemplateGroup
-import com.leviancode.android.gsmbox.ui.base.GenericListAdapter
-import com.leviancode.android.gsmbox.ui.dialogs.alertdialogs.DeleteConfirmationAlertDialog
-import com.leviancode.android.gsmbox.ui.dialogs.ItemPopupMenu
-import com.leviancode.android.gsmbox.ui.dialogs.ItemPopupMenu.Companion.DELETE
-import com.leviancode.android.gsmbox.ui.dialogs.ItemPopupMenu.Companion.EDIT
-import com.leviancode.android.gsmbox.utils.extensions.navigate
 import com.leviancode.android.gsmbox.ui.base.BaseFragment
+import com.leviancode.android.gsmbox.ui.base.BaseListAdapter
+import com.leviancode.android.gsmbox.ui.dialogs.PopupMenus
+import com.leviancode.android.gsmbox.ui.dialogs.PopupMenus.MenuItem.DELETE
+import com.leviancode.android.gsmbox.ui.dialogs.PopupMenus.MenuItem.EDIT
+import com.leviancode.android.gsmbox.ui.dialogs.alertdialogs.DeleteConfirmationAlertDialog
 import com.leviancode.android.gsmbox.ui.entities.templates.TemplateGroupUI
 import com.leviancode.android.gsmbox.utils.extensions.hideFabWhileScrolling
+import com.leviancode.android.gsmbox.utils.extensions.navigate
+import com.leviancode.android.gsmbox.utils.extensions.observe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TemplateGroupListFragment :
     BaseFragment<FragmentTemplateGroupListBinding>(R.layout.fragment_template_group_list) {
     private val viewModel: TemplateGroupListViewModel by viewModel()
     private val listAdapter =
-        GenericListAdapter<TemplateGroupUI, ListItemTemplateGroupBinding>(R.layout.list_item_template_group) { item, binding ->
+        BaseListAdapter<TemplateGroupUI, ListItemTemplateGroupBinding>(R.layout.list_item_template_group) { binding, item, position ->
             binding.model = item
             binding.viewModel = viewModel
         }
@@ -33,6 +32,16 @@ class TemplateGroupListFragment :
         binding.recyclerView.adapter = listAdapter
         observeData()
         observeEvents()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.fabAddGroup.hide()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.fabAddGroup.show()
     }
 
     private fun observeEvents() {
@@ -71,10 +80,11 @@ class TemplateGroupListFragment :
     }
 
     private fun showPopup(view: View, group: TemplateGroupUI) {
-        ItemPopupMenu(requireContext(), view).showEditDelete { result ->
+        PopupMenus(view).showEditDelete { result ->
             when (result) {
                 EDIT -> openEditScreen(group.id)
                 DELETE -> deleteGroup(group)
+                else -> {}
             }
         }
     }

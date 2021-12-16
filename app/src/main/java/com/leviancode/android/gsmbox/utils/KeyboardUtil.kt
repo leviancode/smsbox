@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 fun View.showKeyboard(){
     ViewCompat.getWindowInsetsController(this)
         ?.show(WindowInsetsCompat.Type.ime())
+    requestFocus()
 }
 
 fun View.hideKeyboard() = ViewCompat.getWindowInsetsController(this)

@@ -8,7 +8,7 @@ import com.leviancode.android.gsmbox.ui.entities.placeholder.PlaceholderUI
 import com.leviancode.android.gsmbox.ui.entities.placeholder.toDomainPlaceholder
 import com.leviancode.android.gsmbox.ui.entities.placeholder.toPlaceholderUI
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
-import com.leviancode.android.gsmbox.utils.VALIDATOR_DELAY
+import com.leviancode.android.gsmbox.utils.VALIDATION_DELAY
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.isActive
@@ -51,7 +51,7 @@ class PlaceholderEditViewModel(
         viewModelScope.launch {
             while(isActive){
                 data.nameUnique = validate()
-                delay(VALIDATOR_DELAY)
+                delay(VALIDATION_DELAY)
             }
         }
     }

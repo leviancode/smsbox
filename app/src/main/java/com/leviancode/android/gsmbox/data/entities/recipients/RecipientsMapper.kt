@@ -52,11 +52,11 @@ fun RecipientGroup.toRecipientGroupData() = RecipientGroupData(
     iconColor = this.iconColor
 )
 
-fun RecipientGroupData.toDomainRecipientGroup() = RecipientGroup(
+fun RecipientGroupData.toDomainRecipientGroup(recipients: List<Recipient> = listOf()) = RecipientGroup(
     id = recipientGroupId,
     name = this.name,
     iconColor = this.iconColor,
-    recipients = listOf()
+    recipients = recipients
 )
 
 fun RecipientGroup.toDataGroupWithRecipients() = GroupWithRecipients(

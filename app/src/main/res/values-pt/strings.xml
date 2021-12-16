@@ -108,4 +108,5 @@
     <string name="change_language_info">O aplicativo será reiniciado depois de alterar o idioma</string>
     <string name="update_widget">Actualizar widget</string>
     <string name="add_favorite_templates">Adicionar modelos favoritos</string>
+    <string name="err_unique_phone">O número de telefone deve ser único</string>
 </resources>

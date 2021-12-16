@@ -5,24 +5,21 @@ import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateListBinding
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateBinding
-import com.leviancode.android.gsmbox.ui.base.GenericListAdapter
 import com.leviancode.android.gsmbox.ui.base.BaseFragment
-import com.leviancode.android.gsmbox.ui.dialogs.ItemPopupMenu
-import com.leviancode.android.gsmbox.ui.dialogs.ItemPopupMenu.Companion.DELETE
-import com.leviancode.android.gsmbox.ui.dialogs.ItemPopupMenu.Companion.EDIT
+import com.leviancode.android.gsmbox.ui.base.BaseListAdapter
+import com.leviancode.android.gsmbox.ui.dialogs.PopupMenus
+import com.leviancode.android.gsmbox.ui.dialogs.PopupMenus.MenuItem.DELETE
+import com.leviancode.android.gsmbox.ui.dialogs.PopupMenus.MenuItem.EDIT
 import com.leviancode.android.gsmbox.ui.dialogs.alertdialogs.DeleteConfirmationAlertDialog
 import com.leviancode.android.gsmbox.ui.entities.templates.TemplateUI
-import com.leviancode.android.gsmbox.utils.extensions.hideFabWhileScrolling
-import com.leviancode.android.gsmbox.utils.extensions.navigate
-import com.leviancode.android.gsmbox.utils.extensions.navigateBack
-import com.leviancode.android.gsmbox.utils.extensions.visibility
+import com.leviancode.android.gsmbox.utils.extensions.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TemplateListFragment : BaseFragment<FragmentTemplateListBinding>(R.layout.fragment_template_list) {
     private val viewModel: TemplateListViewModel by viewModel()
     private val args: TemplateListFragmentArgs by navArgs()
     private val listAdapter =
-        GenericListAdapter<TemplateUI, ListItemTemplateBinding>(R.layout.list_item_template) { item, binding ->
+        BaseListAdapter<TemplateUI, ListItemTemplateBinding>(R.layout.list_item_template) { binding, item, position ->
             binding.model = item
             binding.viewModel = viewModel
         }
@@ -33,6 +30,16 @@ class TemplateListFragment : BaseFragment<FragmentTemplateListBinding>(R.layout.
         updateTitle(args.groupName)
         observeEvents()
         observeData()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.fabAddTemplate.hide()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.fabAddTemplate.show()
     }
 
     private fun updateTitle(title: String) {
@@ -53,17 +60,18 @@ class TemplateListFragment : BaseFragment<FragmentTemplateListBinding>(R.layout.
     }
 
     private fun observeData() {
-        viewModel.observeTemplates(args.groupId).observe(viewLifecycleOwner) { items ->
+        viewModel.getTemplates(args.groupId).observe(viewLifecycleOwner) { items ->
             binding.tvListEmpty.visibility(items.isEmpty())
             listAdapter.submitList(items)
         }
     }
 
     private fun showPopup(view: View, template: TemplateUI) {
-        ItemPopupMenu(requireContext(), view).showEditDelete { result ->
+        PopupMenus(view).showEditDelete { result ->
             when (result) {
                 EDIT -> showEditableTemplateDialog(template.id, args.groupId)
                 DELETE -> deleteTemplate(template)
+                else -> {}
             }
         }
     }

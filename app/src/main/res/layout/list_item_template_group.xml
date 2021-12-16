@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="8dp"
-                    android:text="@{model.size}"
+                    android:text="@{model.sizeAsString}"
                     android:textSize="14sp"
                     tools:text="8" />
 

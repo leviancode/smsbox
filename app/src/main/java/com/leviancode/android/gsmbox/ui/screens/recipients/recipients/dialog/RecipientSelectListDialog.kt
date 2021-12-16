@@ -5,27 +5,27 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.navigation.fragment.navArgs
+import androidx.fragment.app.FragmentManager
 import com.leviancode.android.gsmbox.R
-import com.leviancode.android.gsmbox.data.entities.recipients.RecipientData
-import com.leviancode.android.gsmbox.utils.REQ_SELECT_RECIPIENT
 import com.leviancode.android.gsmbox.databinding.DialogSelectListBinding
 import com.leviancode.android.gsmbox.databinding.SelectListItemRecipientBinding
 import com.leviancode.android.gsmbox.databinding.ViewButtonContactsBinding
-import com.leviancode.android.gsmbox.ui.base.GenericListAdapter
 import com.leviancode.android.gsmbox.ui.base.BaseBottomSheet
+import com.leviancode.android.gsmbox.ui.base.BaseListAdapter
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientUI
 import com.leviancode.android.gsmbox.utils.extensions.askPermission
-import com.leviancode.android.gsmbox.utils.extensions.navigateBack
-import com.leviancode.android.gsmbox.utils.extensions.setNavigationResult
+import com.leviancode.android.gsmbox.utils.extensions.observe
 import com.leviancode.android.gsmbox.utils.extensions.showToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class RecipientSelectListDialog : BaseBottomSheet<DialogSelectListBinding>(R.layout.dialog_select_list) {
+class RecipientSelectListDialog private constructor(
+    private val currentPhoneNumber: String,
+    private val selectedPhoneNumbers: List<String>,
+    private val callback: (RecipientUI) -> Unit
+) : BaseBottomSheet<DialogSelectListBinding>(R.layout.dialog_select_list) {
     private val viewModel: RecipientSelectListViewModel by viewModel()
-    private val args: RecipientSelectListDialogArgs by navArgs()
     private val listAdapter =
-        GenericListAdapter<RecipientUI, SelectListItemRecipientBinding>(R.layout.select_list_item_recipient) { item, binding ->
+        BaseListAdapter<RecipientUI, SelectListItemRecipientBinding>(R.layout.select_list_item_recipient) { binding, item, position ->
             binding.viewModel = viewModel
             binding.model = item
         }
@@ -34,8 +34,10 @@ class RecipientSelectListDialog : BaseBottomSheet<DialogSelectListBinding>(R.lay
     override fun onCreated() {
         contactsLauncher =
             registerForActivityResult(ActivityResultContracts.PickContact()) { uri ->
-                viewModel.selectRecipientByContactUri(uri)
-                setSelected(viewModel.selectedRecipient)
+                uri?.let {
+                    viewModel.selectRecipientByContactUri(uri)
+                    setSelected(viewModel.selectedRecipient)
+                }
             }
         updateTitle()
         observeEvents()
@@ -67,7 +69,10 @@ class RecipientSelectListDialog : BaseBottomSheet<DialogSelectListBinding>(R.lay
     }
 
     private fun observeData() {
-        viewModel.selectCurrentRecipientAndGetListWithoutAlreadySelected(args.currentPhoneNumber, args.alreadySelectedPhoneNumbers)
+        viewModel.selectCurrentRecipientAndGetListWithoutAlreadySelected(
+            currentPhoneNumber,
+            selectedPhoneNumbers
+        )
             .observe(viewLifecycleOwner) { list ->
                 binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
                 listAdapter.submitList(list)
@@ -75,15 +80,29 @@ class RecipientSelectListDialog : BaseBottomSheet<DialogSelectListBinding>(R.lay
     }
 
     private fun selectContact() {
-        askPermission(Manifest.permission.READ_CONTACTS){ result ->
+        askPermission(Manifest.permission.READ_CONTACTS) { result ->
             if (result) contactsLauncher.launch(null)
             else showToast(getString(R.string.permission_dined))
         }
     }
 
     private fun setSelected(selectedRecipient: RecipientUI?) {
-        setNavigationResult(selectedRecipient, REQ_SELECT_RECIPIENT)
-        navigateBack()
+        selectedRecipient?.let(callback)
+        close()
+    }
+
+    companion object {
+        fun show(
+            fm: FragmentManager,
+            currentPhoneNumber: String,
+            selectedPhoneNumbers: List<String>,
+            callback: (RecipientUI) -> Unit
+        ) {
+            RecipientSelectListDialog(currentPhoneNumber, selectedPhoneNumbers, callback).show(
+                fm,
+                null
+            )
+        }
     }
 }
 

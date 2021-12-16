@@ -1,6 +1,6 @@
 package com.leviancode.android.gsmbox.domain.entities.recipient
 
 data class RecipientWithGroups(
-    val recipient: Recipient,
-    val groups: List<RecipientGroup>
+    var recipient: Recipient,
+    var groups: List<RecipientGroup>
 )

@@ -1,14 +1,15 @@
 package com.leviancode.android.gsmbox.ui.dialogs
 
-import android.content.Context
 import android.view.View
-import androidx.core.content.ContextCompat.*
+import androidx.core.content.ContextCompat.getColor
 import com.github.zawadz88.materialpopupmenu.popupMenu
 import com.leviancode.android.gsmbox.R
+import com.leviancode.android.gsmbox.ui.dialogs.PopupMenus.MenuItem.*
 
-class ItemPopupMenu(val context: Context, val view: View) {
+class PopupMenus(val view: View) {
+    private val context get() = view.context
 
-    fun showEditDelete(callback: (String) -> Unit) = popupMenu {
+    fun showEditDelete(callback: (MenuItem) -> Unit) = popupMenu {
             section {
                 item {
                     label = context.getString(R.string.edit)
@@ -29,7 +30,7 @@ class ItemPopupMenu(val context: Context, val view: View) {
             }
         }.show(context, view)
 
-    fun showEditAddToGroupDelete(callback: (String) -> Unit) = popupMenu {
+    fun showEditAddToGroupDelete(callback: (MenuItem) -> Unit) = popupMenu {
             section {
                 item {
                     label = context.getString(R.string.edit)
@@ -58,7 +59,7 @@ class ItemPopupMenu(val context: Context, val view: View) {
             }
         }.show(context, view)
 
-    fun showEditRemoveDelete(callback: (String) -> Unit) = popupMenu {
+    fun showEditRemoveDelete(callback: (MenuItem) -> Unit) = popupMenu {
         section {
             item {
                 label = context.getString(R.string.edit)
@@ -87,7 +88,7 @@ class ItemPopupMenu(val context: Context, val view: View) {
         }
     }.show(context, view)
 
-    fun showEditAddRecipientClearDelete(callback: (String) -> Unit) = popupMenu {
+    fun showEditAddRecipientClearDelete(callback: (MenuItem) -> Unit) = popupMenu {
             section {
                 item {
                     label = context.getString(R.string.edit)
@@ -126,11 +127,11 @@ class ItemPopupMenu(val context: Context, val view: View) {
             }
         }.show(context, view)
 
-    companion object {
-        const val ADD = "add"
-        const val EDIT = "edit"
-        const val REMOVE = "remove"
-        const val DELETE = "delete"
-        const val CLEAR = "clear"
+    enum class MenuItem {
+        ADD,
+        EDIT,
+        REMOVE,
+        DELETE,
+        CLEAR
     }
 }

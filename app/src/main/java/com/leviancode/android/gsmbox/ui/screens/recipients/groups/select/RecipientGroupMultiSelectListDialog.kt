@@ -2,28 +2,26 @@ package com.leviancode.android.gsmbox.ui.screens.recipients.groups.select
 
 import android.view.View
 import android.widget.FrameLayout
-import androidx.navigation.fragment.navArgs
+import androidx.fragment.app.FragmentManager
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.DialogSelectListBinding
 import com.leviancode.android.gsmbox.databinding.MultiSelectListItemRecipientGroupBinding
 import com.leviancode.android.gsmbox.databinding.ViewButtonNewGroupBinding
 import com.leviancode.android.gsmbox.ui.base.BaseBottomSheet
-import com.leviancode.android.gsmbox.ui.base.GenericListAdapter
+import com.leviancode.android.gsmbox.ui.base.BaseListAdapter
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI
-import com.leviancode.android.gsmbox.utils.REQ_CREATE_RECIPIENT_GROUP
-import com.leviancode.android.gsmbox.utils.REQ_MULTI_SELECT_RECIPIENT_GROUP
-import com.leviancode.android.gsmbox.utils.extensions.getNavigationResult
-import com.leviancode.android.gsmbox.utils.extensions.navigate
-import com.leviancode.android.gsmbox.utils.extensions.removeNavigationResult
-import com.leviancode.android.gsmbox.utils.extensions.setNavigationResult
+import com.leviancode.android.gsmbox.ui.screens.recipients.groups.edit.RecipientGroupEditDialog
+import com.leviancode.android.gsmbox.utils.extensions.observe
+import com.leviancode.android.gsmbox.utils.extensions.scrollToEnd
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class RecipientGroupMultiSelectListDialog :
-    BaseBottomSheet<DialogSelectListBinding>(R.layout.dialog_select_list) {
+class RecipientGroupMultiSelectListDialog private constructor(
+    private val selectedGroupsIds: List<Int>,
+    private val callback: (List<RecipientGroupUI>) -> Unit
+) : BaseBottomSheet<DialogSelectListBinding>(R.layout.dialog_select_list) {
     private val viewModel: RecipientGroupMultiSelectListViewModel by viewModel()
-    private val args: RecipientGroupMultiSelectListDialogArgs by navArgs()
     private val listAdapter =
-        GenericListAdapter<RecipientGroupUI, MultiSelectListItemRecipientGroupBinding>(R.layout.multi_select_list_item_recipient_group) { item, binding ->
+        BaseListAdapter<RecipientGroupUI, MultiSelectListItemRecipientGroupBinding>(R.layout.multi_select_list_item_recipient_group) { binding, item, position ->
             binding.viewModel = viewModel
             binding.model = item
         }
@@ -43,7 +41,7 @@ class RecipientGroupMultiSelectListDialog :
                 openNewGroupDialog()
             }
             binding.btnOk.setOnClickListener {
-                setSelectedAndExit()
+                setSelectedAndExit(viewModel.selectedGroups)
             }
             binding.recyclerView.adapter = listAdapter
             observeData()
@@ -51,34 +49,39 @@ class RecipientGroupMultiSelectListDialog :
     }
 
     private fun observeData() {
-        viewModel.selectGroups(args.groupIds)
-        viewModel.groups.observe(viewLifecycleOwner) { list ->
+        viewModel.loadAndSelectGroupsByIds(selectedGroupsIds)
+        viewModel.groupsFlow.observe(viewLifecycleOwner) { list ->
             binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
-            listAdapter.submitList(list)
-            if (!firstLoad) {
-                binding.recyclerView.layoutManager?.scrollToPosition(listAdapter.itemCount - 1)
+            listAdapter.submitList(list){
+                if (!firstLoad) {
+                    binding.recyclerView.scrollToEnd()
+                }
+                firstLoad = false
             }
-            firstLoad = false
         }
     }
 
     private fun openNewGroupDialog() {
-        getNavigationResult<RecipientGroupUI>(REQ_CREATE_RECIPIENT_GROUP)?.observe(
-            viewLifecycleOwner
-        ) { result ->
-            if (result != null) {
-                viewModel.selectNewGroup(result)
-            }
-            removeNavigationResult<RecipientGroupUI>(REQ_CREATE_RECIPIENT_GROUP)
-        }
-
-        navigate {
-            RecipientGroupMultiSelectListDialogDirections.actionOpenEditableRecipientGroup()
+        RecipientGroupEditDialog.show(childFragmentManager) { selectedGroupId ->
+            viewModel.selectNewGroup(selectedGroupId)
         }
     }
 
-    private fun setSelectedAndExit() {
-        setNavigationResult(viewModel.getSelectedGroups(), REQ_MULTI_SELECT_RECIPIENT_GROUP)
+    private fun setSelectedAndExit(selectedGroups: List<RecipientGroupUI>) {
+        callback(selectedGroups)
         close()
+    }
+
+    companion object {
+        fun show(
+            fm: FragmentManager,
+            selectedGroupsIds: List<Int>,
+            callback: (List<RecipientGroupUI>) -> Unit
+        ) {
+            RecipientGroupMultiSelectListDialog(selectedGroupsIds, callback).show(
+                fm,
+                null
+            )
+        }
     }
 }

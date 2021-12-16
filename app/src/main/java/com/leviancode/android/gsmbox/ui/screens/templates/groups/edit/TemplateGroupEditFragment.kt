@@ -4,10 +4,10 @@ import android.view.View
 import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.utils.hideKeyboard
-import com.leviancode.android.gsmbox.utils.showKeyboard
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateGroupEditBinding
 import com.leviancode.android.gsmbox.ui.base.BaseFragment
 import com.leviancode.android.gsmbox.ui.dialogs.ColorPickerDialog
+import com.leviancode.android.gsmbox.utils.extensions.observe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TemplateGroupEditFragment : BaseFragment<FragmentTemplateGroupEditBinding>(R.layout.fragment_template_group_edit) {
@@ -17,19 +17,21 @@ class TemplateGroupEditFragment : BaseFragment<FragmentTemplateGroupEditBinding>
     override var bottomNavViewVisibility: Int = View.GONE
 
     override val showConfirmationDialogBeforeQuit: Boolean
-        get() = viewModel.isDataSavedOrNotChanged()
+        get() = !viewModel.isDataSavedOrNotChanged()
+
+    override val showKeyboardOnStarted: Boolean = true
 
     override fun onCreated() {
         binding.viewModel = viewModel
         setTitle(args.groupId != 0)
-        showKeyboard()
         loadData()
         observeEvents()
     }
 
     private fun loadData() {
         viewModel.loadGroup(args.groupId).observe(viewLifecycleOwner){ group ->
-
+            binding.model = group
+            binding.executePendingBindings()
         }
     }
 

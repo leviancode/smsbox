@@ -15,13 +15,13 @@ class TemplatesRepositoryImpl(
     private val recipientGroupsRepository: RecipientGroupsRepository
 ) : TemplatesRepository {
 
-    override fun getGroupedObservable(groupId: Int): Flow<List<Template>> {
-        return dao.getTemplatesWithRecipients(groupId).map { it.toDomainTemplatesWithRecipients() }
+    override fun getTemplatesByGroupIdObservable(groupId: Int): Flow<List<Template>> {
+        return dao.getTemplatesWithRecipients(groupId).map { it.toDomainTemplates() }
     }
 
     override suspend fun getByName(name: String) = dao.getTemplateWithRecipientsByName(name)?.toDomainTemplate()
 
-    override fun getFavoritesObservable() = dao.getFavoriteWithRecipientsObservable().map { it.toDomainTemplatesWithRecipients() }
+    override fun getFavoritesObservable() = dao.getFavoriteWithRecipientsObservable().map { it.toDomainTemplates() }
 
     override suspend fun getFavorites() = dao.getFavoriteWithRecipients().map { it.toDomainTemplate() }
 
@@ -35,18 +35,19 @@ class TemplatesRepositoryImpl(
 
     override suspend fun save(item: Template): Int {
         val recipientGroupId = recipientGroupsRepository.save(item.recipientGroup)
-        return dao.upsert(item.toDataTemplate(recipientGroupId))
+        val data = item.toTemplateData(recipientGroupId)
+        return dao.upsert(data)
     }
 
-    override suspend fun save(items: List<Template>) = withContext(IO) {
-        items.map { save(it) }.toIntArray()
+    override suspend fun updateFavorite(templateId: Int, favorite: Boolean) = withContext(IO)  {
+        dao.updateFavorite(templateId, favorite)
     }
 
     override suspend fun delete(item: Template) = withContext(IO) {
         if (item.recipientGroup.name == null){
             recipientGroupsRepository.delete(item.recipientGroup)
         }
-        dao.delete(item.toDataTemplate())
+        dao.delete(item.toTemplateData())
     }
 
     override suspend fun deleteByGroupId(groupId: Int)  = withContext(IO){

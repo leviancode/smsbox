@@ -18,6 +18,7 @@ import com.leviancode.android.gsmbox.domain.usecases.templates.groups.impl.SaveT
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.impl.DeleteTemplatesUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.impl.FetchTemplatesUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.impl.SaveTemplatesUseCaseImpl
+import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.impl.UpdateTemplateUseCaseImpl
 import org.koin.dsl.module
 
 val useCasesModule = module {
@@ -26,6 +27,7 @@ val useCasesModule = module {
 
     factory { FetchTemplatesUseCaseImpl(get<TemplatesRepositoryImpl>()) }
     factory { SaveTemplatesUseCaseImpl(get<TemplatesRepositoryImpl>()) }
+    factory { UpdateTemplateUseCaseImpl(get<TemplatesRepositoryImpl>()) }
     factory { DeleteTemplatesUseCaseImpl(get<TemplatesRepositoryImpl>()) }
 
     factory { FetchTemplateGroupsUseCaseImpl(get<TemplateGroupsRepositoryImpl>()) }

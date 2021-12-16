@@ -108,4 +108,5 @@
     <string name="change_language_info">L\'application sera redémarrée après avoir changé la langue</string>
     <string name="update_widget">Mise à jour du widget</string>
     <string name="add_favorite_templates">Ajouter des modèles favoris</string>
+    <string name="err_unique_phone">Le numéro de téléphone doit être unique</string>
 </resources>

@@ -108,4 +108,5 @@
     <string name="change_language_info">言語を変更した後、アプリは再開されます</string>
     <string name="update_widget">ウィジェットの更新</string>
     <string name="add_favorite_templates">お気に入りテンプレートの追加</string>
+    <string name="err_unique_phone">電話番号は一意である必要があります</string>
 </resources>

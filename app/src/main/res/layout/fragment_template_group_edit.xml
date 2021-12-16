@@ -41,7 +41,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
-                            android:enabled="@{model.name.length() > 0}"
+                            android:enabled="@{model.nameUniqueAndNotBlank}"
                             android:text="@string/save"
                             android:textColor="@drawable/save_button_text_color_selector"
                             android:onClick="@{() -> viewModel.onSaveClick()}"/>
@@ -68,7 +68,7 @@
                         android:inputType="text"
                         android:focusable="true"
                         android:padding="8dp"
-                        app:showError="@{viewModel.nameValidation}"
+                        app:showError="@{viewModel.nameValidationError}"
                         android:text="@={model.name}"
                         android:textSize="18sp">
                         <requestFocus/>

@@ -117,6 +117,7 @@
     <string name="placeholders_info">A placeholder is a variable whose name and value can be stored here and then used in all your templates in a text message by writing \'#name\' (e.g. #company). When sending a message, this name will be replaced with its value that you specify here.</string>
     <string name="info">Info</string>
     <string name="err_unique_name">Name should be unique</string>
+    <string name="err_unique_phone">Phone number should be unique</string>
 
     <string name="edit_placeholder">Edit Placeholder</string>
     <string name="edit_group">Edit Group</string>

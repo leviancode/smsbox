@@ -4,20 +4,18 @@ import android.view.View
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientListBinding
-import com.leviancode.android.gsmbox.ui.dialogs.ItemPopupMenu
-import com.leviancode.android.gsmbox.ui.dialogs.alertdialogs.DeleteConfirmationAlertDialog
-import com.leviancode.android.gsmbox.ui.screens.recipients.viewpager.RecipientsPagerFragmentDirections
-import com.leviancode.android.gsmbox.utils.REQ_MULTI_SELECT_RECIPIENT_GROUP
 import com.leviancode.android.gsmbox.databinding.ListItemRecipientBinding
-import com.leviancode.android.gsmbox.ui.base.GenericListAdapter
 import com.leviancode.android.gsmbox.ui.base.BaseFragment
-import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI
+import com.leviancode.android.gsmbox.ui.base.BaseListAdapter
+import com.leviancode.android.gsmbox.ui.dialogs.PopupMenus
+import com.leviancode.android.gsmbox.ui.dialogs.PopupMenus.MenuItem.*
+import com.leviancode.android.gsmbox.ui.dialogs.alertdialogs.DeleteConfirmationAlertDialog
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientUI
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientWithGroupsUI
-import com.leviancode.android.gsmbox.utils.extensions.getNavigationResult
+import com.leviancode.android.gsmbox.ui.screens.recipients.groups.select.RecipientGroupMultiSelectListDialog
+import com.leviancode.android.gsmbox.ui.screens.recipients.viewpager.RecipientsPagerFragmentDirections
 import com.leviancode.android.gsmbox.utils.extensions.hideFabWhileScrolling
 import com.leviancode.android.gsmbox.utils.extensions.navigate
-import com.leviancode.android.gsmbox.utils.extensions.removeNavigationResult
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class RecipientListFragment : BaseFragment<FragmentRecipientListBinding>(R.layout.fragment_recipient_list){
@@ -25,7 +23,7 @@ class RecipientListFragment : BaseFragment<FragmentRecipientListBinding>(R.layou
         requireParentFragment().getViewModel()
     }
     private val listAdapter =
-        GenericListAdapter<RecipientUI, ListItemRecipientBinding>(R.layout.list_item_recipient) { item, binding ->
+        BaseListAdapter<RecipientUI, ListItemRecipientBinding>(R.layout.list_item_recipient) { binding, item, position ->
             binding.viewModel = viewModel
             binding.model = item
         }
@@ -61,27 +59,19 @@ class RecipientListFragment : BaseFragment<FragmentRecipientListBinding>(R.layou
 
 
     private fun showRecipientPopupMenu(view: View, item: RecipientWithGroupsUI) {
-        ItemPopupMenu(requireContext(), view).showEditAddToGroupDelete { result ->
+        PopupMenus(view).showEditAddToGroupDelete { result ->
             when (result) {
-                ItemPopupMenu.EDIT -> showEditableRecipientDialog(item.recipient.id)
-                ItemPopupMenu.ADD -> showSelectRecipientGroupDialog(item)
-                ItemPopupMenu.DELETE -> deleteRecipient(item.recipient)
+                EDIT -> showEditableRecipientDialog(item.recipient.id)
+                ADD -> showSelectRecipientGroupDialog(item)
+                DELETE -> deleteRecipient(item.recipient)
+                else -> {}
             }
         }
     }
 
     private fun showSelectRecipientGroupDialog(item: RecipientWithGroupsUI) {
-        getNavigationResult<List<RecipientGroupUI>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)?.observe(
-            viewLifecycleOwner
-        ) { groups ->
-            if (!groups.isNullOrEmpty()) {
-                viewModel.addRecipientToGroups(item.recipient, groups)
-            }
-            removeNavigationResult<List<RecipientGroupUI>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)
-        }
-
-        navigate {
-            RecipientsPagerFragmentDirections.actionMultiSelectRecipientGroup(item.getGroupsIds().toIntArray())
+        RecipientGroupMultiSelectListDialog.show(childFragmentManager, item.getGroupsIds()){ selectedGroups ->
+            viewModel.addRecipientToGroups(item.recipient, selectedGroups)
         }
     }
 

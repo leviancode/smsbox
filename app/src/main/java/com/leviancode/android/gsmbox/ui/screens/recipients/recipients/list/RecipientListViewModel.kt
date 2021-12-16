@@ -2,6 +2,7 @@ package com.leviancode.android.gsmbox.ui.screens.recipients.recipients.list
 
 import android.view.View
 import androidx.lifecycle.*
+import com.leviancode.android.gsmbox.domain.usecases.recipients.groups.FetchRecipientGroupsUseCase
 import com.leviancode.android.gsmbox.domain.usecases.recipients.recipients.*
 import com.leviancode.android.gsmbox.ui.entities.recipients.*
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
@@ -9,6 +10,7 @@ import kotlinx.coroutines.launch
 
 class RecipientListViewModel(
     private val fetchRecipientsUseCase: FetchRecipientsUseCase,
+    private val fetchRecipientGroupsUseCase: FetchRecipientGroupsUseCase,
     private val saveRecipientsUseCase: SaveRecipientsUseCase,
     private val deleteRecipientsUseCase: DeleteRecipientsUseCase
 ) : ViewModel() {

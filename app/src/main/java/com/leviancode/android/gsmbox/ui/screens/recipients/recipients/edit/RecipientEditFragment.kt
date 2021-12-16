@@ -12,9 +12,9 @@ import com.leviancode.android.gsmbox.databinding.FragmentRecipientEditBinding
 import com.leviancode.android.gsmbox.databinding.ViewRecipientGroupHolderBinding
 import com.leviancode.android.gsmbox.ui.base.BaseFragment
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI
+import com.leviancode.android.gsmbox.ui.screens.recipients.groups.select.RecipientGroupMultiSelectListDialog
 import com.leviancode.android.gsmbox.utils.*
 import com.leviancode.android.gsmbox.utils.extensions.*
-import com.leviancode.android.gsmbox.utils.managers.ContactsManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RecipientEditFragment : BaseFragment<FragmentRecipientEditBinding>(R.layout.fragment_recipient_edit) {
@@ -23,14 +23,14 @@ class RecipientEditFragment : BaseFragment<FragmentRecipientEditBinding>(R.layou
     private lateinit var contactsLauncher: ActivityResultLauncher<Void>
 
     override val showConfirmationDialogBeforeQuit: Boolean
-        get() = viewModel.isDataSavedOrNotChanged()
+        get() = !viewModel.isDataSavedOrNotChanged()
+
+    override val showKeyboardOnStarted: Boolean = true
 
     override fun onCreated() {
         binding.viewModel = viewModel
-        viewModel.setSaveFromTemplateMode(args.recipientId == 0 && !args.phoneNumber.isNullOrBlank())
         setTitle(args.recipientId != 0)
         setupContactPickerLauncher()
-        showKeyboard()
         observeData()
         observeEvents()
     }
@@ -41,12 +41,12 @@ class RecipientEditFragment : BaseFragment<FragmentRecipientEditBinding>(R.layou
 
     private fun setupContactPickerLauncher() {
         contactsLauncher = registerForActivityResult(PickContact()) { result ->
-            viewModel.addContact(result)
+            result?.let { viewModel.addContact(result) }
         }
     }
 
     private fun observeData() {
-        viewModel.loadRecipient(args.recipientId, args.phoneNumber).observe(viewLifecycleOwner) {
+        viewModel.loadRecipient(args.recipientId, args.phoneNumber, args.recipientName).observe(viewLifecycleOwner) {
             binding.model = it
             binding.executePendingBindings()
         }
@@ -55,42 +55,35 @@ class RecipientEditFragment : BaseFragment<FragmentRecipientEditBinding>(R.layou
     private fun observeEvents() {
         binding.toolbar.setNavigationOnClickListener { close() }
 
-        viewModel.quitEvent.observe(viewLifecycleOwner) {
-            if (viewModel.isSaveFromTemplateMode){
-                setResultAndClose()
-            } else {
-                close()
+        viewModel.apply {
+            recipientSavedEvent.observe(viewLifecycleOwner) { id ->
+                if (viewModel.isSaveFromTemplate){
+                    setResultAndClose(id)
+                } else {
+                    close()
+                }
             }
-        }
+            selectContactEvent.observe(viewLifecycleOwner) { selectContact() }
 
-        viewModel.selectContactEvent.observe(viewLifecycleOwner) { selectContact() }
+            addToGroupEvent.observe(viewLifecycleOwner) { selectGroups(it) }
 
-        viewModel.addToGroupEvent.observe(viewLifecycleOwner) { selectGroups(it) }
+            removeGroupEvent.observe(viewLifecycleOwner) { removeRecipientGroupView(it) }
 
-        viewModel.removeGroupEvent.observe(viewLifecycleOwner) { removeRecipientGroupView(it) }
-
-        viewModel.addGroupViewsEvent.observe(viewLifecycleOwner) { groups ->
-            updateAllRecipientGroupViews(groups)
+            addGroupViewsEvent.observe(viewLifecycleOwner) { groups ->
+                updateAllRecipientGroupViews(groups)
+            }
         }
     }
 
-    private fun setResultAndClose() {
-        setNavigationResult(viewModel.recipient, REQ_SAVE_RECIPIENT)
+    private fun setResultAndClose(id: Int) {
+        setNavigationResult(REQ_SAVE_RECIPIENT_ID, id)
         close()
     }
 
-    private fun selectGroups(groupIds: IntArray) {
+    private fun selectGroups(groupIds: List<Int>) {
         hideKeyboard()
-        getNavigationResult<List<Int>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)?.observe(
-            viewLifecycleOwner
-        ) { ids ->
-            if (!ids.isNullOrEmpty()) {
-                viewModel.setGroups(ids)
-            }
-            removeNavigationResult<List<Int>>(REQ_MULTI_SELECT_RECIPIENT_GROUP)
-        }
-        navigate {
-            RecipientEditFragmentDirections.actionOpenMultiSelectRecipientGroup(groupIds)
+        RecipientGroupMultiSelectListDialog.show(childFragmentManager, groupIds){ selectedGroups ->
+            viewModel.setGroups(selectedGroups)
         }
     }
 

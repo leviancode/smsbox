@@ -108,4 +108,5 @@
     <string name="add_new_item">Agregar ítem nuevo</string>
     <string name="material_dialog_positive_button" translatable="false">OK</string>
     <string name="ok" translatable="false">OK</string>
+    <string name="err_unique_phone">El número de teléfono debe ser único</string>
 </resources>

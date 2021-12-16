@@ -108,4 +108,5 @@
     <string name="add_favorite_templates">Добавьте шаблоны в избранное</string>
     <string name="material_dialog_positive_button">OK</string>
     <string name="ok">OK</string>
+    <string name="err_unique_phone">Номер телефона должен быть уникальным</string>
 </resources>

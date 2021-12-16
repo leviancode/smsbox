@@ -5,7 +5,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 
-fun <T> Flow<T>.collect(lifecycleOwner: LifecycleOwner, action: (T) -> Unit){
+fun <T> Flow<T>.observe(lifecycleOwner: LifecycleOwner, action: (T) -> Unit){
     lifecycleOwner.lifecycleScope.launchWhenStarted {
         collect { action(it) }
     }

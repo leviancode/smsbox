@@ -11,8 +11,11 @@ data class TemplateGroupUI(
     private var name: String = "",
     private var description: String = "",
     private var iconColor: String = DEFAULT_GROUP_COLOR,
-    @Bindable var size: Int = 0
+    var size: Int = 0
 ): BaseObservable(), BaseEntity {
+
+    val sizeAsString: String
+        get() = size.toString()
 
     @Bindable
     fun getName() = name
@@ -20,6 +23,7 @@ data class TemplateGroupUI(
         if (value != name){
             name = value
             notifyPropertyChanged(BR.name)
+            notifyPropertyChanged(BR.nameUniqueAndNotBlank)
         }
     }
 
@@ -40,4 +44,16 @@ data class TemplateGroupUI(
             notifyPropertyChanged(BR.iconColor)
         }
     }
+
+    var nameUnique = true
+        set(value) {
+            if (value != field){
+                field = value
+                notifyPropertyChanged(BR.nameUniqueAndNotBlank)
+            }
+        }
+
+    @get:Bindable
+    val nameUniqueAndNotBlank: Boolean
+        get() = name.isNotBlank() && nameUnique
 }

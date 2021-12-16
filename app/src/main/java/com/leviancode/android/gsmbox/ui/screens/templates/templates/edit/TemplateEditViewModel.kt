@@ -1,6 +1,5 @@
 package com.leviancode.android.gsmbox.ui.screens.templates.templates.edit
 
-import android.view.View
 import androidx.lifecycle.*
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.domain.usecases.placeholders.FetchPlaceholdersUseCase
@@ -13,12 +12,15 @@ import com.leviancode.android.gsmbox.ui.entities.placeholder.toUIPlaceholders
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientUI
 import com.leviancode.android.gsmbox.ui.entities.recipients.toRecipientGroupUI
+import com.leviancode.android.gsmbox.ui.entities.recipients.toRecipientUI
 import com.leviancode.android.gsmbox.ui.entities.templates.TemplateUI
 import com.leviancode.android.gsmbox.ui.entities.templates.toDomainTemplate
 import com.leviancode.android.gsmbox.ui.entities.templates.toTemplateUI
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
-import kotlinx.coroutines.Job
+import com.leviancode.android.gsmbox.utils.VALIDATION_DELAY
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -31,22 +33,14 @@ class TemplateEditViewModel(
     private val fetchRecipientGroupsUseCase: FetchRecipientGroupsUseCase,
     private val fetchPlaceholdersUseCase: FetchPlaceholdersUseCase
 ) : ViewModel() {
-    private val validationJob: Job
-    private val _data = MutableLiveData(TemplateUI())
-    val data: LiveData<TemplateUI> = _data
-
+    private var data: TemplateUI = TemplateUI()
     private var original: TemplateUI? = null
 
     private val _nameError = MutableLiveData<Int?>()
     val nameError: LiveData<Int?> = _nameError
 
-    private val _fieldsCorrect = MutableLiveData(false)
-    val fieldsCorrect: LiveData<Boolean> = _fieldsCorrect
-
-    val addSingleRecipientViewEvent = SingleLiveEvent<RecipientUI>()
-    val addManyRecipientsViewEvent = SingleLiveEvent<List<RecipientUI>>()
-    val removeRecipientViewEvent = SingleLiveEvent<View>()
-    val removeAllRecipientViewsEvent = SingleLiveEvent<Unit>()
+    val updateRecipientsEvent = SingleLiveEvent<List<RecipientUI>>()
+    val addRecipientEvent = SingleLiveEvent<RecipientUI>()
     val saveRecipientEvent = SingleLiveEvent<RecipientUI>()
 
     val selectRecipientGroupEvent = SingleLiveEvent<RecipientGroupUI>()
@@ -54,56 +48,62 @@ class TemplateEditViewModel(
     val selectColorEvent = SingleLiveEvent<String>()
     val quitEvent = SingleLiveEvent<Unit>()
 
-    var recipientGroupMode = false
+    val groupMode = MutableLiveData(false)
+
     private var saved = false
 
     val recipientNumbers: LiveData<List<String>>
         get() = fetchRecipientsUseCase.getPhoneNumbersObservable().asLiveData()
 
-    val placeholders: LiveData<List<PlaceholderUI>>
-        get() = fetchPlaceholdersUseCase.getPlaceholders().map { it.toUIPlaceholders() }.asLiveData()
+    val placeholders: Flow<List<PlaceholderUI>>
+        get() = fetchPlaceholdersUseCase.getPlaceholders().map { it.toUIPlaceholders() }
 
     init {
-        validationJob = autoCheckFields()
+        validator()
     }
 
-    fun loadTemplate(id: Int) {
-        viewModelScope.launch {
-            fetchTemplatesUseCase.get(id)?.let {
-                val template = it.toTemplateUI()
-                _data.value = template
-                if (it.recipientGroup.recipients.isEmpty()) {
-                    _data.value?.recipientGroup?.addRecipient(RecipientUI())
+    fun loadTemplate(groupId: Int, templateId: Int = 0) = flow {
+        if (original == null){
+            if (templateId != 0){
+                fetchTemplatesUseCase.get(templateId)?.toTemplateUI()?.let {
+                    data = it
                 }
-                original = template.copy()
-                addManyRecipientsViewEvent.postValue(data.value?.recipientGroup!!.recipients)
             }
+            if (data.recipientGroup.recipients.isEmpty()) {
+                data.recipientGroup.addRecipient(RecipientUI())
+            }
+            data.groupId = groupId
+            original = data.copy()
         }
-    }
-
-    fun createEmptyTemplate(groupId: Int) {
-        _data.value?.groupId = groupId
-        onAddRecipientClick()
+        groupMode.value = data.recipientGroup.isGroupNameNotNull()
+        updateRecipientViews()
+        emit(data)
     }
 
     fun onAddRecipientClick() {
-        data.value?.let {
-            val newRecipient = RecipientUI()
-            it.recipientGroup.addRecipient(newRecipient)
-            addRecipientView(newRecipient)
-        }
+        val newRecipient = RecipientUI()
+        data.recipientGroup.addRecipient(newRecipient)
+        addRecipientEvent.value = newRecipient
     }
 
-    private fun addRecipientView(recipient: RecipientUI) {
-        addSingleRecipientViewEvent.value = recipient
+    fun onRemoveRecipientClick(recipient: RecipientUI) {
+        data.recipientGroup.removeRecipient(recipient)
+    }
+
+    fun onSaveRecipientClick(recipient: RecipientUI) {
+        saveRecipientEvent.value = recipient
+    }
+
+    private fun updateRecipientViews() {
+        updateRecipientsEvent.value = data.recipientGroup.recipients
     }
 
     fun onSelectRecipientGroupsClick() {
-        selectRecipientGroupEvent.value = data.value?.recipientGroup
+        selectRecipientGroupEvent.value = data.recipientGroup
     }
 
     fun onSelectRecipientClick(recipient: RecipientUI) {
-        data.value?.recipientGroup?.let { recipientGroup ->
+        data.recipientGroup.let { recipientGroup ->
             selectRecipientEvent.value =
                 recipient to (recipientGroup.recipients
                     .filter { it.getPhoneNumber() != recipient.getPhoneNumber() }
@@ -115,69 +115,70 @@ class TemplateEditViewModel(
     fun onSaveClick() {
         viewModelScope.launch {
             if (templateNameValidate()){
-                data.value?.let { saveTemplateUseCase.save(it.toDomainTemplate()) }
+                if (groupMode.value == false){
+                    data.recipientGroup.setName(null)
+                    data.recipientGroup.id = 0
+                }
+                saveTemplateUseCase.save(data.toDomainTemplate())
                 saved = true
                 quitEvent.call()
             }
         }
     }
 
-    fun onSaveRecipientClick(recipient: RecipientUI) {
-        saveRecipientEvent.value = recipient
-    }
-
     fun onIconColorClick() {
-        data.value?.let {
-            selectColorEvent.value = it.getIconColor()
-        }
-    }
-
-    fun onRemoveRecipientClick(view: View, recipient: RecipientUI) {
-        data.value?.recipientGroup?.removeRecipient(recipient)
-        removeRecipientViewEvent.value = view
+        selectColorEvent.value = data.getIconColor()
     }
 
     fun setIconColor(color: String) {
-        data.value?.setIconColor(color)
+        data.setIconColor(color)
     }
 
-    fun isDataSavedOrNotChanged(): Boolean = saved || original == data.value
+    fun isDataSavedOrNotChanged(): Boolean = saved || original == data
 
     fun updateRecipientGroup(groupId: Int) {
         viewModelScope.launch {
             fetchRecipientGroupsUseCase.getById(groupId)?.toRecipientGroupUI()?.also {
-                data.value?.recipientGroup?.updateGroup(it)
-                removeAllRecipientViewsEvent.call()
-                addManyRecipientsViewEvent.value = it.recipients
+                data.recipientGroup.updateGroup(it)
+                updateRecipientViews()
             }
         }
+    }
 
+    fun updateRecipient(old: RecipientUI, savedRecipientId: Int) {
+        viewModelScope.launch {
+            val savedRecipient = fetchRecipientsUseCase.getById(savedRecipientId)?.toRecipientUI()
+            if (savedRecipient != null){
+                old.setPhoneNumber(savedRecipient.getPhoneNumber())
+                old.setName(savedRecipient.getName())
+                old.id = savedRecipient.id
+            }
+        }
     }
 
     fun updateRecipient(old: RecipientUI, new: RecipientUI) {
         old.setPhoneNumber(new.getPhoneNumber())
-        old.setName(new.getPhoneNumber())
+        old.setName(new.getName())
         old.id = new.id
     }
 
-    private fun autoCheckFields() = viewModelScope.launch {
+    private fun validator() = viewModelScope.launch {
         while (isActive){
-            templateNameValidate()
-            recipientNumbersUniqueCheck()
-            delay(500)
+            data.nameUnique = templateNameValidate()
+            phoneNumbersValidate()
+            delay(VALIDATION_DELAY)
         }
     }
 
-    private suspend fun recipientNumbersUniqueCheck() {
-        data.value?.recipientGroup?.recipients?.forEach { recipient ->
-            recipient.phoneNumberUnique =
-                fetchRecipientsUseCase.getByPhoneNumber(recipient.getPhoneNumber()) == null
-
+    private suspend fun phoneNumbersValidate() {
+        data.recipientGroup.recipients.forEach { recipient ->
+            val recipientFound = fetchRecipientsUseCase.getByPhoneNumber(recipient.getPhoneNumber())
+            recipient.phoneNumberUnique = recipientFound?.name == null
         }
     }
 
     private suspend fun templateNameValidate(): Boolean {
-        return data.value?.let { template ->
+        return data.let { template ->
             val templateName = template.getName()
             val foundTemplate = fetchTemplatesUseCase.getByName(templateName)
             if (foundTemplate != null && foundTemplate.id != template.id){
@@ -187,11 +188,6 @@ class TemplateEditViewModel(
                 _nameError.value = null
                 true
             }
-        } ?: false
-    }
-
-    override fun onCleared() {
-        validationJob.cancel()
-        super.onCleared()
+        }
     }
 }

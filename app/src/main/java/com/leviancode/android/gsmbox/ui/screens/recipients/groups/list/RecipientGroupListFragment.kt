@@ -5,17 +5,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientGroupListBinding
 import com.leviancode.android.gsmbox.ui.base.BaseFragment
-import com.leviancode.android.gsmbox.ui.dialogs.ItemPopupMenu
+import com.leviancode.android.gsmbox.ui.dialogs.PopupMenus
+import com.leviancode.android.gsmbox.ui.dialogs.PopupMenus.MenuItem.*
 import com.leviancode.android.gsmbox.ui.dialogs.alertdialogs.DeleteConfirmationAlertDialog
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientUI
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientWithGroupUI
+import com.leviancode.android.gsmbox.ui.screens.recipients.groups.edit.RecipientGroupEditDialog
 import com.leviancode.android.gsmbox.ui.screens.recipients.recipients.dialog.RecipientMultiSelectListDialog
 import com.leviancode.android.gsmbox.ui.screens.recipients.viewpager.RecipientsPagerFragmentDirections
-import com.leviancode.android.gsmbox.utils.extensions.hideFabWhileScrolling
-import com.leviancode.android.gsmbox.utils.extensions.navigate
-import com.leviancode.android.gsmbox.utils.extensions.showToast
-import com.leviancode.android.gsmbox.utils.extensions.showUndoSnackbar
+import com.leviancode.android.gsmbox.utils.extensions.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class RecipientGroupListFragment : BaseFragment<FragmentRecipientGroupListBinding>(R.layout.fragment_recipient_group_list) {
@@ -36,7 +35,6 @@ class RecipientGroupListFragment : BaseFragment<FragmentRecipientGroupListBindin
         observeEvents()
         observeData()
     }
-
 
     private fun observeEvents() {
         viewModel.addGroupEvent.observe(viewLifecycleOwner) {
@@ -64,22 +62,24 @@ class RecipientGroupListFragment : BaseFragment<FragmentRecipientGroupListBindin
     }
 
     private fun showRecipientPopupMenu(view: View, item: RecipientWithGroupUI) {
-        ItemPopupMenu(requireContext(), view).showEditRemoveDelete { result ->
+        PopupMenus(view).showEditRemoveDelete { result ->
             when (result) {
-                ItemPopupMenu.EDIT -> showEditableRecipientDialog(item.recipient.id)
-                ItemPopupMenu.REMOVE -> removeRecipientFromGroup(item)
-                ItemPopupMenu.DELETE -> deleteRecipient(item.recipient)
+                EDIT -> showEditableRecipientDialog(item.recipient.id)
+                REMOVE -> removeRecipientFromGroup(item)
+                DELETE -> deleteRecipient(item.recipient)
+                else -> {}
             }
         }
     }
 
     private fun showGroupPopupMenu(view: View, item: RecipientGroupUI) {
-        ItemPopupMenu(requireContext(), view).showEditAddRecipientClearDelete { result ->
+        PopupMenus(view).showEditAddRecipientClearDelete { result ->
             when (result) {
-                ItemPopupMenu.EDIT -> showEditableRecipientGroupDialog(item.id)
-                ItemPopupMenu.ADD -> showSelectRecipientsDialog(item)
-                ItemPopupMenu.CLEAR -> clearGroup(item)
-                ItemPopupMenu.DELETE -> deleteGroup(item)
+                EDIT -> showEditableRecipientGroupDialog(item.id)
+                ADD -> showSelectRecipientsDialog(item)
+                CLEAR -> clearGroup(item)
+                DELETE -> deleteGroup(item)
+                else -> {}
             }
         }
     }
@@ -88,7 +88,7 @@ class RecipientGroupListFragment : BaseFragment<FragmentRecipientGroupListBindin
         RecipientMultiSelectListDialog.show(childFragmentManager, item.id){ result ->
             item.updateRecipients(result)
             viewModel.updateGroupWithRecipients(item)
-            showToast(getString(R.string.toast_add_to_group, item.getName()))
+            showSnackbar(getString(R.string.toast_add_to_group, item.getName()))
         }
     }
 
@@ -98,7 +98,7 @@ class RecipientGroupListFragment : BaseFragment<FragmentRecipientGroupListBindin
 
     private fun clearGroup(item: RecipientGroupUI) {
         viewModel.clearGroup(item)
-        requireView().showUndoSnackbar(getString(R.string.group_cleared)) {
+        showSnackbarWithAction(R.string.group_cleared, R.string.undo) {
             viewModel.restoreGroupWithRecipients()
         }
     }
@@ -128,8 +128,6 @@ class RecipientGroupListFragment : BaseFragment<FragmentRecipientGroupListBindin
     }
 
     private fun showEditableRecipientGroupDialog(groupId: Int) {
-        navigate {
-            RecipientsPagerFragmentDirections.actionOpenEditableRecipientGroup(groupId)
-        }
+        RecipientGroupEditDialog.show(childFragmentManager, groupId)
     }
 }

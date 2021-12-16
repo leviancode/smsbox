@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TemplatesRepository {
 
-    fun getGroupedObservable(groupId: Int): Flow<List<Template>>
+    fun getTemplatesByGroupIdObservable(groupId: Int): Flow<List<Template>>
 
     suspend fun getByName(name: String): Template?
 
@@ -19,9 +19,9 @@ interface TemplatesRepository {
 
     fun getTemplateNamesExclusiveById(id: Int): Flow<List<String>>
 
-    suspend fun save(items: List<Template>): IntArray
-
     suspend fun save(item: Template): Int
+
+    suspend fun updateFavorite(templateId: Int, favorite: Boolean)
 
     suspend fun delete(item: Template)
 

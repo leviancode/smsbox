@@ -5,6 +5,8 @@ import androidx.lifecycle.*
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.DeleteTemplatesUseCase
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.FetchTemplatesUseCase
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.SaveTemplatesUseCase
+import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.UpdateTemplateUseCase
+import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.impl.UpdateTemplateUseCaseImpl
 import com.leviancode.android.gsmbox.ui.entities.templates.TemplateUI
 import com.leviancode.android.gsmbox.ui.entities.templates.toDomainTemplate
 import com.leviancode.android.gsmbox.ui.entities.templates.toUITemplates
@@ -16,7 +18,7 @@ import kotlinx.coroutines.launch
 class TemplateListViewModel(
     private val fetchUseCase: FetchTemplatesUseCase,
     private val deleteUseCase: DeleteTemplatesUseCase,
-    private val saveUseCase: SaveTemplatesUseCase,
+    private val updateUseCase: UpdateTemplateUseCase,
     private val smsManager: SmsManager
 ) : ViewModel() {
     val createTemplateEvent = SingleLiveEvent<Unit>()
@@ -27,10 +29,9 @@ class TemplateListViewModel(
             .map { it.toUITemplates() }
             .asLiveData()
 
-    fun observeTemplates(groupId: Int) =
+    fun getTemplates(groupId: Int) =
         fetchUseCase.getTemplatesByGroupIdObservable(groupId)
             .map { it.toUITemplates() }
-            .asLiveData()
 
     fun deleteTemplate(template: TemplateUI) {
         viewModelScope.launch {
@@ -55,7 +56,7 @@ class TemplateListViewModel(
     fun onFavoriteClick(item: TemplateUI) {
         item.setFavorite(!item.isFavorite())
         viewModelScope.launch {
-            saveUseCase.save(item.toDomainTemplate())
+            updateUseCase.updateFavorite(item.id, item.isFavorite())
         }
     }
 }

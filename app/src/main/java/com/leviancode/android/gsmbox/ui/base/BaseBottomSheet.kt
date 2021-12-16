@@ -8,14 +8,24 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.leviancode.android.gsmbox.utils.hideKeyboard
+import com.leviancode.android.gsmbox.utils.showKeyboard
 
 abstract class BaseBottomSheet<T : ViewDataBinding>(private val layId: Int) : BottomSheetDialogFragment() {
     private var _binding: T? = null
     protected val binding get() = _binding!!
 
+    protected open val showKeyboardOnStarted = false
+
     override fun onPause() {
         hideKeyboard()
         super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (showKeyboardOnStarted){
+            showKeyboard()
+        }
     }
 
     override fun onCreateView(

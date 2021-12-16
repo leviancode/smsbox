@@ -69,9 +69,9 @@ data class RecipientGroupUI(
         return stringBuilder.toString().trim()
     }
 
-    fun getRecipientsCount(): Int = recipients.filter {
+    fun getRecipientsCount(): Int = recipients.count {
         it.getPhoneNumber().isNotBlank()
-    }.count()
+    }
 
     fun updateRecipients(value: List<RecipientUI>) {
         recipients.clear()
@@ -81,12 +81,10 @@ data class RecipientGroupUI(
 
     fun addRecipient(recipient: RecipientUI) {
         recipients.add(recipient)
-        notifyChange()
     }
 
     fun removeRecipient(recipient: RecipientUI) {
         recipients.remove(recipient)
-        notifyChange()
     }
 
     @Bindable
@@ -112,7 +110,7 @@ data class RecipientGroupUI(
     fun isRecipientsNotEmpty() = getRecipientsCount() > 0
 
     @Bindable
-    fun isHasRecipientsOrGroup() = getRecipientsCount() > 0 || !name.isNullOrBlank()
+    fun isHasRecipientsOrGroup() = isRecipientsNotEmpty() || !name.isNullOrBlank()
 
     fun copy() = this.copy(
         recipients = this.recipients.map { it.copy() }.toMutableList()

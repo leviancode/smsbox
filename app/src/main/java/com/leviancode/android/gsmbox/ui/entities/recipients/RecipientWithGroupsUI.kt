@@ -13,4 +13,9 @@ data class RecipientWithGroupsUI(
     }
 
     fun getGroupsIds() = groups.map { it.id }
+
+    fun copy() = RecipientWithGroupsUI(
+        recipient = recipient.copy(),
+        groups = groups.map { it.copy() }.toMutableList()
+    )
 }

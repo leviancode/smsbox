@@ -8,6 +8,7 @@ import com.leviancode.android.gsmbox.databinding.FragmentRecipientsPagerBinding
 import com.leviancode.android.gsmbox.ui.base.BaseFragment
 import com.leviancode.android.gsmbox.ui.screens.recipients.groups.list.RecipientGroupListViewModel
 import com.leviancode.android.gsmbox.ui.screens.recipients.recipients.list.RecipientListViewModel
+import com.leviancode.android.gsmbox.utils.extensions.onTabSelected
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RecipientsPagerFragment : BaseFragment<FragmentRecipientsPagerBinding>(R.layout.fragment_recipients_pager) {
@@ -30,30 +31,25 @@ class RecipientsPagerFragment : BaseFragment<FragmentRecipientsPagerBinding>(R.l
     }
 
     private fun setupViewPager() {
-        binding.recipientsViewPager.adapter = RecipientsViewPagerAdapter(this)
-        binding.recipientsViewPager.offscreenPageLimit = 2
-        TabLayoutMediator(
-            binding.tabLayoutRecipient,
-            binding.recipientsViewPager
-        ) { tab, position ->
-            tab.text = when (position) {
-                0 -> getString(R.string.all)
-                else -> getString(R.string.groups)
-            }
-        }.attach()
-
-        binding.tabLayoutRecipient.addOnTabSelectedListener(object :
-            TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                when (tab.position) {
-                    0 -> groupMode = false
-                    1 -> groupMode = true
+        binding.recipientsViewPager.apply {
+            adapter = RecipientsViewPagerAdapter(this@RecipientsPagerFragment)
+            offscreenPageLimit = 2
+            TabLayoutMediator(
+                binding.tabLayoutRecipient,
+                this
+            ) { tab, position ->
+                tab.text = when (position) {
+                    0 -> getString(R.string.all)
+                    else -> getString(R.string.groups)
                 }
+            }.attach()
+        }
+
+        binding.tabLayoutRecipient.onTabSelected { tab ->
+            when (tab.position) {
+                0 -> groupMode = false
+                1 -> groupMode = true
             }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-
-        })
+        }
     }
 }

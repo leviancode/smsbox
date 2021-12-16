@@ -12,6 +12,7 @@ import com.leviancode.android.gsmbox.utils.extensions.navigateBack
 import com.leviancode.android.gsmbox.utils.hideKeyboard
 import com.leviancode.android.gsmbox.ui.activities.MainActivity
 import com.leviancode.android.gsmbox.ui.dialogs.alertdialogs.DiscardAlertDialog
+import com.leviancode.android.gsmbox.utils.showKeyboard
 
 abstract class BaseFragment<T : ViewDataBinding>(private val layId: Int) : Fragment() {
     private var _binding: T? = null
@@ -21,8 +22,17 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layId: Int) : Fragm
 
     protected open val showConfirmationDialogBeforeQuit = false
 
+    protected open val showKeyboardOnStarted = false
+
     override fun onResume() {
         super.onResume()
+        setBottomNavVisibility()
+        if (showKeyboardOnStarted){
+            showKeyboard()
+        }
+    }
+
+    private fun setBottomNavVisibility() {
         if (activity is MainActivity) {
             val mainActivity = activity as MainActivity
             mainActivity.setBottomNavVisibility(bottomNavViewVisibility)
@@ -40,7 +50,7 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layId: Int) : Fragm
         savedInstanceState: Bundle?
     ): View {
         _binding = DataBindingUtil.inflate(inflater, layId, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

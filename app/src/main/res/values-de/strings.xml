@@ -108,4 +108,5 @@
     <string name="change_language_info">Die App wird nach dem Ändern der Sprache neu gestartet</string>
     <string name="update_widget">Widget bijwerken</string>
     <string name="add_favorite_templates">Favoritenvorlagen hinzufügen</string>
+    <string name="err_unique_phone">Telefonnummer sollte eindeutig sein</string>
 </resources>

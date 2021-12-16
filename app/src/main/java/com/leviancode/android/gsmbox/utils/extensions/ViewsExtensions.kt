@@ -20,6 +20,7 @@ import coil.load
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.leviancode.android.gsmbox.R
@@ -120,10 +121,8 @@ fun TextView.setTextWithHashtagHighlight(str: String) {
 
 @BindingAdapter(value = ["setRecipientsAsText"])
 fun TextView.setRecipientsAsText(recipients: RecipientGroupUI?) {
-    text = when (recipients) {
-        null -> context.getString(R.string.no_recipients)
-        else -> recipients.getFormatRecipients(context)
-    }
+    recipients ?: return
+    text = recipients.getFormatRecipients(context)
 }
 
 
@@ -201,15 +200,22 @@ fun ListView.hideFabWhileScrolling(fab: FloatingActionButton){
     })
 }
 
-fun View.showUndoSnackbar(message: String, callback: (View) -> Unit){
-    Snackbar.make(this, message, Snackbar.LENGTH_LONG)
-        .setAction(context.getString(R.string.undo)) { callback(it) }
-        .show()
+fun TabLayout.onTabSelected(callback: (TabLayout.Tab) -> Unit){
+    addOnTabSelectedListener(object :
+        TabLayout.OnTabSelectedListener {
+        override fun onTabSelected(tab: TabLayout.Tab) {
+            callback(tab)
+        }
+
+        override fun onTabUnselected(tab: TabLayout.Tab?) {}
+        override fun onTabReselected(tab: TabLayout.Tab?) {}
+
+    })
 }
 
-fun View.showOpenSnackbar(message: String, callback: (View) -> Unit){
-    Snackbar.make(this, message, Snackbar.LENGTH_LONG)
-        .setAction(context.getString(R.string.open)) { callback(it) }
-        .show()
+fun RecyclerView.scrollToEnd(){
+    adapter?.let {
+        layoutManager?.scrollToPosition(it.itemCount - 1)
+    }
 }
 

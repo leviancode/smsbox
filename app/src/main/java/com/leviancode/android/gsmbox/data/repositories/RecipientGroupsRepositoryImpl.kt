@@ -37,6 +37,7 @@ class RecipientGroupsRepositoryImpl(
 
         val groupId = groupDao.upsert(groupWithRecipients.group)
         deleteRecipientsFromGroup(groupId)
+
         groupWithRecipients.recipients.forEach { recipient ->
             val recipientId = recipientDao.upsert(recipient)
             bind(groupId, recipientId)

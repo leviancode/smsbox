@@ -61,6 +61,8 @@
             android:src="@drawable/ic_baseline_add_24"
             android:onClick="@{() -> viewModel.onAddGroupClick()}"
             app:fabSize="auto"
+            android:visibility="gone"
+            tools:visibility="gone"
             app:backgroundTint="@color/white"
             android:contentDescription="@string/desc_create_new_group"
             android:transitionName="@string/transition_edit_template_group"/>

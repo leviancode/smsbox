@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:enabled="@{model.name.length() > 0 &amp;&amp; model.phoneNumber.length() > 0}"
+                android:enabled="@{model.fieldsValid}"
                 android:text="@string/save"
                 tools:textColor="@color/secondary"
                 android:textColor="@drawable/save_button_text_color_selector"
@@ -95,6 +95,7 @@
                         android:hint="@string/hint_phone_number"
                         android:inputType="phone"
                         android:padding="8dp"
+                        app:showError="@{viewModel.phoneNumberValidation}"
                         android:text="@={model.phoneNumber}"
                         android:textSize="@dimen/form_text_size" />
 
