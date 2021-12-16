@@ -12,14 +12,6 @@ import org.koin.core.context.startKoin
 class WidgetListService : RemoteViewsService() {
     private val fetchTemplatesUseCase: FetchTemplatesUseCase by inject<FetchTemplatesUseCaseImpl>()
 
-    override fun onCreate() {
-        super.onCreate()
-        startKoin {
-            androidContext(applicationContext)
-            modules(SmsBoxApp.modules)
-        }
-    }
-
     override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
         return WidgetListFactory(applicationContext, intent, fetchTemplatesUseCase)
     }

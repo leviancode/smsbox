@@ -1,6 +1,8 @@
 package com.leviancode.android.gsmbox.ui.widgets
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_MUTABLE
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
@@ -45,14 +47,6 @@ class FavoritesWidgetProvider : AppWidgetProvider() {
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_list_view)
     }
 
-    override fun onEnabled(context: Context) {
-        super.onEnabled(context)
-        startKoin {
-            androidContext(context)
-            modules(SmsBoxApp.modules)
-        }
-    }
-
     override fun onDisabled(context: Context) {
         super.onDisabled(context)
         logI("widget disabled")
@@ -69,7 +63,7 @@ class FavoritesWidgetProvider : AppWidgetProvider() {
         listClickIntent.action = ACTION_ON_CLICK
         val listClickPIntent = PendingIntent.getBroadcast(
             context, 0,
-            listClickIntent, 0
+            listClickIntent, FLAG_MUTABLE
         )
         rv.setPendingIntentTemplate(R.id.widget_list_view, listClickPIntent)
     }
@@ -82,7 +76,7 @@ class FavoritesWidgetProvider : AppWidgetProvider() {
 
         val updPIntent = PendingIntent.getBroadcast(
             context,
-            appWidgetId, updIntent, 0
+            appWidgetId, updIntent, FLAG_MUTABLE
         )
         rv.setOnClickPendingIntent(R.id.widget_button_update, updPIntent)
     }
