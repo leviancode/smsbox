@@ -1,10 +1,11 @@
 package com.leviancode.android.gsmbox.utils.callbacks
 
-import androidx.recyclerview.widget.ItemTouchHelper.*
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.DOWN
+import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemDragHelperCallback(val listener: ItemDragListener) : Callback() {
-    private var idPair: Pair<Int, Int> = 0 to 0
+class ItemDragHelperCallback(val listener: ItemDragListener) : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(
         recyclerView: RecyclerView,
@@ -19,13 +20,13 @@ class ItemDragHelperCallback(val listener: ItemDragListener) : Callback() {
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        idPair = listener.onItemMove(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
+        listener.onItemMove(viewHolder.absoluteAdapterPosition, target.absoluteAdapterPosition)
         return true
     }
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        listener.onMoveFinished(idPair.first, idPair.second)
+        listener.onMoveFinished()
     }
 
     override fun isLongPressDragEnabled(): Boolean = true

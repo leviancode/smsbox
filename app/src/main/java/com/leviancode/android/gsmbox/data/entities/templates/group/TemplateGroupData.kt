@@ -1,6 +1,7 @@
 package com.leviancode.android.gsmbox.data.entities.templates.group
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.leviancode.android.gsmbox.utils.DEFAULT_GROUP_COLOR
 import com.leviancode.android.gsmbox.utils.getFormatDate
@@ -9,9 +10,10 @@ import com.leviancode.android.gsmbox.utils.getFormatDate
 data class  TemplateGroupData (
     @PrimaryKey(autoGenerate = true)
     var templateGroupId: Int = 0,
+    val position: Int,
     val name: String,
     val description: String,
     val imageUri: String = "",
     val iconColor: String = DEFAULT_GROUP_COLOR,
-    val date: String = getFormatDate()
+    val timestamp: Long = System.currentTimeMillis()
 )

@@ -6,28 +6,36 @@ import com.leviancode.android.gsmbox.domain.entities.recipient.RecipientWithGrou
 
 fun RecipientGroup.toRecipientGroupUI() = RecipientGroupUI(
     id = this.id,
+    position = position,
     name = this.name,
     iconColor = this.iconColor,
-    recipients = this.recipients.toRecipientsUI().toMutableList()
+    recipients = this.recipients.toRecipientsUI().toMutableList(),
+    timestamp = timestamp
 )
 
 fun RecipientGroupUI.toDomainRecipientGroup() = RecipientGroup(
     id = this.id,
+    position = position,
     name = getName(),
     iconColor = getIconColor(),
-    recipients = recipients.toDomainRecipients().toMutableList()
+    recipients = recipients.toDomainRecipients().toMutableList(),
+    timestamp = timestamp
 )
 
 fun Recipient.toRecipientUI() = RecipientUI(
     id = this.id,
+    position = position,
     name = this.name,
     phoneNumber = this.phoneNumber,
+    timestamp = timestamp
 )
 
 fun RecipientUI.toDomainRecipient() = Recipient(
     id = this.id,
+    position = position,
     name = getName(),
-    phoneNumber = getPhoneNumber()
+    phoneNumber = getPhoneNumber(),
+    timestamp = timestamp
 )
 
 fun RecipientWithGroupsUI.toDomainRecipientWithGroups() = RecipientWithGroups(

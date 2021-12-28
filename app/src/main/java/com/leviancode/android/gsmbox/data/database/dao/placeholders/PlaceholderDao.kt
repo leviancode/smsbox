@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox.data.database.dao
+package com.leviancode.android.gsmbox.data.database.dao.placeholders
 
 import androidx.room.*
 import com.leviancode.android.gsmbox.data.entities.placeholders.PlaceholderData

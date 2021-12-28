@@ -8,10 +8,12 @@ import com.leviancode.android.gsmbox.utils.DEFAULT_GROUP_COLOR
 
 data class TemplateGroupUI(
     override var id: Int = 0,
+    override var position: Int = 0,
     private var name: String = "",
     private var description: String = "",
     private var iconColor: String = DEFAULT_GROUP_COLOR,
-    var size: Int = 0
+    var size: Int = 0,
+    val timestamp: Long = System.currentTimeMillis()
 ): BaseObservable(), BaseEntity {
 
     val sizeAsString: String

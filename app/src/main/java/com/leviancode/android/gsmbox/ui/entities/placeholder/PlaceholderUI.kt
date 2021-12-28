@@ -7,8 +7,10 @@ import com.leviancode.android.gsmbox.ui.base.BaseEntity
 
 data class PlaceholderUI(
     override var id: Int = 0,
+    override var position: Int = 0,
     private var name: String = "",
-    private var value: String = ""
+    private var value: String = "",
+    val timestamp: Long = System.currentTimeMillis()
 ): BaseObservable(), BaseEntity{
 
     val nameWithHashTag: String

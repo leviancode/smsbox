@@ -10,9 +10,11 @@ import com.leviancode.android.gsmbox.utils.DEFAULT_GROUP_COLOR
 
 data class RecipientGroupUI(
     override var id: Int = 0,
+    override var position: Int = 0,
     private var name: String? = null,
     private var iconColor: String = DEFAULT_GROUP_COLOR,
-    val recipients: MutableList<RecipientUI> = mutableListOf()
+    val recipients: MutableList<RecipientUI> = mutableListOf(),
+    val timestamp: Long = System.currentTimeMillis()
 ): BaseObservable(), BaseEntity {
 
     fun updateGroup(newGroup: RecipientGroupUI){

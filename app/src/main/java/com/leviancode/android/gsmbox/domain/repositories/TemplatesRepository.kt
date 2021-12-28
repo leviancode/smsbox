@@ -21,7 +21,7 @@ interface TemplatesRepository {
 
     suspend fun save(item: Template): Int
 
-    suspend fun updateFavorite(templateId: Int, favorite: Boolean)
+    suspend fun updateFavorite(templateId: Int, favorite: Boolean): Int
 
     suspend fun delete(item: Template)
 

@@ -21,10 +21,10 @@ interface TemplateDao {
         }
     }
 
-    @Update suspend fun update(vararg item: TemplateData)
+    @Update suspend fun update(vararg item: TemplateData): Int
 
     @Query("UPDATE templates SET favorite =:favorite WHERE templateId =:id")
-    suspend fun updateFavorite(id: Int, favorite: Boolean)
+    suspend fun updateFavorite(id: Int, favorite: Boolean): Int
 
     @Delete suspend fun delete(vararg item: TemplateData)
 

@@ -60,6 +60,7 @@ interface TemplateGroupDao {
     @Query("DELETE FROM template_groups")
     suspend fun deleteAll()
 
-  /*  @Query("UPDATE template_groups SET position = :position WHERE templateGroupId = :groupId ")
-    fun updatePosition(groupId: Int, position: Int)*/
+    @Query("SELECT COUNT(*) FROM template_groups")
+    suspend fun count(): Int
+
 }

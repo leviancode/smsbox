@@ -6,7 +6,15 @@ import com.leviancode.android.gsmbox.domain.usecases.templates.groups.SaveTempla
 
 class SaveTemplateGroupUseCaseImpl(private val repository: TemplateGroupsRepository) :
     SaveTemplateGroupUseCase {
+
     override suspend fun save(item: TemplateGroup) {
-       repository.save(item)
+        val updatedItem = updatePosition(item)
+        repository.save(updatedItem)
+    }
+
+    private suspend fun updatePosition(item: TemplateGroup): TemplateGroup {
+        return item.apply {
+            position = repository.count()
+        }
     }
 }

@@ -15,6 +15,7 @@ import com.leviancode.android.gsmbox.domain.usecases.recipients.recipients.impl.
 import com.leviancode.android.gsmbox.domain.usecases.templates.groups.impl.DeleteTemplateGroupUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.templates.groups.impl.FetchTemplateGroupsUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.templates.groups.impl.SaveTemplateGroupUseCaseImpl
+import com.leviancode.android.gsmbox.domain.usecases.templates.groups.impl.UpdateTemplateGroupsUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.impl.DeleteTemplatesUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.impl.FetchTemplatesUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.impl.SaveTemplatesUseCaseImpl
@@ -32,6 +33,7 @@ val useCasesModule = module {
 
     factory { FetchTemplateGroupsUseCaseImpl(get<TemplateGroupsRepositoryImpl>()) }
     factory { SaveTemplateGroupUseCaseImpl(get<TemplateGroupsRepositoryImpl>()) }
+    factory { UpdateTemplateGroupsUseCaseImpl(get<TemplateGroupsRepositoryImpl>()) }
     factory { DeleteTemplateGroupUseCaseImpl(get<TemplateGroupsRepositoryImpl>()) }
 
     // -----RECIPIENTS-----

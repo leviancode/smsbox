@@ -9,6 +9,8 @@ import androidx.room.PrimaryKey
 data class PlaceholderData(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    val position: Int,
     val name: String,
-    val value: String
+    val value: String,
+    val timestamp: Long = System.currentTimeMillis()
 )

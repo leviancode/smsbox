@@ -29,11 +29,12 @@ import com.leviancode.android.gsmbox.utils.getFormatDate
 data class TemplateData(
     @PrimaryKey(autoGenerate = true)
     var templateId: Int = 0,
+    var position: Int = 0,
     var templateGroupId: Int = 0,
     var recipientGroupId: Int? = null,
     var name: String,
     var message: String,
     var iconColor: String = DEFAULT_TEMPLATE_COLOR,
     var favorite: Boolean = false,
-    val date: String = getFormatDate()
+    var timestamp: Long = System.currentTimeMillis()
 )

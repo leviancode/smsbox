@@ -3,11 +3,11 @@ package com.leviancode.android.gsmbox.ui.entities.placeholder
 import com.leviancode.android.gsmbox.domain.entities.placeholder.Placeholder
 
 fun Placeholder.toPlaceholderUI() = PlaceholderUI(
-    id, name, value
+    id, position, name, value, timestamp
 )
 
 fun PlaceholderUI.toDomainPlaceholder() = Placeholder(
-    id, getName(), getValue()
+    id, position, getName(), getValue(), timestamp
 )
 
 fun List<Placeholder>.toUIPlaceholders() = map { it.toPlaceholderUI() }
