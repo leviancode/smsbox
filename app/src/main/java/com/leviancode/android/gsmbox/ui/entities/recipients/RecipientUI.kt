@@ -8,8 +8,10 @@ import com.leviancode.android.gsmbox.ui.base.BaseEntity
 
 data class RecipientUI(
     override var id: Int = 0,
+    override var position: Int = 0,
     private var name: String? = null,
     private var phoneNumber: String = "",
+    val timestamp: Long = System.currentTimeMillis()
 ): BaseObservable(), BaseEntity {
 
     @Bindable

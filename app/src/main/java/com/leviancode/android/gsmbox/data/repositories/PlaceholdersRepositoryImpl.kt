@@ -1,6 +1,6 @@
 package com.leviancode.android.gsmbox.data.repositories
 
-import com.leviancode.android.gsmbox.data.database.dao.PlaceholderDao
+import com.leviancode.android.gsmbox.data.database.dao.placeholders.PlaceholderDao
 import com.leviancode.android.gsmbox.data.entities.placeholders.toDomainPlaceholder
 import com.leviancode.android.gsmbox.data.entities.placeholders.toDomainPlaceholders
 import com.leviancode.android.gsmbox.data.entities.placeholders.toPlaceholderData

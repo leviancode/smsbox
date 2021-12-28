@@ -19,5 +19,7 @@ interface TemplateGroupsRepository {
 
     suspend fun delete(item: TemplateGroup)
 
-    suspend fun replaceGroupsPosition(first: Int, second: Int)
+    suspend fun count(): Int
+
+    suspend fun update(items: List<TemplateGroup>)
 }

@@ -30,8 +30,10 @@ class FetchRecipientsUseCaseImpl(private val repository: RecipientsRepository):
 
     override fun createRecipient() = Recipient(
         id = 0,
+        position = 0,
         name = "",
-        phoneNumber = ""
+        phoneNumber = "",
+        timestamp = System.currentTimeMillis()
     )
 
     override fun getPhoneNumbersObservable() = repository.getPhoneNumbersObservable()

@@ -1,6 +1,7 @@
 package com.leviancode.android.gsmbox.ui.screens.templates.groups.list
 
 import android.view.View
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.FragmentTemplateGroupListBinding
 import com.leviancode.android.gsmbox.databinding.ListItemTemplateGroupBinding
@@ -14,6 +15,8 @@ import com.leviancode.android.gsmbox.ui.entities.templates.TemplateGroupUI
 import com.leviancode.android.gsmbox.utils.extensions.hideFabWhileScrolling
 import com.leviancode.android.gsmbox.utils.extensions.navigate
 import com.leviancode.android.gsmbox.utils.extensions.observe
+import com.leviancode.android.gsmbox.utils.logE
+import com.leviancode.android.gsmbox.utils.logI
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TemplateGroupListFragment :
@@ -30,8 +33,14 @@ class TemplateGroupListFragment :
     override fun onCreated() {
         binding.viewModel = viewModel
         binding.recyclerView.adapter = listAdapter
+        listAdapter.initDragNDrop(binding.recyclerView, ::onDragFinish)
         observeData()
         observeEvents()
+    }
+
+    private fun onDragFinish(){
+        logI("drag finished")
+        viewModel.updateAll(listAdapter.currentList)
     }
 
     override fun onPause() {

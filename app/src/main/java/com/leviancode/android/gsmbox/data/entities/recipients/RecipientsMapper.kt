@@ -6,14 +6,18 @@ import com.leviancode.android.gsmbox.domain.entities.recipient.RecipientWithGrou
 
 fun RecipientData.toDomainRecipient() = Recipient(
     id = this.recipientId,
+    position = position,
     name = this.name,
-    phoneNumber = this.phoneNumber
+    phoneNumber = this.phoneNumber,
+    timestamp = timestamp
 )
 
 fun Recipient.toRecipientData() = RecipientData(
     recipientId = this.id,
+    position = position,
     name = this.name,
-    phoneNumber = this.phoneNumber
+    phoneNumber = this.phoneNumber,
+    timestamp = timestamp
 )
 
 fun List<RecipientData>.toDomainRecipients() = map { it.toDomainRecipient() }
@@ -26,14 +30,18 @@ fun List<RecipientGroup>.toRecipientGroupData() = map { it.toRecipientGroupData(
 
 fun GroupWithRecipients.toDomainRecipientGroup() = RecipientGroup(
     id = group.recipientGroupId,
+    position = group.position,
     name = group.name,
     iconColor = group.iconColor,
-    recipients = this.recipients.toDomainRecipients()
+    recipients = recipients.toDomainRecipients(),
+    timestamp = group.timestamp
 )
 fun RecipientWithGroupsData.toDomainRecipient() = Recipient(
     id = recipient.recipientId,
+    position = recipient.position,
     name = recipient.name,
     phoneNumber = recipient.phoneNumber,
+    timestamp = recipient.timestamp
 )
 
 fun RecipientWithGroupsData.toDomainRecipientWithGroups() = RecipientWithGroups(
@@ -48,15 +56,19 @@ fun RecipientWithGroups.toRecipientWithGroupsData() = RecipientWithGroupsData(
 
 fun RecipientGroup.toRecipientGroupData() = RecipientGroupData(
     recipientGroupId = id,
-    name = this.name,
-    iconColor = this.iconColor
+    position = position,
+    name = name,
+    iconColor = iconColor,
+    timestamp = timestamp
 )
 
 fun RecipientGroupData.toDomainRecipientGroup(recipients: List<Recipient> = listOf()) = RecipientGroup(
     id = recipientGroupId,
-    name = this.name,
-    iconColor = this.iconColor,
-    recipients = recipients
+    position = position,
+    name = name,
+    iconColor = iconColor,
+    recipients = recipients,
+    timestamp = timestamp
 )
 
 fun RecipientGroup.toDataGroupWithRecipients() = GroupWithRecipients(

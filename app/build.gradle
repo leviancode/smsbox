@@ -27,6 +27,12 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
     }
 
     buildTypes {
@@ -83,7 +89,7 @@ dependencies {
     implementation 'com.alespero:expandable-cardview:0.8'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    def room_version = "2.3.0"
+    def room_version = "2.4.0-rc01"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"

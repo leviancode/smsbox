@@ -2,6 +2,7 @@ package com.leviancode.android.gsmbox.data.repositories
 
 import com.leviancode.android.gsmbox.data.database.dao.templates.TemplateGroupDao
 import com.leviancode.android.gsmbox.data.entities.templates.group.toDataGroup
+import com.leviancode.android.gsmbox.data.entities.templates.group.toDataTemplateGroups
 import com.leviancode.android.gsmbox.data.entities.templates.group.toDomainGroup
 import com.leviancode.android.gsmbox.data.entities.templates.group.toDomainGroups
 import com.leviancode.android.gsmbox.domain.entities.template.TemplateGroup
@@ -37,10 +38,11 @@ class TemplateGroupsRepositoryImpl(
         groupsDao.delete(item.toDataGroup())
     }
 
-    override suspend fun replaceGroupsPosition(first: Int, second: Int) = withContext(IO) {
-        val tempId = Int.MAX_VALUE
-    /*    groupsDao.updatePosition(firstId, tempId)
-        groupsDao.updatePosition(secondId, firstId)
-        groupsDao.updatePosition(tempId, secondId)*/
+    override suspend fun count(): Int = withContext(IO) {
+        groupsDao.count()
+    }
+
+    override suspend fun update(items: List<TemplateGroup>) = withContext(IO)  {
+        groupsDao.update(*items.toDataTemplateGroups().toTypedArray())
     }
 }

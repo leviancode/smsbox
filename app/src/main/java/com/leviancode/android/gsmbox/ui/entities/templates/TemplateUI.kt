@@ -9,12 +9,14 @@ import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI
 
 data class TemplateUI(
     override var id: Int = 0,
+    override var position: Int = 0,
     var groupId: Int = 0,
     private var name: String = "",
     private var message: String = "",
     private var iconColor: String = DEFAULT_TEMPLATE_COLOR,
     private var favorite: Boolean = false,
-    var recipientGroup: RecipientGroupUI = RecipientGroupUI()
+    var recipientGroup: RecipientGroupUI = RecipientGroupUI(),
+    val timestamp: Long = System.currentTimeMillis()
 ) : BaseObservable(), BaseEntity {
 
     @Bindable
