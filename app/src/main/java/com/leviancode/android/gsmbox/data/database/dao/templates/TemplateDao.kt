@@ -21,7 +21,8 @@ interface TemplateDao {
         }
     }
 
-    @Update suspend fun update(vararg item: TemplateData): Int
+    @Update (onConflict = OnConflictStrategy.REPLACE)
+    suspend fun update(vararg item: TemplateData)
 
     @Query("UPDATE templates SET favorite =:favorite WHERE templateId =:id")
     suspend fun updateFavorite(id: Int, favorite: Boolean): Int
@@ -40,11 +41,11 @@ interface TemplateDao {
     suspend fun getTemplateWithRecipientsByName(name: String): TemplateWithRecipients?
 
     @Transaction
-    @Query("SELECT * from templates WHERE templateGroupId = :groupId")
+    @Query("SELECT * from templates WHERE templateGroupId = :groupId ORDER BY position")
     fun getTemplatesWithRecipients(groupId: Int): Flow<List<TemplateWithRecipients>>
 
     @Transaction
-    @Query("SELECT * from templates WHERE favorite = 1")
+    @Query("SELECT * from templates WHERE favorite = 1 ORDER BY position")
     fun getFavoriteWithRecipientsObservable(): Flow<List<TemplateWithRecipients>>
 
     @Transaction
@@ -52,16 +53,13 @@ interface TemplateDao {
     suspend fun getFavoriteWithRecipients(): List<TemplateWithRecipients>
 
     @Transaction
-    @Query("SELECT * from templates WHERE favorite = 1")
+    @Query("SELECT * from templates WHERE favorite = 1 ORDER BY position")
     fun getFavoriteWithRecipientsSync(): List<TemplateWithRecipients>
 
-    @Query("SELECT * from templates WHERE recipientGroupId = :id")
-    suspend fun getByRecipientGroupId(id: Int): List<TemplateData>
-
-    @Query("SELECT * FROM templates")
+    @Query("SELECT * FROM templates ORDER BY position")
     fun getAllObservable(): Flow<List<TemplateData>>
 
-    @Query("SELECT * FROM templates")
+    @Query("SELECT * FROM templates ORDER BY position")
     fun getAll(): List<TemplateData>
 
     @Query("SELECT * FROM templates WHERE templateGroupId = :id")
@@ -82,4 +80,6 @@ interface TemplateDao {
     @Query("SELECT * FROM templates WHERE name LIKE :name")
     suspend fun getByName(name: String): TemplateData?
 
+    @Query("SELECT COUNT(*) FROM templates")
+    suspend fun count(): Int
 }

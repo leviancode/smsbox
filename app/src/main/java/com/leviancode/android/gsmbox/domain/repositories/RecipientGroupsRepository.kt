@@ -14,6 +14,10 @@ interface RecipientGroupsRepository {
 
     suspend fun save(item: RecipientGroup): Int
 
+    suspend fun update(item: RecipientGroup)
+
+    suspend fun update(items: List<RecipientGroup>)
+
     suspend fun save(items: List<RecipientGroup>): IntArray
 
     suspend fun delete(item: RecipientGroup)

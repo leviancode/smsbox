@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "520245277d0d3805f7028d0e45166626",
+    "identityHash": "7fbff989615d8d48521251798db89bd1",
     "entities": [
       {
         "tableName": "templates",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`templateId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `position` INTEGER NOT NULL, `templateGroupId` INTEGER NOT NULL, `recipientGroupId` INTEGER, `name` TEXT NOT NULL, `message` TEXT NOT NULL, `iconColor` TEXT NOT NULL, `favorite` INTEGER NOT NULL, `timestamp` INTEGER NOT NULL, FOREIGN KEY(`recipientGroupId`) REFERENCES `recipient_groups`(`recipientGroupId`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`templateGroupId`) REFERENCES `template_groups`(`templateGroupId`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`templateId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `position` INTEGER NOT NULL, `templateGroupId` INTEGER NOT NULL, `recipientGroupId` INTEGER, `name` TEXT NOT NULL, `message` TEXT NOT NULL, `iconColor` TEXT NOT NULL, `favorite` INTEGER NOT NULL, `timestamp` INTEGER NOT NULL, FOREIGN KEY(`recipientGroupId`) REFERENCES `recipient_groups`(`recipientGroupId`) ON UPDATE RESTRICT ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`templateGroupId`) REFERENCES `template_groups`(`templateGroupId`) ON UPDATE RESTRICT ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
         "fields": [
           {
             "fieldPath": "templateId",
@@ -74,7 +74,7 @@
           {
             "table": "recipient_groups",
             "onDelete": "SET NULL",
-            "onUpdate": "CASCADE",
+            "onUpdate": "RESTRICT",
             "columns": [
               "recipientGroupId"
             ],
@@ -85,7 +85,7 @@
           {
             "table": "template_groups",
             "onDelete": "CASCADE",
-            "onUpdate": "CASCADE",
+            "onUpdate": "RESTRICT",
             "columns": [
               "templateGroupId"
             ],
@@ -347,7 +347,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '520245277d0d3805f7028d0e45166626')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7fbff989615d8d48521251798db89bd1')"
     ]
   }
 }

@@ -26,4 +26,10 @@ interface TemplatesRepository {
     suspend fun delete(item: Template)
 
     suspend fun deleteByGroupId(groupId: Int)
+
+    suspend fun update(items: List<Template>)
+
+    suspend fun update(item: Template)
+
+    suspend fun count(): Int
 }

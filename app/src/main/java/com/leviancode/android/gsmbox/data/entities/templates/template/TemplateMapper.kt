@@ -24,6 +24,7 @@ fun Template.toTemplateData() = TemplateData(
     templateId = id,
     position = position,
     templateGroupId = groupId,
+    recipientGroupId = recipientGroup.id,
     name = name,
     message = message,
     iconColor = iconColor,

@@ -12,6 +12,10 @@ class SaveTemplateGroupUseCaseImpl(private val repository: TemplateGroupsReposit
         repository.save(updatedItem)
     }
 
+    override suspend fun save(items: List<TemplateGroup>) {
+        items.forEach { save(it) }
+    }
+
     private suspend fun updatePosition(item: TemplateGroup): TemplateGroup {
         return item.apply {
             position = repository.count()

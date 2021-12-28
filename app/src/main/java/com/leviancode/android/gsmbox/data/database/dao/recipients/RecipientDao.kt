@@ -31,7 +31,7 @@ interface RecipientDao {
         }
     }
 
-    @Update
+    @Update (onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(vararg item: RecipientData)
 
     @Delete

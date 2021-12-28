@@ -1,7 +1,10 @@
 package com.leviancode.android.gsmbox.data.repositories
 
 import com.leviancode.android.gsmbox.data.database.dao.templates.TemplateDao
-import com.leviancode.android.gsmbox.data.entities.templates.template.*
+import com.leviancode.android.gsmbox.data.entities.templates.template.toDataTemplates
+import com.leviancode.android.gsmbox.data.entities.templates.template.toDomainTemplate
+import com.leviancode.android.gsmbox.data.entities.templates.template.toDomainTemplates
+import com.leviancode.android.gsmbox.data.entities.templates.template.toTemplateData
 import com.leviancode.android.gsmbox.domain.entities.template.Template
 import com.leviancode.android.gsmbox.domain.repositories.RecipientGroupsRepository
 import com.leviancode.android.gsmbox.domain.repositories.TemplatesRepository
@@ -19,13 +22,17 @@ class TemplatesRepositoryImpl(
         return dao.getTemplatesWithRecipients(groupId).map { it.toDomainTemplates() }
     }
 
-    override suspend fun getByName(name: String) = dao.getTemplateWithRecipientsByName(name)?.toDomainTemplate()
+    override suspend fun getByName(name: String) =
+        dao.getTemplateWithRecipientsByName(name)?.toDomainTemplate()
 
-    override fun getFavoritesObservable() = dao.getFavoriteWithRecipientsObservable().map { it.toDomainTemplates() }
+    override fun getFavoritesObservable() =
+        dao.getFavoriteWithRecipientsObservable().map { it.toDomainTemplates() }
 
-    override suspend fun getFavorites() = dao.getFavoriteWithRecipients().map { it.toDomainTemplate() }
+    override suspend fun getFavorites() =
+        dao.getFavoriteWithRecipients().map { it.toDomainTemplate() }
 
-    override fun getFavoritesSync() = dao.getFavoriteWithRecipientsSync().map { it.toDomainTemplate() }
+    override fun getFavoritesSync() =
+        dao.getFavoriteWithRecipientsSync().map { it.toDomainTemplate() }
 
     override fun getTemplateNamesExclusiveById(id: Int) = dao.getTemplateNamesExclusiveById(id)
 
@@ -39,19 +46,35 @@ class TemplatesRepositoryImpl(
         return dao.upsert(data)
     }
 
-    override suspend fun updateFavorite(templateId: Int, favorite: Boolean) = withContext(IO)  {
+    override suspend fun updateFavorite(templateId: Int, favorite: Boolean) = withContext(IO) {
         dao.updateFavorite(templateId, favorite)
     }
 
     override suspend fun delete(item: Template) = withContext(IO) {
-        if (item.recipientGroup.name == null){
+        if (item.recipientGroup.name == null) {
             recipientGroupsRepository.delete(item.recipientGroup)
         }
         dao.delete(item.toTemplateData())
     }
 
-    override suspend fun deleteByGroupId(groupId: Int)  = withContext(IO){
+    override suspend fun deleteByGroupId(groupId: Int) = withContext(IO) {
         dao.deleteByGroupId(groupId)
+    }
+
+    override suspend fun update(items: List<Template>) = withContext(IO) {
+        val data = items.toDataTemplates()
+        dao.update(*data.toTypedArray())
+        recipientGroupsRepository.update(items.map { it.recipientGroup })
+    }
+
+    override suspend fun update(item: Template) {
+        val data = item.toTemplateData()
+        dao.update(data)
+        recipientGroupsRepository.update(item.recipientGroup)
+    }
+
+    override suspend fun count(): Int = withContext(IO) {
+        dao.count()
     }
 
 }

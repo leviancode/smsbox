@@ -4,11 +4,10 @@ import android.view.View
 import androidx.lifecycle.*
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.DeleteTemplatesUseCase
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.FetchTemplatesUseCase
-import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.SaveTemplatesUseCase
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.UpdateTemplateUseCase
-import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.impl.UpdateTemplateUseCaseImpl
 import com.leviancode.android.gsmbox.ui.entities.templates.TemplateUI
 import com.leviancode.android.gsmbox.ui.entities.templates.toDomainTemplate
+import com.leviancode.android.gsmbox.ui.entities.templates.toDomainTemplates
 import com.leviancode.android.gsmbox.ui.entities.templates.toUITemplates
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import com.leviancode.android.gsmbox.utils.managers.SmsManager
@@ -57,6 +56,12 @@ class TemplateListViewModel(
         item.setFavorite(!item.isFavorite())
         viewModelScope.launch {
             updateUseCase.updateFavorite(item.id, item.isFavorite())
+        }
+    }
+
+    fun updateAll(items: List<TemplateUI>) {
+        viewModelScope.launch {
+            updateUseCase.update(items.toDomainTemplates())
         }
     }
 }

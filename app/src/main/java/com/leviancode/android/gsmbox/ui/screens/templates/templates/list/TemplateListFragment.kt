@@ -27,6 +27,9 @@ class TemplateListFragment : BaseFragment<FragmentTemplateListBinding>(R.layout.
     override fun onCreated() {
         binding.viewModel = viewModel
         binding.recyclerView.adapter = listAdapter
+        listAdapter.initDragNDrop(binding.recyclerView){
+            viewModel.updateAll(listAdapter.currentList)
+        }
         updateTitle(args.groupName)
         observeEvents()
         observeData()
