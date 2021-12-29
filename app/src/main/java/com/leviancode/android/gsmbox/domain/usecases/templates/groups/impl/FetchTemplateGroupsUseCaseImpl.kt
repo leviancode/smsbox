@@ -10,9 +10,7 @@ class FetchTemplateGroupsUseCaseImpl(private val repository: TemplateGroupsRepos
     FetchTemplateGroupsUseCase {
 
     override fun getGroupsObservable(): Flow<List<TemplateGroup>> =
-        repository.getGroupsObservable().map { list ->
-            list.sortedBy { it.position }
-        }
+        repository.getGroupsObservable()
 
     override suspend fun getById(id: Int): TemplateGroup? {
         return repository.getById(id)

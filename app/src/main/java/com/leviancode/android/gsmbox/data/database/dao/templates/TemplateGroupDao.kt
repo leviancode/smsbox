@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TemplateGroupDao {
-    @Insert (onConflict = OnConflictStrategy.IGNORE)
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: TemplateGroupData): Long
 
     @Insert (onConflict = OnConflictStrategy.REPLACE)
@@ -32,17 +32,17 @@ interface TemplateGroupDao {
     @Query("SELECT * from template_groups WHERE name LIKE :name")
     suspend fun getByName(name: String): TemplateGroupData?
 
-    @Query("SELECT * FROM template_groups")
+    @Query("SELECT * FROM template_groups ORDER BY position")
     fun getAllObservable(): Flow<List<TemplateGroupData>>
 
     @Query("SELECT name FROM template_groups")
     fun getGroupNames(): Flow<List<String>>
 
-    @Query("SELECT * FROM template_groups")
+    @Query("SELECT * FROM template_groups ORDER BY position")
     suspend fun getAll(): List<TemplateGroupData>
 
     @Transaction
-    @Query("SELECT * FROM template_groups")
+    @Query("SELECT * FROM template_groups ORDER BY template_groups.position")
     fun getGroupsWithTemplatesObservable(): Flow<List<GroupWithTemplates>>
 
     @Transaction

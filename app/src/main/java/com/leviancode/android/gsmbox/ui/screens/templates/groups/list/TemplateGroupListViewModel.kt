@@ -2,9 +2,9 @@ package com.leviancode.android.gsmbox.ui.screens.templates.groups.list
 
 import android.view.View
 import androidx.lifecycle.*
-import com.leviancode.android.gsmbox.domain.entities.template.TemplateGroup
 import com.leviancode.android.gsmbox.domain.usecases.templates.groups.DeleteTemplateGroupUseCase
 import com.leviancode.android.gsmbox.domain.usecases.templates.groups.FetchTemplateGroupsUseCase
+import com.leviancode.android.gsmbox.domain.usecases.templates.groups.SaveTemplateGroupUseCase
 import com.leviancode.android.gsmbox.domain.usecases.templates.groups.UpdateTemplateGroupsUseCase
 import com.leviancode.android.gsmbox.ui.entities.templates.TemplateGroupUI
 import com.leviancode.android.gsmbox.ui.entities.templates.toDomainTemplateGroup
@@ -17,8 +17,8 @@ import kotlinx.coroutines.launch
 
 class TemplateGroupListViewModel(
     private val fetchUseCase: FetchTemplateGroupsUseCase,
+    private val updateUseCase: UpdateTemplateGroupsUseCase,
     private val deleteUseCase: DeleteTemplateGroupUseCase,
-    private val updateUseCase: UpdateTemplateGroupsUseCase
 ) : ViewModel() {
     val addGroupEvent = SingleLiveEvent<Int>()
     val selectedGroupEvent = SingleLiveEvent<TemplateGroupUI>()

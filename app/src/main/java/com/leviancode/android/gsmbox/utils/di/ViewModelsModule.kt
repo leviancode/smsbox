@@ -50,8 +50,8 @@ val viewModelsModule = module {
     factory {
         TemplateGroupListViewModel(
             get<FetchTemplateGroupsUseCaseImpl>(),
-            get<DeleteTemplateGroupUseCaseImpl>(),
-            get<UpdateTemplateGroupsUseCaseImpl>()
+            get<UpdateTemplateGroupsUseCaseImpl>(),
+            get<DeleteTemplateGroupUseCaseImpl>()
         )
     }
     factory {
@@ -64,6 +64,7 @@ val viewModelsModule = module {
         TemplateEditViewModel(
             get<FetchTemplatesUseCaseImpl>(),
             get<SaveTemplatesUseCaseImpl>(),
+            get<UpdateTemplateUseCaseImpl>(),
             get<FetchRecipientsUseCaseImpl>(),
             get<FetchRecipientGroupsUseCaseImpl>(),
             get<FetchPlaceholdersUseCaseImpl>()

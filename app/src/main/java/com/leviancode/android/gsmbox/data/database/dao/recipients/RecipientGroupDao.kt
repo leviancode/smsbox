@@ -20,7 +20,7 @@ interface RecipientGroupDao {
             item.recipientGroupId
         }
     }
-    @Update
+    @Update (onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(item: RecipientGroupData)
 
     @Delete

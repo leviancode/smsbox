@@ -4,6 +4,7 @@ import com.leviancode.android.gsmbox.domain.entities.template.Template
 import com.leviancode.android.gsmbox.domain.repositories.TemplatesRepository
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.FetchTemplatesUseCase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class FetchTemplatesUseCaseImpl(private val repository: TemplatesRepository) :
     FetchTemplatesUseCase {
@@ -17,7 +18,7 @@ class FetchTemplatesUseCaseImpl(private val repository: TemplatesRepository) :
     }
 
     override fun getTemplatesByGroupIdObservable(groupId: Int): Flow<List<Template>> {
-        return repository.getTemplatesByGroupIdObservable(groupId)
+        return repository.getTemplatesByGroupIdObservable(groupId).map { it.sortedBy { it.position } }
     }
 
     override suspend fun get(id: Int): Template? {

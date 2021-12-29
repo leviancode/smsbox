@@ -45,4 +45,8 @@ class TemplateGroupsRepositoryImpl(
     override suspend fun update(items: List<TemplateGroup>) = withContext(IO)  {
         groupsDao.update(*items.toDataTemplateGroups().toTypedArray())
     }
+
+    override suspend fun update(item: TemplateGroup) {
+        groupsDao.update(item.toDataGroup())
+    }
 }

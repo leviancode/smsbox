@@ -22,4 +22,7 @@ interface TemplateGroupsRepository {
     suspend fun count(): Int
 
     suspend fun update(items: List<TemplateGroup>)
+
+    suspend fun update(item: TemplateGroup)
+
 }

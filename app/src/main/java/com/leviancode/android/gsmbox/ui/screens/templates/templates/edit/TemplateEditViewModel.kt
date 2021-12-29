@@ -7,6 +7,7 @@ import com.leviancode.android.gsmbox.domain.usecases.recipients.groups.FetchReci
 import com.leviancode.android.gsmbox.domain.usecases.recipients.recipients.FetchRecipientsUseCase
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.FetchTemplatesUseCase
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.SaveTemplatesUseCase
+import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.UpdateTemplateUseCase
 import com.leviancode.android.gsmbox.ui.entities.placeholder.PlaceholderUI
 import com.leviancode.android.gsmbox.ui.entities.placeholder.toUIPlaceholders
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI
@@ -29,6 +30,7 @@ import kotlinx.coroutines.launch
 class TemplateEditViewModel(
     private val fetchTemplatesUseCase: FetchTemplatesUseCase,
     private val saveTemplateUseCase: SaveTemplatesUseCase,
+    private val updateTemplateUseCase: UpdateTemplateUseCase,
     private val fetchRecipientsUseCase: FetchRecipientsUseCase,
     private val fetchRecipientGroupsUseCase: FetchRecipientGroupsUseCase,
     private val fetchPlaceholdersUseCase: FetchPlaceholdersUseCase
@@ -49,6 +51,8 @@ class TemplateEditViewModel(
     val quitEvent = SingleLiveEvent<Unit>()
 
     val groupMode = MutableLiveData(false)
+    var editMode: Boolean = false
+        private set
 
     private var saved = false
 
@@ -63,8 +67,9 @@ class TemplateEditViewModel(
     }
 
     fun loadTemplate(groupId: Int, templateId: Int = 0) = flow {
+        editMode = templateId != 0
         if (original == null){
-            if (templateId != 0){
+            if (editMode){
                 fetchTemplatesUseCase.get(templateId)?.toTemplateUI()?.let {
                     data = it
                 }
@@ -117,7 +122,6 @@ class TemplateEditViewModel(
             if (templateNameValidate()){
                 if (groupMode.value == false){
                     data.recipientGroup.setName(null)
-                    data.recipientGroup.id = 0
                 }
                 saveTemplateUseCase.save(data.toDomainTemplate())
                 saved = true

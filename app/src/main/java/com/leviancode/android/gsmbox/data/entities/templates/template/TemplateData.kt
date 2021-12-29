@@ -13,7 +13,7 @@ import com.leviancode.android.gsmbox.utils.getFormatDate
         parentColumns = arrayOf("recipientGroupId"),
         childColumns = arrayOf("recipientGroupId"),
         onDelete = ForeignKey.SET_NULL,
-        onUpdate = ForeignKey.CASCADE,
+        onUpdate = ForeignKey.RESTRICT,
         deferred = true
     ),
         ForeignKey(
@@ -21,7 +21,7 @@ import com.leviancode.android.gsmbox.utils.getFormatDate
             parentColumns = arrayOf("templateGroupId"),
             childColumns = arrayOf("templateGroupId"),
             onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.RESTRICT,
             deferred = true
         )]
 )
