@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class RecipientListViewModel(
     private val fetchRecipientsUseCase: FetchRecipientsUseCase,
-    private val fetchRecipientGroupsUseCase: FetchRecipientGroupsUseCase,
+    private val updateRecipientsUseCase: UpdateRecipientsUseCase,
     private val saveRecipientsUseCase: SaveRecipientsUseCase,
     private val deleteRecipientsUseCase: DeleteRecipientsUseCase
 ) : ViewModel() {
@@ -36,19 +36,13 @@ class RecipientListViewModel(
         }
     }
 
-    fun updateRecipient(recipient: RecipientUI) {
-        viewModelScope.launch {
-            saveRecipientsUseCase.save(recipient.toDomainRecipient())
-        }
-    }
-
     fun onAddRecipientClick() {
         addRecipientEvent.value = 0
     }
 
-    fun updateRecipientsOrder(list: List<RecipientUI>) {
+    fun updateRecipients(list: List<RecipientUI>) {
         viewModelScope.launch {
-            saveRecipientsUseCase.save(list.toDomainRecipients())
+            updateRecipientsUseCase.update(list.toDomainRecipients())
         }
     }
 

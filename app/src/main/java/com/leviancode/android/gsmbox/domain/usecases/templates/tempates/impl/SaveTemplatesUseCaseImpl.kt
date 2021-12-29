@@ -1,16 +1,19 @@
 package com.leviancode.android.gsmbox.domain.usecases.templates.tempates.impl
 
 import com.leviancode.android.gsmbox.domain.entities.template.Template
-import com.leviancode.android.gsmbox.domain.entities.template.TemplateGroup
+import com.leviancode.android.gsmbox.domain.repositories.RecipientGroupsRepository
+import com.leviancode.android.gsmbox.domain.repositories.RecipientsRepository
 import com.leviancode.android.gsmbox.domain.repositories.TemplatesRepository
 import com.leviancode.android.gsmbox.domain.usecases.templates.tempates.SaveTemplatesUseCase
 
-class SaveTemplatesUseCaseImpl(private val repository: TemplatesRepository) :
+class SaveTemplatesUseCaseImpl(
+    private val templatesRepository: TemplatesRepository
+    ) :
     SaveTemplatesUseCase {
     override suspend fun save(item: Template) {
         val templateWithFilteredRecipients = removeBlankRecipients(item)
         val updatedTemplate = updatePosition(templateWithFilteredRecipients)
-        repository.save(updatedTemplate)
+        templatesRepository.save(updatedTemplate)
     }
 
     override suspend fun save(items: List<Template>) {
@@ -19,7 +22,7 @@ class SaveTemplatesUseCaseImpl(private val repository: TemplatesRepository) :
 
     private suspend fun updatePosition(item: Template): Template {
         return item.apply {
-            position = repository.count()
+            position = templatesRepository.count()
         }
     }
 

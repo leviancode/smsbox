@@ -123,7 +123,11 @@ class TemplateEditViewModel(
                 if (groupMode.value == false){
                     data.recipientGroup.setName(null)
                 }
-                saveTemplateUseCase.save(data.toDomainTemplate())
+                if (editMode){
+                    updateTemplateUseCase.update(data.toDomainTemplate())
+                } else {
+                    saveTemplateUseCase.save(data.toDomainTemplate())
+                }
                 saved = true
                 quitEvent.call()
             }

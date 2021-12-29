@@ -31,10 +31,14 @@ interface RecipientsRepository {
 
     suspend fun save(item: RecipientWithGroups): Int
 
-    suspend fun save(list: List<Recipient>): IntArray
-
     suspend fun delete(item: Recipient)
 
     suspend fun delete(item: RecipientWithGroups)
+
+    suspend fun update(items: List<Recipient>)
+
+    suspend fun update(item: RecipientWithGroups): Int
+
+    suspend fun count(): Int
 
 }

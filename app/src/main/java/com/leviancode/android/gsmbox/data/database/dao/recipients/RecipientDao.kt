@@ -24,18 +24,15 @@ interface RecipientDao {
             } else {
                 insert(item).toInt()
             }
-        }
-        else {
+        } else {
             update(item)
             item.recipientId
         }
     }
 
-    @Update (onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(vararg item: RecipientData)
+    @Update suspend fun update(vararg item: RecipientData)
 
-    @Delete
-    suspend fun delete(item: RecipientData)
+    @Delete suspend fun delete(item: RecipientData)
 
     @Query("DELETE FROM recipients WHERE name is null AND recipients.recipientId NOT IN (SELECT recipients_and_groups.recipientId FROM recipients_and_groups)")
     suspend fun deleteUnused()
@@ -46,10 +43,10 @@ interface RecipientDao {
     @Query("SELECT * FROM recipients WHERE name = :name")
     suspend fun getByName(name: String): RecipientData?
 
-    @Query("SELECT * FROM recipients WHERE name is not null")
+    @Query("SELECT * FROM recipients WHERE name is not null ORDER BY position")
     fun getAllObservable(): Flow<List<RecipientData>>
 
-    @Query("SELECT * FROM recipients WHERE name is not null")
+    @Query("SELECT * FROM recipients WHERE name is not null ORDER BY position")
     fun getAll(): List<RecipientData>
 
     @Query("SELECT phoneNumber FROM recipients WHERE name is not null")
@@ -59,12 +56,12 @@ interface RecipientDao {
     suspend fun getNumbersWithNotEmptyNames(): List<String>
 
     @Transaction
-    @Query("SELECT * FROM recipients WHERE name is not null")
+    @Query("SELECT * FROM recipients WHERE name is not null ORDER BY position")
     fun getRecipientsWithGroupsObservable(): Flow<List<RecipientWithGroupsData>>
 
     @Transaction
-    @Query("SELECT * FROM recipients WHERE name is not null")
-    fun getRecipientsWithGroups(): List<RecipientWithGroupsData>
+    @Query("SELECT * FROM recipients WHERE name is not null ORDER BY position")
+    suspend fun getRecipientsWithGroups(): List<RecipientWithGroupsData>
 
     @Transaction
     @Query("SELECT * FROM recipients WHERE recipientId = :id")
@@ -80,5 +77,8 @@ interface RecipientDao {
 
     @Query("SELECT * FROM recipients WHERE phoneNumber = :phoneNumber")
     suspend fun getByPhoneNumber(phoneNumber: String): RecipientData?
+
+    @Query("SELECT COUNT(*) FROM recipients WHERE position is not -1")
+    suspend fun count(): Int
 
 }

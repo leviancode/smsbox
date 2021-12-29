@@ -30,6 +30,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIconTint="@color/navButtonColor"
                 app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+                app:menu="@menu/placeholders_menu"
                 app:title="@string/placeholders"/>
 
         </com.google.android.material.appbar.AppBarLayout>

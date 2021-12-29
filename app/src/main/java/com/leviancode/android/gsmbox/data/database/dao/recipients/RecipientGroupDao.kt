@@ -35,7 +35,7 @@ interface RecipientGroupDao {
     @Query("SELECT * FROM recipient_groups WHERE recipientGroupId = :id")
     suspend fun getById(id: Int): RecipientGroupData?
 
-    @Query("SELECT * FROM recipient_groups WHERE recipientGroupId IN (:ids)")
+    @Query("SELECT * FROM recipient_groups WHERE recipientGroupId IN (:ids) ORDER BY position")
     suspend fun getByIds(vararg ids: Int): List<RecipientGroupData>
 
     @Query("SELECT * FROM recipient_groups WHERE name LIKE :name")
@@ -52,7 +52,7 @@ interface RecipientGroupDao {
     fun getAll(): List<RecipientGroupData>
 
     @Transaction
-    @Query("SELECT * FROM recipient_groups  WHERE name is not null")
+    @Query("SELECT * FROM recipient_groups  WHERE name is not null ORDER BY position")
     fun getGroupsWithRecipients(): Flow<List<GroupWithRecipients>>
 
     @Transaction
