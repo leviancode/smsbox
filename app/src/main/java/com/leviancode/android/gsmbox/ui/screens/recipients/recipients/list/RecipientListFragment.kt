@@ -32,6 +32,9 @@ class RecipientListFragment : BaseFragment<FragmentRecipientListBinding>(R.layou
 
     override fun onCreated() {
         binding.recyclerView.adapter = listAdapter
+        listAdapter.initDragNDrop(binding.recyclerView){
+            viewModel.updateRecipients(listAdapter.currentList)
+        }
         observeData()
         observeEvents()
     }

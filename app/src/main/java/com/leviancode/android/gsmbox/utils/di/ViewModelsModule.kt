@@ -9,6 +9,7 @@ import com.leviancode.android.gsmbox.domain.usecases.recipients.groups.impl.Save
 import com.leviancode.android.gsmbox.domain.usecases.recipients.recipients.impl.DeleteRecipientsUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.recipients.recipients.impl.FetchRecipientsUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.recipients.recipients.impl.SaveRecipientsUseCaseImpl
+import com.leviancode.android.gsmbox.domain.usecases.recipients.recipients.impl.UpdateRecipientsUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.templates.groups.impl.DeleteTemplateGroupUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.templates.groups.impl.FetchTemplateGroupsUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.templates.groups.impl.SaveTemplateGroupUseCaseImpl
@@ -76,7 +77,7 @@ val viewModelsModule = module {
     factory {
         RecipientListViewModel(
             get<FetchRecipientsUseCaseImpl>(),
-            get<FetchRecipientGroupsUseCaseImpl>(),
+            get<UpdateRecipientsUseCaseImpl>(),
             get<SaveRecipientsUseCaseImpl>(),
             get<DeleteRecipientsUseCaseImpl>()
         )
@@ -85,6 +86,7 @@ val viewModelsModule = module {
         RecipientEditViewModel(
             get<FetchRecipientsUseCaseImpl>(),
             get<SaveRecipientsUseCaseImpl>(),
+            get<UpdateRecipientsUseCaseImpl>(),
             get()
         )
     }

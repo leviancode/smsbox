@@ -57,19 +57,14 @@ class RecipientsRepositoryImpl(
         recipientDao.upsert(recipientData)
     }
 
-    override suspend fun save(item: RecipientWithGroups): Int {
+    override suspend fun save(item: RecipientWithGroups): Int = withContext(IO) {
         val recipientId = save(item.recipient)
         val recipientData = item.toRecipientWithGroupsData()
         relationDao.deleteByRecipientId(recipientId)
         recipientData.groups.forEach { group ->
             bind(group.recipientGroupId, recipientId)
         }
-        return recipientId
-    }
-
-
-    override suspend fun save(list: List<Recipient>): IntArray = withContext(IO) {
-        list.map { save(it) }.toIntArray()
+        recipientId
     }
 
     override suspend fun delete(item: Recipient) = withContext(IO) {
@@ -88,6 +83,16 @@ class RecipientsRepositoryImpl(
         }
         recipientDao.delete(recipientData.recipient)
     }
+
+    override suspend fun update(items: List<Recipient>) = withContext(IO) {
+        recipientDao.update(*items.toRecipientsData().toTypedArray())
+    }
+
+    override suspend fun update(item: RecipientWithGroups) = withContext(IO) {
+        save(item)
+    }
+
+    override suspend fun count(): Int = withContext(IO) { recipientDao.count() }
 
     private suspend fun unbind(groupId: Int, recipientId: Int) = withContext(IO) {
         relationDao.delete(

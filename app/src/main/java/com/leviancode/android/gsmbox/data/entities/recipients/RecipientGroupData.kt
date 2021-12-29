@@ -9,7 +9,7 @@ import com.leviancode.android.gsmbox.utils.getFormatDate
 data class RecipientGroupData(
     @PrimaryKey(autoGenerate = true)
     var recipientGroupId: Int = 0,
-    var position: Int = 0,
+    var position: Int = -1,
     var name: String? = null,
     var iconColor: String = DEFAULT_GROUP_COLOR,
     val timestamp: Long = System.currentTimeMillis()

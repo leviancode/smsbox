@@ -8,7 +8,7 @@ import com.leviancode.android.gsmbox.utils.getFormatDate
 data class RecipientData(
     @PrimaryKey(autoGenerate = true)
     var recipientId: Int = 0,
-    var position: Int = 0,
+    var position: Int = -1,
     var name: String? = null,
     var phoneNumber: String,
     val timestamp: Long = System.currentTimeMillis()

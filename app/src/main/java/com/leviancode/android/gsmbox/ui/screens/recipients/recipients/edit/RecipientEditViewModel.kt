@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.domain.usecases.recipients.recipients.FetchRecipientsUseCase
 import com.leviancode.android.gsmbox.domain.usecases.recipients.recipients.SaveRecipientsUseCase
+import com.leviancode.android.gsmbox.domain.usecases.recipients.recipients.UpdateRecipientsUseCase
 import com.leviancode.android.gsmbox.ui.entities.recipients.*
 import com.leviancode.android.gsmbox.utils.SingleLiveEvent
 import com.leviancode.android.gsmbox.utils.VALIDATION_DELAY
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 class RecipientEditViewModel(
     private val fetchRecipientsUseCase: FetchRecipientsUseCase,
     private val saveRecipientsUseCase: SaveRecipientsUseCase,
+    private val updateRecipientsUseCase: UpdateRecipientsUseCase,
     private val contactsManager: ContactsManager
 ) : ViewModel() {
     private var data: RecipientWithGroupsUI = RecipientWithGroupsUI()
@@ -45,6 +47,7 @@ class RecipientEditViewModel(
     var saveFromTemplateMode: LiveData<Boolean> = _saveFromTemplateMode
 
     private var saved = false
+    private var editMode = false
 
     val isSaveFromTemplate: Boolean
         get() = saveFromTemplateMode.value ?: false
@@ -53,7 +56,11 @@ class RecipientEditViewModel(
         viewModelScope.launch {
             if (nameValidate()){
                 data.toDomainRecipientWithGroups().let {
-                    val id = saveRecipientsUseCase.save(it)
+                    val id = if (editMode){
+                        updateRecipientsUseCase.update(it)
+                    } else {
+                        saveRecipientsUseCase.save(it)
+                    }
                     saved = true
                     _recipientSavedEvent.value = id
                 }
@@ -62,7 +69,8 @@ class RecipientEditViewModel(
     }
 
     fun loadRecipient(recipientId: Int, phoneNumber: String?, recipientName: String?) = flow {
-        if (recipientId != 0) {
+        editMode = recipientId != 0
+        if (editMode) {
             fetchRecipientsUseCase.getRecipientWithGroupsById(recipientId)
                 ?.toUIRecipientWithGroups()?.let {
                 data = it
