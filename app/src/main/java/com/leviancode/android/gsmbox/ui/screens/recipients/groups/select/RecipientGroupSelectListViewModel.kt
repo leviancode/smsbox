@@ -2,7 +2,6 @@ package com.leviancode.android.gsmbox.ui.screens.recipients.groups.select
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import com.leviancode.android.gsmbox.domain.usecases.recipients.groups.FetchRecipientGroupsUseCase
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI
 import com.leviancode.android.gsmbox.ui.entities.recipients.toRecipientGroupsUI
@@ -17,7 +16,7 @@ class RecipientGroupSelectListViewModel(
     val selectedGroup: LiveData<Int> = _selectedGroup
 
     fun getGroups(groupId: Int): Flow<List<RecipientGroupUI>>
-       = fetchRecipientGroupsUseCase.getAll().map { list ->
+       = fetchRecipientGroupsUseCase.getAllObservable().map { list ->
            list.filter { it.id != groupId }.toRecipientGroupsUI()
         }
 

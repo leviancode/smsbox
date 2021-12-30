@@ -53,7 +53,11 @@ interface RecipientGroupDao {
 
     @Transaction
     @Query("SELECT * FROM recipient_groups  WHERE name is not null ORDER BY position")
-    fun getGroupsWithRecipients(): Flow<List<GroupWithRecipients>>
+    fun getGroupsWithRecipientsObservable(): Flow<List<GroupWithRecipients>>
+
+    @Transaction
+    @Query("SELECT * FROM recipient_groups  WHERE name is not null ORDER BY position")
+    suspend fun getGroupsWithRecipients(): List<GroupWithRecipients>
 
     @Transaction
     @Query("SELECT * FROM recipient_groups WHERE recipientGroupId =:groupId")

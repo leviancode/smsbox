@@ -7,8 +7,12 @@ import kotlinx.coroutines.flow.Flow
 
 class FetchRecipientGroupsUseCaseImpl(private val repository: RecipientGroupsRepository) :
     FetchRecipientGroupsUseCase {
-    override fun getAll(): Flow<List<RecipientGroup>> {
+    override fun getAllObservable(): Flow<List<RecipientGroup>> {
        return repository.getAllObservable()
+    }
+
+    override suspend fun getAll(): List<RecipientGroup> {
+        return repository.getAll()
     }
 
     override suspend fun getById(groupId: Int): RecipientGroup? {

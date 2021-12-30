@@ -16,8 +16,13 @@ class RecipientGroupsRepositoryImpl(
     private val recipientDao: RecipientDao,
     private val relationDao: RecipientAndGroupRelationDao
 ): RecipientGroupsRepository{
+
     override fun getAllObservable(): Flow<List<RecipientGroup>> {
-       return groupDao.getGroupsWithRecipients().map { it.toDomainRecipientGroupsWithRecipients() }
+       return groupDao.getGroupsWithRecipientsObservable().map { it.toDomainRecipientGroupsWithRecipients() }
+    }
+
+    override suspend fun getAll(): List<RecipientGroup> = withContext(IO)  {
+        groupDao.getGroupsWithRecipients().map { it.toDomainRecipientGroup() }
     }
 
     override suspend fun getById(groupId: Int) = withContext(IO) {
@@ -86,4 +91,5 @@ class RecipientGroupsRepositoryImpl(
             )
         )
     }
+
 }

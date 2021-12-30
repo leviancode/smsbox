@@ -27,4 +27,6 @@ interface RecipientGroupsRepository {
     suspend fun deleteRecipientsFromGroup(groupId: Int)
 
     suspend fun unbind(groupId: Int, recipientId: Int)
+
+    suspend fun getAll(): List<RecipientGroup>
 }

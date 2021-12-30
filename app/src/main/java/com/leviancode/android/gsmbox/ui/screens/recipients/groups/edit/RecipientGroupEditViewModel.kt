@@ -24,7 +24,7 @@ class RecipientGroupEditViewModel(
 
     private var data = RecipientGroupUI()
 
-    fun getNamesWithoutCurrent(id: Int) = fetchRecipientGroupsUseCase.getAll().map { list ->
+    fun getNamesWithoutCurrent(id: Int) = fetchRecipientGroupsUseCase.getAllObservable().map { list ->
         list.filter { it.id != id }.map { it.name }
     }.asLiveData()
 

@@ -48,7 +48,7 @@ class RecipientListViewModel(
 
     fun addRecipientToGroups(item: RecipientUI, groups: List<RecipientGroupUI>) {
         viewModelScope.launch {
-            saveRecipientsUseCase.save(
+            updateRecipientsUseCase.update(
                 RecipientWithGroupsUI(
                     recipient = item,
                     groups = groups.toMutableList()

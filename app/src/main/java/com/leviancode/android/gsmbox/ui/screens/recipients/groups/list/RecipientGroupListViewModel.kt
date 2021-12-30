@@ -27,7 +27,7 @@ class RecipientGroupListViewModel(
     var recentlyChangedGroup: RecipientGroupUI? = null
 
     val recipientGroups: LiveData<List<RecipientGroupUI>>
-        get() = fetchRecipientGroupsUseCase.getAll().map { it.toRecipientGroupsUI() }.asLiveData()
+        get() = fetchRecipientGroupsUseCase.getAllObservable().map { it.toRecipientGroupsUI() }.asLiveData()
 
     fun onGroupPopupMenuClick(view: View, item: RecipientGroupUI) {
         groupPopupMenuEvent.value = view to item

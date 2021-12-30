@@ -4,7 +4,9 @@ import com.leviancode.android.gsmbox.domain.entities.recipient.RecipientGroup
 import kotlinx.coroutines.flow.Flow
 
 interface FetchRecipientGroupsUseCase {
-    fun getAll(): Flow<List<RecipientGroup>>
+    fun getAllObservable(): Flow<List<RecipientGroup>>
+
+    suspend fun getAll(): List<RecipientGroup>
 
     suspend fun getById(groupId: Int): RecipientGroup?
 
