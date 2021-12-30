@@ -121,7 +121,10 @@ class TemplateEditViewModel(
         viewModelScope.launch {
             if (templateNameValidate()){
                 if (groupMode.value == false){
-                    data.recipientGroup.setName(null)
+                    if (data.recipientGroup.getName() != null){
+                        data.recipientGroup.setName(null)
+                        data.recipientGroup.id = 0
+                    }
                 }
                 if (editMode){
                     updateTemplateUseCase.update(data.toDomainTemplate())

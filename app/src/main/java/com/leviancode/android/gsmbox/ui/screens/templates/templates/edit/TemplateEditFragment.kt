@@ -128,8 +128,7 @@ class TemplateEditFragment : BaseFragment<FragmentTemplateEditBinding>(R.layout.
 
         navigate {
             TemplateEditFragmentDirections.actionOpenEditableRecipient(
-                phoneNumber = recipient.getPhoneNumber(),
-                recipientName = recipient.getName()
+                phoneNumber = recipient.getPhoneNumber()
             )
         }
     }
