@@ -32,8 +32,8 @@ class RecipientEditViewModel(
         validator()
     }
 
-    val nameValidation = MutableLiveData<Int>()
-    val phoneNumberValidation = MutableLiveData<Int>()
+    val nameValidation = MutableLiveData<Int?>()
+    val phoneNumberValidation = MutableLiveData<Int?>()
 
     private val _recipientSavedEvent = SingleLiveEvent<Int>()
     val recipientSavedEvent: LiveData<Int> = _recipientSavedEvent
@@ -137,20 +137,24 @@ class RecipientEditViewModel(
     private suspend fun nameValidate(): Boolean {
         val name = data.recipient.getName() ?: return false
         val found = fetchRecipientsUseCase.getByName(name)
-        if (found != null && found.id != data.recipient.id){
+        return if (found != null && found.id != data.recipient.id){
             nameValidation.value = R.string.err_unique_name
-            return false
+            false
+        } else {
+            nameValidation.value = null
+            true
         }
-        return true
     }
 
     private suspend fun phoneNumberValidate(): Boolean {
         val phone = data.recipient.getPhoneNumber()
         val found = fetchRecipientsUseCase.getByPhoneNumber(phone)
-        if (found != null && found.id != data.recipient.id && found.name != null){
+        return if (found != null && found.id != data.recipient.id && found.name != null){
             phoneNumberValidation.value = R.string.err_unique_phone
-            return false
+            false
+        } else {
+            phoneNumberValidation.value = null
+            true
         }
-        return true
     }
 }

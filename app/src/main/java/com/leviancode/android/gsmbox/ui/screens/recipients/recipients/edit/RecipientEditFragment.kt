@@ -41,7 +41,10 @@ class RecipientEditFragment : BaseFragment<FragmentRecipientEditBinding>(R.layou
 
     private fun setupContactPickerLauncher() {
         contactsLauncher = registerForActivityResult(PickContact()) { result ->
-            result?.let { viewModel.addContact(result) }
+            result?.let {
+                binding
+                viewModel.addContact(result)
+            }
         }
     }
 
