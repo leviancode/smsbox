@@ -10,27 +10,20 @@
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorSecondaryVariant">@color/secondaryColor</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorSurface">@color/surfaceColor</item>
+        <item name="colorOnSurface">@color/onSurfaceColor</item>
         <!-- Status bar color. -->
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@color/colorBackground</item>
-        <item name="colorSurface">@color/surfaceColor</item>
-        <item name="colorOnSurface">@color/onSurfaceColor</item>
+        <!-- Customize your theme here. -->
         <item name="android:textColorPrimary">@color/primaryTextColor</item>
         <item name="android:textColorSecondary">@color/secondaryTextColor</item>
         <item name="android:colorBackground">@color/colorBackground</item>
-        <!-- Customize your theme here. -->
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="snackbarStyle">@style/snackbar_style</item>
-        <!-- Style to use for action button within a Snackbar in this theme. -->
-        <!--<item name="snackbarButtonStyle">@style/snackbar_button</item>-->
-        <!-- Style to use for message text within a Snackbar in this theme. -->
         <item name="snackbarTextViewStyle">@style/snackbar_text</item>
         <item name="dialogCornerRadius">8dp</item>
-
-
-        <!--<item name="android:navigationBarColor">@color/onPrimary</item>-->
-        <!--<item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@color/grey</item>-->
 
     </style>
 
@@ -39,7 +32,6 @@
     </style>
 
     <style name="snackbar_button" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
-        <!--<item name="backgroundTint">@android:color/transparent</item>-->
         <item name="android:textColor">@color/secondaryColor</item>
     </style>
 
@@ -64,7 +56,6 @@
     <style name="CustomBottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/ic_rounded_dialog_corner</item>
         <item name="android:elevation">12dp</item>
-        <!--<item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>-->
     </style>
 
     <style name="CustomShapeAppearanceBottomSheetDialog" parent="">

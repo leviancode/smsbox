@@ -50,10 +50,8 @@ class RecipientGroupsRepositoryImpl(
         items.map { save(it) }.toIntArray()
     }
 
-    override suspend fun update(item: RecipientGroup) {
-        val data = item.toDataGroupWithRecipients()
-        data.recipients.forEach { recipientDao.upsert(it) }
-        groupDao.upsert(data.group)
+    override suspend fun update(item: RecipientGroup): Int = withContext(IO)  {
+        save(item)
     }
 
     override suspend fun update(items: List<RecipientGroup>) {

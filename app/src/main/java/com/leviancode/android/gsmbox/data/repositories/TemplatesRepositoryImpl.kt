@@ -64,13 +64,14 @@ class TemplatesRepositoryImpl(
     override suspend fun update(items: List<Template>) = withContext(IO) {
         val data = items.toDataTemplates()
         dao.update(*data.toTypedArray())
-        recipientGroupsRepository.update(items.map { it.recipientGroup })
     }
 
     override suspend fun update(item: Template) {
-        val data = item.toTemplateData()
+        val recipientGroupId = recipientGroupsRepository.update(item.recipientGroup)
+        val data = item.toTemplateData().apply {
+            this.recipientGroupId = recipientGroupId
+        }
         dao.update(data)
-        recipientGroupsRepository.update(item.recipientGroup)
     }
 
     override suspend fun count(): Int = withContext(IO) {

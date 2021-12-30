@@ -79,7 +79,9 @@ class RecipientEditViewModel(
         } else if (!phoneNumber.isNullOrBlank()){
             _saveFromTemplateMode.value = true
             data.recipient.setPhoneNumber(phoneNumber)
-            data.recipient.setName(recipientName)
+            if (!recipientName.isNullOrBlank()){
+                data.recipient.setName(recipientName)
+            }
         }
         original = data.copy()
         emit(data.recipient)

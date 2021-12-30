@@ -13,7 +13,7 @@
     <color name="secondaryColor">#FF5722</color>
     <color name="colorBackground">#213843</color>
     <color name="surfaceColor">#23404E</color>
-    <color name="onSurfaceColor">#FDFDFD</color>
+    <color name="onSurfaceColor">#EDF8FF</color>
     <color name="primaryTextColor">#FDFDFD</color>
     <color name="secondaryTextColor">#A4ECECEC</color>
 
