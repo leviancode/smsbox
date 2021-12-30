@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="@dimen/app_bar_elevation"
-            android:background="@color/white"
+            android:backgroundTint="?colorSurface"
             android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -27,7 +27,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:title="@string/title_templates" />
-
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -62,8 +61,7 @@
             android:onClick="@{() -> viewModel.onAddGroupClick()}"
             app:fabSize="auto"
             android:visibility="gone"
-            tools:visibility="gone"
-            app:backgroundTint="@color/white"
+            tools:visibility="visible"
             android:contentDescription="@string/desc_create_new_group"
             android:transitionName="@string/transition_edit_template_group"/>
 

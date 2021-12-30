@@ -15,6 +15,7 @@
             android:visibility="gone"
             android:layout_marginTop="30dp"
             android:text="@string/add_first_recipient"
+            android:textColor="?android:attr/textColorSecondary"
             android:textAlignment="center"
             android:textSize="16sp" />
 

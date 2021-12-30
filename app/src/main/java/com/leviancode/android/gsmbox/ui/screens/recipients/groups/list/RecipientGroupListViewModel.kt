@@ -21,6 +21,7 @@ class RecipientGroupListViewModel(
     private val deleteRecipientsUseCase: DeleteRecipientsUseCase
 ) : ViewModel() {
     val addGroupEvent = SingleLiveEvent<Int>()
+    val createGroupDialogDismissed = SingleLiveEvent<Unit>()
     val recipientPopupMenuEvent = SingleLiveEvent<Pair<View, RecipientWithGroupUI>>()
     val groupPopupMenuEvent = SingleLiveEvent<Pair<View, RecipientGroupUI>>()
     var recentlyChangedGroup: RecipientGroupUI? = null

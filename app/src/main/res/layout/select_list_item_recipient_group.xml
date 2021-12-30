@@ -49,7 +49,7 @@
             android:clickable="false"
             android:gravity="center_vertical"
             android:text="@{model.name}"
-            android:textColor="@color/text_title"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"
             tools:text="Title" />
 

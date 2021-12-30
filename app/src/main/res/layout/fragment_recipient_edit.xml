@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:elevation="0dp"
-            app:navigationIconTint="@color/navButtonColor"
+            app:navigationIconTint="?colorOnPrimary"
             app:navigationIcon="@drawable/ic_baseline_close_24"
             app:title="@string/title_new_recipient">
 
@@ -34,7 +34,6 @@
                 android:layout_gravity="end"
                 android:enabled="@{model.fieldsValid}"
                 android:text="@string/save"
-                tools:textColor="@color/secondary"
                 android:textColor="@drawable/save_button_text_color_selector"
                 android:onClick="@{() -> viewModel.onSaveClick()}"/>
 
@@ -69,6 +68,7 @@
                     android:padding="8dp"
                     app:showError="@{viewModel.nameValidation}"
                     android:text="@={model.name}"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="@dimen/form_text_size" >
                     <requestFocus/>
                 </com.google.android.material.textfield.TextInputEditText>
@@ -97,6 +97,7 @@
                         android:padding="8dp"
                         app:showError="@{viewModel.phoneNumberValidation}"
                         android:text="@={model.phoneNumber}"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="@dimen/form_text_size" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -111,11 +112,11 @@
                     android:layout_gravity="center_vertical"
                     android:onClick="@{() -> viewModel.onContactsClick()}"
                     android:text="@string/contacts"
-                    android:textColor="@color/grey"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="12sp"
                     android:visibility="@{viewModel.saveFromTemplateMode ? View.GONE : View.VISIBLE}"
                     app:icon="@drawable/ic_baseline_people_24"
-                    app:iconTint="@color/blue_grey_400"/>
+                    app:iconTint="?colorPrimary"/>
 
             </LinearLayout>
 
@@ -137,9 +138,9 @@
                 android:layout_marginStart="4dp"
                 android:onClick="@{() -> viewModel.onAddToGroupClick()}"
                 android:text="@string/add_to_group"
-                android:textColor="@drawable/add_recipient_button_color_selector"
+                android:textColor="@color/text_view_enabled_selector"
                 app:icon="@drawable/ic_baseline_add_24"
-                app:iconTint="@drawable/add_recipient_button_color_selector"/>
+                app:iconTint="@color/button_icon_color_selector"/>
 
         </LinearLayout>
 

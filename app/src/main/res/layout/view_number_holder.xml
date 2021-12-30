@@ -61,6 +61,7 @@
                     android:paddingEnd="55dp"
                     android:text="@={recipient.phoneNumber}"
                     android:textSize="@dimen/form_text_size"
+                    android:textColor="?android:attr/textColorPrimary"
                     app:setAutoCompleteList="@{viewModel.recipientNumbers}"
                     tools:ignore="RtlSymmetry" />
 
@@ -74,7 +75,7 @@
                 android:layout_alignParentEnd="true"
                 android:onClick="@{() -> viewModel.onSaveRecipientClick(recipient)}"
                 android:text="@string/save_in_number_holder"
-                android:textColor="@color/secondary"
+                android:textColor="?colorPrimary"
                 android:visibility="@{recipient.phoneNumberUnique &amp;&amp; recipient.phoneNumber.length() > 0 ? View.VISIBLE : View.GONE}"
                 tools:visibility="visible" />
 
@@ -90,12 +91,12 @@
             android:paddingStart="2dp"
             android:paddingEnd="2dp"
             android:text="@string/select"
-            android:textColor="@color/grey"
+            android:textColor="?android:attr/textColorPrimary"
             android:textAlignment="textStart"
             android:textSize="12sp"
             android:onClick="@{() -> viewModel.onSelectRecipientClick(recipient)}"
             app:icon="@drawable/ic_baseline_person_24"
-            app:iconTint="@color/blue_grey_400" />
+            app:iconTint="?colorPrimary" />
 
     </LinearLayout>
 

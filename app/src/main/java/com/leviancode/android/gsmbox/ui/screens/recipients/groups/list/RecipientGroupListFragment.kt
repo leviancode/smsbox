@@ -14,10 +14,14 @@ import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientWithGroupUI
 import com.leviancode.android.gsmbox.ui.screens.recipients.groups.edit.RecipientGroupEditDialog
 import com.leviancode.android.gsmbox.ui.screens.recipients.recipients.dialog.RecipientMultiSelectListDialog
 import com.leviancode.android.gsmbox.ui.screens.recipients.viewpager.RecipientsPagerFragmentDirections
-import com.leviancode.android.gsmbox.utils.extensions.*
+import com.leviancode.android.gsmbox.utils.extensions.hideFabWhileScrolling
+import com.leviancode.android.gsmbox.utils.extensions.navigate
+import com.leviancode.android.gsmbox.utils.extensions.showSnackbar
+import com.leviancode.android.gsmbox.utils.extensions.showSnackbarWithAction
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class RecipientGroupListFragment : BaseFragment<FragmentRecipientGroupListBinding>(R.layout.fragment_recipient_group_list) {
+class RecipientGroupListFragment :
+    BaseFragment<FragmentRecipientGroupListBinding>(R.layout.fragment_recipient_group_list) {
     private val viewModel: RecipientGroupListViewModel by lazy {
         requireParentFragment().getViewModel()
     }
@@ -85,7 +89,7 @@ class RecipientGroupListFragment : BaseFragment<FragmentRecipientGroupListBindin
     }
 
     private fun showSelectRecipientsDialog(item: RecipientGroupUI) {
-        RecipientMultiSelectListDialog.show(childFragmentManager, item.id){ result ->
+        RecipientMultiSelectListDialog.show(childFragmentManager, item.id) { result ->
             item.updateRecipients(result)
             viewModel.updateGroupWithRecipients(item)
             showSnackbar(getString(R.string.toast_add_to_group, item.getName()))
@@ -128,6 +132,8 @@ class RecipientGroupListFragment : BaseFragment<FragmentRecipientGroupListBindin
     }
 
     private fun showEditableRecipientGroupDialog(groupId: Int) {
-        RecipientGroupEditDialog.show(childFragmentManager, groupId)
+        RecipientGroupEditDialog.show(childFragmentManager, groupId, onDialogDismiss = {
+            viewModel.createGroupDialogDismissed.call()
+        })
     }
 }

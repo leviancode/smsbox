@@ -23,6 +23,7 @@
             android:gravity="end|center_vertical"
             android:textStyle="italic"
             android:ellipsize="marquee"
+            android:textColor="?android:attr/textColorPrimary"
             android:text="@{model.nameWithHashTag}"
             tools:text="Name"/>
 
@@ -33,6 +34,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="—"
+            android:textColor="?android:attr/textColorPrimary"
             tools:ignore="HardcodedText" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -44,6 +46,7 @@
             android:gravity="start|center_vertical"
             android:ellipsize="marquee"
             android:text="@{model.value}"
+            android:textColor="?android:attr/textColorPrimary"
             tools:text="Value"/>
 
     </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -10,15 +11,16 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/bottom_button_height"
             android:layout_gravity="bottom"
-            android:background="@color/white">
+            app:elevation="2dp"
+            android:backgroundTint="@color/bottom_floating_button">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_contacts"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/contacts"
-                android:textColor="@color/primary" />
+                android:textColor="?colorSecondary" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

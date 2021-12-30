@@ -16,6 +16,7 @@
             android:layout_marginTop="30dp"
             android:text="@string/group_your_recipients"
             android:textAlignment="center"
+            android:textColor="?android:attr/textColorSecondary"
             android:textSize="16sp" />
 
         <ExpandableListView

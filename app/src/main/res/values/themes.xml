@@ -1,17 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.GsmBox" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.GsmBox" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryVariant</item>
-        <item name="colorOnPrimary">@color/onPrimary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondary</item>
-        <item name="colorSecondaryVariant">@color/secondaryVariant</item>
-        <item name="colorOnSecondary">@color/onSecondary</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryColor</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/colorBackground</item>
+        <item name="colorSurface">@color/surfaceColor</item>
+        <item name="colorOnSurface">@color/onSurfaceColor</item>
+        <item name="android:textColorPrimary">@color/primaryTextColor</item>
+        <item name="android:textColorSecondary">@color/secondaryTextColor</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
         <!-- Customize your theme here. -->
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
@@ -29,16 +35,16 @@
     </style>
 
     <style name="snackbar_style" parent="@style/Widget.MaterialComponents.Snackbar">
-        <item name="backgroundTint">@color/white</item>
+        <item name="backgroundTint">@color/colorBackground</item>
     </style>
 
     <style name="snackbar_button" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
         <!--<item name="backgroundTint">@android:color/transparent</item>-->
-        <item name="android:textColor">@color/main_style_red</item>
+        <item name="android:textColor">@color/secondaryColor</item>
     </style>
 
     <style name="snackbar_text" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
     </style>
 
     <style name="circleImageView" parent="">
@@ -49,14 +55,15 @@
 
     <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:colorSecondary" tools:ignore="NewApi">@color/secondary</item>
-        <item name="android:navigationBarColor">@color/onPrimary</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:colorSecondary" tools:ignore="NewApi">@color/secondaryColor</item>
+        <item name="android:navigationBarColor">@color/colorBackground</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="CustomBottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/ic_rounded_dialog_corner</item>
+        <item name="android:elevation">12dp</item>
         <!--<item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>-->
     </style>
 
@@ -91,6 +98,10 @@
     <style name="ThemeOverlay.GsmBox.AppWidgetContainer" parent="">
         <item name="appWidgetBackgroundColor">@color/light_blue_600</item>
         <item name="appWidgetTextColor">@color/light_blue_50</item>
+    </style>
+
+    <style name="Widget.MPM.Menu.Dark.CustomBackground">
+        <item name="android:colorBackground">@color/colorBackground</item>
     </style>
 
 </resources>
