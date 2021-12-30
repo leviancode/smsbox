@@ -2,11 +2,12 @@ package com.leviancode.android.gsmbox.ui.dialogs.alertdialogs
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.leviancode.android.gsmbox.R
 
 class RecoveryAlertDialog (val context: Context) {
     fun show(callback: (Boolean) -> Unit){
-        AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder(context)
             .setIcon(R.drawable.ic_baseline_settings_backup_restore_24)
             .setTitle(context.getString(R.string.reсovery))
             .setMessage(context.getString(R.string.db_would_be_lost))

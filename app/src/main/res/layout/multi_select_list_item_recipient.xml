@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:textColor="@color/text_title"
+                android:textColor="?android:attr/textColorPrimary"
                 android:text="@{model.name}"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="4dp"
-                android:textColor="#252525"
+                android:textColor="?android:attr/textColorSecondary"
                 android:text="@{model.phoneNumber}"
                 tools:text="Phone Number" />
 
@@ -70,6 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="false"
+            tools:checked="true"
             android:checked="@{model.selected}"/>
 
     </LinearLayout>

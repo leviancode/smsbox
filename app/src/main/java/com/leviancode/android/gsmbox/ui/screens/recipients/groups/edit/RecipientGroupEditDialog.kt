@@ -1,22 +1,21 @@
 package com.leviancode.android.gsmbox.ui.screens.recipients.groups.edit
 
+import android.content.DialogInterface
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.fragment.navArgs
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientGroupEditBinding
 import com.leviancode.android.gsmbox.ui.base.BaseBottomSheet
 import com.leviancode.android.gsmbox.ui.dialogs.ColorPickerDialog
 import com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI
-import com.leviancode.android.gsmbox.ui.screens.recipients.groups.select.RecipientGroupMultiSelectListDialog
-import com.leviancode.android.gsmbox.utils.REQ_CREATE_RECIPIENT_GROUP_ID
 import com.leviancode.android.gsmbox.utils.extensions.observe
-import com.leviancode.android.gsmbox.utils.extensions.setNavigationResultLiveData
 import com.leviancode.android.gsmbox.utils.hideKeyboard
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RecipientGroupEditDialog private constructor(
     private val groupId: Int,
-    private val callback: (Int) -> Unit
+    private val onGroupEdit: (groupId: Int) -> Unit,
+    private val onDialogDismiss: () -> Unit = {},
 ) : BaseBottomSheet<FragmentRecipientGroupEditBinding>(R.layout.fragment_recipient_group_edit) {
     private val viewModel: RecipientGroupEditViewModel by viewModel()
 
@@ -24,7 +23,13 @@ class RecipientGroupEditDialog private constructor(
 
     override val showKeyboardOnStarted: Boolean = true
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        onDialogDismiss()
+    }
+
     override fun onCreated() {
+        ViewCompat.setElevation(binding.root, 8.0f)
         binding.viewModel = viewModel
         setTitle(groupId != 0)
         loadData()
@@ -65,7 +70,7 @@ class RecipientGroupEditDialog private constructor(
     }
 
     private fun closeDialog(groupId: Int?) {
-        groupId?.let { callback(groupId) }
+        groupId?.let { onGroupEdit(groupId) }
         close()
     }
 
@@ -73,9 +78,10 @@ class RecipientGroupEditDialog private constructor(
         fun show(
             fm: FragmentManager,
             groupId: Int = 0,
-            callback: (Int) -> Unit = {}
+            onGroupEdit: (Int) -> Unit = {},
+            onDialogDismiss: () -> Unit = {}
         ) {
-            RecipientGroupEditDialog(groupId, callback).show(
+            RecipientGroupEditDialog(groupId, onGroupEdit, onDialogDismiss).show(
                 fm,
                 null
             )

@@ -26,7 +26,7 @@
             android:paddingStart="6dp"
             android:paddingEnd="8dp"
             app:elevation="0dp"
-            app:navigationIconTint="@color/navButtonColor"
+            app:navigationIconTint="?colorOnPrimary"
             app:navigationIcon="@drawable/ic_baseline_close_24"
             app:title="@string/new_placeholder">
 
@@ -38,9 +38,8 @@
                 android:layout_gravity="end"
                 android:text="@string/save"
                 android:onClick="@{() -> viewModel.savePlaceholder()}"
-                tools:textColor="@color/main_style_green"
                 android:enabled="@{model.fieldsValid}"
-                android:textColor="@drawable/save_button_text_color_selector"/>
+                android:textColor="?colorPrimary"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -57,9 +56,9 @@
                 android:layout_height="wrap_content"
                 android:text="#"
                 android:textSize="22sp"
-                android:textColor="@color/grey"
                 android:layout_marginStart="12dp"
                 android:layout_gravity="center_vertical"
+                android:textColor="?android:attr/textColorPrimary"
                 tools:ignore="HardcodedText" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -76,6 +75,7 @@
                     android:hint="@string/name"
                     android:inputType="text"
                     android:padding="8dp"
+                    android:textColor="?android:attr/textColorPrimary"
                     app:showError="@{viewModel.keyValidationError}"
                     android:text="@={model.name}"
                     android:maxLines="1"
@@ -92,6 +92,7 @@
                 android:text="—"
                 android:textSize="22sp"
                 android:layout_margin="4dp"
+                android:textColor="?android:attr/textColorPrimary"
                 android:layout_gravity="center_vertical"
                 tools:ignore="HardcodedText" />
 
@@ -111,6 +112,7 @@
                     android:padding="8dp"
                     android:maxLines="1"
                     android:maxLength="20"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:text="@={model.value}"
                     android:textSize="@dimen/form_text_size" />
 

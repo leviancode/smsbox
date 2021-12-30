@@ -3,4 +3,22 @@
     <color name="positiveButtonTextColor">@color/primary</color>
     <color name="negativeButtonTextColor">@color/primary</color>
     <color name="bottomSheetDividerColor">@android:color/transparent</color>
+
+    <color name="primaryColor">#2397F3</color>
+    <color name="primaryLightColor">#74BBF4</color>
+    <color name="colorOnPrimary">#FDFDFD</color>
+    <color name="colorOnSecondary">#F3F3F3</color>
+    <color name="primaryDark">#024377</color>
+    <color name="primaryVariant">#29B6F6</color>
+    <color name="secondaryColor">#FF5722</color>
+    <color name="colorBackground">#213843</color>
+    <color name="surfaceColor">#23404E</color>
+    <color name="onSurfaceColor">#FDFDFD</color>
+    <color name="primaryTextColor">#FDFDFD</color>
+    <color name="secondaryTextColor">#A4ECECEC</color>
+
+    <color name="switchTrack">#26404E</color>
+    <color name="button_background_enabled">#264250</color>
+    <color name="button_background_disabled">#6A264250</color>
+    <color name="popup_menu">@color/primaryColor</color>
 </resources>

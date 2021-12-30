@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primaryColor">#0992FF</color>
+    <color name="primaryDark">#024377</color>
+    <color name="primaryVariant">#29B6F6</color>
+    <color name="primaryLightColor">#74BBF4</color>
+    <color name="colorOnPrimary">#E8212121</color>
+    <color name="secondaryColor">#F89D3C</color>
+    <color name="colorOnSecondary">#F3F3F3</color>
+    <color name="secondaryLightColor">#ffd95b</color>
+    <color name="colorBackground">#FAFAFA</color>
+    <color name="dividerColor">#959595</color>
+
+    <color name="surfaceColor">#FFFFFF</color>
+    <color name="onSurfaceColor">#6692B5</color>
+
+    <color name="primaryTextColor">#E8212121</color>
+    <color name="secondaryTextColor">#94212121</color>
 
     <!-- Primary-light brand color. -->
     <color name="primary">@color/main_style_blue</color>
-    <color name="primaryVariant">@color/purple_700</color>
     <color name="onPrimary">@color/white</color>
     <color name="ic_launcher_background">#FEFEFE</color>
     <!-- Secondary-light brand color. -->
     <color name="secondary">@color/main_style_green</color>
     <color name="secondaryVariant">@color/teal_700</color>
     <color name="onSecondary">@color/black</color>
+
+    <color name="switchTrack">#F3F3F3</color>
+    <color name="button_background_enabled">#FEFEFE</color>
+    <color name="button_background_disabled">#59FEFEFE</color>
+
+    <color name="bottom_floating_button">@color/colorBackground</color>
 
     <!-- Primary-night brand color. -->
     <color name="primaryNight">@color/purple_200</color>
@@ -62,7 +83,7 @@
     <color name="default_group_icon_color">@color/main_style_brown</color>
     <color name="default_send_icon_color">@color/secondary</color>
     <color name="default_icon_color">@color/main_style_green</color>
-    <color name="popup_menu">@color/main_style_dark_blue</color>
+    <color name="popup_menu">@color/primaryColor</color>
     <color name="navButtonColor">@color/main_style_dark_blue</color>
     <color name="button_drawable_default">@color/main_style_green</color>
 

@@ -1,7 +1,6 @@
 package com.leviancode.android.gsmbox.ui.screens.recipients.viewpager
 
 import android.view.View
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.leviancode.android.gsmbox.R
 import com.leviancode.android.gsmbox.databinding.FragmentRecipientsPagerBinding
@@ -25,8 +24,14 @@ class RecipientsPagerFragment : BaseFragment<FragmentRecipientsPagerBinding>(R.l
 
     private fun observeEvents() {
         binding.fabRecipients.setOnClickListener {
-            if (groupMode) groupViewModel.onAddGroupClick()
+            if (groupMode) {
+                binding.fabRecipients.hide()
+                groupViewModel.onAddGroupClick()
+            }
             else recipientViewModel.onAddRecipientClick()
+        }
+        groupViewModel.createGroupDialogDismissed.observe(viewLifecycleOwner){
+            binding.fabRecipients.show()
         }
     }
 

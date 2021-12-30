@@ -16,6 +16,7 @@
         android:id="@+id/card_recipient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="0dp"
         app:cardElevation="0dp">
 
             <LinearLayout
@@ -46,7 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:textColor="@color/hashtag"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="16sp"
                         android:textStyle="italic"
                         android:text="@{model.nameWithHashTag}"
@@ -60,7 +61,7 @@
                         android:layout_marginTop="4dp"
                         android:textSize="14sp"
                         android:text="@{model.value}"
-                        android:textColor="#252525"
+                        android:textColor="?android:attr/textColorSecondary"
                         tools:text="Value" />
 
                 </LinearLayout>
@@ -74,7 +75,7 @@
                     android:onClick="@{(view) -> viewModel.onPopupMenuClick(view, model)}"
                     android:padding="4dp"
                     android:layout_marginEnd="@dimen/popup_btn_margin_end"
-                    android:tint="@color/popup_menu"
+                    android:tint="?colorOnPrimary"
                     android:background="?android:selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_baseline_more_vert_24" />
 

@@ -62,9 +62,9 @@ class RecipientGroupMultiSelectListDialog private constructor(
     }
 
     private fun openNewGroupDialog() {
-        RecipientGroupEditDialog.show(childFragmentManager) { selectedGroupId ->
+        RecipientGroupEditDialog.show(childFragmentManager, onGroupEdit = { selectedGroupId ->
             viewModel.selectNewGroup(selectedGroupId)
-        }
+        })
     }
 
     private fun setSelectedAndExit(selectedGroups: List<RecipientGroupUI>) {
