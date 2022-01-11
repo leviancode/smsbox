@@ -86,7 +86,7 @@
     <string name="no_recipients">No recipients</string>
     <string name="no_saved_recipients">No saved recipients</string>
     <string name="desc_create_new_recipient">Create new recipient</string>
-    <string name="add_first_recipient">Add the first recipient</string>
+    <string name="add_first_recipient">Add your first recipient</string>
     <string name="group_your_recipients">Group your recipients</string>
 
     <string name="list_empty">The list is empty</string>
