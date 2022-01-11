@@ -23,18 +23,8 @@ class FetchRecipientsUseCaseImpl(private val repository: RecipientsRepository):
     }
 
     override suspend fun getRecipientWithGroupsById(recipientId: Int): RecipientWithGroups? {
-        return repository.getRecipientWithGroupsById(recipientId)?.apply {
-            groups = groups.filter { !it.name.isNullOrBlank() }
-        }
+        return repository.getRecipientWithGroupsById(recipientId)
     }
-
-    override fun createRecipient() = Recipient(
-        id = 0,
-        position = 0,
-        name = "",
-        phoneNumber = "",
-        timestamp = System.currentTimeMillis()
-    )
 
     override fun getPhoneNumbersObservable() = repository.getPhoneNumbersObservable()
 

@@ -162,6 +162,7 @@ class TemplateEditViewModel(
             if (savedRecipient != null){
                 old.setPhoneNumber(savedRecipient.getPhoneNumber())
                 old.setName(savedRecipient.getName())
+                old.position = savedRecipient.position
                 old.id = savedRecipient.id
             }
         }

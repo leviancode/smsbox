@@ -15,8 +15,7 @@ import com.leviancode.android.gsmbox.utils.getFormatDate
         onDelete = ForeignKey.SET_NULL,
         onUpdate = ForeignKey.RESTRICT,
         deferred = true
-    ),
-        ForeignKey(
+    ), ForeignKey(
             entity = TemplateGroupData::class,
             parentColumns = arrayOf("templateGroupId"),
             childColumns = arrayOf("templateGroupId"),

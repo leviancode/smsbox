@@ -20,8 +20,6 @@ interface FetchRecipientsUseCase {
 
     suspend fun getByPhoneNumber(number: String): Recipient?
 
-    fun createRecipient(): Recipient
-
     fun getPhoneNumbersObservable(): Flow<List<String>>
 
     suspend fun getPhoneNumbers(): List<String>
