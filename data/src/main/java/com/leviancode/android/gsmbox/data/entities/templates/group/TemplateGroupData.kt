@@ -1,0 +1,17 @@
+package com.leviancode.android.gsmbox.data.entities.templates.group
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.leviancode.android.gsmbox.data.utils.DEFAULT_GROUP_COLOR
+
+@Entity(tableName = "template_groups")
+data class  TemplateGroupData (
+    @PrimaryKey(autoGenerate = true)
+    var templateGroupId: Int = 0,
+    val position: Int,
+    val name: String,
+    val description: String,
+    val imageUri: String = "",
+    val iconColor: String = DEFAULT_GROUP_COLOR,
+    val timestamp: Long = System.currentTimeMillis()
+)

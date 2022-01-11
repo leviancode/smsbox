@@ -3,7 +3,6 @@ package com.leviancode.android.gsmbox.utils
 const val DEFAULT_GROUP_COLOR = "#d59557"
 const val DEFAULT_TEMPLATE_COLOR = "#66BB6A"
 
-const val DATABASE_NAME = "sms_box_db"
 const val REQ_SAVE_RECIPIENT_ID = "request_save_recipient"
 const val REQ_CREATE_RECIPIENT_GROUP_ID = "request_create_recipient_group"
 

@@ -1,11 +1,8 @@
 package com.leviancode.android.gsmbox.ui.screens.settings.placeholders.list
 
 import android.view.View
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.leviancode.android.gsmbox.data.entities.placeholders.PlaceholderData
 import com.leviancode.android.gsmbox.domain.usecases.placeholders.DeletePlaceholdersUseCase
 import com.leviancode.android.gsmbox.domain.usecases.placeholders.FetchPlaceholdersUseCase
 import com.leviancode.android.gsmbox.ui.entities.placeholder.PlaceholderUI

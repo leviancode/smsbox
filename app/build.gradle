@@ -55,6 +55,15 @@ android {
 }
 
 dependencies {
+    implementation project(":domain")
+    implementation project(":data")
+
+    def room_version = "2.4.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+
     implementation "androidx.datastore:datastore-preferences-core:1.0.0"
     implementation "androidx.datastore:datastore-preferences:1.0.0"
 
@@ -88,12 +97,6 @@ dependencies {
     implementation 'com.karumi:dexter:6.2.3'
     implementation 'com.alespero:expandable-cardview:0.8'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
-    def room_version = "2.4.0-rc01"
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    testImplementation "androidx.room:room-testing:$room_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

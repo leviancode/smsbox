@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
 import com.leviancode.android.gsmbox.data.database.AppDatabase
+import com.leviancode.android.gsmbox.data.utils.DATABASE_NAME
 import com.leviancode.android.gsmbox.utils.*
 import com.leviancode.android.gsmbox.utils.extensions.*
 import kotlinx.coroutines.delay
