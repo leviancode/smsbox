@@ -1,7 +1,6 @@
 package com.leviancode.android.gsmbox.utils.di
 
 import com.leviancode.android.gsmbox.data.repositories.*
-import com.leviancode.android.gsmbox.domain.repositories.*
 import com.leviancode.android.gsmbox.domain.usecases.placeholders.impl.DeletePlaceholdersUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.placeholders.impl.FetchPlaceholdersUseCaseImpl
 import com.leviancode.android.gsmbox.domain.usecases.placeholders.impl.ReplacePlaceholdersUseCaseImpl
@@ -29,7 +28,13 @@ val useCasesModule = module {
 
     factory { FetchTemplatesUseCaseImpl(get<TemplatesRepositoryImpl>()) }
     factory { SaveTemplatesUseCaseImpl(get<TemplatesRepositoryImpl>()) }
-    factory { UpdateTemplateUseCaseImpl(get<TemplatesRepositoryImpl>()) }
+    factory {
+        UpdateTemplateUseCaseImpl(
+            get<TemplatesRepositoryImpl>(),
+            get<RecipientsRepositoryImpl>(),
+            get<RecipientGroupsRepositoryImpl>()
+        )
+    }
     factory { DeleteTemplatesUseCaseImpl(get<TemplatesRepositoryImpl>()) }
 
     factory { FetchTemplateGroupsUseCaseImpl(get<TemplateGroupsRepositoryImpl>()) }

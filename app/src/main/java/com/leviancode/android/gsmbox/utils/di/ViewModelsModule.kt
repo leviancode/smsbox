@@ -78,7 +78,6 @@ val viewModelsModule = module {
         RecipientListViewModel(
             get<FetchRecipientsUseCaseImpl>(),
             get<UpdateRecipientsUseCaseImpl>(),
-            get<SaveRecipientsUseCaseImpl>(),
             get<DeleteRecipientsUseCaseImpl>()
         )
     }

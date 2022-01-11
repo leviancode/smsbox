@@ -51,10 +51,8 @@ class RecipientsPagerFragment : BaseFragment<FragmentRecipientsPagerBinding>(R.l
         }
 
         binding.tabLayoutRecipient.onTabSelected { tab ->
-            when (tab.position) {
-                0 -> groupMode = false
-                1 -> groupMode = true
-            }
+            groupMode = tab.position == 1
+            binding.fabRecipients.show()
         }
     }
 }

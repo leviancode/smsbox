@@ -74,7 +74,7 @@ class RecipientEditViewModel(
             fetchRecipientsUseCase.getRecipientWithGroupsById(recipientId)
                 ?.toUIRecipientWithGroups()?.let {
                 data = it
-                addGroupViewsEvent.value = it.groups
+                addGroupViewsEvent.value = it.namedGroups
             }
         } else if (!phoneNumber.isNullOrBlank()){
             _saveFromTemplateMode.value = true
@@ -114,8 +114,10 @@ class RecipientEditViewModel(
     fun isDataSavedOrNotChanged() = saved || original == data
 
     fun setGroups(groups: List<RecipientGroupUI>) {
-        data.groups = groups.toMutableList()
-        addGroupViewsEvent.value = data.groups
+        data.groups = groups.toMutableList().apply {
+            addAll(data.groups.filter { !it.isGroupNameNotNull() })
+        }
+        addGroupViewsEvent.value = data.namedGroups
     }
 
     fun addContact(uri: Uri){

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.screens.recipients.viewpager.RecipientsPagerFragment">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
@@ -13,6 +13,7 @@
                 android:id="@+id/app_bar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
                 android:elevation="@dimen/app_bar_elevation"
                 android:background="?colorSurface"
                 android:fitsSystemWindows="true">
@@ -21,7 +22,6 @@
                         android:id="@+id/toolbar_recipients"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
-                        app:layout_scrollFlags="scroll|enterAlways"
                         app:title="@string/title_recipients" />
 
                     <com.google.android.material.tabs.TabLayout
@@ -50,8 +50,9 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/recipients_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_recipients"
@@ -62,9 +63,11 @@
             android:layout_marginBottom="16dp"
             android:contentDescription="@string/desc_create_new_recipient"
             android:src="@drawable/ic_baseline_add_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:elevation="4dp"
             app:fabSize="auto" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

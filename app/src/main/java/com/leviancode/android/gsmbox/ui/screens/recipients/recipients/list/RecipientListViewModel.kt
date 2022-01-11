@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 class RecipientListViewModel(
     private val fetchRecipientsUseCase: FetchRecipientsUseCase,
     private val updateRecipientsUseCase: UpdateRecipientsUseCase,
-    private val saveRecipientsUseCase: SaveRecipientsUseCase,
     private val deleteRecipientsUseCase: DeleteRecipientsUseCase
 ) : ViewModel() {
     val addRecipientEvent = SingleLiveEvent<Int>()

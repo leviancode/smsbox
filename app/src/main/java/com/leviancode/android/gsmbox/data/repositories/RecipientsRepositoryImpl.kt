@@ -22,7 +22,7 @@ class RecipientsRepositoryImpl(
         return recipientDao.getAllObservable().map { it.toDomainRecipients() }
     }
 
-    override suspend fun getRecipients() = withContext(IO){
+    override suspend fun getRecipients() = withContext(IO) {
         recipientDao.getAll().toDomainRecipients()
     }
 
@@ -31,7 +31,7 @@ class RecipientsRepositoryImpl(
     }
 
     override suspend fun getById(recipientId: Int) = withContext(IO) {
-         recipientDao.getRecipientWithGroupsById(recipientId)?.toDomainRecipient()
+        recipientDao.getRecipientWithGroupsById(recipientId)?.toDomainRecipient()
     }
 
     override fun getPhoneNumbersObservable() = recipientDao.getNumbersWithNotEmptyNamesObservable()
@@ -48,23 +48,36 @@ class RecipientsRepositoryImpl(
         recipientDao.getRecipientWithGroupsByPhoneNumber(phoneNumber)?.toDomainRecipient()
     }
 
-    override suspend fun getRecipientWithGroupsById(recipientId: Int) = withContext(IO)  {
+    override suspend fun getRecipientWithGroupsById(recipientId: Int) = withContext(IO) {
         recipientDao.getRecipientWithGroupsById(recipientId)?.toDomainRecipientWithGroups()
     }
 
-    override suspend fun save(item: Recipient): Int = withContext(IO){
+    override suspend fun save(item: Recipient): Int = withContext(IO) {
         val recipientData = item.toRecipientData()
         recipientDao.upsert(recipientData)
     }
 
     override suspend fun save(item: RecipientWithGroups): Int = withContext(IO) {
         val recipientId = save(item.recipient)
-        val recipientData = item.toRecipientWithGroupsData()
+        val recipientData = item.toRecipientWithGroupsData().apply {
+            groups = searchAndAddNullNameGroups(recipientId)
+        }
         relationDao.deleteByRecipientId(recipientId)
         recipientData.groups.forEach { group ->
             bind(group.recipientGroupId, recipientId)
         }
         recipientId
+    }
+
+    private suspend fun RecipientWithGroupsData.searchAndAddNullNameGroups(
+        recipientId: Int
+    ): List<RecipientGroupData> = groups.toMutableList().also { groups ->
+        val groupsIds = relationDao.getGroupsWithRecipientRelation(recipientId)
+        groupsIds.forEach { id ->
+            groupDao.getById(id)?.let { group ->
+                if (group.name == null) groups.add(group)
+            }
+        }
     }
 
     override suspend fun delete(item: Recipient) = withContext(IO) {
@@ -89,7 +102,16 @@ class RecipientsRepositoryImpl(
     }
 
     override suspend fun update(item: RecipientWithGroups) = withContext(IO) {
-        save(item)
+        val recipientData = item.toRecipientWithGroupsData().apply {
+            groups = searchAndAddNullNameGroups(item.recipient.id)
+        }
+        recipientDao.update(recipientData.recipient)
+        val recipientId = recipientData.recipient.recipientId
+        relationDao.deleteByRecipientId(recipientId)
+        recipientData.groups.forEach { group ->
+            bind(group.recipientGroupId, recipientId)
+        }
+        recipientId
     }
 
     override suspend fun count(): Int = withContext(IO) { recipientDao.count() }

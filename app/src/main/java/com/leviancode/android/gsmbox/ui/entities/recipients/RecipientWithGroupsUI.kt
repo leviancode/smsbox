@@ -4,6 +4,9 @@ data class RecipientWithGroupsUI(
     var recipient: RecipientUI = RecipientUI(),
     var groups: MutableList<RecipientGroupUI> = mutableListOf()
 ){
+    val namedGroups: List<RecipientGroupUI>
+        get() = groups.filter { it.isGroupNameNotNull() }
+
     fun addGroup(group: RecipientGroupUI) {
         groups.add(group)
     }
