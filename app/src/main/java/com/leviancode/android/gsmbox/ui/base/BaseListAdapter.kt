@@ -57,9 +57,11 @@ open class BaseListAdapter<T : BaseEntity, B : ViewDataBinding>(
     override fun onBindViewHolder(holder: GenericViewHolder<B>, position: Int) {
         bind(holder.binding, getItem(position), position)
 
-        holder.binding.root.setOnLongClickListener {
-            touchHelper?.startDrag(holder)
-            true
+        touchHelper?.apply {
+            holder.binding.root.setOnLongClickListener {
+                startDrag(holder)
+                true
+            }
         }
     }
 
