@@ -124,7 +124,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/placeholders"
+                        android:text="@string/variables"
                         android:textColor="?android:attr/textColorPrimary"
                         android:layout_marginStart="16dp"
                         android:textSize="16sp"/>

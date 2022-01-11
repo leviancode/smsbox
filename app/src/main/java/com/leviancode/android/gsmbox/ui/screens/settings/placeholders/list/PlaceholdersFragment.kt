@@ -74,8 +74,8 @@ class PlaceholdersFragment :
 
     private fun showConfirmationDialog(id: Int) {
         DeleteConfirmationAlertDialog(requireContext()).show(
-            getString(R.string.delete_placeholder),
-            getString(R.string.delete_placeholder_confirmation)
+            getString(R.string.delete_variable),
+            getString(R.string.delete_variable_confirmation)
         ) { confirmed ->
             if (confirmed) viewModel.deletePlaceholder(id)
         }
@@ -88,6 +88,6 @@ class PlaceholdersFragment :
     }
 
     private fun openInfoDialog() {
-        InfoDialog(requireContext()).show( getString(R.string.placeholders_info))
+        InfoDialog(requireContext()).show( getString(R.string.variables_info))
     }
 }
