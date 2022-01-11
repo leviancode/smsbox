@@ -38,7 +38,7 @@ class PlaceholderEditFragment : BaseBottomSheet<FragmentPlaceholderEditBinding>(
     }
 
     private fun setTitle(id: Int) {
-        binding.toolbar.title = if (id == 0) getString(R.string.new_placeholder)
-        else getString(R.string.edit_placeholder)
+        binding.toolbar.title = if (id == 0) getString(R.string.new_variable)
+        else getString(R.string.edit_variable)
     }
 }

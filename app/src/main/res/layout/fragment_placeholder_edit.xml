@@ -28,7 +28,7 @@
             app:elevation="0dp"
             app:navigationIconTint="?colorOnPrimary"
             app:navigationIcon="@drawable/ic_baseline_close_24"
-            app:title="@string/new_placeholder">
+            app:title="@string/new_variable">
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.AppCompat.Button.Borderless"

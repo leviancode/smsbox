@@ -31,14 +31,14 @@
     <string name="add_new_item">Add new item</string>
     <string name="add_recipient">Add Recipient</string>
     <string name="add_to_favorites">Add template to favorites</string>
-    <string name="add_new_placeholder">Add new placeholder</string>
+    <string name="add_new_variable">Add new variable</string>
 
 
     <string name="desc_create_new_group">Create new group</string>
     <string name="desc_create_new_template">Create new template</string>
     <string name="title_new_template">New Template</string>
     <string name="title_new_recipient">New Recipient</string>
-    <string name="new_placeholder">New Placeholder</string>
+    <string name="new_variable">New Variable</string>
     <string name="new_group">New Group</string>
 
     <string name="remove_phone_number">Remove phone number</string>
@@ -52,11 +52,11 @@
     <string name="delete_group_confirmation">Are you sure you want to delete this group?</string>
     <string name="delete_template_confirmation">Are you sure you want to delete this template?</string>
     <string name="delete_recipient_confirmation">Are you sure you want to delete this recipient?</string>
-    <string name="delete_placeholder_confirmation">Are you sure you want to delete this placeholder?</string>
+    <string name="delete_variable_confirmation">Are you sure you want to delete this variable?</string>
     <string name="delete_group">Delete Group?</string>
     <string name="delete_template">Delete Template?</string>
     <string name="delete_recipient">Delete Recipient?</string>
-    <string name="delete_placeholder">Delete Placeholder?</string>
+    <string name="delete_variable">Delete Variable?</string>
 
     <string name="groups">Groups</string>
     <string name="recipients_group">Recipients group</string>
@@ -110,16 +110,16 @@
     <string name="db_would_be_lost">Recovery will overwrite the current database, all data will be lost. Are you sure you want to restore the database?</string>
     <string name="invalid_file">Invalid file</string>
     <string name="favorite_list_is_empty">Favorite list is empty</string>
-    <string name="placeholders">Placeholders</string>
+    <string name="variables">Variables</string>
     <string name="key">Key</string>
     <string name="value">Value</string>
     <string name="name">Name</string>
-    <string name="placeholders_info">A placeholder is a variable whose name and value can be stored here and then used in all your templates in a text message by writing \'#name\' (e.g. #company). When sending a message, this name will be replaced with its value that you specify here.</string>
+    <string name="variables_info">A variable whose name and value can be stored here and then used in all your templates in a text message by writing \\\' #name \\\' (e.g. #company). When sending a message, this name will be replaced with its value that you specify here.</string>
     <string name="info">Info</string>
     <string name="err_unique_name">Name should be unique</string>
     <string name="err_unique_phone">Phone number should be unique</string>
 
-    <string name="edit_placeholder">Edit Placeholder</string>
+    <string name="edit_variable">Edit Variable</string>
     <string name="edit_group">Edit Group</string>
     <string name="edit_recipient">Edit Recipient</string>
     <string name="edit_template">Edit Template</string>
