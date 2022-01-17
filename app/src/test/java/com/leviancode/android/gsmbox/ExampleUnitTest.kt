@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox
+package com.brainymobile.android.smsbox
 
 import org.junit.Test
 

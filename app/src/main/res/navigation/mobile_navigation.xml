@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_template_group_list"
-        android:name="com.leviancode.android.gsmbox.ui.screens.templates.groups.list.TemplateGroupListFragment"
+        android:name="com.brainymobile.android.smsbox.ui.screens.templates.groups.list.TemplateGroupListFragment"
         android:label="@string/title_templates"
         tools:layout="@layout/fragment_template_group_list">
 
@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/nav_template_list"
-        android:name="com.leviancode.android.gsmbox.ui.screens.templates.templates.list.TemplateListFragment"
+        android:name="com.brainymobile.android.smsbox.ui.screens.templates.templates.list.TemplateListFragment"
         android:label="{groupName}"
         tools:layout="@layout/fragment_template_list">
         <argument
@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/nav_favorites"
-        android:name="com.leviancode.android.gsmbox.ui.screens.favorites.FavoritesFragment"
+        android:name="com.brainymobile.android.smsbox.ui.screens.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites">
         <action
@@ -54,7 +54,7 @@
 
     <fragment
         android:id="@+id/nav_recipients"
-        android:name="com.leviancode.android.gsmbox.ui.screens.recipients.viewpager.RecipientsPagerFragment"
+        android:name="com.brainymobile.android.smsbox.ui.screens.recipients.viewpager.RecipientsPagerFragment"
         android:label="@string/title_recipients"
         tools:layout="@layout/fragment_recipients_pager">
         <action
@@ -64,7 +64,7 @@
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.leviancode.android.gsmbox.ui.screens.settings.SettingsFragment"
+        android:name="com.brainymobile.android.smsbox.ui.screens.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings">
         <action
@@ -85,12 +85,12 @@
 
     <fragment
         android:id="@+id/nav_languages"
-        android:name="com.leviancode.android.gsmbox.ui.screens.settings.languages.LanguagesFragment"
+        android:name="com.brainymobile.android.smsbox.ui.screens.settings.languages.LanguagesFragment"
         tools:layout="@layout/fragment_languages" />
 
     <fragment
         android:id="@+id/nav_placeholders"
-        android:name="com.leviancode.android.gsmbox.ui.screens.settings.placeholders.list.PlaceholdersFragment"
+        android:name="com.brainymobile.android.smsbox.ui.screens.settings.placeholders.list.PlaceholdersFragment"
         android:label="@string/variables"
         tools:layout="@layout/fragment_placeholders">
         <action
@@ -104,7 +104,7 @@
 
     <dialog
         android:id="@+id/nav_placeholder_edit"
-        android:name="com.leviancode.android.gsmbox.ui.screens.settings.placeholders.edit.PlaceholderEditFragment"
+        android:name="com.brainymobile.android.smsbox.ui.screens.settings.placeholders.edit.PlaceholderEditFragment"
         android:label="@string/new_variable"
         tools:layout="@layout/fragment_placeholder_edit">
 
@@ -116,7 +116,7 @@
 
     <fragment
         android:id="@+id/nav_template_group_edit"
-        android:name="com.leviancode.android.gsmbox.ui.screens.templates.groups.edit.TemplateGroupEditFragment"
+        android:name="com.brainymobile.android.smsbox.ui.screens.templates.groups.edit.TemplateGroupEditFragment"
         android:label="New Group"
         tools:layout="@layout/fragment_template_group_edit">
 
@@ -129,7 +129,7 @@
 
     <fragment
         android:id="@+id/nav_template_edit"
-        android:name="com.leviancode.android.gsmbox.ui.screens.templates.templates.edit.TemplateEditFragment"
+        android:name="com.brainymobile.android.smsbox.ui.screens.templates.templates.edit.TemplateEditFragment"
         android:label="New Template"
         tools:layout="@layout/fragment_template_edit">
 
@@ -150,7 +150,7 @@
 
     <fragment
         android:id="@+id/nav_recipient_edit"
-        android:name="com.leviancode.android.gsmbox.ui.screens.recipients.recipients.edit.RecipientEditFragment"
+        android:name="com.brainymobile.android.smsbox.ui.screens.recipients.recipients.edit.RecipientEditFragment"
         android:label="New Recipient"
         tools:layout="@layout/fragment_recipient_edit">
 

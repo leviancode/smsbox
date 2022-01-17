@@ -7,11 +7,11 @@
     <data>
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.ui.entities.recipients.RecipientGroupUI" />
+            type="com.brainymobile.android.smsbox.ui.entities.recipients.RecipientGroupUI" />
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.screens.recipients.groups.select.RecipientGroupMultiSelectListViewModel" />
+            type="com.brainymobile.android.smsbox.ui.screens.recipients.groups.select.RecipientGroupMultiSelectListViewModel" />
     </data>
 
     <LinearLayout

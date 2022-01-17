@@ -7,7 +7,7 @@
     <data>
        <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.screens.templates.groups.list.TemplateGroupListViewModel" />
+            type="com.brainymobile.android.smsbox.ui.screens.templates.groups.list.TemplateGroupListViewModel" />
     </data>
 
     <FrameLayout

@@ -8,10 +8,10 @@
         <import type="android.view.View"/>
         <variable
             name="template"
-            type="com.leviancode.android.gsmbox.ui.entities.templates.TemplateUI" />
+            type="com.brainymobile.android.smsbox.ui.entities.templates.TemplateUI" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.screens.templates.templates.edit.TemplateEditViewModel" />
+            type="com.brainymobile.android.smsbox.ui.screens.templates.templates.edit.TemplateEditViewModel" />
     </data>
 
     <FrameLayout
@@ -180,7 +180,7 @@
 
                 <!--____________RECIPIENTS LAYOUT_______________-->
 
-                <com.leviancode.android.gsmbox.ui.customviews.RecipientNumbersLayout
+                <com.brainymobile.android.smsbox.ui.customviews.RecipientNumbersLayout
                     android:id="@+id/recipients_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -9,10 +9,10 @@
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.screens.templates.templates.edit.TemplateEditViewModel" />
+            type="com.brainymobile.android.smsbox.ui.screens.templates.templates.edit.TemplateEditViewModel" />
         <variable
             name="recipient"
-            type="com.leviancode.android.gsmbox.ui.entities.recipients.RecipientUI" />
+            type="com.brainymobile.android.smsbox.ui.entities.recipients.RecipientUI" />
 
     </data>
 

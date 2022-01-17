@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.screens.settings.placeholders.list.PlaceholdersViewModel" />
+            type="com.brainymobile.android.smsbox.ui.screens.settings.placeholders.list.PlaceholdersViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

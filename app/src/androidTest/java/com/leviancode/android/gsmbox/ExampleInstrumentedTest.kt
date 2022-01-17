@@ -1,4 +1,4 @@
-package com.leviancode.android.gsmbox
+package com.brainymobile.android.smsbox
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.leviancode.android.gsmbox", appContext.packageName)
+        assertEquals("com.brainymobile.android.smsbox", appContext.packageName)
     }
 }

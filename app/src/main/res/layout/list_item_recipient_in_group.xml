@@ -6,11 +6,11 @@
     <data>
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.ui.entities.recipients.RecipientWithGroupUI" />
+            type="com.brainymobile.android.smsbox.ui.entities.recipients.RecipientWithGroupUI" />
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.screens.recipients.groups.list.RecipientGroupListViewModel" />
+            type="com.brainymobile.android.smsbox.ui.screens.recipients.groups.list.RecipientGroupListViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

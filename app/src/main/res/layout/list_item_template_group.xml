@@ -7,11 +7,11 @@
     <data>
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.ui.entities.templates.TemplateGroupUI" />
+            type="com.brainymobile.android.smsbox.ui.entities.templates.TemplateGroupUI" />
 
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.screens.templates.groups.list.TemplateGroupListViewModel" />
+            type="com.brainymobile.android.smsbox.ui.screens.templates.groups.list.TemplateGroupListViewModel" />
     </data>
 
 

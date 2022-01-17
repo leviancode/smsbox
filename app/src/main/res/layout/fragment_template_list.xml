@@ -6,7 +6,7 @@
     <data>
        <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.screens.templates.templates.list.TemplateListViewModel" />
+            type="com.brainymobile.android.smsbox.ui.screens.templates.templates.list.TemplateListViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

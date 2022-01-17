@@ -6,10 +6,10 @@
     <data>
         <variable
             name="model"
-            type="com.leviancode.android.gsmbox.ui.entities.templates.TemplateUI" />
+            type="com.brainymobile.android.smsbox.ui.entities.templates.TemplateUI" />
         <variable
             name="viewModel"
-            type="com.leviancode.android.gsmbox.ui.screens.templates.templates.list.TemplateListViewModel" />
+            type="com.brainymobile.android.smsbox.ui.screens.templates.templates.list.TemplateListViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
