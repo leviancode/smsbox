@@ -1,0 +1,12 @@
+package com.brainymobile.android.smsbox.utils.extensions
+
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+
+fun <T> Flow<T>.observe(lifecycleOwner: LifecycleOwner, action: (T) -> Unit){
+    lifecycleOwner.lifecycleScope.launchWhenStarted {
+        collect { action(it) }
+    }
+}
