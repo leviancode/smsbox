@@ -5,8 +5,9 @@ import com.brainymobile.android.smsbox.domain.repositories.RecipientGroupsReposi
 import com.brainymobile.android.smsbox.domain.repositories.RecipientsRepository
 import com.brainymobile.android.smsbox.domain.repositories.TemplatesRepository
 import com.brainymobile.android.smsbox.domain.usecases.templates.tempates.UpdateTemplateUseCase
+import javax.inject.Inject
 
-class UpdateTemplateUseCaseImpl(
+class UpdateTemplateUseCaseImpl @Inject constructor(
     private val templatesRepository: TemplatesRepository,
     private val recipientsRepository: RecipientsRepository,
     private val recipientGroupsRepository: RecipientGroupsRepository,

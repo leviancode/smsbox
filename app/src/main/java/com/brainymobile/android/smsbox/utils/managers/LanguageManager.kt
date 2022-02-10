@@ -10,10 +10,16 @@ import com.brainymobile.android.smsbox.ui.activities.dataStore
 import com.brainymobile.android.smsbox.utils.PREF_KEY_DEFAULT_LANGUAGE
 import com.brainymobile.android.smsbox.utils.extensions.indexOfIgnoreCase
 import com.yariksoffice.lingver.Lingver
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
+import javax.inject.Inject
 
-class LanguageManager(private val context: Context) {
-    private val lingver = Lingver.getInstance()
+class LanguageManager @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val lingver: Lingver
+) {
+    // private val lingver = Lingver.getInstance()
 
     fun getLanguages() = getLanguagesWithCodes().map {
         it.split("|").last()
@@ -57,7 +63,7 @@ class LanguageManager(private val context: Context) {
         lingver.setLocale(context, lang)
     }
 
-    fun setAutoLocale(){
+    fun setAutoLocale() {
         lingver.setFollowSystemLocale(context)
     }
 

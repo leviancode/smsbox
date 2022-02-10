@@ -14,12 +14,15 @@ import com.brainymobile.android.smsbox.ui.entities.recipients.*
 import com.brainymobile.android.smsbox.utils.SingleLiveEvent
 import com.brainymobile.android.smsbox.utils.VALIDATION_DELAY
 import com.brainymobile.android.smsbox.utils.managers.ContactsManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipientEditViewModel(
+@HiltViewModel
+class RecipientEditViewModel @Inject constructor(
     private val fetchRecipientsUseCase: FetchRecipientsUseCase,
     private val saveRecipientsUseCase: SaveRecipientsUseCase,
     private val updateRecipientsUseCase: UpdateRecipientsUseCase,

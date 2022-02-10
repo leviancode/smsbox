@@ -1,6 +1,7 @@
 package com.brainymobile.android.smsbox.ui.screens.favorites
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.FragmentFavoritesBinding
 import com.brainymobile.android.smsbox.databinding.ListItemTemplateBinding
@@ -13,11 +14,11 @@ import com.brainymobile.android.smsbox.ui.dialogs.alertdialogs.DeleteConfirmatio
 import com.brainymobile.android.smsbox.ui.entities.templates.TemplateUI
 import com.brainymobile.android.smsbox.ui.screens.templates.templates.list.TemplateListViewModel
 import com.brainymobile.android.smsbox.utils.extensions.navigate
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>(R.layout.fragment_favorites) {
-    private val viewModel: TemplateListViewModel by viewModel()
+    private val viewModel: TemplateListViewModel by viewModels()
     private val listAdapter =
         BaseListAdapter<TemplateUI, ListItemTemplateBinding>(R.layout.list_item_template) { binding, item, position ->
             binding.viewModel = viewModel

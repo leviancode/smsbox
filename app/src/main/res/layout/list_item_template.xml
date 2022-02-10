@@ -89,7 +89,7 @@
                 android:scaleType="fitXY"
                 android:enabled="@{model.recipientGroup.recipientsNotEmpty}"
                 android:layout_gravity="center_vertical"
-                android:onClick="@{(view) -> viewModel.onSendMessage(view, model)}"
+                android:onClick="@{() -> viewModel.onSendMessage(model)}"
                 android:src="@drawable/ic_baseline_send_24"
                 app:setIconTint="@{model.iconColor}"
                 tools:tint="@color/secondary"/>

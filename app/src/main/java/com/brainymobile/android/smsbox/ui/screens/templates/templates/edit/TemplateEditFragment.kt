@@ -1,6 +1,7 @@
 package com.brainymobile.android.smsbox.ui.screens.templates.templates.edit
 
 import androidx.fragment.app.clearFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.FragmentTemplateEditBinding
@@ -16,11 +17,12 @@ import com.brainymobile.android.smsbox.utils.REQ_SAVE_RECIPIENT_ID
 import com.brainymobile.android.smsbox.utils.extensions.navigate
 import com.brainymobile.android.smsbox.utils.extensions.observe
 import com.brainymobile.android.smsbox.utils.extensions.setNavigationResultListener
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
-class TemplateEditFragment : BaseFragment<FragmentTemplateEditBinding>(R.layout.fragment_template_edit) {
-    private val viewModel: TemplateEditViewModel by viewModel()
+@AndroidEntryPoint
+class TemplateEditFragment :
+    BaseFragment<FragmentTemplateEditBinding>(R.layout.fragment_template_edit) {
+    private val viewModel: TemplateEditViewModel by viewModels()
     private val args: TemplateEditFragmentArgs by navArgs()
     private var firstLoad: Boolean = true
 
@@ -132,14 +134,19 @@ class TemplateEditFragment : BaseFragment<FragmentTemplateEditBinding>(R.layout.
         }
     }
 
-    fun updateRecipientViews(recipients: List<RecipientUI>){
+    fun updateRecipientViews(recipients: List<RecipientUI>) {
         binding.recipientsLayout.removeAllViews()
         recipients.forEach(::addRecipientView)
     }
 
     private fun addRecipientView(recipient: RecipientUI) {
         val showKeyboard = !binding.switchToRecipientGroup.isChecked && !firstLoad
-        binding.recipientsLayout.addRecipientView(recipient, viewModel,viewLifecycleOwner, showKeyboard)
+        binding.recipientsLayout.addRecipientView(
+            recipient,
+            viewModel,
+            viewLifecycleOwner,
+            showKeyboard
+        )
     }
 
 }

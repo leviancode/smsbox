@@ -4,8 +4,9 @@ import com.brainymobile.android.smsbox.domain.entities.recipient.Recipient
 import com.brainymobile.android.smsbox.domain.entities.recipient.RecipientWithGroups
 import com.brainymobile.android.smsbox.domain.repositories.RecipientsRepository
 import com.brainymobile.android.smsbox.domain.usecases.recipients.recipients.SaveRecipientsUseCase
+import javax.inject.Inject
 
-class SaveRecipientsUseCaseImpl(private val repository: RecipientsRepository):
+class SaveRecipientsUseCaseImpl @Inject constructor(private val repository: RecipientsRepository):
     SaveRecipientsUseCase {
 
     override suspend fun save(item: Recipient): Int {

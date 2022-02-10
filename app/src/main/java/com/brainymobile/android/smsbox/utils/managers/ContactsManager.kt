@@ -4,8 +4,13 @@ import android.content.Context
 import android.net.Uri
 import android.provider.ContactsContract
 import com.brainymobile.android.smsbox.ui.entities.recipients.RecipientUI
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class ContactsManager(private val context: Context) {
+class ContactsManager @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
 
     fun parseUri(uri: Uri?): RecipientUI? {
         if (uri == null) return null
@@ -19,7 +24,8 @@ class ContactsManager(private val context: Context) {
             val idColumnIndex = cur.getColumnIndex(ContactsContract.Contacts._ID)
             val contactNameColumnIndex = cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
             val id: String = if (idColumnIndex >= 0) cur.getString(idColumnIndex) else ""
-            val contactName = if (contactNameColumnIndex >= 0) cur.getString(contactNameColumnIndex) else ""
+            val contactName =
+                if (contactNameColumnIndex >= 0) cur.getString(contactNameColumnIndex) else ""
 
             contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -29,7 +35,8 @@ class ContactsManager(private val context: Context) {
                 null
             )?.also {
                 while (it.moveToNext()) {
-                    val phoneColumnIndex = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                    val phoneColumnIndex =
+                        it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
                     val phone = if (phoneColumnIndex >= 0) it.getString(phoneColumnIndex) else ""
 
                     if (!phone.isNullOrBlank()) {

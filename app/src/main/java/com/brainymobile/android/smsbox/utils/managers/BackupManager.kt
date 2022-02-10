@@ -6,12 +6,15 @@ import androidx.core.content.FileProvider
 import com.brainymobile.android.smsbox.data.database.AppDatabase
 import com.brainymobile.android.smsbox.utils.*
 import com.brainymobile.android.smsbox.utils.extensions.*
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import java.io.File
+import javax.inject.Inject
 
-class BackupManager(
-    private val context: Context,
+class BackupManager @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val filesManager: FilesManager,
     private val database: AppDatabase
 ) {

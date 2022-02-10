@@ -12,12 +12,15 @@ import com.brainymobile.android.smsbox.ui.entities.templates.toDomainTemplateGro
 import com.brainymobile.android.smsbox.ui.entities.templates.toTemplateGroupUI
 import com.brainymobile.android.smsbox.utils.SingleLiveEvent
 import com.brainymobile.android.smsbox.utils.VALIDATION_DELAY
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TemplateGroupEditViewModel(
+@HiltViewModel
+class TemplateGroupEditViewModel @Inject constructor(
     private val saveUseCase: SaveTemplateGroupUseCase,
     private val fetchUseCae: FetchTemplateGroupsUseCase
 ) : ViewModel() {

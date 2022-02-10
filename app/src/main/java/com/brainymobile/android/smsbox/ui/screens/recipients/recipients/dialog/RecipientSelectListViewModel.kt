@@ -6,10 +6,13 @@ import com.brainymobile.android.smsbox.domain.usecases.recipients.recipients.Fet
 import com.brainymobile.android.smsbox.ui.entities.recipients.RecipientUI
 import com.brainymobile.android.smsbox.ui.entities.recipients.toRecipientsUI
 import com.brainymobile.android.smsbox.utils.managers.ContactsManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class RecipientSelectListViewModel(
+@HiltViewModel
+class RecipientSelectListViewModel @Inject constructor(
     private val fetchRecipientsUseCase: FetchRecipientsUseCase,
     private val contactsManager: ContactsManager
 ) : ViewModel() {

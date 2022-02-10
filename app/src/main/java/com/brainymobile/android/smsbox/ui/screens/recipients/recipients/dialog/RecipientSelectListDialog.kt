@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.DialogSelectListBinding
 import com.brainymobile.android.smsbox.databinding.SelectListItemRecipientBinding
@@ -16,20 +17,21 @@ import com.brainymobile.android.smsbox.ui.entities.recipients.RecipientUI
 import com.brainymobile.android.smsbox.utils.extensions.askPermission
 import com.brainymobile.android.smsbox.utils.extensions.observe
 import com.brainymobile.android.smsbox.utils.extensions.showToast
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecipientSelectListDialog private constructor(
     private val currentPhoneNumber: String,
     private val selectedPhoneNumbers: List<String>,
     private val callback: (RecipientUI) -> Unit
 ) : BaseBottomSheet<DialogSelectListBinding>(R.layout.dialog_select_list) {
-    private val viewModel: RecipientSelectListViewModel by viewModel()
+    private val viewModel: RecipientSelectListViewModel by viewModels()
     private val listAdapter =
         BaseListAdapter<RecipientUI, SelectListItemRecipientBinding>(R.layout.select_list_item_recipient) { binding, item, position ->
             binding.viewModel = viewModel
             binding.model = item
         }
-    private lateinit var contactsLauncher: ActivityResultLauncher<Void>
+    private lateinit var contactsLauncher: ActivityResultLauncher<Void?>
 
     override fun onCreated() {
         contactsLauncher =

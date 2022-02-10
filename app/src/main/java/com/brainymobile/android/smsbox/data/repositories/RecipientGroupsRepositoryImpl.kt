@@ -10,8 +10,9 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class RecipientGroupsRepositoryImpl(
+class RecipientGroupsRepositoryImpl @Inject constructor(
     private val groupDao: RecipientGroupDao,
     private val recipientDao: RecipientDao,
     private val relationDao: RecipientAndGroupRelationDao

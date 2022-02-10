@@ -4,8 +4,9 @@ import com.brainymobile.android.smsbox.domain.entities.recipient.RecipientGroup
 import com.brainymobile.android.smsbox.domain.repositories.RecipientGroupsRepository
 import com.brainymobile.android.smsbox.domain.usecases.recipients.groups.FetchRecipientGroupsUseCase
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class FetchRecipientGroupsUseCaseImpl(private val repository: RecipientGroupsRepository) :
+class FetchRecipientGroupsUseCaseImpl @Inject constructor(private val repository: RecipientGroupsRepository) :
     FetchRecipientGroupsUseCase {
     override fun getAllObservable(): Flow<List<RecipientGroup>> {
        return repository.getAllObservable()

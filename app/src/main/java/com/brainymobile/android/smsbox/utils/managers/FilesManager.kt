@@ -10,9 +10,14 @@ import androidx.core.net.toUri
 import com.brainymobile.android.smsbox.utils.FILE_PROVIDER_AUTH
 import com.brainymobile.android.smsbox.utils.extensions.copyFile
 import com.brainymobile.android.smsbox.utils.extensions.getMimeType
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
+import javax.inject.Inject
 
-class FilesManager(private val context: Context) {
+class FilesManager @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
 
     fun saveToDownloads(file: File, fileName: String): Uri? {
         val resolver = context.contentResolver

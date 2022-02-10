@@ -7,9 +7,12 @@ import com.brainymobile.android.smsbox.domain.usecases.recipients.recipients.Fet
 import com.brainymobile.android.smsbox.domain.usecases.recipients.recipients.UpdateRecipientsUseCase
 import com.brainymobile.android.smsbox.ui.entities.recipients.*
 import com.brainymobile.android.smsbox.utils.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipientListViewModel(
+@HiltViewModel
+class RecipientListViewModel @Inject constructor(
     private val fetchRecipientsUseCase: FetchRecipientsUseCase,
     private val updateRecipientsUseCase: UpdateRecipientsUseCase,
     private val deleteRecipientsUseCase: DeleteRecipientsUseCase

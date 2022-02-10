@@ -1,12 +1,38 @@
 package com.brainymobile.android.smsbox.utils.di
 
 import com.brainymobile.android.smsbox.data.repositories.*
-import org.koin.dsl.module
+import com.brainymobile.android.smsbox.domain.repositories.*
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
-val repositoriesModule = module {
-    factory { PlaceholdersRepositoryImpl(get()) }
-    factory { TemplatesRepositoryImpl(get(),get<RecipientGroupsRepositoryImpl>()) }
-    factory { TemplateGroupsRepositoryImpl(get(), get<TemplatesRepositoryImpl>()) }
-    factory { RecipientsRepositoryImpl(get(),get(), get()) }
-    factory { RecipientGroupsRepositoryImpl(get(),get(), get()) }
+@InstallIn(SingletonComponent::class)
+@Module
+abstract class RepositoriesModule {
+
+    @Binds
+    abstract fun bindPlaceholdersRepository(
+        placeholdersRepositoryImpl: PlaceholdersRepositoryImpl
+    ): PlaceholdersRepository
+
+    @Binds
+    abstract fun bindTemplatesRepository(
+        templatesRepositoryImpl: TemplatesRepositoryImpl
+    ): TemplatesRepository
+
+    @Binds
+    abstract fun bindTemplateGroupsRepository(
+        templateGroupsRepositoryImpl: TemplateGroupsRepositoryImpl
+    ): TemplateGroupsRepository
+
+    @Binds
+    abstract fun bindRecipientsRepository(
+        recipientsRepositoryImpl: RecipientsRepositoryImpl
+    ): RecipientsRepository
+
+    @Binds
+    abstract fun bindRecipientGroupsRepository(
+        recipientGroupsRepositoryImpl: RecipientGroupsRepositoryImpl
+    ): RecipientGroupsRepository
 }

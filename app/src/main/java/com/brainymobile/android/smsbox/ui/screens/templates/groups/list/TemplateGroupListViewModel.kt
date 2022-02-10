@@ -11,11 +11,14 @@ import com.brainymobile.android.smsbox.ui.entities.templates.toDomainTemplateGro
 import com.brainymobile.android.smsbox.ui.entities.templates.toDomainTemplateGroups
 import com.brainymobile.android.smsbox.ui.entities.templates.toTemplateGroupsUI
 import com.brainymobile.android.smsbox.utils.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TemplateGroupListViewModel(
+@HiltViewModel
+class TemplateGroupListViewModel @Inject constructor(
     private val fetchUseCase: FetchTemplateGroupsUseCase,
     private val updateUseCase: UpdateTemplateGroupsUseCase,
     private val deleteUseCase: DeleteTemplateGroupUseCase,
