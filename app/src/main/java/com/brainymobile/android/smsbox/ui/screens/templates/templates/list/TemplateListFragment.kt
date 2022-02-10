@@ -1,6 +1,7 @@
 package com.brainymobile.android.smsbox.ui.screens.templates.templates.list
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.FragmentTemplateListBinding
@@ -13,10 +14,11 @@ import com.brainymobile.android.smsbox.ui.dialogs.PopupMenus.MenuItem.EDIT
 import com.brainymobile.android.smsbox.ui.dialogs.alertdialogs.DeleteConfirmationAlertDialog
 import com.brainymobile.android.smsbox.ui.entities.templates.TemplateUI
 import com.brainymobile.android.smsbox.utils.extensions.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TemplateListFragment : BaseFragment<FragmentTemplateListBinding>(R.layout.fragment_template_list) {
-    private val viewModel: TemplateListViewModel by viewModel()
+    private val viewModel: TemplateListViewModel by viewModels()
     private val args: TemplateListFragmentArgs by navArgs()
     private val listAdapter =
         BaseListAdapter<TemplateUI, ListItemTemplateBinding>(R.layout.list_item_template) { binding, item, position ->

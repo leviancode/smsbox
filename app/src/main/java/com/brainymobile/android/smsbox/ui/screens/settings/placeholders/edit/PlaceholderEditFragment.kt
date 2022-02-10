@@ -1,5 +1,6 @@
 package com.brainymobile.android.smsbox.ui.screens.settings.placeholders.edit
 
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.FragmentPlaceholderEditBinding
@@ -7,10 +8,12 @@ import com.brainymobile.android.smsbox.ui.base.BaseBottomSheet
 import com.brainymobile.android.smsbox.utils.extensions.navigateBack
 import com.brainymobile.android.smsbox.utils.extensions.observe
 import com.brainymobile.android.smsbox.utils.showKeyboard
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class PlaceholderEditFragment : BaseBottomSheet<FragmentPlaceholderEditBinding>(R.layout.fragment_placeholder_edit) {
-    private val viewModel: PlaceholderEditViewModel by viewModel()
+@AndroidEntryPoint
+class PlaceholderEditFragment :
+    BaseBottomSheet<FragmentPlaceholderEditBinding>(R.layout.fragment_placeholder_edit) {
+    private val viewModel: PlaceholderEditViewModel by viewModels()
     private val args: PlaceholderEditFragmentArgs by navArgs()
 
     override fun getTheme(): Int = R.style.CustomBottomSheetDialogWithKeyboard

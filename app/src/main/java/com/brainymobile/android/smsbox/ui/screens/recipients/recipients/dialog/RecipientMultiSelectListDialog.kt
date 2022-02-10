@@ -2,19 +2,21 @@ package com.brainymobile.android.smsbox.ui.screens.recipients.recipients.dialog
 
 import android.view.View
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.DialogSelectListBinding
 import com.brainymobile.android.smsbox.databinding.MultiSelectListItemRecipientBinding
 import com.brainymobile.android.smsbox.ui.base.BaseBottomSheet
 import com.brainymobile.android.smsbox.ui.base.BaseListAdapter
 import com.brainymobile.android.smsbox.ui.entities.recipients.RecipientUI
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecipientMultiSelectListDialog(
     private val groupId: Int,
     private val callback: (List<RecipientUI>) -> Unit
 ) : BaseBottomSheet<DialogSelectListBinding>(R.layout.dialog_select_list) {
-    private val viewModel: RecipientMultiSelectListViewModel by viewModel()
+    private val viewModel: RecipientMultiSelectListViewModel by viewModels()
     private val listAdapter =
         BaseListAdapter<RecipientUI, MultiSelectListItemRecipientBinding>(R.layout.multi_select_list_item_recipient) { binding, item, position ->
             binding.viewModel = viewModel
@@ -52,7 +54,7 @@ class RecipientMultiSelectListDialog(
     }
 
     companion object {
-        fun show(fm: FragmentManager, groupId: Int, callback: (List<RecipientUI>) -> Unit){
+        fun show(fm: FragmentManager, groupId: Int, callback: (List<RecipientUI>) -> Unit) {
             RecipientMultiSelectListDialog(groupId, callback).show(fm, null)
         }
     }

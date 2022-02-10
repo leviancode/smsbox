@@ -6,10 +6,13 @@ import com.brainymobile.android.smsbox.domain.usecases.recipients.groups.FetchRe
 import com.brainymobile.android.smsbox.ui.entities.recipients.RecipientGroupUI
 import com.brainymobile.android.smsbox.ui.entities.recipients.toRecipientGroupsUI
 import com.brainymobile.android.smsbox.utils.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class RecipientGroupSelectListViewModel(
+@HiltViewModel
+class RecipientGroupSelectListViewModel @Inject constructor(
     private val fetchRecipientGroupsUseCase: FetchRecipientGroupsUseCase,
 ) : ViewModel() {
     private val _selectedGroup = SingleLiveEvent<Int>()

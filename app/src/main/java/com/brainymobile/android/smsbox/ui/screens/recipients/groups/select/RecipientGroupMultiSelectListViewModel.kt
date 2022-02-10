@@ -5,11 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.brainymobile.android.smsbox.domain.usecases.recipients.groups.FetchRecipientGroupsUseCase
 import com.brainymobile.android.smsbox.ui.entities.recipients.RecipientGroupUI
 import com.brainymobile.android.smsbox.ui.entities.recipients.toRecipientGroupsUI
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipientGroupMultiSelectListViewModel(
+@HiltViewModel
+class RecipientGroupMultiSelectListViewModel @Inject constructor(
     private val fetchRecipientGroupsUseCase: FetchRecipientGroupsUseCase,
 ) : ViewModel() {
     private var groups = mutableListOf<RecipientGroupUI>()

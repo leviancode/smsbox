@@ -10,11 +10,25 @@ import android.widget.RemoteViews
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.utils.logI
 import com.brainymobile.android.smsbox.utils.managers.SmsManager
-import org.koin.java.KoinJavaComponent.inject
-
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 
 class FavoritesWidgetProvider : AppWidgetProvider() {
-    private val smsManager: SmsManager by inject(SmsManager::class.java)
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface SmsManagerEntryPoint {
+        fun smsManager(): SmsManager
+    }
+
+    private fun getSmsManager(context: Context): SmsManager {
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(context, SmsManagerEntryPoint::class.java)
+        return hiltEntryPoint.smsManager()
+    }
+
 
     override fun onUpdate(
         context: Context,
@@ -82,12 +96,12 @@ class FavoritesWidgetProvider : AppWidgetProvider() {
         if (intent.action.equals(ACTION_ON_CLICK, ignoreCase = true)) {
             val itemId = intent.getIntExtra(ITEM_ID, -1)
             if (itemId != -1) {
-                smsManager.sendSms(context, itemId)
+                getSmsManager(context.applicationContext).sendSms(itemId)
             }
         }
     }
 
-    companion object{
+    companion object {
         const val ACTION_ON_CLICK = "com.brainymobile.android.smsbox.itemonclick"
         const val ITEM_ID = "item_id"
     }

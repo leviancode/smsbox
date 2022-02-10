@@ -3,8 +3,9 @@ package com.brainymobile.android.smsbox.domain.usecases.templates.groups.impl
 import com.brainymobile.android.smsbox.domain.entities.template.TemplateGroup
 import com.brainymobile.android.smsbox.domain.repositories.TemplateGroupsRepository
 import com.brainymobile.android.smsbox.domain.usecases.templates.groups.UpdateTemplateGroupsUseCase
+import javax.inject.Inject
 
-class UpdateTemplateGroupsUseCaseImpl(private val repository: TemplateGroupsRepository) : UpdateTemplateGroupsUseCase {
+class UpdateTemplateGroupsUseCaseImpl @Inject constructor(private val repository: TemplateGroupsRepository) : UpdateTemplateGroupsUseCase {
     override suspend fun update(item: TemplateGroup) {
         repository.update(item)
     }

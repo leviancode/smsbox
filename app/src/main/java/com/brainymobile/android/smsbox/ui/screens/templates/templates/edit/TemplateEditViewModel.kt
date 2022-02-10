@@ -19,15 +19,17 @@ import com.brainymobile.android.smsbox.ui.entities.templates.toDomainTemplate
 import com.brainymobile.android.smsbox.ui.entities.templates.toTemplateUI
 import com.brainymobile.android.smsbox.utils.SingleLiveEvent
 import com.brainymobile.android.smsbox.utils.VALIDATION_DELAY
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class TemplateEditViewModel(
+@HiltViewModel
+class TemplateEditViewModel @Inject constructor(
     private val fetchTemplatesUseCase: FetchTemplatesUseCase,
     private val saveTemplateUseCase: SaveTemplatesUseCase,
     private val updateTemplateUseCase: UpdateTemplateUseCase,

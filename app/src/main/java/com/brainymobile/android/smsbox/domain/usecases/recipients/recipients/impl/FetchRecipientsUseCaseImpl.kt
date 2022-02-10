@@ -5,8 +5,9 @@ import com.brainymobile.android.smsbox.domain.repositories.RecipientsRepository
 import com.brainymobile.android.smsbox.domain.usecases.recipients.recipients.FetchRecipientsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class FetchRecipientsUseCaseImpl(private val repository: RecipientsRepository):
+class FetchRecipientsUseCaseImpl @Inject constructor(private val repository: RecipientsRepository):
     FetchRecipientsUseCase {
 
     override suspend fun getRecipients() = repository.getRecipients()

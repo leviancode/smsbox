@@ -8,19 +8,23 @@ import com.brainymobile.android.smsbox.domain.usecases.templates.tempates.FetchT
 import com.brainymobile.android.smsbox.ui.entities.templates.TemplateUI
 import com.brainymobile.android.smsbox.ui.entities.templates.toTemplateUI
 import com.brainymobile.android.smsbox.utils.extensions.hasPlaceholder
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 
-class SmsManager(
+class SmsManager @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val fetchTemplatesUseCase: FetchTemplatesUseCase,
     private val replacePlaceholdersUseCase: ReplacePlaceholdersUseCase
 ) {
 
-    suspend fun sendSms(context: Context, template: TemplateUI) {
+    suspend fun sendSms(template: TemplateUI) {
         val recipients = template.recipientGroup.recipients
         if (recipients.isEmpty()) return
 
@@ -39,11 +43,11 @@ class SmsManager(
         context.startActivity(intent)
     }
 
-    fun sendSms(context: Context, templateId: Int) {
+    fun sendSms(templateId: Int) {
         CoroutineScope(IO).launch{
             fetchTemplatesUseCase.get(templateId)?.let {
                 withContext(Main){
-                    sendSms(context, it.toTemplateUI())
+                    sendSms(it.toTemplateUI())
                 }
             }
         }

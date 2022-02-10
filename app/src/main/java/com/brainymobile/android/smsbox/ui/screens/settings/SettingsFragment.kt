@@ -8,16 +8,18 @@ import android.os.Build
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
+import androidx.fragment.app.viewModels
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.FragmentSettingsBinding
 import com.brainymobile.android.smsbox.ui.base.BaseFragment
 import com.brainymobile.android.smsbox.ui.dialogs.alertdialogs.RecoveryAlertDialog
 import com.brainymobile.android.smsbox.utils.Result
 import com.brainymobile.android.smsbox.utils.extensions.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingsFragment : BaseFragment<FragmentSettingsBinding>(R.layout.fragment_settings) {
-    private val viewModel: SettingsViewModel by viewModel()
+    private val viewModel: SettingsViewModel by viewModels()
     private lateinit var activityResultLauncher: ActivityResultLauncher<String>
 
     override var bottomNavViewVisibility: Int = View.VISIBLE
@@ -109,7 +111,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(R.layout.fragment
     }
 
     private fun restoreDatabase(uri: Uri) {
-        viewModel.restoreDB(uri).observe(viewLifecycleOwner){ result ->
+        viewModel.restoreDB(uri).observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
                     showProgressBar()

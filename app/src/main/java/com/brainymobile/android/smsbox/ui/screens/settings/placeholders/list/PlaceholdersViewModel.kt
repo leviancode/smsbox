@@ -8,11 +8,14 @@ import com.brainymobile.android.smsbox.domain.usecases.placeholders.FetchPlaceho
 import com.brainymobile.android.smsbox.ui.entities.placeholder.PlaceholderUI
 import com.brainymobile.android.smsbox.ui.entities.placeholder.toUIPlaceholders
 import com.brainymobile.android.smsbox.utils.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PlaceholdersViewModel(
+@HiltViewModel
+class PlaceholdersViewModel @Inject constructor(
     private val fetchPlaceholdersUseCase: FetchPlaceholdersUseCase,
     private val deletePlaceholdersUseCase: DeletePlaceholdersUseCase
 ) : ViewModel() {

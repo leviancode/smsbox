@@ -1,6 +1,7 @@
 package com.brainymobile.android.smsbox.ui.screens.templates.groups.list
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.FragmentTemplateGroupListBinding
 import com.brainymobile.android.smsbox.databinding.ListItemTemplateGroupBinding
@@ -15,11 +16,12 @@ import com.brainymobile.android.smsbox.utils.extensions.hideFabWhileScrolling
 import com.brainymobile.android.smsbox.utils.extensions.navigate
 import com.brainymobile.android.smsbox.utils.extensions.observe
 import com.brainymobile.android.smsbox.utils.logI
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TemplateGroupListFragment :
     BaseFragment<FragmentTemplateGroupListBinding>(R.layout.fragment_template_group_list) {
-    private val viewModel: TemplateGroupListViewModel by viewModel()
+    private val viewModel: TemplateGroupListViewModel by viewModels()
     private val listAdapter =
         BaseListAdapter<TemplateGroupUI, ListItemTemplateGroupBinding>(R.layout.list_item_template_group) { binding, item, position ->
             binding.model = item
@@ -36,8 +38,7 @@ class TemplateGroupListFragment :
         observeEvents()
     }
 
-    private fun onDragFinish(){
-        logI("drag finished")
+    private fun onDragFinish() {
         viewModel.updateAll(listAdapter.currentList)
     }
 

@@ -12,8 +12,9 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class TemplatesRepositoryImpl(
+class TemplatesRepositoryImpl @Inject constructor(
     private val dao: TemplateDao,
     private val recipientGroupsRepository: RecipientGroupsRepository
 ) : TemplatesRepository {

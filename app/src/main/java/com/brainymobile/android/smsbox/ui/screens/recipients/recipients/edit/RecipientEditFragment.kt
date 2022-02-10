@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.PickContact
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.FragmentRecipientEditBinding
@@ -19,12 +20,14 @@ import com.brainymobile.android.smsbox.utils.extensions.observe
 import com.brainymobile.android.smsbox.utils.extensions.setNavigationResult
 import com.brainymobile.android.smsbox.utils.extensions.showToast
 import com.brainymobile.android.smsbox.utils.hideKeyboard
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class RecipientEditFragment : BaseFragment<FragmentRecipientEditBinding>(R.layout.fragment_recipient_edit) {
-    private val viewModel: RecipientEditViewModel by viewModel()
+@AndroidEntryPoint
+class RecipientEditFragment :
+    BaseFragment<FragmentRecipientEditBinding>(R.layout.fragment_recipient_edit) {
+    private val viewModel: RecipientEditViewModel by viewModels()
     private val args: RecipientEditFragmentArgs by navArgs()
-    private lateinit var contactsLauncher: ActivityResultLauncher<Void>
+    private lateinit var contactsLauncher: ActivityResultLauncher<Void?>
 
     override val showConfirmationDialogBeforeQuit: Boolean
         get() = !viewModel.isDataSavedOrNotChanged()
@@ -53,10 +56,11 @@ class RecipientEditFragment : BaseFragment<FragmentRecipientEditBinding>(R.layou
     }
 
     private fun observeData() {
-        viewModel.loadRecipient(args.recipientId, args.phoneNumber, args.recipientName).observe(viewLifecycleOwner) {
-            binding.model = it
-            binding.executePendingBindings()
-        }
+        viewModel.loadRecipient(args.recipientId, args.phoneNumber, args.recipientName)
+            .observe(viewLifecycleOwner) {
+                binding.model = it
+                binding.executePendingBindings()
+            }
     }
 
     private fun observeEvents() {
@@ -64,7 +68,7 @@ class RecipientEditFragment : BaseFragment<FragmentRecipientEditBinding>(R.layou
 
         viewModel.apply {
             recipientSavedEvent.observe(viewLifecycleOwner) { id ->
-                if (viewModel.isSaveFromTemplate){
+                if (viewModel.isSaveFromTemplate) {
                     setResultAndClose(id)
                 } else {
                     close()
@@ -89,7 +93,7 @@ class RecipientEditFragment : BaseFragment<FragmentRecipientEditBinding>(R.layou
 
     private fun selectGroups(groupIds: List<Int>) {
         hideKeyboard()
-        RecipientGroupMultiSelectListDialog.show(childFragmentManager, groupIds){ selectedGroups ->
+        RecipientGroupMultiSelectListDialog.show(childFragmentManager, groupIds) { selectedGroups ->
             viewModel.setGroups(selectedGroups)
         }
     }
@@ -101,7 +105,7 @@ class RecipientEditFragment : BaseFragment<FragmentRecipientEditBinding>(R.layou
 
     private fun selectContact() {
         hideKeyboard()
-        askPermission(Manifest.permission.READ_CONTACTS){ result ->
+        askPermission(Manifest.permission.READ_CONTACTS) { result ->
             if (result) contactsLauncher.launch(null)
             else showToast(getString(R.string.permission_dined))
         }

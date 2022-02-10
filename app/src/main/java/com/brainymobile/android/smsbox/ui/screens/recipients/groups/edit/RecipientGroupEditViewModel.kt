@@ -10,11 +10,14 @@ import com.brainymobile.android.smsbox.ui.entities.recipients.RecipientGroupUI
 import com.brainymobile.android.smsbox.ui.entities.recipients.toDomainRecipientGroup
 import com.brainymobile.android.smsbox.ui.entities.recipients.toRecipientGroupUI
 import com.brainymobile.android.smsbox.utils.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipientGroupEditViewModel(
+@HiltViewModel
+class RecipientGroupEditViewModel @Inject constructor(
     private val fetchRecipientGroupsUseCase: FetchRecipientGroupsUseCase,
     private val saveRecipientGroupsUseCase: SaveRecipientGroupsUseCase
 ) : ViewModel() {

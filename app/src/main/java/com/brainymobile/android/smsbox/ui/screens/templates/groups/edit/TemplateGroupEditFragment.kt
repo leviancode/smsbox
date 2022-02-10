@@ -1,6 +1,7 @@
 package com.brainymobile.android.smsbox.ui.screens.templates.groups.edit
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.FragmentTemplateGroupEditBinding
@@ -8,10 +9,12 @@ import com.brainymobile.android.smsbox.ui.base.BaseFragment
 import com.brainymobile.android.smsbox.ui.dialogs.ColorPickerDialog
 import com.brainymobile.android.smsbox.utils.extensions.observe
 import com.brainymobile.android.smsbox.utils.hideKeyboard
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class TemplateGroupEditFragment : BaseFragment<FragmentTemplateGroupEditBinding>(R.layout.fragment_template_group_edit) {
-    private val viewModel: TemplateGroupEditViewModel by viewModel()
+@AndroidEntryPoint
+class TemplateGroupEditFragment :
+    BaseFragment<FragmentTemplateGroupEditBinding>(R.layout.fragment_template_group_edit) {
+    private val viewModel: TemplateGroupEditViewModel by viewModels()
     private val args: TemplateGroupEditFragmentArgs by navArgs()
 
     override var bottomNavViewVisibility: Int = View.GONE
@@ -29,7 +32,7 @@ class TemplateGroupEditFragment : BaseFragment<FragmentTemplateGroupEditBinding>
     }
 
     private fun loadData() {
-        viewModel.loadGroup(args.groupId).observe(viewLifecycleOwner){ group ->
+        viewModel.loadGroup(args.groupId).observe(viewLifecycleOwner) { group ->
             binding.model = group
             binding.executePendingBindings()
         }

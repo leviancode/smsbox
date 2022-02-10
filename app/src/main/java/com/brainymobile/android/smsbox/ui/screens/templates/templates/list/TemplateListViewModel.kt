@@ -14,10 +14,13 @@ import com.brainymobile.android.smsbox.ui.entities.templates.toDomainTemplates
 import com.brainymobile.android.smsbox.ui.entities.templates.toUITemplates
 import com.brainymobile.android.smsbox.utils.SingleLiveEvent
 import com.brainymobile.android.smsbox.utils.managers.SmsManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TemplateListViewModel(
+@HiltViewModel
+class TemplateListViewModel @Inject constructor(
     private val fetchUseCase: FetchTemplatesUseCase,
     private val deleteUseCase: DeleteTemplatesUseCase,
     private val updateUseCase: UpdateTemplateUseCase,
@@ -45,9 +48,9 @@ class TemplateListViewModel(
         createTemplateEvent.call()
     }
 
-    fun onSendMessage(view: View, model: TemplateUI) {
+    fun onSendMessage(model: TemplateUI) {
         viewModelScope.launch {
-            smsManager.sendSms(view.context, model)
+            smsManager.sendSms(model)
         }
     }
 

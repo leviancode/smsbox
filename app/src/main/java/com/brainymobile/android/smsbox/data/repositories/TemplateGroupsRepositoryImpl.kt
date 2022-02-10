@@ -11,8 +11,9 @@ import com.brainymobile.android.smsbox.domain.repositories.TemplatesRepository
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class TemplateGroupsRepositoryImpl(
+class TemplateGroupsRepositoryImpl @Inject constructor(
     private val groupsDao: TemplateGroupDao,
     private val templatesRepository: TemplatesRepository
 ): TemplateGroupsRepository {

@@ -17,15 +17,18 @@ import com.brainymobile.android.smsbox.databinding.ActivityMainBinding
 import com.brainymobile.android.smsbox.utils.PREF_KEY_DEFAULT_LANGUAGE
 import com.brainymobile.android.smsbox.utils.extensions.observe
 import com.brainymobile.android.smsbox.utils.managers.LanguageManager
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+import javax.inject.Inject
 
 val Context.dataStore by preferencesDataStore("settings")
 
-class MainActivity : AppCompatActivity(){
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val languageManager: LanguageManager by inject()
+    @Inject
+    lateinit var languageManager: LanguageManager
     private var shortAnimationDuration: Int = 0
     private lateinit var navController: NavController
 
@@ -56,7 +59,7 @@ class MainActivity : AppCompatActivity(){
 
     override fun onBackPressed() {
         navController.currentDestination?.let { currentDestination ->
-            if(currentDestination.id == R.id.nav_template_group_list){
+            if (currentDestination.id == R.id.nav_template_group_list) {
                 finish()
             } else {
                 super.onBackPressed()
@@ -65,7 +68,7 @@ class MainActivity : AppCompatActivity(){
     }
 
 
-    private fun showSplash(){
+    private fun showSplash() {
         lifecycleScope.launch {
             delay(2000)
             hideSplashWithAnim()

@@ -5,8 +5,9 @@ import com.brainymobile.android.smsbox.domain.repositories.TemplatesRepository
 import com.brainymobile.android.smsbox.domain.usecases.templates.tempates.FetchTemplatesUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class FetchTemplatesUseCaseImpl(private val repository: TemplatesRepository) :
+class FetchTemplatesUseCaseImpl @Inject constructor(private val repository: TemplatesRepository) :
     FetchTemplatesUseCase {
 
     override fun getFavoritesObservable(): Flow<List<Template>> {

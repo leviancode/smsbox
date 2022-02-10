@@ -4,8 +4,9 @@ import com.brainymobile.android.smsbox.domain.repositories.PlaceholdersRepositor
 import com.brainymobile.android.smsbox.domain.usecases.placeholders.ReplacePlaceholdersUseCase
 import com.brainymobile.android.smsbox.utils.HASHTAG_REGEX
 import java.util.regex.Pattern
+import javax.inject.Inject
 
-class ReplacePlaceholdersUseCaseImpl(private val repository: PlaceholdersRepository) :
+class ReplacePlaceholdersUseCaseImpl @Inject constructor(private val repository: PlaceholdersRepository) :
     ReplacePlaceholdersUseCase {
 
     override suspend fun replace(str: String): String {

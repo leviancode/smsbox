@@ -2,6 +2,7 @@ package com.brainymobile.android.smsbox.ui.screens.recipients.groups.select
 
 import android.view.View
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.DialogSelectListBinding
 import com.brainymobile.android.smsbox.databinding.SelectListItemRecipientGroupBinding
@@ -9,14 +10,15 @@ import com.brainymobile.android.smsbox.ui.base.BaseBottomSheet
 import com.brainymobile.android.smsbox.ui.base.BaseListAdapter
 import com.brainymobile.android.smsbox.ui.entities.recipients.RecipientGroupUI
 import com.brainymobile.android.smsbox.utils.extensions.observe
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SelectRecipientGroupDialog private constructor(
     private val currentGroupId: Int = 0,
     private val callback: (Int) -> Unit
 ) :
     BaseBottomSheet<DialogSelectListBinding>(R.layout.dialog_select_list) {
-    private val viewModel: RecipientGroupSelectListViewModel by viewModel()
+    private val viewModel: RecipientGroupSelectListViewModel by viewModels()
     private val listAdapter =
         BaseListAdapter<RecipientGroupUI, SelectListItemRecipientGroupBinding>(R.layout.select_list_item_recipient_group) { binding, item, position ->
             binding.viewModel = viewModel

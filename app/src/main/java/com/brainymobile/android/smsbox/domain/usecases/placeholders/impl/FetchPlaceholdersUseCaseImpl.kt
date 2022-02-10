@@ -4,8 +4,9 @@ import com.brainymobile.android.smsbox.domain.entities.placeholder.Placeholder
 import com.brainymobile.android.smsbox.domain.repositories.PlaceholdersRepository
 import com.brainymobile.android.smsbox.domain.usecases.placeholders.FetchPlaceholdersUseCase
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class FetchPlaceholdersUseCaseImpl(private val repository: PlaceholdersRepository) :
+class FetchPlaceholdersUseCaseImpl @Inject constructor(private val repository: PlaceholdersRepository) :
     FetchPlaceholdersUseCase {
 
     override fun getPlaceholders(): Flow<List<Placeholder>> {

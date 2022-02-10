@@ -1,6 +1,7 @@
 package com.brainymobile.android.smsbox.ui.screens.recipients.viewpager
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.FragmentRecipientsPagerBinding
 import com.brainymobile.android.smsbox.ui.base.BaseFragment
@@ -8,11 +9,13 @@ import com.brainymobile.android.smsbox.ui.screens.recipients.groups.list.Recipie
 import com.brainymobile.android.smsbox.ui.screens.recipients.recipients.list.RecipientListViewModel
 import com.brainymobile.android.smsbox.utils.extensions.onTabSelected
 import com.google.android.material.tabs.TabLayoutMediator
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class RecipientsPagerFragment : BaseFragment<FragmentRecipientsPagerBinding>(R.layout.fragment_recipients_pager) {
-    private val recipientViewModel: RecipientListViewModel by viewModel()
-    private val groupViewModel: RecipientGroupListViewModel by viewModel()
+@AndroidEntryPoint
+class RecipientsPagerFragment :
+    BaseFragment<FragmentRecipientsPagerBinding>(R.layout.fragment_recipients_pager) {
+    private val recipientViewModel: RecipientListViewModel by viewModels()
+    private val groupViewModel: RecipientGroupListViewModel by viewModels()
     private var groupMode = false
 
     override var bottomNavViewVisibility: Int = View.VISIBLE
@@ -27,10 +30,9 @@ class RecipientsPagerFragment : BaseFragment<FragmentRecipientsPagerBinding>(R.l
             if (groupMode) {
                 binding.fabRecipients.hide()
                 groupViewModel.onAddGroupClick()
-            }
-            else recipientViewModel.onAddRecipientClick()
+            } else recipientViewModel.onAddRecipientClick()
         }
-        groupViewModel.createGroupDialogDismissed.observe(viewLifecycleOwner){
+        groupViewModel.createGroupDialogDismissed.observe(viewLifecycleOwner) {
             binding.fabRecipients.show()
         }
     }

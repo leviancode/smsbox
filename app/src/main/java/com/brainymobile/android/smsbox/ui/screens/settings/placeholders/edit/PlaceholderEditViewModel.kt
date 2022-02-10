@@ -12,12 +12,15 @@ import com.brainymobile.android.smsbox.ui.entities.placeholder.toDomainPlacehold
 import com.brainymobile.android.smsbox.ui.entities.placeholder.toPlaceholderUI
 import com.brainymobile.android.smsbox.utils.SingleLiveEvent
 import com.brainymobile.android.smsbox.utils.VALIDATION_DELAY
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PlaceholderEditViewModel(
+@HiltViewModel
+class PlaceholderEditViewModel @Inject constructor(
     private val fetchPlaceholdersUseCase: FetchPlaceholdersUseCase,
     private val savePlaceholdersUseCase: SavePlaceholdersUseCase,
 ) : ViewModel() {

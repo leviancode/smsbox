@@ -3,6 +3,7 @@ package com.brainymobile.android.smsbox.ui.screens.recipients.groups.edit
 import android.content.DialogInterface
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.FragmentRecipientGroupEditBinding
 import com.brainymobile.android.smsbox.ui.base.BaseBottomSheet
@@ -10,14 +11,15 @@ import com.brainymobile.android.smsbox.ui.dialogs.ColorPickerDialog
 import com.brainymobile.android.smsbox.ui.entities.recipients.RecipientGroupUI
 import com.brainymobile.android.smsbox.utils.extensions.observe
 import com.brainymobile.android.smsbox.utils.hideKeyboard
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecipientGroupEditDialog private constructor(
     private val groupId: Int,
     private val onGroupEdit: (groupId: Int) -> Unit,
     private val onDialogDismiss: () -> Unit = {},
 ) : BaseBottomSheet<FragmentRecipientGroupEditBinding>(R.layout.fragment_recipient_group_edit) {
-    private val viewModel: RecipientGroupEditViewModel by viewModel()
+    private val viewModel: RecipientGroupEditViewModel by viewModels()
 
     override fun getTheme(): Int = R.style.CustomBottomSheetDialogWithKeyboard
 

@@ -5,8 +5,11 @@ import androidx.lifecycle.liveData
 import com.brainymobile.android.smsbox.domain.usecases.recipients.recipients.FetchRecipientsUseCase
 import com.brainymobile.android.smsbox.ui.entities.recipients.RecipientUI
 import com.brainymobile.android.smsbox.ui.entities.recipients.toRecipientsWithGroupsUI
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class RecipientMultiSelectListViewModel(
+@HiltViewModel
+class RecipientMultiSelectListViewModel @Inject constructor(
     private val fetchRecipientsUseCase: FetchRecipientsUseCase
 ) : ViewModel() {
     val selectedItems = mutableListOf<RecipientUI>()

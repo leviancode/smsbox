@@ -1,6 +1,7 @@
 package com.brainymobile.android.smsbox.ui.screens.settings.placeholders.list
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.FragmentPlaceholdersBinding
 import com.brainymobile.android.smsbox.databinding.ListItemPlaceholderBinding
@@ -16,11 +17,12 @@ import com.brainymobile.android.smsbox.utils.extensions.hideFabWhileScrolling
 import com.brainymobile.android.smsbox.utils.extensions.navigate
 import com.brainymobile.android.smsbox.utils.extensions.navigateBack
 import com.brainymobile.android.smsbox.utils.extensions.observe
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PlaceholdersFragment :
     BaseFragment<FragmentPlaceholdersBinding>(R.layout.fragment_placeholders) {
-    private val viewModel: PlaceholdersViewModel by viewModel()
+    private val viewModel: PlaceholdersViewModel by viewModels()
     private val listAdapter =
         BaseListAdapter<PlaceholderUI, ListItemPlaceholderBinding>(R.layout.list_item_placeholder) { binding, item, position ->
             binding.viewModel = viewModel
@@ -57,7 +59,7 @@ class PlaceholdersFragment :
     }
 
     private fun observeData() {
-        viewModel.placeholders.observe(this){
+        viewModel.placeholders.observe(this) {
             listAdapter.submitList(it)
         }
     }
@@ -88,6 +90,6 @@ class PlaceholdersFragment :
     }
 
     private fun openInfoDialog() {
-        InfoDialog(requireContext()).show( getString(R.string.variables_info))
+        InfoDialog(requireContext()).show(getString(R.string.variables_info))
     }
 }

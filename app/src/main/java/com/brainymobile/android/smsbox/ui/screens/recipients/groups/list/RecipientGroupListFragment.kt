@@ -1,6 +1,7 @@
 package com.brainymobile.android.smsbox.ui.screens.recipients.groups.list
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.FragmentRecipientGroupListBinding
 import com.brainymobile.android.smsbox.ui.base.BaseFragment
@@ -18,13 +19,12 @@ import com.brainymobile.android.smsbox.utils.extensions.navigate
 import com.brainymobile.android.smsbox.utils.extensions.showSnackbar
 import com.brainymobile.android.smsbox.utils.extensions.showSnackbarWithAction
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import org.koin.androidx.viewmodel.ext.android.getViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecipientGroupListFragment :
     BaseFragment<FragmentRecipientGroupListBinding>(R.layout.fragment_recipient_group_list) {
-    private val viewModel: RecipientGroupListViewModel by lazy {
-        requireParentFragment().getViewModel()
-    }
+    private val viewModel: RecipientGroupListViewModel by viewModels({ requireParentFragment() })
     private val listAdapter: RecipientGroupExpandableListAdapter by lazy {
         RecipientGroupExpandableListAdapter(
             requireContext(),
@@ -127,7 +127,9 @@ class RecipientGroupListFragment :
 
     private fun showEditableRecipientDialog(recipientId: Int) {
         navigate {
-            RecipientsPagerFragmentDirections.actionOpenEditableRecipient(recipientId, null)
+            RecipientsPagerFragmentDirections.actionOpenEditableRecipient(
+                recipientId = recipientId,
+                phoneNumber = null)
         }
     }
 

@@ -10,8 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class PlaceholdersRepositoryImpl(private val dao: PlaceholderDao): PlaceholdersRepository {
+class PlaceholdersRepositoryImpl @Inject constructor(private val dao: PlaceholderDao): PlaceholdersRepository {
 
     override fun getPlaceholdersObservable(): Flow<List<Placeholder>> =
         dao.getAll().map { it.toDomainPlaceholders() }

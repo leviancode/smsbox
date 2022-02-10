@@ -1,6 +1,7 @@
 package com.brainymobile.android.smsbox.ui.screens.recipients.recipients.list
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.brainymobile.android.smsbox.R
 import com.brainymobile.android.smsbox.databinding.FragmentRecipientListBinding
 import com.brainymobile.android.smsbox.databinding.ListItemRecipientBinding
@@ -16,12 +17,12 @@ import com.brainymobile.android.smsbox.ui.screens.recipients.viewpager.Recipient
 import com.brainymobile.android.smsbox.utils.extensions.hideFabWhileScrolling
 import com.brainymobile.android.smsbox.utils.extensions.navigate
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import org.koin.androidx.viewmodel.ext.android.getViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class RecipientListFragment : BaseFragment<FragmentRecipientListBinding>(R.layout.fragment_recipient_list){
-    private val viewModel: RecipientListViewModel  by lazy {
-        requireParentFragment().getViewModel()
-    }
+@AndroidEntryPoint
+class RecipientListFragment :
+    BaseFragment<FragmentRecipientListBinding>(R.layout.fragment_recipient_list) {
+    private val viewModel: RecipientListViewModel by viewModels({ requireParentFragment() })
     private val listAdapter =
         BaseListAdapter<RecipientUI, ListItemRecipientBinding>(R.layout.list_item_recipient) { binding, item, position ->
             binding.viewModel = viewModel
@@ -32,7 +33,7 @@ class RecipientListFragment : BaseFragment<FragmentRecipientListBinding>(R.layou
 
     override fun onCreated() {
         binding.recyclerView.adapter = listAdapter
-        listAdapter.initDragNDrop(binding.recyclerView){
+        listAdapter.initDragNDrop(binding.recyclerView) {
             viewModel.updateRecipients(listAdapter.currentList)
         }
         observeData()
@@ -40,7 +41,7 @@ class RecipientListFragment : BaseFragment<FragmentRecipientListBinding>(R.layou
     }
 
     private fun observeData() {
-        viewModel.recipients.observe(viewLifecycleOwner){ list ->
+        viewModel.recipients.observe(viewLifecycleOwner) { list ->
             binding.tvListEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
             listAdapter.submitList(list)
         }
@@ -73,7 +74,10 @@ class RecipientListFragment : BaseFragment<FragmentRecipientListBinding>(R.layou
     }
 
     private fun showSelectRecipientGroupDialog(item: RecipientWithGroupsUI) {
-        RecipientGroupMultiSelectListDialog.show(childFragmentManager, item.getGroupsIds()){ selectedGroups ->
+        RecipientGroupMultiSelectListDialog.show(
+            childFragmentManager,
+            item.getGroupsIds()
+        ) { selectedGroups ->
             viewModel.addRecipientToGroups(item.recipient, selectedGroups)
         }
     }
@@ -89,7 +93,10 @@ class RecipientListFragment : BaseFragment<FragmentRecipientListBinding>(R.layou
 
     private fun showEditableRecipientDialog(recipientId: Int) {
         navigate {
-            RecipientsPagerFragmentDirections.actionOpenEditableRecipient(recipientId, null)
+            RecipientsPagerFragmentDirections.actionOpenEditableRecipient(
+                recipientId = recipientId,
+                phoneNumber = null
+            )
         }
     }
 

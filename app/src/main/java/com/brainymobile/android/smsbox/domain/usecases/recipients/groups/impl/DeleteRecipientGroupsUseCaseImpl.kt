@@ -3,8 +3,9 @@ package com.brainymobile.android.smsbox.domain.usecases.recipients.groups.impl
 import com.brainymobile.android.smsbox.domain.entities.recipient.RecipientGroup
 import com.brainymobile.android.smsbox.domain.repositories.RecipientGroupsRepository
 import com.brainymobile.android.smsbox.domain.usecases.recipients.groups.DeleteRecipientGroupsUseCase
+import javax.inject.Inject
 
-class DeleteRecipientGroupsUseCaseImpl(private val repository: RecipientGroupsRepository) :
+class DeleteRecipientGroupsUseCaseImpl @Inject constructor(private val repository: RecipientGroupsRepository) :
     DeleteRecipientGroupsUseCase {
     override suspend fun delete(item: RecipientGroup) {
         repository.delete(item)
